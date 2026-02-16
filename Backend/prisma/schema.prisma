@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "./generated/client"
 }
 
 datasource db {
@@ -14,9 +14,63 @@ datasource db {
 }
 
 model Classe {
-  id  Int  @id @default(autoincrement())
-  Classe Int
-  Sezione String @db.Char(1)
-  Indirizzo String @db.VarChar(5)
-  AnnoScolastico Int 
+  // @@id([Numero, Sezione, Indirizzo], name: "Id") non ottimale per query che coinvolgono join con altre tabelle, meglio usare un id autoincrementale
+  Id             Int                           @id @default(autoincrement())
+  Numero         Int
+  Sezione        String                        @db.Char(1)
+  Indirizzo      String                        @db.VarChar(5)
+  AnnoScolastico Int
+  Studenti       Studente[]
+  Docenti        Insegnamento_Classe_Docente[]
+}
+
+model Studente {
+  Email       String     @id @db.VarChar(255)
+  Nome        String     @db.VarChar(50)
+  Cognome     String     @db.VarChar(50)
+  DataNascita DateTime?
+  DSA_BES     Boolean
+  Certificato Documento?
+  Classe_Id   Int
+  Classe      Classe     @relation(fields: [Classe_Id], references: [Id])
+}
+
+model Documento {
+  Id             Int      @id @default(autoincrement())
+  Studente_Email String   @unique @db.VarChar(255)
+  Studente       Studente @relation(fields: [Studente_Email], references: [Email])
+  AnnoScolastico DateTime @default(now())
+  Stato          String   @db.VarChar(20)
+  Tipo           String   @db.VarChar(20) // BES/DSA
+}
+
+model Docente {
+  Email   String                         @id @db.VarChar(255)
+  Nome    String                         @db.VarChar(50)
+  Cognome String                         @db.VarChar(50)
+  materie Insegnamento_Docente_Materia[]
+  Classi  Insegnamento_Classe_Docente[]
+}
+
+model Materia {
+  Nome         String                         @id @db.VarChar(50)
+  Insegnamenti Insegnamento_Docente_Materia[]
+}
+
+model Insegnamento_Docente_Materia {
+  Docente_Email String  @db.VarChar(255)
+  Materia_Nome  String  @db.VarChar(50)
+  Docente       Docente @relation(fields: [Docente_Email], references: [Email])
+  Materia       Materia @relation(fields: [Materia_Nome], references: [Nome])
+
+  @@id([Docente_Email, Materia_Nome], name: "Id")
+}
+
+model Insegnamento_Classe_Docente {
+  Docente_Email String  @db.VarChar(255)
+  Classe_Id     Int
+  Classe        Classe  @relation(fields: [Classe_Id], references: [Id])
+  Docente       Docente @relation(fields: [Docente_Email], references: [Email])
+
+  @@id([Classe_Id, Docente_Email], name: "Id")
 }
