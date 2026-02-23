@@ -35,7 +35,7 @@ npm i
 ```
 
 ### 4. Configurare il database
-Creare un file **.env** nella root del progetto e inserire:
+Creare un file **.env** e inserire:
 ```
 DATABASE_URL="postgresql://utente:password@localhost:5432/nomedb?schema=public"
 ```
