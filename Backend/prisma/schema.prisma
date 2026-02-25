@@ -15,33 +15,33 @@ datasource db {
 
 model Classe {
   // @@id([Numero, Sezione, Indirizzo], name: "Id") non ottimale per query che coinvolgono join con altre tabelle, meglio usare un id autoincrementale
-  Id             Int                           @id @default(autoincrement())
+  Id             Int        @id @default(autoincrement())
   Numero         Int
-  Sezione        String                        @db.Char(1)
-  Indirizzo      String                        @db.VarChar(5)
-  AnnoScolastico Int
+  Sezione        String     @db.Char(1)
+  Indirizzo      String     @db.VarChar(5)
+  AnnoScolastico DateTime   @default(now())
   Studenti       Studente[]
   Docenti        Insegnamento_Classe_Docente[]
 }
 
 model Studente {
-  Email       String     @id @db.VarChar(255)
-  Nome        String     @db.VarChar(50)
-  Cognome     String     @db.VarChar(50)
+  Email       String        @id @db.VarChar(255)
+  Nome        String        @db.VarChar(50)
+  Cognome     String        @db.VarChar(50)
   DataNascita DateTime?
   DSA_BES     Boolean
   Certificato Documento?
   Classe_Id   Int
-  Classe      Classe     @relation(fields: [Classe_Id], references: [Id])
+  Classe      Classe        @relation(fields: [Classe_Id], references: [Id])
 }
 
 model Documento {
-  Id             Int      @id @default(autoincrement())
-  Studente_Email String   @unique @db.VarChar(255)
-  Studente       Studente @relation(fields: [Studente_Email], references: [Email])
-  AnnoScolastico DateTime @default(now())
-  Stato          String   @db.VarChar(20)
-  Tipo           String   @db.VarChar(20) // BES/DSA
+  Id             Int          @id @default(autoincrement())
+  Studente_Email String       @unique @db.VarChar(255)
+  Studente       Studente     @relation(fields: [Studente_Email], references: [Email])
+  DataScadenza   DateTime?
+  Stato          String       @db.VarChar(20)
+  Tipo           String       @db.VarChar(20) // BES/DSA
 }
 
 model Docente {
@@ -53,24 +53,24 @@ model Docente {
 }
 
 model Materia {
-  Nome         String                         @id @db.VarChar(50)
+  Nome         String                     @id @db.VarChar(50)
   Insegnamenti Insegnamento_Docente_Materia[]
 }
 
 model Insegnamento_Docente_Materia {
-  Docente_Email String  @db.VarChar(255)
-  Materia_Nome  String  @db.VarChar(50)
-  Docente       Docente @relation(fields: [Docente_Email], references: [Email])
-  Materia       Materia @relation(fields: [Materia_Nome], references: [Nome])
+  Docente_Email String    @db.VarChar(255)
+  Materia_Nome  String    @db.VarChar(50)
+  Docente       Docente   @relation(fields: [Docente_Email], references: [Email])
+  Materia       Materia   @relation(fields: [Materia_Nome], references: [Nome])
 
   @@id([Docente_Email, Materia_Nome], name: "Id")
 }
 
 model Insegnamento_Classe_Docente {
-  Docente_Email String  @db.VarChar(255)
+  Docente_Email String    @db.VarChar(255)
   Classe_Id     Int
-  Classe        Classe  @relation(fields: [Classe_Id], references: [Id])
-  Docente       Docente @relation(fields: [Docente_Email], references: [Email])
+  Classe        Classe    @relation(fields: [Classe_Id], references: [Id])
+  Docente       Docente   @relation(fields: [Docente_Email], references: [Email])
 
   @@id([Classe_Id, Docente_Email], name: "Id")
 }

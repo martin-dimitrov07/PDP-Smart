@@ -4,7 +4,7 @@ CREATE TABLE "Classe" (
     "Numero" INTEGER NOT NULL,
     "Sezione" CHAR(1) NOT NULL,
     "Indirizzo" VARCHAR(5) NOT NULL,
-    "AnnoScolastico" INTEGER NOT NULL,
+    "AnnoScolastico" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Classe_pkey" PRIMARY KEY ("Id")
 );
@@ -25,7 +25,7 @@ CREATE TABLE "Studente" (
 CREATE TABLE "Documento" (
     "Id" SERIAL NOT NULL,
     "Studente_Email" VARCHAR(255) NOT NULL,
-    "AnnoScolastico" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "DataScadenza" TIMESTAMP(3),
     "Stato" VARCHAR(20) NOT NULL,
     "Tipo" VARCHAR(20) NOT NULL,
 
