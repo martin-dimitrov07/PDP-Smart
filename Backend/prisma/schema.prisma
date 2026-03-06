@@ -5,72 +5,169 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "./generated/client"
+    provider = "prisma-client"
+    output   = "./generated/client"
 }
 
 datasource db {
-  provider = "postgresql"
-}
-
-model Classe {
-  // @@id([Numero, Sezione, Indirizzo], name: "Id") non ottimale per query che coinvolgono join con altre tabelle, meglio usare un id autoincrementale
-  Id             Int        @id @default(autoincrement())
-  Numero         Int
-  Sezione        String     @db.Char(1)
-  Indirizzo      String     @db.VarChar(5)
-  AnnoScolastico DateTime   @default(now())
-  Studenti       Studente[]
-  Docenti        Insegnamento_Classe_Docente[]
-}
-
-model Studente {
-  Email       String        @id @db.VarChar(255)
-  Nome        String        @db.VarChar(50)
-  Cognome     String        @db.VarChar(50)
-  DataNascita DateTime?
-  DSA_BES     Boolean
-  Certificato Documento?
-  Classe_Id   Int
-  Classe      Classe        @relation(fields: [Classe_Id], references: [Id])
-}
-
-model Documento {
-  Id             Int          @id @default(autoincrement())
-  Studente_Email String       @unique @db.VarChar(255)
-  Studente       Studente     @relation(fields: [Studente_Email], references: [Email])
-  DataScadenza   DateTime?
-  Stato          String       @db.VarChar(20)
-  Tipo           String       @db.VarChar(20) // BES/DSA
+    provider = "postgresql"
 }
 
 model Docente {
-  Email   String                         @id @db.VarChar(255)
-  Nome    String                         @db.VarChar(50)
-  Cognome String                         @db.VarChar(50)
-  materie Insegnamento_Docente_Materia[]
-  Classi  Insegnamento_Classe_Docente[]
+    Email   String @id @db.VarChar(255)
+    Nome    String @db.VarChar(50)
+    Cognome String @db.VarChar(50)
+
+    Insegnamenti Insegnamento[]
+}
+
+model Classe {
+    Id              Int      @id @default(autoincrement())
+    Classe          Int
+    Sezione         String   @db.Char(1)
+    Indirizzo       String   @db.VarChar(5)
+    Anno_Scolastico DateTime @default(now())
+
+    Insegnamenti   Insegnamento[]
+    Classi_Studente Classe_Studente[]
+}
+
+model Studente {
+    Email   String  @id @db.VarChar(255)
+    Nome    String  @db.VarChar(50)
+    Cognome String  @db.VarChar(50)
+    DSA_BES Boolean
+
+    Documento      Documento[]
+    Classi_Studente Classe_Studente[]
+}
+
+enum Stato {
+    IN_BOZZA @map("In bozza")
+    VALIDATO @map("Validato")
+    SCADUTO  @map("Scaduto")
+}
+
+enum Tipologia_Doc {
+    DSA
+    BES
+}
+
+model Documento {
+    Studente_Email    String        @db.VarChar(255)
+    Anno              DateTime      @default(now())
+    Stato             Stato
+    Tipologia         Tipologia_Doc
+    Data_Approvazione DateTime?
+
+    Materie_Documento Materia_Documento[]
+    Documento_ICFs    Documento_ICF[]
+    Studente         Studente            @relation(fields: [Studente_Email], references: [Email])
+    Allegati         Allegato[] //può essere vuoto
+
+    @@id([Studente_Email, Anno], name: "Id")
 }
 
 model Materia {
-  Nome         String                     @id @db.VarChar(50)
-  Insegnamenti Insegnamento_Docente_Materia[]
+    Nome String @id @db.VarChar(50)
+
+    Insegnamenti      Insegnamento[]
+    Materie_Indicatore Materia_Indicatore[]
+    Materie_Documento  Materia_Documento[]
 }
 
-model Insegnamento_Docente_Materia {
-  Docente_Email String    @db.VarChar(255)
-  Materia_Nome  String    @db.VarChar(50)
-  Docente       Docente   @relation(fields: [Docente_Email], references: [Email])
-  Materia       Materia   @relation(fields: [Materia_Nome], references: [Nome])
-
-  @@id([Docente_Email, Materia_Nome], name: "Id")
+enum Tipologia_Ind {
+    DSA
+    BES
+    ENTRAMBI @map("Entrambi")
 }
 
-model Insegnamento_Classe_Docente {
-  Docente_Email String    @db.VarChar(255)
-  Classe_Id     Int
-  Classe        Classe    @relation(fields: [Classe_Id], references: [Id])
-  Docente       Docente   @relation(fields: [Docente_Email], references: [Email])
+enum Categoria {
+    STRUMENTI_COMPENSATIVI @map("Strumenti compensativi")
+    MISURE_DISPENSATIVE    @map("Misure dispensative")
+    MODALITA_VERIFICA      @map("Modalità di verifica")
+    CRITERI_VALUTAZIONE    @map("Criteri di valutazione")
+}
 
-  @@id([Classe_Id, Docente_Email], name: "Id")
+model Indicatore {
+    Id          Int           @id @default(autoincrement())
+    Tipologia   Tipologia_Ind
+    Categoria   Categoria
+    Descrizione String
+
+    Materia_Indicatori Materia_Indicatore[]
+}
+
+model Allegato {
+    Id                       Int      @id @default(autoincrement())
+    Nome                     String
+    Percorso                 String
+    Documento_Studente_Email String
+    Documento_Anno           DateTime
+
+    Documento Documento @relation(fields: [Documento_Studente_Email, Documento_Anno], references: [Studente_Email, Anno])
+}
+
+model ICF {
+    Codice      String  @id
+    Descrizione String?
+
+    Documenti_ICF Documento_ICF[]
+}
+
+//------------
+
+model Insegnamento {
+    Docente_Email String
+    Classe_Id     Int
+    Materia_Nome  String
+
+    Docente Docente @relation(fields: [Docente_Email], references: [Email])
+    Classe  Classe  @relation(fields: [Classe_Id], references: [Id])
+    Materia Materia @relation(fields: [Materia_Nome], references: [Nome])
+
+    @@id([Docente_Email, Classe_Id, Materia_Nome], name: "Id")
+}
+
+model Classe_Studente {
+    Classe_Id      Int
+    Studente_Email String
+
+    Classe   Classe   @relation(fields: [Classe_Id], references: [Id])
+    Studente Studente @relation(fields: [Studente_Email], references: [Email])
+
+    @@id([Studente_Email, Classe_Id], name: "Id")
+}
+
+model Materia_Indicatore {
+    Materia_Nome  String
+    Indicatore_Id Int
+    Valore        Boolean
+
+    Materia    Materia    @relation(fields: [Materia_Nome], references: [Nome])
+    Indicatore Indicatore @relation(fields: [Indicatore_Id], references: [Id])
+
+    @@id([Materia_Nome, Indicatore_Id], name: "Id")
+}
+
+model Materia_Documento {
+    Materia_Nome             String
+    Documento_Anno           DateTime
+    Documento_Studente_Email String
+
+    Materia   Materia   @relation(fields: [Materia_Nome], references: [Nome])
+    Documento Documento @relation(fields: [Documento_Studente_Email, Documento_Anno], references: [Studente_Email, Anno])
+
+    @@id([Materia_Nome, Documento_Anno, Documento_Studente_Email], name: "Id")
+}
+
+model Documento_ICF {
+    ICF_Codice               String
+    Documento_Anno           DateTime
+    Documento_Studente_Email String
+
+    ICF       ICF       @relation(fields: [ICF_Codice], references: [Codice])
+    Documento Documento @relation(fields: [Documento_Studente_Email, Documento_Anno], references: [Studente_Email, Anno])
+
+    @@id([ICF_Codice, Documento_Anno, Documento_Studente_Email], name: "Id")
 }
