@@ -42,13 +42,14 @@ CREATE TABLE "Studente" (
 
 -- CreateTable
 CREATE TABLE "Documento" (
+    "Id" SERIAL NOT NULL,
     "Studente_Email" VARCHAR(255) NOT NULL,
     "Anno" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "Stato" "Stato" NOT NULL,
     "Tipologia" "Tipologia_Doc" NOT NULL,
     "Data_Approvazione" TIMESTAMP(3),
 
-    CONSTRAINT "Documento_pkey" PRIMARY KEY ("Studente_Email","Anno")
+    CONSTRAINT "Documento_pkey" PRIMARY KEY ("Id")
 );
 
 -- CreateTable
@@ -73,8 +74,7 @@ CREATE TABLE "Allegato" (
     "Id" SERIAL NOT NULL,
     "Nome" TEXT NOT NULL,
     "Percorso" TEXT NOT NULL,
-    "Documento_Studente_Email" TEXT NOT NULL,
-    "Documento_Anno" TIMESTAMP(3) NOT NULL,
+    "Documento_Id" INTEGER NOT NULL,
 
     CONSTRAINT "Allegato_pkey" PRIMARY KEY ("Id")
 );
@@ -109,6 +109,7 @@ CREATE TABLE "Materia_Indicatore" (
     "Materia_Nome" TEXT NOT NULL,
     "Indicatore_Id" INTEGER NOT NULL,
     "Valore" BOOLEAN NOT NULL,
+    "Nota" TEXT,
 
     CONSTRAINT "Materia_Indicatore_pkey" PRIMARY KEY ("Materia_Nome","Indicatore_Id")
 );
@@ -116,26 +117,27 @@ CREATE TABLE "Materia_Indicatore" (
 -- CreateTable
 CREATE TABLE "Materia_Documento" (
     "Materia_Nome" TEXT NOT NULL,
-    "Documento_Anno" TIMESTAMP(3) NOT NULL,
-    "Documento_Studente_Email" TEXT NOT NULL,
+    "Documento_Id" INTEGER NOT NULL,
 
-    CONSTRAINT "Materia_Documento_pkey" PRIMARY KEY ("Materia_Nome","Documento_Anno","Documento_Studente_Email")
+    CONSTRAINT "Materia_Documento_pkey" PRIMARY KEY ("Materia_Nome","Documento_Id")
 );
 
 -- CreateTable
 CREATE TABLE "Documento_ICF" (
     "ICF_Codice" TEXT NOT NULL,
-    "Documento_Anno" TIMESTAMP(3) NOT NULL,
-    "Documento_Studente_Email" TEXT NOT NULL,
+    "Documento_Id" INTEGER NOT NULL,
 
-    CONSTRAINT "Documento_ICF_pkey" PRIMARY KEY ("ICF_Codice","Documento_Anno","Documento_Studente_Email")
+    CONSTRAINT "Documento_ICF_pkey" PRIMARY KEY ("ICF_Codice","Documento_Id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Documento_Studente_Email_Anno_key" ON "Documento"("Studente_Email", "Anno");
 
 -- AddForeignKey
 ALTER TABLE "Documento" ADD CONSTRAINT "Documento_Studente_Email_fkey" FOREIGN KEY ("Studente_Email") REFERENCES "Studente"("Email") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Allegato" ADD CONSTRAINT "Allegato_Documento_Studente_Email_Documento_Anno_fkey" FOREIGN KEY ("Documento_Studente_Email", "Documento_Anno") REFERENCES "Documento"("Studente_Email", "Anno") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Allegato" ADD CONSTRAINT "Allegato_Documento_Id_fkey" FOREIGN KEY ("Documento_Id") REFERENCES "Documento"("Id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Insegnamento" ADD CONSTRAINT "Insegnamento_Docente_Email_fkey" FOREIGN KEY ("Docente_Email") REFERENCES "Docente"("Email") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -162,10 +164,10 @@ ALTER TABLE "Materia_Indicatore" ADD CONSTRAINT "Materia_Indicatore_Indicatore_I
 ALTER TABLE "Materia_Documento" ADD CONSTRAINT "Materia_Documento_Materia_Nome_fkey" FOREIGN KEY ("Materia_Nome") REFERENCES "Materia"("Nome") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Materia_Documento" ADD CONSTRAINT "Materia_Documento_Documento_Studente_Email_Documento_Anno_fkey" FOREIGN KEY ("Documento_Studente_Email", "Documento_Anno") REFERENCES "Documento"("Studente_Email", "Anno") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Materia_Documento" ADD CONSTRAINT "Materia_Documento_Documento_Id_fkey" FOREIGN KEY ("Documento_Id") REFERENCES "Documento"("Id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Documento_ICF" ADD CONSTRAINT "Documento_ICF_ICF_Codice_fkey" FOREIGN KEY ("ICF_Codice") REFERENCES "ICF"("Codice") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Documento_ICF" ADD CONSTRAINT "Documento_ICF_Documento_Studente_Email_Documento_Anno_fkey" FOREIGN KEY ("Documento_Studente_Email", "Documento_Anno") REFERENCES "Documento"("Studente_Email", "Anno") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Documento_ICF" ADD CONSTRAINT "Documento_ICF_Documento_Id_fkey" FOREIGN KEY ("Documento_Id") REFERENCES "Documento"("Id") ON DELETE RESTRICT ON UPDATE CASCADE;
