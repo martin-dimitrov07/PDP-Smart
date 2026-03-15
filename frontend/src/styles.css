@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+:root{
+    --bg-blue-dark-color: #12294d;
+    --bg-blue-color: #23417a;
+
+    --light-blue-color: #8ab6e3;
+    --light-color: #f0f5fa;
+    --blue-color: #1e3a5f;
+}
+
+@font-face {
+    font-family: 'Geist';
+    src: url('/fonts/Geist/Geist-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Geist Bold';
+    src: url('/fonts/Geist/Geist-Bold.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Geist', sans-serif;
+}
+
+strong {
+    font-family: 'Geist Bold', sans-serif;
+}

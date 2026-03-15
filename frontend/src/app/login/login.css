@@ -1,0 +1,19 @@
+.bg-blue{
+    background-color: var(--bg-blue-dark-color);
+    position: relative;
+    color: var(--light-blue-color);
+}
+
+.sfuma{
+    position: absolute;
+    width: 650px;
+    height: 650px;
+    background-color: var(--bg-blue-color);
+    filter: blur(100px);
+}
+
+.img-logo{
+    max-width: 100px;
+    aspect-ratio: 1 / 0.8;
+    filter: drop-shadow(0 0 25px var(--bg-blue-color));
+}
