@@ -1,19 +1,61 @@
 <div class="container-fluid row vh-100 m-0 p-0">
-    <section class="bg-blue relative col-6 h-100 px-5 py-5">
+    <section class="d-none d-md-block bg-blue relative col-6 h-100 px-4 py-4">
         <div class="sfuma top-0 start-0 rounded-circle opacity-25"></div>
         <div class="sfuma bottom-0 end-0 rounded-circle opacity-25"></div>
 
-        <div class="position-relative container-fluid">
-            <div class="d-flex gap-4">
-                <img src="imgs/img-logo.png" alt="immagine logo sito" class="img-logo rounded-5">
-                <div class="d-flex flex-column">
-                    <h1 class="text-white display-5 m-0"><strong>IIS PDP Smart</strong></h1>
-                    <p class="fs-4 m-0">Gestione Documenti DSA e BES</p>
+        <div class="position-relative d-flex justify-content-center h-100 flex-column gap-5 gap-lg-4">
+            <div class="d-flex justify-content-start align-items-center gap-4 my-2">
+                <img src="imgs/img-logo.png" alt="immagine logo sito" class="img-logo img-logo-shadow rounded-3">
+                <div class="d-flex flex-column justify-content-center">
+                    <h1 class="text-white fs-1 m-0">PDP Smart</h1>
+                    <p class="subtitle m-0">Gestione Documenti DSA e BES</p>
                 </div>
+            </div>
+            <div class="d-flex flex-column gap-3">
+                <p>
+                    Una piattaforma per la creazione e gestione dei <strong class="text-white">Piani Didattici
+                        Personalizzati</strong>,
+                    sviluppata per supportare docenti con alunni <strong class="text-white">DSA</strong> e <strong
+                        class="text-white">BES</strong>.
+                </p>
+            </div>
+            <div class="row justify-content-between align-items-stretch">
+                <app-login-card [IconClass]="'bi-file-earmark-text'" [Title]="'Documenti PDP'">
+                    <p Description class="description m-0 d-none d-lg-block">Crea e compila facilmente Piani Didattici
+                        Personalizzati</p>
+                </app-login-card>
+                <app-login-card [IconClass]="'bi-people'" [Title]="'Gestione Studenti'">
+                    <p Description class="description m-0 d-none d-lg-block">Organizza i documenti degli studenti DSA e
+                        BES</p>
+                </app-login-card>
+                <app-login-card [IconClass]="'bi-shield'" [Title]="'Privacy Garantita'">
+                    <p Description class="description m-0 d-none d-lg-block">
+                        Dati protetti e conformi al <a class="primary-text-color fw-bold"
+                            href="https://www.garanteprivacy.it/regolamentoue" target="_blank">GDPR</a>
+                    </p>
+                </app-login-card>
+                <app-login-card [IconClass]="'bi-check2-circle'" [Title]="'Conforme alle Linee Guida'">
+                    <p Description class="description m-0 d-none d-lg-block">
+                        In linea con la normativa <a class="primary-text-color fw-bold"
+                            href="https://www.mim.gov.it/disturbi-specifici-dell-apprendimento-dsa-"
+                            target="_blank">MIUR</a> vigente
+                    </p>
+                </app-login-card>
+            </div>
+            <div>
+                <hr class="m-0">
+                <p class="info-footer mt-3 mb-0">
+                    Piattaforma dedicata al supporto dell'inclusione scolastica secondo la Legge 170/2010 e la Direttiva
+                    MIUR 27/12/2012
+                </p>
             </div>
         </div>
     </section>
-    <section class="col-6 h-100 p-0">
-        
+    <section class="d-none d-md-flex col-6 p-4 p-lg-5 h-100 d-flex justify-content-center align-items-center">
+        <app-login-form></app-login-form>
+    </section>
+
+    <section class="d-flex d-md-none bg-blue col-12 p-4 p-sm-5 h-100 d-flex justify-content-center align-items-center">
+        <app-login-form></app-login-form>
     </section>
 </div>

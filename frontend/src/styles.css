@@ -3,8 +3,16 @@
     --bg-blue-color: #23417a;
 
     --light-blue-color: #8ab6e3;
+    --bg-blue-color-fade: #234973e7;
+    --bg-icon-color-fade: #3b6288aa; 
     --light-color: #f0f5fa;
     --blue-color: #1e3a5f;
+    --dark-blue-color: #193355;
+
+    --grey-color: #555;
+    --light-grey: #e2e8f0;
+
+    --dark-shadow-color: #000000BB;
 }
 
 @font-face {
@@ -21,10 +29,51 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'Geist SemiBold';
+    src: url('/fonts/Geist/Geist-SemiBold.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     font-family: 'Geist', sans-serif;
 }
 
-strong {
-    font-family: 'Geist Bold', sans-serif;
+.fw-bold, strong, h1, h2, h3, h4, h5, h6 {
+    font-family: 'Geist Bold', sans-serif !important;
+}
+
+.fw-semi-bold{
+    font-family: 'Geist SemiBold', sans-serif !important;
+}
+
+.primary-text-color{
+    color: var(--light-blue-color);
+}
+
+.secondary-text-color{
+    color: var(--dark-blue-color);
+}
+
+.third-text-color{
+    color: var(--grey-color);
+}
+
+.img-logo{
+    max-width: 90px;
+    max-height: 80px;
+    aspect-ratio: 1 / 0.85;
+}
+
+.img-logo-sm{
+    max-width: 70px !important;
+}
+
+.img-logo-xl{
+    max-width: 150px !important;
+}
+
+.img-logo-shadow{
+    filter: drop-shadow(0 0 20px var(--bg-blue-color));
 }

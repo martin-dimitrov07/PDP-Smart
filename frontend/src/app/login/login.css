@@ -6,14 +6,48 @@
 
 .sfuma{
     position: absolute;
-    width: 650px;
-    height: 650px;
+    width: 60%;
+    height: 60%;
     background-color: var(--bg-blue-color);
     filter: blur(100px);
 }
 
-.img-logo{
-    max-width: 100px;
-    aspect-ratio: 1 / 0.8;
-    filter: drop-shadow(0 0 25px var(--bg-blue-color));
+.subtitle{
+    font-size: 1.05rem;
+}
+
+.description{
+    font-size: 0.9rem;
+}
+
+@media (min-width: 992px){
+    .subtitle{
+        font-size: 1.25rem;
+    }
+}
+
+.h2{
+    font-size: 1.35rem;
+}
+
+@media (min-width: 835px){
+    .h2{
+        font-size: 1.5rem;
+    }
+}
+
+@media (min-width: 1200px){
+    .h2{
+        font-size: 2rem;
+    }
+}
+
+@media (min-width: 1304px){
+    .h2{
+        font-size: 2.5rem;
+    }
+}
+
+.info-footer{
+    font-size: 0.9rem;
 }

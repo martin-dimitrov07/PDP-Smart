@@ -1,0 +1,67 @@
+.form-card {
+    box-shadow: 0 0 35px -5px var(--dark-shadow-color);
+    background-color: white;
+}
+
+.btn-google {
+    border: 2px solid var(--light-grey);
+    background-color: var(--light-color);
+    padding: 12px 7px;
+    transition: all 0.3s ease;
+}
+
+.btn-google:hover{
+    /* Effetto box-shadow multicolore */
+    box-shadow: 
+        -3px -3px 8px rgba(66, 133, 244, 0.8),  /* Blu Google (Alto-Sinistra) */
+        3px -3px 8px rgba(234, 67, 53, 0.6),    /* Rosso Google (Alto-Destra) */
+        3px 3px 8px rgba(251, 188, 5, 0.6),     /* Giallo Google (Basso-Destra) */
+        -3px 3px 8px rgba(52, 168, 83, 0.6) !important;    /* Verde Google (Basso-Sinistra)*/
+  
+    transform: scale(0.95);
+    border-color: transparent;
+}
+
+.btn-google:hover{
+    cursor: pointer;
+}
+
+.btn-google svg{
+    transition: 0.3s;
+}
+
+.btn-google:hover svg{
+    transform: rotate(360deg);
+}
+
+.divider {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    margin: 20px 0;
+    font-size: 0.8rem;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    width: 100%;
+    height: 1px;
+    background-color: #e0e4e8;
+}
+
+.info-login{
+    background-color: var(--light-color);
+    filter: drop-shadow(0 0 4px var(--light-grey));
+}
+
+.info-login p{
+    font-size: 0.9rem;
+}
+
+.bi{
+    font-size: 24px;
+    color: var(--dark-blue-color);
+}
