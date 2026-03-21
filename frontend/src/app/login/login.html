@@ -1,9 +1,9 @@
 <div class="container-fluid row vh-100 m-0 p-0">
     <section class="d-none d-md-block bg-blue col-6 col-lg-7 h-100 px-4 px-lg-5 py-4">
-        <div class="sfuma sfuma-100 top-0 start-0 rounded-circle opacity-25"></div>
-        <div class="sfuma sfuma-100 bottom-0 end-0 rounded-circle opacity-25"></div>
+        <div class="sfuma sfuma top-0 start-0 rounded-circle opacity-25"></div>
+        <div class="sfuma sfuma bottom-0 end-0 rounded-circle opacity-25"></div>
 
-        <div class="position-relative d-flex justify-content-center h-100 flex-column gap-5 gap-lg-4">
+        <div class="position-relative z-2 d-flex justify-content-center h-100 flex-column gap-5 gap-lg-4">
             <div class="d-flex justify-content-start align-items-center gap-4 my-2">
                 <img src="imgs/img-logo.png" alt="immagine logo sito" class="img-logo img-logo-shadow rounded-3">
                 <div class="d-flex flex-column justify-content-center">
@@ -50,14 +50,29 @@
                 </p>
             </div>
         </div>
-    </section>
-    <section class="d-none d-md-flex col-6 col-lg-5 p-4 p-lg-5 h-100 d-flex justify-content-center align-items-center">
+    </section> 
+    <section class="position-relative d-none d-md-flex col-6 bg-light col-lg-5 p-4 p-lg-5 h-100 d-flex justify-content-center align-items-center">
         <app-login-form></app-login-form>
+        <button class="btn-theme position-absolute rounded-circle ratio-1x1" (click)="ChangeTheme()">
+            @if(isDark){
+                <i #icon class="bi bi-sun-fill d-flex align-items-center justify-content-center"></i>
+            }
+            @else {
+                <i #icon class="bi bi-moon-fill d-flex align-items-center justify-content-center"></i>
+            }
+        </button>
     </section>
 
     <section class="d-flex d-md-none bg-blue col-12 p-4 p-sm-5 h-100 d-flex justify-content-center align-items-center">
-        <div class="sfuma sfuma-20 top-0 start-0 rounded-circle opacity-25"></div>
-        <div class="sfuma sfuma-20 bottom-0 end-0 rounded-circle opacity-25"></div>
-        <app-login-form class="z-2"></app-login-form>
+        <div class="sfuma-lg rounded-circle opacity-25"></div>
+        <app-login-form class="position-relative z-2"></app-login-form>
+        <button class="btn-theme position-absolute rounded-circle ratio-1x1" (click)="ChangeTheme()">
+            @if(isDark){
+                <i #icon class="bi bi-sun-fill d-flex align-items-center justify-content-center"></i>
+            }
+            @else {
+                <i #icon class="bi bi-moon-fill d-flex align-items-center justify-content-center"></i>
+            }
+        </button>
     </section>
 </div>

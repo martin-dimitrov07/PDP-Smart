@@ -1,6 +1,6 @@
 .form-card {
     box-shadow: 0 0 35px -5px var(--dark-shadow-color);
-    background-color: white;
+    background-color: var(--light-color);
 }
 
 .btn-google {

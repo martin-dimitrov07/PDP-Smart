@@ -1,60 +1,64 @@
-.bg-blue{
+.bg-blue {
     background-color: var(--bg-blue-dark-color);
     position: relative;
     color: var(--light-blue-color);
 }
 
-.sfuma{
+.sfuma,
+.sfuma-lg {
     position: absolute;
+    background-color: var(--bg-blue-color);
+    z-index: 1;
+}
+
+.sfuma {
     width: 60%;
     height: 60%;
-    background-color: var(--bg-blue-color);
-}
-
-.sfuma-20{
-    filter: blur(20px);
-}
-
-.sfuma-100{
     filter: blur(100px);
 }
 
-.subtitle{
+.sfuma-lg {
+    width: 90%;
+    height: 90%;
+    filter: blur(80px);
+}
+
+.subtitle {
     font-size: 1.05rem;
 }
 
-.description{
+.description {
     font-size: 0.9rem;
 }
 
-@media (min-width: 992px){
-    .subtitle{
+@media (min-width: 992px) {
+    .subtitle {
         font-size: 1.25rem;
     }
 }
 
-.h2{
+.h2 {
     font-size: 1.35rem;
 }
 
-@media (min-width: 835px){
-    .h2{
+@media (min-width: 835px) {
+    .h2 {
         font-size: 1.5rem;
     }
 }
 
-@media (min-width: 1200px){
-    .h2{
+@media (min-width: 1200px) {
+    .h2 {
         font-size: 2rem;
     }
 }
 
-@media (min-width: 1304px){
-    .h2{
+@media (min-width: 1304px) {
+    .h2 {
         font-size: 2.5rem;
     }
 }
 
-.info-footer{
+.info-footer {
     font-size: 0.9rem;
 }
