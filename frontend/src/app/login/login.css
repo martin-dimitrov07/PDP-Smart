@@ -9,6 +9,13 @@
     width: 60%;
     height: 60%;
     background-color: var(--bg-blue-color);
+}
+
+.sfuma-20{
+    filter: blur(20px);
+}
+
+.sfuma-100{
     filter: blur(100px);
 }
 
