@@ -13,10 +13,6 @@ export class Login {
     isDark: boolean = false;
     @ViewChild("icon") themeIcon: any;
 
-    ngAfterViewInit(){
-        this.themeIcon = document.querySelector(".btn-theme .bi");
-    }
-
     async ChangeTheme(){
         this.isDark = !this.isDark;
         document.body.classList.toggle("dark-mode");

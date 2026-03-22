@@ -13,6 +13,8 @@
     --grey-color: #555;
     --light-grey: #e2e8f0;
 
+    --white: #fff;
+
     --dark-shadow-color: #000000BB;
 }
 
@@ -100,8 +102,13 @@ h6 {
 }
 
 .img-logo {
+    max-width: 80px;
+    aspect-ratio: 1 / 1;
+}
+
+.img-logo-vallauri {
     max-width: 90px;
-    max-height: 80px;
+    max-width: 80px;
     aspect-ratio: 1 / 0.85;
 }
 
