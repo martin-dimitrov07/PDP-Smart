@@ -6,7 +6,7 @@
     <p class="third-text-color text-center">
         Accedi per gestire i documenti PDP dei tuoi studenti
     </p>
-    <button type="button"
+    <button type="button" (click)="signInWithGoogle()"
         class="btn btn-google d-flex gap-2 align-items-center justify-content-center shadow-sm rounded-3 w-100">
         <!-- Logo Google -->
         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 48 48" class="me-2">
@@ -31,7 +31,8 @@
         <div class="d-flex flex-column justify-content-center justify-content-lg-start gap-2">
             <h3 class="secondary-text-color fs-6 align-content-center m-0">Accesso riservato ai docenti</h3>
             <p class="third-text-color m-0">
-                Utilizza il tuo account Google Istituzionale (<span class="text-decoration-underline">@vallauri.edu</span>) per accedere 
+                Utilizza il tuo account Google Istituzionale (<span
+                    class="text-decoration-underline">@vallauri.edu</span>) per accedere
                 alla piattaforma.
             </p>
         </div>
