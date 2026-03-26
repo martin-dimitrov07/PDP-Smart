@@ -1,8 +1,8 @@
 import { Component, OnInit, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
-// Dichiariamo 'google' come variabile globale per evitare errori di compilazione TypeScript,
-// dato che lo script viene caricato esternamente nell'index.html
+// Dichiariamo l'oggetto globale 'google' caricato tramite lo script nell'index.html
+// Serve a TypeScript per capire che 'google' esiste anche se non è importato come pacchetto
 declare var google: any;
 
 @Component({
@@ -12,77 +12,77 @@ declare var google: any;
     styleUrl: './login-form.css',
 })
 export class LoginForm implements OnInit {
-    // Iniettiamo l'identificativo della piattaforma (Browser o Server)
+    // Iniezione del servizio per identificare la piattaforma (Browser vs Server/SSR)
     private platformId = inject(PLATFORM_ID);
-
-    // Variabile statica: resta in memoria per tutta la durata dell'app.
-    // Ci serve per evitare di chiamare .initialize() più di una volta e causare Warning.
+    
+    // Variabile 'static' (legata alla classe, non all'istanza): 
+    // memorizza se l'inizializzazione è già avvenuta per non ripeterla mai più
     private static isInitialized = false;
 
     ngOnInit() {
-        // Verifichiamo di essere nel Browser. Se siamo sul Server (SSR), 
-        // l'oggetto 'window' e 'google' non esistono e l'app andrebbe in crash.
+        // Eseguiamo i controlli solo se l'utente è su un browser, altrimenti google non esiste
         if (isPlatformBrowser(this.platformId)) {
             this.tryInitializeGoogle();
         }
     }
 
     private tryInitializeGoogle() {
-        // Creiamo un timer che controlla ogni 100ms se lo script di Google è stato caricato
+        // Avviamo un ciclo ogni 100ms per attendere che lo script Google sia pronto nel DOM
         const interval = setInterval(() => {
-            // Se l'oggetto 'google' è presente in memoria...
+            // Se l'oggetto google è stato caricato correttamente dallo script esterno
             if (typeof google != 'undefined') {
-
-                // Controllo anti-warning: inizializziamo solo se non è già stato fatto in precedenza
+                
+                // Entriamo solo se è la prima volta assoluta che l'app carica questo componente
                 if (!LoginForm.isInitialized) {
+                    // Configura le opzioni di Google Identity Services
                     google.accounts.id.initialize({
-                        // Il tuo ID cliente ottenuto dalla Google Cloud Console
+                        // ID del progetto Google Cloud per collegare l'app al server Google
                         client_id: '347150437093-4tp8ucj4t6slqj78htvu3gert4tk4isj.apps.googleusercontent.com',
-
-                        // La funzione (callback) da eseguire quando l'utente completa il login
+                        // Specifichiamo quale funzione chiamare una volta ricevuto il token di accesso
                         callback: (res: any) => this.handleLogin(res),
-
-                        // Disabilita l'API FedCM nativa di Chrome. Questo impedisce al browser di 
-                        // bloccare automaticamente il sito se l'utente chiude il popup più volte,
-                        // forzando l'uso del classico (e più permissivo) popup di Google.
+                        // Disabilitiamo FedCM per evitare che Chrome blocchi il popup su localhost
                         use_fedcm_for_prompt: false,
-
-                        // auto_select: false impedisce a Google di loggare l'utente automaticamente senza clic
-                        auto_select: false
+                        // Impediamo a Google di scegliere un account a caso senza l'intervento dell'utente
+                        auto_select: false 
                     });
-
-                    // Segnamo che l'inizializzazione è avvenuta con successo
+                    // Blocchiamo future inizializzazioni impostando il flag a true
                     LoginForm.isInitialized = true;
                 }
-
-                // Una volta configurato tutto, fermiamo il timer per risparmiare risorse
+                
+                // Fermiamo il timer perché Google è configurato e pronto
                 clearInterval(interval);
             }
         }, 100);
     }
 
     /**
-     * Metodo collegato al click del tuo bottone HTML personalizzato.
+     * Apre il popup di login (collegato al click del bottone nell'HTML)
      */
     signInWithGoogle() {
-        // L'operatore ?. (optional chaining) evita crash se il metodo viene chiamato 
-        // prima che 'google' sia effettivamente pronto.
-        // .prompt() apre il selettore degli account Google.
-        google?.accounts.id.prompt();
+        // Verifichiamo la presenza di google per sicurezza prima del click
+        if (typeof google != 'undefined') {
+            // RESET COOKIE: Cancelliamo 'g_state' per sbloccare Google se l'utente ha chiuso il popup troppe volte
+            document.cookie = "g_state=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            
+            // RESET PROCESSI: Chiudiamo ogni richiesta precedente ancora attiva per pulire il flusso
+            google.accounts.id.cancel();
+
+            // DELAY TECNICO: Aspettiamo 100ms per dare tempo a Chrome di resettare la sessione
+            // e prevenire l'errore "AbortError" (segnale interrotto) su localhost
+            setTimeout(() => google.accounts.id.prompt(), 100);
+        }
     }
 
     /**
-     * Gestisce la risposta inviata dai server di Google dopo il login.
-     * param response Contiene il credential (il JWT Token)
+     * Riceve il Token JWT da Google dopo che l'utente ha scelto l'account
      */
     handleLogin(response: any) {
-        // Messaggio di conferma per il debug
-        console.log("Accesso PDP-Smart eseguito!");
-
-        // response.credential è la stringa criptata che contiene i dati del docente.
-        // Questa stringa andrà inviata al backend per la verifica finale.
-        console.log("Token ricevuto:", response.credential);
-
-        // TODO: Inserire qui la logica di reindirizzamento (es. Router.navigate)
+        // Se la risposta contiene la credenziale (il token JWT criptato)
+        if (response.credential) {
+            // Messaggio di log per conferma avvenuto login lato client
+            console.log("ACCESSO PDP-SMART ESEGUITO!");
+            // Stampiamo il token JWT: è la stringa che identifica il docente e va validata lato backend
+            console.log("TOKEN JWT:", response.credential);
+        }
     }
 }
