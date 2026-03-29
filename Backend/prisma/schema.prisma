@@ -13,10 +13,16 @@ datasource db {
     provider = "postgresql"
 }
 
+enum Ruolo {
+    DOCENTE @map("Docente")
+    ADMIN   @map("Admin")
+}
+
 model Docente {
     Email   String @id @db.VarChar(255)
     Nome    String @db.VarChar(50)
     Cognome String @db.VarChar(50)
+    Ruolo   Ruolo  @default(DOCENTE)
 
     Insegnamenti Insegnamento[]
 }
@@ -28,7 +34,7 @@ model Classe {
     Indirizzo       String   @db.VarChar(5)
     Anno_Scolastico DateTime @default(now())
 
-    Insegnamenti   Insegnamento[]
+    Insegnamenti    Insegnamento[]
     Classi_Studente Classe_Studente[]
 }
 
@@ -38,7 +44,7 @@ model Studente {
     Cognome String  @db.VarChar(50)
     DSA_BES Boolean
 
-    Documento      Documento[]
+    Documento       Documento[]
     Classi_Studente Classe_Studente[]
 }
 
@@ -62,8 +68,8 @@ model Documento {
 
     Materie_Documento Materia_Documento[]
     Documento_ICFs    Documento_ICF[]
-    Studente         Studente            @relation(fields: [Studente_Email], references: [Email])
-    Allegati         Allegato[] //può essere vuoto
+    Studente          Studente            @relation(fields: [Studente_Email], references: [Email])
+    Allegati          Allegato[] //può essere vuoto
 
     @@id([Studente_Email, Anno], name: "Id")
 }
@@ -71,7 +77,7 @@ model Documento {
 model Materia {
     Nome String @id @db.VarChar(50)
 
-    Insegnamenti      Insegnamento[]
+    Insegnamenti       Insegnamento[]
     Materie_Indicatore Materia_Indicatore[]
     Materie_Documento  Materia_Documento[]
 }

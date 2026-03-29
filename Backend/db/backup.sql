@@ -12,10 +12,11 @@ INSERT INTO "Classe" ("Id", "Classe", "Sezione", "Indirizzo", "Anno_Scolastico")
 (8, 2, 'A', 'INF', '2024-09-01 00:00:00');
 
 -- DOCENTI
-INSERT INTO "Docente" ("Email", "Nome", "Cognome") VALUES
-('m.rossi@scuola.it', 'Mario', 'Rossi'),
-('l.bianchi@scuola.it', 'Luca', 'Bianchi'),
-('a.verdi@scuola.it', 'Anna', 'Verdi');
+INSERT INTO "Docente" ("Email", "Nome", "Cognome", "Ruolo") VALUES
+('m.rossi@scuola.it', 'Mario', 'Rossi', 'Docente'),
+('l.bianchi@scuola.it', 'Luca', 'Bianchi', 'Docente'),
+('a.verdi@scuola.it', 'Anna', 'Verdi', 'Docente'),
+('a.barbero@scuola.it', 'Alberto', 'Barbero', 'Admin');
 
 -- MATERIE
 INSERT INTO "Materia" ("Nome") VALUES
