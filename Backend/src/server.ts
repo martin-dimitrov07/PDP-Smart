@@ -3,8 +3,12 @@ import https from "https";
 import fs from "fs";
 import express from "express";
 import dotenv from "dotenv";
-import queryStringParser from "./queryStringParser.js";
+import queryStringParser from "./routes/queryStringParser.js";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+
+// routes
+import GestioneLogin from "./routes/login.js"; 
 
 import { PrismaClient } from "../prisma/generated/client/index.js";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -19,18 +23,8 @@ export const prisma = new PrismaClient({ adapter }); //export così da poterlo u
 //riconosce i tipi automaticamente (non è any) -> grazie @types/node in devDependencies (sviluppo)
 const app = express();
 //stessa cosa -> const app: express.Express = express();
-dotenv.config({ path: "../.env" });
+dotenv.config({ path: ".env" });
 const https_port = process.env.HTTPS_PORT;
-
-//Lettura pagina errore
-// let paginaErr = "";
-
-// fs.readFile("./static/error.html", function(err, content){ //content è una sequenza di byte
-//     if(err)
-//         paginaErr = "<h1>Risorsa non trovata</h1>";
-//     else
-//         paginaErr = content.toString();
-// })
 
 //C. creazione ed avvio di un server https
 const privateKey = fs.readFileSync("keys/privateKey.pem", "utf8");
@@ -51,7 +45,7 @@ app.use(function(req, res, next) //se si omette => come risorsa "/"
 });
 
 //middleware 2: gestione delle risorse statiche
-app.use(express.static("./static"));
+// app.use(express.static("./static"));
 
 //middleware 3: gestione dei parametri post
 app.use(express.json({"limit": "5mb"})); //i parametri post sono restituiti in req.body
@@ -80,9 +74,13 @@ const corsOptions = {
 };
 app.use("/", cors(corsOptions));
 
+//middleware 7: Parsing dei cookies (serve per usare req.cookies)
+app.use(cookieParser());
+
+//middleware 8: Gestione login e token
+app.use((res, req, next) => { GestioneLogin(res, req); next(); });
 
 //E. gestione delle root dinamiche
-
 
 //F. default root e gestione errori
 app.use(function(req, res){    
@@ -99,4 +97,5 @@ app.use(function(req, res){
 app.use(function(err: Error, req: express.Request, res: express.Response, next: express.NextFunction){
     console.error("*** ERRORE ***:\n" + err.stack); //elenco completo degli errori
     res.status(500).send("Errore interno del server");
+    next();
 });
