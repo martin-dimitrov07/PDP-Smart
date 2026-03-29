@@ -6,7 +6,6 @@
     --bg-blue-color-fade: #234973e7;
     --bg-icon-color-fade: #3b6288aa;
     --light-color: #f0f5fa;
-    /* --dark-color: #000; */
     --blue-color: #1e3a5f;
     --dark-blue-color: #193355;
 
@@ -16,6 +15,35 @@
     --white: #fff;
 
     --dark-shadow-color: #000000BB;
+
+    /* colori sezioni PORCO DIO*/
+    --inf-color: #1a7f5a;
+    --inf-color-hover: #e8f7f1;
+    --inf-color-hover-dark: #c6edde;
+
+    --elt-color: #d45000;
+    --elt-color-hover: #fff0e8;
+    --elt-color-hover-dark: #fdd9c4;
+
+    --mec-color: #2563b0;
+    --mec-color-hover: #e8f0fb;
+    --mec-color-hover-dark: #c8dbf5;
+
+    --afm-color: #7b1fa2;
+    --afm-color-hover: #f5e8fb;
+    --afm-color-hover-dark: #e8c8f7;
+
+    --lic-color: #0e7490;
+    --lic-color-hover: #e0f5f9;
+    --lic-color-hover-dark: #b3e8f3;
+
+    --tur-color:#b45309;
+    --tur-color-hover: #fef3e2;
+    --tur-color-hover-dark: #fde3b0;
+
+    --ene-color: #b91c1c;
+    --ene-color-hover: #fde8e8;
+    --ene-color-hover-dark: #fac5c5;
 }
 
 .dark-mode {

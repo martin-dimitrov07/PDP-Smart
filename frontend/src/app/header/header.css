@@ -45,7 +45,3 @@
 .nav-link.active {
     font-family: 'Geist Bold', sans-serif;
 }
-
-.navbar-brand:hover {
-    transform: scale(1.05);
-}

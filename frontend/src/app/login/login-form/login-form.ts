@@ -1,5 +1,6 @@
 import { Component, OnInit, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { LoginService } from '../../shared/services/login.service';
 
 declare var google: any;
 
@@ -10,7 +11,7 @@ declare var google: any;
     styleUrl: './login-form.css',
 })
 export class LoginForm implements OnInit {
-
+    private loginService = inject(LoginService);
     private platformId = inject(PLATFORM_ID); //variabile per capire se browser o server
     private static isInitialized = false; //static così mantiene il suo valore
 
@@ -62,10 +63,13 @@ export class LoginForm implements OnInit {
         if (response.credential) {
             console.log("ACCESSO PDP-SMART ESEGUITO!");
 
+            const token = response.credential;
+
             // stampa token creato da google
-            console.log("TOKEN JWT:", response.credential);
+            console.log("TOKEN JWT:", token);
 
             // invierà il token al nostro server
+            this.loginService.Login(token);
         }
     }
 }
