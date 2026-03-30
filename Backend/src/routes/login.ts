@@ -13,7 +13,7 @@ const cookiesOptions: CookieOptions = {
     "sameSite": "none" // deve essere messo anche extra-domain (lo manda anche ai server che non appartengono allo stesso dominio della pagina)
 }
 
-async function GestioneLogin(req: any, res: any, next: any) {
+async function GestioneLogin(req: any, res: any) {
     const token = req.body.token;
     const clientGoogle = new OAuth2Client(process.env.CLIENT_ID);
     
