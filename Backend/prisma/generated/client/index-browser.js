@@ -142,6 +142,7 @@ exports.Prisma.StudenteScalarFieldEnum = {
 };
 
 exports.Prisma.DocumentoScalarFieldEnum = {
+  Id: 'Id',
   Studente_Email: 'Studente_Email',
   Anno: 'Anno',
   Stato: 'Stato',
@@ -164,8 +165,7 @@ exports.Prisma.AllegatoScalarFieldEnum = {
   Id: 'Id',
   Nome: 'Nome',
   Percorso: 'Percorso',
-  Documento_Studente_Email: 'Documento_Studente_Email',
-  Documento_Anno: 'Documento_Anno'
+  Documento_Id: 'Documento_Id'
 };
 
 exports.Prisma.ICFScalarFieldEnum = {
@@ -187,19 +187,18 @@ exports.Prisma.Classe_StudenteScalarFieldEnum = {
 exports.Prisma.Materia_IndicatoreScalarFieldEnum = {
   Materia_Nome: 'Materia_Nome',
   Indicatore_Id: 'Indicatore_Id',
-  Valore: 'Valore'
+  Valore: 'Valore',
+  Nota: 'Nota'
 };
 
 exports.Prisma.Materia_DocumentoScalarFieldEnum = {
   Materia_Nome: 'Materia_Nome',
-  Documento_Anno: 'Documento_Anno',
-  Documento_Studente_Email: 'Documento_Studente_Email'
+  Documento_Id: 'Documento_Id'
 };
 
 exports.Prisma.Documento_ICFScalarFieldEnum = {
   ICF_Codice: 'ICF_Codice',
-  Documento_Anno: 'Documento_Anno',
-  Documento_Studente_Email: 'Documento_Studente_Email'
+  Documento_Id: 'Documento_Id'
 };
 
 exports.Prisma.SortOrder = {

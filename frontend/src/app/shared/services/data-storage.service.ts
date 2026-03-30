@@ -7,7 +7,7 @@ import { inject, Injectable } from '@angular/core';
 
 export class DataStorageService {
     private http = inject(HttpClient);
-    private REST_API_SERVER = "https://localhost:3000/api";
+    private REST_API_SERVER = "https://localhost:3001/api";
 
     public InviaRichiesta(method: string, resource: string, params: any = {}) {
         let url = this.REST_API_SERVER + resource;

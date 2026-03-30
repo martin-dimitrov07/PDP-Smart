@@ -12,7 +12,7 @@ export class LoginService {
 
     //chiamata post per maggior sicurezza
     Login(token: string): Observable<any> {
-        return this.dataStorageService.InviaRichiesta("POST", "/login", token)!
+        return this.dataStorageService.InviaRichiesta("POST", "/login", { token })!
             .pipe(tap((data: any) => {
                 this.docente = data;
                 console.log(this.docente);

@@ -5556,11 +5556,22 @@ export namespace Prisma {
 
   export type AggregateDocumento = {
     _count: DocumentoCountAggregateOutputType | null
+    _avg: DocumentoAvgAggregateOutputType | null
+    _sum: DocumentoSumAggregateOutputType | null
     _min: DocumentoMinAggregateOutputType | null
     _max: DocumentoMaxAggregateOutputType | null
   }
 
+  export type DocumentoAvgAggregateOutputType = {
+    Id: number | null
+  }
+
+  export type DocumentoSumAggregateOutputType = {
+    Id: number | null
+  }
+
   export type DocumentoMinAggregateOutputType = {
+    Id: number | null
     Studente_Email: string | null
     Anno: Date | null
     Stato: $Enums.Stato | null
@@ -5569,6 +5580,7 @@ export namespace Prisma {
   }
 
   export type DocumentoMaxAggregateOutputType = {
+    Id: number | null
     Studente_Email: string | null
     Anno: Date | null
     Stato: $Enums.Stato | null
@@ -5577,6 +5589,7 @@ export namespace Prisma {
   }
 
   export type DocumentoCountAggregateOutputType = {
+    Id: number
     Studente_Email: number
     Anno: number
     Stato: number
@@ -5586,7 +5599,16 @@ export namespace Prisma {
   }
 
 
+  export type DocumentoAvgAggregateInputType = {
+    Id?: true
+  }
+
+  export type DocumentoSumAggregateInputType = {
+    Id?: true
+  }
+
   export type DocumentoMinAggregateInputType = {
+    Id?: true
     Studente_Email?: true
     Anno?: true
     Stato?: true
@@ -5595,6 +5617,7 @@ export namespace Prisma {
   }
 
   export type DocumentoMaxAggregateInputType = {
+    Id?: true
     Studente_Email?: true
     Anno?: true
     Stato?: true
@@ -5603,6 +5626,7 @@ export namespace Prisma {
   }
 
   export type DocumentoCountAggregateInputType = {
+    Id?: true
     Studente_Email?: true
     Anno?: true
     Stato?: true
@@ -5649,6 +5673,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: DocumentoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DocumentoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: DocumentoMinAggregateInputType
@@ -5679,17 +5715,22 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: DocumentoCountAggregateInputType | true
+    _avg?: DocumentoAvgAggregateInputType
+    _sum?: DocumentoSumAggregateInputType
     _min?: DocumentoMinAggregateInputType
     _max?: DocumentoMaxAggregateInputType
   }
 
   export type DocumentoGroupByOutputType = {
+    Id: number
     Studente_Email: string
     Anno: Date
     Stato: $Enums.Stato
     Tipologia: $Enums.Tipologia_Doc
     Data_Approvazione: Date | null
     _count: DocumentoCountAggregateOutputType | null
+    _avg: DocumentoAvgAggregateOutputType | null
+    _sum: DocumentoSumAggregateOutputType | null
     _min: DocumentoMinAggregateOutputType | null
     _max: DocumentoMaxAggregateOutputType | null
   }
@@ -5709,6 +5750,7 @@ export namespace Prisma {
 
 
   export type DocumentoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    Id?: boolean
     Studente_Email?: boolean
     Anno?: boolean
     Stato?: boolean
@@ -5722,6 +5764,7 @@ export namespace Prisma {
   }, ExtArgs["result"]["documento"]>
 
   export type DocumentoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    Id?: boolean
     Studente_Email?: boolean
     Anno?: boolean
     Stato?: boolean
@@ -5731,6 +5774,7 @@ export namespace Prisma {
   }, ExtArgs["result"]["documento"]>
 
   export type DocumentoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    Id?: boolean
     Studente_Email?: boolean
     Anno?: boolean
     Stato?: boolean
@@ -5740,6 +5784,7 @@ export namespace Prisma {
   }, ExtArgs["result"]["documento"]>
 
   export type DocumentoSelectScalar = {
+    Id?: boolean
     Studente_Email?: boolean
     Anno?: boolean
     Stato?: boolean
@@ -5747,7 +5792,7 @@ export namespace Prisma {
     Data_Approvazione?: boolean
   }
 
-  export type DocumentoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"Studente_Email" | "Anno" | "Stato" | "Tipologia" | "Data_Approvazione", ExtArgs["result"]["documento"]>
+  export type DocumentoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"Id" | "Studente_Email" | "Anno" | "Stato" | "Tipologia" | "Data_Approvazione", ExtArgs["result"]["documento"]>
   export type DocumentoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Materie_Documento?: boolean | Documento$Materie_DocumentoArgs<ExtArgs>
     Documento_ICFs?: boolean | Documento$Documento_ICFsArgs<ExtArgs>
@@ -5771,6 +5816,7 @@ export namespace Prisma {
       Allegati: Prisma.$AllegatoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
+      Id: number
       Studente_Email: string
       Anno: Date
       Stato: $Enums.Stato
@@ -5859,8 +5905,8 @@ export namespace Prisma {
      * // Get first 10 Documentos
      * const documentos = await prisma.documento.findMany({ take: 10 })
      * 
-     * // Only select the `Studente_Email`
-     * const documentoWithStudente_EmailOnly = await prisma.documento.findMany({ select: { Studente_Email: true } })
+     * // Only select the `Id`
+     * const documentoWithIdOnly = await prisma.documento.findMany({ select: { Id: true } })
      * 
      */
     findMany<T extends DocumentoFindManyArgs>(args?: SelectSubset<T, DocumentoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocumentoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -5904,9 +5950,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many Documentos and only return the `Studente_Email`
-     * const documentoWithStudente_EmailOnly = await prisma.documento.createManyAndReturn({
-     *   select: { Studente_Email: true },
+     * // Create many Documentos and only return the `Id`
+     * const documentoWithIdOnly = await prisma.documento.createManyAndReturn({
+     *   select: { Id: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -5995,9 +6041,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Documentos and only return the `Studente_Email`
-     * const documentoWithStudente_EmailOnly = await prisma.documento.updateManyAndReturn({
-     *   select: { Studente_Email: true },
+     * // Update zero or more Documentos and only return the `Id`
+     * const documentoWithIdOnly = await prisma.documento.updateManyAndReturn({
+     *   select: { Id: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -6203,6 +6249,7 @@ export namespace Prisma {
    * Fields of the Documento model
    */
   interface DocumentoFieldRefs {
+    readonly Id: FieldRef<"Documento", 'Int'>
     readonly Studente_Email: FieldRef<"Documento", 'String'>
     readonly Anno: FieldRef<"Documento", 'DateTime'>
     readonly Stato: FieldRef<"Documento", 'Stato'>
@@ -8873,68 +8920,66 @@ export namespace Prisma {
 
   export type AllegatoAvgAggregateOutputType = {
     Id: number | null
+    Documento_Id: number | null
   }
 
   export type AllegatoSumAggregateOutputType = {
     Id: number | null
+    Documento_Id: number | null
   }
 
   export type AllegatoMinAggregateOutputType = {
     Id: number | null
     Nome: string | null
     Percorso: string | null
-    Documento_Studente_Email: string | null
-    Documento_Anno: Date | null
+    Documento_Id: number | null
   }
 
   export type AllegatoMaxAggregateOutputType = {
     Id: number | null
     Nome: string | null
     Percorso: string | null
-    Documento_Studente_Email: string | null
-    Documento_Anno: Date | null
+    Documento_Id: number | null
   }
 
   export type AllegatoCountAggregateOutputType = {
     Id: number
     Nome: number
     Percorso: number
-    Documento_Studente_Email: number
-    Documento_Anno: number
+    Documento_Id: number
     _all: number
   }
 
 
   export type AllegatoAvgAggregateInputType = {
     Id?: true
+    Documento_Id?: true
   }
 
   export type AllegatoSumAggregateInputType = {
     Id?: true
+    Documento_Id?: true
   }
 
   export type AllegatoMinAggregateInputType = {
     Id?: true
     Nome?: true
     Percorso?: true
-    Documento_Studente_Email?: true
-    Documento_Anno?: true
+    Documento_Id?: true
   }
 
   export type AllegatoMaxAggregateInputType = {
     Id?: true
     Nome?: true
     Percorso?: true
-    Documento_Studente_Email?: true
-    Documento_Anno?: true
+    Documento_Id?: true
   }
 
   export type AllegatoCountAggregateInputType = {
     Id?: true
     Nome?: true
     Percorso?: true
-    Documento_Studente_Email?: true
-    Documento_Anno?: true
+    Documento_Id?: true
     _all?: true
   }
 
@@ -9028,8 +9073,7 @@ export namespace Prisma {
     Id: number
     Nome: string
     Percorso: string
-    Documento_Studente_Email: string
-    Documento_Anno: Date
+    Documento_Id: number
     _count: AllegatoCountAggregateOutputType | null
     _avg: AllegatoAvgAggregateOutputType | null
     _sum: AllegatoSumAggregateOutputType | null
@@ -9055,8 +9099,7 @@ export namespace Prisma {
     Id?: boolean
     Nome?: boolean
     Percorso?: boolean
-    Documento_Studente_Email?: boolean
-    Documento_Anno?: boolean
+    Documento_Id?: boolean
     Documento?: boolean | DocumentoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["allegato"]>
 
@@ -9064,8 +9107,7 @@ export namespace Prisma {
     Id?: boolean
     Nome?: boolean
     Percorso?: boolean
-    Documento_Studente_Email?: boolean
-    Documento_Anno?: boolean
+    Documento_Id?: boolean
     Documento?: boolean | DocumentoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["allegato"]>
 
@@ -9073,8 +9115,7 @@ export namespace Prisma {
     Id?: boolean
     Nome?: boolean
     Percorso?: boolean
-    Documento_Studente_Email?: boolean
-    Documento_Anno?: boolean
+    Documento_Id?: boolean
     Documento?: boolean | DocumentoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["allegato"]>
 
@@ -9082,11 +9123,10 @@ export namespace Prisma {
     Id?: boolean
     Nome?: boolean
     Percorso?: boolean
-    Documento_Studente_Email?: boolean
-    Documento_Anno?: boolean
+    Documento_Id?: boolean
   }
 
-  export type AllegatoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"Id" | "Nome" | "Percorso" | "Documento_Studente_Email" | "Documento_Anno", ExtArgs["result"]["allegato"]>
+  export type AllegatoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"Id" | "Nome" | "Percorso" | "Documento_Id", ExtArgs["result"]["allegato"]>
   export type AllegatoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Documento?: boolean | DocumentoDefaultArgs<ExtArgs>
   }
@@ -9106,8 +9146,7 @@ export namespace Prisma {
       Id: number
       Nome: string
       Percorso: string
-      Documento_Studente_Email: string
-      Documento_Anno: Date
+      Documento_Id: number
     }, ExtArgs["result"]["allegato"]>
     composites: {}
   }
@@ -9535,8 +9574,7 @@ export namespace Prisma {
     readonly Id: FieldRef<"Allegato", 'Int'>
     readonly Nome: FieldRef<"Allegato", 'String'>
     readonly Percorso: FieldRef<"Allegato", 'String'>
-    readonly Documento_Studente_Email: FieldRef<"Allegato", 'String'>
-    readonly Documento_Anno: FieldRef<"Allegato", 'DateTime'>
+    readonly Documento_Id: FieldRef<"Allegato", 'Int'>
   }
     
 
@@ -13149,18 +13187,21 @@ export namespace Prisma {
     Materia_Nome: string | null
     Indicatore_Id: number | null
     Valore: boolean | null
+    Nota: string | null
   }
 
   export type Materia_IndicatoreMaxAggregateOutputType = {
     Materia_Nome: string | null
     Indicatore_Id: number | null
     Valore: boolean | null
+    Nota: string | null
   }
 
   export type Materia_IndicatoreCountAggregateOutputType = {
     Materia_Nome: number
     Indicatore_Id: number
     Valore: number
+    Nota: number
     _all: number
   }
 
@@ -13177,18 +13218,21 @@ export namespace Prisma {
     Materia_Nome?: true
     Indicatore_Id?: true
     Valore?: true
+    Nota?: true
   }
 
   export type Materia_IndicatoreMaxAggregateInputType = {
     Materia_Nome?: true
     Indicatore_Id?: true
     Valore?: true
+    Nota?: true
   }
 
   export type Materia_IndicatoreCountAggregateInputType = {
     Materia_Nome?: true
     Indicatore_Id?: true
     Valore?: true
+    Nota?: true
     _all?: true
   }
 
@@ -13282,6 +13326,7 @@ export namespace Prisma {
     Materia_Nome: string
     Indicatore_Id: number
     Valore: boolean
+    Nota: string | null
     _count: Materia_IndicatoreCountAggregateOutputType | null
     _avg: Materia_IndicatoreAvgAggregateOutputType | null
     _sum: Materia_IndicatoreSumAggregateOutputType | null
@@ -13307,6 +13352,7 @@ export namespace Prisma {
     Materia_Nome?: boolean
     Indicatore_Id?: boolean
     Valore?: boolean
+    Nota?: boolean
     Materia?: boolean | MateriaDefaultArgs<ExtArgs>
     Indicatore?: boolean | IndicatoreDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["materia_Indicatore"]>
@@ -13315,6 +13361,7 @@ export namespace Prisma {
     Materia_Nome?: boolean
     Indicatore_Id?: boolean
     Valore?: boolean
+    Nota?: boolean
     Materia?: boolean | MateriaDefaultArgs<ExtArgs>
     Indicatore?: boolean | IndicatoreDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["materia_Indicatore"]>
@@ -13323,6 +13370,7 @@ export namespace Prisma {
     Materia_Nome?: boolean
     Indicatore_Id?: boolean
     Valore?: boolean
+    Nota?: boolean
     Materia?: boolean | MateriaDefaultArgs<ExtArgs>
     Indicatore?: boolean | IndicatoreDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["materia_Indicatore"]>
@@ -13331,9 +13379,10 @@ export namespace Prisma {
     Materia_Nome?: boolean
     Indicatore_Id?: boolean
     Valore?: boolean
+    Nota?: boolean
   }
 
-  export type Materia_IndicatoreOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"Materia_Nome" | "Indicatore_Id" | "Valore", ExtArgs["result"]["materia_Indicatore"]>
+  export type Materia_IndicatoreOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"Materia_Nome" | "Indicatore_Id" | "Valore" | "Nota", ExtArgs["result"]["materia_Indicatore"]>
   export type Materia_IndicatoreInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Materia?: boolean | MateriaDefaultArgs<ExtArgs>
     Indicatore?: boolean | IndicatoreDefaultArgs<ExtArgs>
@@ -13357,6 +13406,7 @@ export namespace Prisma {
       Materia_Nome: string
       Indicatore_Id: number
       Valore: boolean
+      Nota: string | null
     }, ExtArgs["result"]["materia_Indicatore"]>
     composites: {}
   }
@@ -13785,6 +13835,7 @@ export namespace Prisma {
     readonly Materia_Nome: FieldRef<"Materia_Indicatore", 'String'>
     readonly Indicatore_Id: FieldRef<"Materia_Indicatore", 'Int'>
     readonly Valore: FieldRef<"Materia_Indicatore", 'Boolean'>
+    readonly Nota: FieldRef<"Materia_Indicatore", 'String'>
   }
     
 
@@ -14205,46 +14256,58 @@ export namespace Prisma {
 
   export type AggregateMateria_Documento = {
     _count: Materia_DocumentoCountAggregateOutputType | null
+    _avg: Materia_DocumentoAvgAggregateOutputType | null
+    _sum: Materia_DocumentoSumAggregateOutputType | null
     _min: Materia_DocumentoMinAggregateOutputType | null
     _max: Materia_DocumentoMaxAggregateOutputType | null
   }
 
+  export type Materia_DocumentoAvgAggregateOutputType = {
+    Documento_Id: number | null
+  }
+
+  export type Materia_DocumentoSumAggregateOutputType = {
+    Documento_Id: number | null
+  }
+
   export type Materia_DocumentoMinAggregateOutputType = {
     Materia_Nome: string | null
-    Documento_Anno: Date | null
-    Documento_Studente_Email: string | null
+    Documento_Id: number | null
   }
 
   export type Materia_DocumentoMaxAggregateOutputType = {
     Materia_Nome: string | null
-    Documento_Anno: Date | null
-    Documento_Studente_Email: string | null
+    Documento_Id: number | null
   }
 
   export type Materia_DocumentoCountAggregateOutputType = {
     Materia_Nome: number
-    Documento_Anno: number
-    Documento_Studente_Email: number
+    Documento_Id: number
     _all: number
   }
 
 
+  export type Materia_DocumentoAvgAggregateInputType = {
+    Documento_Id?: true
+  }
+
+  export type Materia_DocumentoSumAggregateInputType = {
+    Documento_Id?: true
+  }
+
   export type Materia_DocumentoMinAggregateInputType = {
     Materia_Nome?: true
-    Documento_Anno?: true
-    Documento_Studente_Email?: true
+    Documento_Id?: true
   }
 
   export type Materia_DocumentoMaxAggregateInputType = {
     Materia_Nome?: true
-    Documento_Anno?: true
-    Documento_Studente_Email?: true
+    Documento_Id?: true
   }
 
   export type Materia_DocumentoCountAggregateInputType = {
     Materia_Nome?: true
-    Documento_Anno?: true
-    Documento_Studente_Email?: true
+    Documento_Id?: true
     _all?: true
   }
 
@@ -14286,6 +14349,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: Materia_DocumentoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Materia_DocumentoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: Materia_DocumentoMinAggregateInputType
@@ -14316,15 +14391,18 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: Materia_DocumentoCountAggregateInputType | true
+    _avg?: Materia_DocumentoAvgAggregateInputType
+    _sum?: Materia_DocumentoSumAggregateInputType
     _min?: Materia_DocumentoMinAggregateInputType
     _max?: Materia_DocumentoMaxAggregateInputType
   }
 
   export type Materia_DocumentoGroupByOutputType = {
     Materia_Nome: string
-    Documento_Anno: Date
-    Documento_Studente_Email: string
+    Documento_Id: number
     _count: Materia_DocumentoCountAggregateOutputType | null
+    _avg: Materia_DocumentoAvgAggregateOutputType | null
+    _sum: Materia_DocumentoSumAggregateOutputType | null
     _min: Materia_DocumentoMinAggregateOutputType | null
     _max: Materia_DocumentoMaxAggregateOutputType | null
   }
@@ -14345,35 +14423,31 @@ export namespace Prisma {
 
   export type Materia_DocumentoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Materia_Nome?: boolean
-    Documento_Anno?: boolean
-    Documento_Studente_Email?: boolean
+    Documento_Id?: boolean
     Materia?: boolean | MateriaDefaultArgs<ExtArgs>
     Documento?: boolean | DocumentoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["materia_Documento"]>
 
   export type Materia_DocumentoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Materia_Nome?: boolean
-    Documento_Anno?: boolean
-    Documento_Studente_Email?: boolean
+    Documento_Id?: boolean
     Materia?: boolean | MateriaDefaultArgs<ExtArgs>
     Documento?: boolean | DocumentoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["materia_Documento"]>
 
   export type Materia_DocumentoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     Materia_Nome?: boolean
-    Documento_Anno?: boolean
-    Documento_Studente_Email?: boolean
+    Documento_Id?: boolean
     Materia?: boolean | MateriaDefaultArgs<ExtArgs>
     Documento?: boolean | DocumentoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["materia_Documento"]>
 
   export type Materia_DocumentoSelectScalar = {
     Materia_Nome?: boolean
-    Documento_Anno?: boolean
-    Documento_Studente_Email?: boolean
+    Documento_Id?: boolean
   }
 
-  export type Materia_DocumentoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"Materia_Nome" | "Documento_Anno" | "Documento_Studente_Email", ExtArgs["result"]["materia_Documento"]>
+  export type Materia_DocumentoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"Materia_Nome" | "Documento_Id", ExtArgs["result"]["materia_Documento"]>
   export type Materia_DocumentoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Materia?: boolean | MateriaDefaultArgs<ExtArgs>
     Documento?: boolean | DocumentoDefaultArgs<ExtArgs>
@@ -14395,8 +14469,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       Materia_Nome: string
-      Documento_Anno: Date
-      Documento_Studente_Email: string
+      Documento_Id: number
     }, ExtArgs["result"]["materia_Documento"]>
     composites: {}
   }
@@ -14823,8 +14896,7 @@ export namespace Prisma {
    */
   interface Materia_DocumentoFieldRefs {
     readonly Materia_Nome: FieldRef<"Materia_Documento", 'String'>
-    readonly Documento_Anno: FieldRef<"Materia_Documento", 'DateTime'>
-    readonly Documento_Studente_Email: FieldRef<"Materia_Documento", 'String'>
+    readonly Documento_Id: FieldRef<"Materia_Documento", 'Int'>
   }
     
 
@@ -15245,46 +15317,58 @@ export namespace Prisma {
 
   export type AggregateDocumento_ICF = {
     _count: Documento_ICFCountAggregateOutputType | null
+    _avg: Documento_ICFAvgAggregateOutputType | null
+    _sum: Documento_ICFSumAggregateOutputType | null
     _min: Documento_ICFMinAggregateOutputType | null
     _max: Documento_ICFMaxAggregateOutputType | null
   }
 
+  export type Documento_ICFAvgAggregateOutputType = {
+    Documento_Id: number | null
+  }
+
+  export type Documento_ICFSumAggregateOutputType = {
+    Documento_Id: number | null
+  }
+
   export type Documento_ICFMinAggregateOutputType = {
     ICF_Codice: string | null
-    Documento_Anno: Date | null
-    Documento_Studente_Email: string | null
+    Documento_Id: number | null
   }
 
   export type Documento_ICFMaxAggregateOutputType = {
     ICF_Codice: string | null
-    Documento_Anno: Date | null
-    Documento_Studente_Email: string | null
+    Documento_Id: number | null
   }
 
   export type Documento_ICFCountAggregateOutputType = {
     ICF_Codice: number
-    Documento_Anno: number
-    Documento_Studente_Email: number
+    Documento_Id: number
     _all: number
   }
 
 
+  export type Documento_ICFAvgAggregateInputType = {
+    Documento_Id?: true
+  }
+
+  export type Documento_ICFSumAggregateInputType = {
+    Documento_Id?: true
+  }
+
   export type Documento_ICFMinAggregateInputType = {
     ICF_Codice?: true
-    Documento_Anno?: true
-    Documento_Studente_Email?: true
+    Documento_Id?: true
   }
 
   export type Documento_ICFMaxAggregateInputType = {
     ICF_Codice?: true
-    Documento_Anno?: true
-    Documento_Studente_Email?: true
+    Documento_Id?: true
   }
 
   export type Documento_ICFCountAggregateInputType = {
     ICF_Codice?: true
-    Documento_Anno?: true
-    Documento_Studente_Email?: true
+    Documento_Id?: true
     _all?: true
   }
 
@@ -15326,6 +15410,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: Documento_ICFAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Documento_ICFSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: Documento_ICFMinAggregateInputType
@@ -15356,15 +15452,18 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: Documento_ICFCountAggregateInputType | true
+    _avg?: Documento_ICFAvgAggregateInputType
+    _sum?: Documento_ICFSumAggregateInputType
     _min?: Documento_ICFMinAggregateInputType
     _max?: Documento_ICFMaxAggregateInputType
   }
 
   export type Documento_ICFGroupByOutputType = {
     ICF_Codice: string
-    Documento_Anno: Date
-    Documento_Studente_Email: string
+    Documento_Id: number
     _count: Documento_ICFCountAggregateOutputType | null
+    _avg: Documento_ICFAvgAggregateOutputType | null
+    _sum: Documento_ICFSumAggregateOutputType | null
     _min: Documento_ICFMinAggregateOutputType | null
     _max: Documento_ICFMaxAggregateOutputType | null
   }
@@ -15385,35 +15484,31 @@ export namespace Prisma {
 
   export type Documento_ICFSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     ICF_Codice?: boolean
-    Documento_Anno?: boolean
-    Documento_Studente_Email?: boolean
+    Documento_Id?: boolean
     ICF?: boolean | ICFDefaultArgs<ExtArgs>
     Documento?: boolean | DocumentoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["documento_ICF"]>
 
   export type Documento_ICFSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     ICF_Codice?: boolean
-    Documento_Anno?: boolean
-    Documento_Studente_Email?: boolean
+    Documento_Id?: boolean
     ICF?: boolean | ICFDefaultArgs<ExtArgs>
     Documento?: boolean | DocumentoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["documento_ICF"]>
 
   export type Documento_ICFSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     ICF_Codice?: boolean
-    Documento_Anno?: boolean
-    Documento_Studente_Email?: boolean
+    Documento_Id?: boolean
     ICF?: boolean | ICFDefaultArgs<ExtArgs>
     Documento?: boolean | DocumentoDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["documento_ICF"]>
 
   export type Documento_ICFSelectScalar = {
     ICF_Codice?: boolean
-    Documento_Anno?: boolean
-    Documento_Studente_Email?: boolean
+    Documento_Id?: boolean
   }
 
-  export type Documento_ICFOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ICF_Codice" | "Documento_Anno" | "Documento_Studente_Email", ExtArgs["result"]["documento_ICF"]>
+  export type Documento_ICFOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ICF_Codice" | "Documento_Id", ExtArgs["result"]["documento_ICF"]>
   export type Documento_ICFInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ICF?: boolean | ICFDefaultArgs<ExtArgs>
     Documento?: boolean | DocumentoDefaultArgs<ExtArgs>
@@ -15435,8 +15530,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       ICF_Codice: string
-      Documento_Anno: Date
-      Documento_Studente_Email: string
+      Documento_Id: number
     }, ExtArgs["result"]["documento_ICF"]>
     composites: {}
   }
@@ -15863,8 +15957,7 @@ export namespace Prisma {
    */
   interface Documento_ICFFieldRefs {
     readonly ICF_Codice: FieldRef<"Documento_ICF", 'String'>
-    readonly Documento_Anno: FieldRef<"Documento_ICF", 'DateTime'>
-    readonly Documento_Studente_Email: FieldRef<"Documento_ICF", 'String'>
+    readonly Documento_Id: FieldRef<"Documento_ICF", 'Int'>
   }
     
 
@@ -16324,6 +16417,7 @@ export namespace Prisma {
 
 
   export const DocumentoScalarFieldEnum: {
+    Id: 'Id',
     Studente_Email: 'Studente_Email',
     Anno: 'Anno',
     Stato: 'Stato',
@@ -16355,8 +16449,7 @@ export namespace Prisma {
     Id: 'Id',
     Nome: 'Nome',
     Percorso: 'Percorso',
-    Documento_Studente_Email: 'Documento_Studente_Email',
-    Documento_Anno: 'Documento_Anno'
+    Documento_Id: 'Documento_Id'
   };
 
   export type AllegatoScalarFieldEnum = (typeof AllegatoScalarFieldEnum)[keyof typeof AllegatoScalarFieldEnum]
@@ -16390,7 +16483,8 @@ export namespace Prisma {
   export const Materia_IndicatoreScalarFieldEnum: {
     Materia_Nome: 'Materia_Nome',
     Indicatore_Id: 'Indicatore_Id',
-    Valore: 'Valore'
+    Valore: 'Valore',
+    Nota: 'Nota'
   };
 
   export type Materia_IndicatoreScalarFieldEnum = (typeof Materia_IndicatoreScalarFieldEnum)[keyof typeof Materia_IndicatoreScalarFieldEnum]
@@ -16398,8 +16492,7 @@ export namespace Prisma {
 
   export const Materia_DocumentoScalarFieldEnum: {
     Materia_Nome: 'Materia_Nome',
-    Documento_Anno: 'Documento_Anno',
-    Documento_Studente_Email: 'Documento_Studente_Email'
+    Documento_Id: 'Documento_Id'
   };
 
   export type Materia_DocumentoScalarFieldEnum = (typeof Materia_DocumentoScalarFieldEnum)[keyof typeof Materia_DocumentoScalarFieldEnum]
@@ -16407,8 +16500,7 @@ export namespace Prisma {
 
   export const Documento_ICFScalarFieldEnum: {
     ICF_Codice: 'ICF_Codice',
-    Documento_Anno: 'Documento_Anno',
-    Documento_Studente_Email: 'Documento_Studente_Email'
+    Documento_Id: 'Documento_Id'
   };
 
   export type Documento_ICFScalarFieldEnum = (typeof Documento_ICFScalarFieldEnum)[keyof typeof Documento_ICFScalarFieldEnum]
@@ -16727,6 +16819,7 @@ export namespace Prisma {
     AND?: DocumentoWhereInput | DocumentoWhereInput[]
     OR?: DocumentoWhereInput[]
     NOT?: DocumentoWhereInput | DocumentoWhereInput[]
+    Id?: IntFilter<"Documento"> | number
     Studente_Email?: StringFilter<"Documento"> | string
     Anno?: DateTimeFilter<"Documento"> | Date | string
     Stato?: EnumStatoFilter<"Documento"> | $Enums.Stato
@@ -16739,6 +16832,7 @@ export namespace Prisma {
   }
 
   export type DocumentoOrderByWithRelationInput = {
+    Id?: SortOrder
     Studente_Email?: SortOrder
     Anno?: SortOrder
     Stato?: SortOrder
@@ -16751,7 +16845,8 @@ export namespace Prisma {
   }
 
   export type DocumentoWhereUniqueInput = Prisma.AtLeast<{
-    Id?: DocumentoIdCompoundUniqueInput
+    Id?: number
+    Studente_Anno?: DocumentoStudente_AnnoCompoundUniqueInput
     AND?: DocumentoWhereInput | DocumentoWhereInput[]
     OR?: DocumentoWhereInput[]
     NOT?: DocumentoWhereInput | DocumentoWhereInput[]
@@ -16764,23 +16859,27 @@ export namespace Prisma {
     Documento_ICFs?: Documento_ICFListRelationFilter
     Studente?: XOR<StudenteScalarRelationFilter, StudenteWhereInput>
     Allegati?: AllegatoListRelationFilter
-  }, "Id">
+  }, "Id" | "Studente_Anno">
 
   export type DocumentoOrderByWithAggregationInput = {
+    Id?: SortOrder
     Studente_Email?: SortOrder
     Anno?: SortOrder
     Stato?: SortOrder
     Tipologia?: SortOrder
     Data_Approvazione?: SortOrderInput | SortOrder
     _count?: DocumentoCountOrderByAggregateInput
+    _avg?: DocumentoAvgOrderByAggregateInput
     _max?: DocumentoMaxOrderByAggregateInput
     _min?: DocumentoMinOrderByAggregateInput
+    _sum?: DocumentoSumOrderByAggregateInput
   }
 
   export type DocumentoScalarWhereWithAggregatesInput = {
     AND?: DocumentoScalarWhereWithAggregatesInput | DocumentoScalarWhereWithAggregatesInput[]
     OR?: DocumentoScalarWhereWithAggregatesInput[]
     NOT?: DocumentoScalarWhereWithAggregatesInput | DocumentoScalarWhereWithAggregatesInput[]
+    Id?: IntWithAggregatesFilter<"Documento"> | number
     Studente_Email?: StringWithAggregatesFilter<"Documento"> | string
     Anno?: DateTimeWithAggregatesFilter<"Documento"> | Date | string
     Stato?: EnumStatoWithAggregatesFilter<"Documento"> | $Enums.Stato
@@ -16888,8 +16987,7 @@ export namespace Prisma {
     Id?: IntFilter<"Allegato"> | number
     Nome?: StringFilter<"Allegato"> | string
     Percorso?: StringFilter<"Allegato"> | string
-    Documento_Studente_Email?: StringFilter<"Allegato"> | string
-    Documento_Anno?: DateTimeFilter<"Allegato"> | Date | string
+    Documento_Id?: IntFilter<"Allegato"> | number
     Documento?: XOR<DocumentoScalarRelationFilter, DocumentoWhereInput>
   }
 
@@ -16897,8 +16995,7 @@ export namespace Prisma {
     Id?: SortOrder
     Nome?: SortOrder
     Percorso?: SortOrder
-    Documento_Studente_Email?: SortOrder
-    Documento_Anno?: SortOrder
+    Documento_Id?: SortOrder
     Documento?: DocumentoOrderByWithRelationInput
   }
 
@@ -16909,8 +17006,7 @@ export namespace Prisma {
     NOT?: AllegatoWhereInput | AllegatoWhereInput[]
     Nome?: StringFilter<"Allegato"> | string
     Percorso?: StringFilter<"Allegato"> | string
-    Documento_Studente_Email?: StringFilter<"Allegato"> | string
-    Documento_Anno?: DateTimeFilter<"Allegato"> | Date | string
+    Documento_Id?: IntFilter<"Allegato"> | number
     Documento?: XOR<DocumentoScalarRelationFilter, DocumentoWhereInput>
   }, "Id">
 
@@ -16918,8 +17014,7 @@ export namespace Prisma {
     Id?: SortOrder
     Nome?: SortOrder
     Percorso?: SortOrder
-    Documento_Studente_Email?: SortOrder
-    Documento_Anno?: SortOrder
+    Documento_Id?: SortOrder
     _count?: AllegatoCountOrderByAggregateInput
     _avg?: AllegatoAvgOrderByAggregateInput
     _max?: AllegatoMaxOrderByAggregateInput
@@ -16934,8 +17029,7 @@ export namespace Prisma {
     Id?: IntWithAggregatesFilter<"Allegato"> | number
     Nome?: StringWithAggregatesFilter<"Allegato"> | string
     Percorso?: StringWithAggregatesFilter<"Allegato"> | string
-    Documento_Studente_Email?: StringWithAggregatesFilter<"Allegato"> | string
-    Documento_Anno?: DateTimeWithAggregatesFilter<"Allegato"> | Date | string
+    Documento_Id?: IntWithAggregatesFilter<"Allegato"> | number
   }
 
   export type ICFWhereInput = {
@@ -17085,6 +17179,7 @@ export namespace Prisma {
     Materia_Nome?: StringFilter<"Materia_Indicatore"> | string
     Indicatore_Id?: IntFilter<"Materia_Indicatore"> | number
     Valore?: BoolFilter<"Materia_Indicatore"> | boolean
+    Nota?: StringNullableFilter<"Materia_Indicatore"> | string | null
     Materia?: XOR<MateriaScalarRelationFilter, MateriaWhereInput>
     Indicatore?: XOR<IndicatoreScalarRelationFilter, IndicatoreWhereInput>
   }
@@ -17093,6 +17188,7 @@ export namespace Prisma {
     Materia_Nome?: SortOrder
     Indicatore_Id?: SortOrder
     Valore?: SortOrder
+    Nota?: SortOrderInput | SortOrder
     Materia?: MateriaOrderByWithRelationInput
     Indicatore?: IndicatoreOrderByWithRelationInput
   }
@@ -17105,6 +17201,7 @@ export namespace Prisma {
     Materia_Nome?: StringFilter<"Materia_Indicatore"> | string
     Indicatore_Id?: IntFilter<"Materia_Indicatore"> | number
     Valore?: BoolFilter<"Materia_Indicatore"> | boolean
+    Nota?: StringNullableFilter<"Materia_Indicatore"> | string | null
     Materia?: XOR<MateriaScalarRelationFilter, MateriaWhereInput>
     Indicatore?: XOR<IndicatoreScalarRelationFilter, IndicatoreWhereInput>
   }, "Id">
@@ -17113,6 +17210,7 @@ export namespace Prisma {
     Materia_Nome?: SortOrder
     Indicatore_Id?: SortOrder
     Valore?: SortOrder
+    Nota?: SortOrderInput | SortOrder
     _count?: Materia_IndicatoreCountOrderByAggregateInput
     _avg?: Materia_IndicatoreAvgOrderByAggregateInput
     _max?: Materia_IndicatoreMaxOrderByAggregateInput
@@ -17127,6 +17225,7 @@ export namespace Prisma {
     Materia_Nome?: StringWithAggregatesFilter<"Materia_Indicatore"> | string
     Indicatore_Id?: IntWithAggregatesFilter<"Materia_Indicatore"> | number
     Valore?: BoolWithAggregatesFilter<"Materia_Indicatore"> | boolean
+    Nota?: StringNullableWithAggregatesFilter<"Materia_Indicatore"> | string | null
   }
 
   export type Materia_DocumentoWhereInput = {
@@ -17134,16 +17233,14 @@ export namespace Prisma {
     OR?: Materia_DocumentoWhereInput[]
     NOT?: Materia_DocumentoWhereInput | Materia_DocumentoWhereInput[]
     Materia_Nome?: StringFilter<"Materia_Documento"> | string
-    Documento_Anno?: DateTimeFilter<"Materia_Documento"> | Date | string
-    Documento_Studente_Email?: StringFilter<"Materia_Documento"> | string
+    Documento_Id?: IntFilter<"Materia_Documento"> | number
     Materia?: XOR<MateriaScalarRelationFilter, MateriaWhereInput>
     Documento?: XOR<DocumentoScalarRelationFilter, DocumentoWhereInput>
   }
 
   export type Materia_DocumentoOrderByWithRelationInput = {
     Materia_Nome?: SortOrder
-    Documento_Anno?: SortOrder
-    Documento_Studente_Email?: SortOrder
+    Documento_Id?: SortOrder
     Materia?: MateriaOrderByWithRelationInput
     Documento?: DocumentoOrderByWithRelationInput
   }
@@ -17154,19 +17251,19 @@ export namespace Prisma {
     OR?: Materia_DocumentoWhereInput[]
     NOT?: Materia_DocumentoWhereInput | Materia_DocumentoWhereInput[]
     Materia_Nome?: StringFilter<"Materia_Documento"> | string
-    Documento_Anno?: DateTimeFilter<"Materia_Documento"> | Date | string
-    Documento_Studente_Email?: StringFilter<"Materia_Documento"> | string
+    Documento_Id?: IntFilter<"Materia_Documento"> | number
     Materia?: XOR<MateriaScalarRelationFilter, MateriaWhereInput>
     Documento?: XOR<DocumentoScalarRelationFilter, DocumentoWhereInput>
   }, "Id">
 
   export type Materia_DocumentoOrderByWithAggregationInput = {
     Materia_Nome?: SortOrder
-    Documento_Anno?: SortOrder
-    Documento_Studente_Email?: SortOrder
+    Documento_Id?: SortOrder
     _count?: Materia_DocumentoCountOrderByAggregateInput
+    _avg?: Materia_DocumentoAvgOrderByAggregateInput
     _max?: Materia_DocumentoMaxOrderByAggregateInput
     _min?: Materia_DocumentoMinOrderByAggregateInput
+    _sum?: Materia_DocumentoSumOrderByAggregateInput
   }
 
   export type Materia_DocumentoScalarWhereWithAggregatesInput = {
@@ -17174,8 +17271,7 @@ export namespace Prisma {
     OR?: Materia_DocumentoScalarWhereWithAggregatesInput[]
     NOT?: Materia_DocumentoScalarWhereWithAggregatesInput | Materia_DocumentoScalarWhereWithAggregatesInput[]
     Materia_Nome?: StringWithAggregatesFilter<"Materia_Documento"> | string
-    Documento_Anno?: DateTimeWithAggregatesFilter<"Materia_Documento"> | Date | string
-    Documento_Studente_Email?: StringWithAggregatesFilter<"Materia_Documento"> | string
+    Documento_Id?: IntWithAggregatesFilter<"Materia_Documento"> | number
   }
 
   export type Documento_ICFWhereInput = {
@@ -17183,16 +17279,14 @@ export namespace Prisma {
     OR?: Documento_ICFWhereInput[]
     NOT?: Documento_ICFWhereInput | Documento_ICFWhereInput[]
     ICF_Codice?: StringFilter<"Documento_ICF"> | string
-    Documento_Anno?: DateTimeFilter<"Documento_ICF"> | Date | string
-    Documento_Studente_Email?: StringFilter<"Documento_ICF"> | string
+    Documento_Id?: IntFilter<"Documento_ICF"> | number
     ICF?: XOR<ICFScalarRelationFilter, ICFWhereInput>
     Documento?: XOR<DocumentoScalarRelationFilter, DocumentoWhereInput>
   }
 
   export type Documento_ICFOrderByWithRelationInput = {
     ICF_Codice?: SortOrder
-    Documento_Anno?: SortOrder
-    Documento_Studente_Email?: SortOrder
+    Documento_Id?: SortOrder
     ICF?: ICFOrderByWithRelationInput
     Documento?: DocumentoOrderByWithRelationInput
   }
@@ -17203,19 +17297,19 @@ export namespace Prisma {
     OR?: Documento_ICFWhereInput[]
     NOT?: Documento_ICFWhereInput | Documento_ICFWhereInput[]
     ICF_Codice?: StringFilter<"Documento_ICF"> | string
-    Documento_Anno?: DateTimeFilter<"Documento_ICF"> | Date | string
-    Documento_Studente_Email?: StringFilter<"Documento_ICF"> | string
+    Documento_Id?: IntFilter<"Documento_ICF"> | number
     ICF?: XOR<ICFScalarRelationFilter, ICFWhereInput>
     Documento?: XOR<DocumentoScalarRelationFilter, DocumentoWhereInput>
   }, "Id">
 
   export type Documento_ICFOrderByWithAggregationInput = {
     ICF_Codice?: SortOrder
-    Documento_Anno?: SortOrder
-    Documento_Studente_Email?: SortOrder
+    Documento_Id?: SortOrder
     _count?: Documento_ICFCountOrderByAggregateInput
+    _avg?: Documento_ICFAvgOrderByAggregateInput
     _max?: Documento_ICFMaxOrderByAggregateInput
     _min?: Documento_ICFMinOrderByAggregateInput
+    _sum?: Documento_ICFSumOrderByAggregateInput
   }
 
   export type Documento_ICFScalarWhereWithAggregatesInput = {
@@ -17223,8 +17317,7 @@ export namespace Prisma {
     OR?: Documento_ICFScalarWhereWithAggregatesInput[]
     NOT?: Documento_ICFScalarWhereWithAggregatesInput | Documento_ICFScalarWhereWithAggregatesInput[]
     ICF_Codice?: StringWithAggregatesFilter<"Documento_ICF"> | string
-    Documento_Anno?: DateTimeWithAggregatesFilter<"Documento_ICF"> | Date | string
-    Documento_Studente_Email?: StringWithAggregatesFilter<"Documento_ICF"> | string
+    Documento_Id?: IntWithAggregatesFilter<"Documento_ICF"> | number
   }
 
   export type DocenteCreateInput = {
@@ -17403,6 +17496,7 @@ export namespace Prisma {
   }
 
   export type DocumentoUncheckedCreateInput = {
+    Id?: number
     Studente_Email: string
     Anno?: Date | string
     Stato: $Enums.Stato
@@ -17425,6 +17519,7 @@ export namespace Prisma {
   }
 
   export type DocumentoUncheckedUpdateInput = {
+    Id?: IntFieldUpdateOperationsInput | number
     Studente_Email?: StringFieldUpdateOperationsInput | string
     Anno?: DateTimeFieldUpdateOperationsInput | Date | string
     Stato?: EnumStatoFieldUpdateOperationsInput | $Enums.Stato
@@ -17436,6 +17531,7 @@ export namespace Prisma {
   }
 
   export type DocumentoCreateManyInput = {
+    Id?: number
     Studente_Email: string
     Anno?: Date | string
     Stato: $Enums.Stato
@@ -17451,6 +17547,7 @@ export namespace Prisma {
   }
 
   export type DocumentoUncheckedUpdateManyInput = {
+    Id?: IntFieldUpdateOperationsInput | number
     Studente_Email?: StringFieldUpdateOperationsInput | string
     Anno?: DateTimeFieldUpdateOperationsInput | Date | string
     Stato?: EnumStatoFieldUpdateOperationsInput | $Enums.Stato
@@ -17558,8 +17655,7 @@ export namespace Prisma {
     Id?: number
     Nome: string
     Percorso: string
-    Documento_Studente_Email: string
-    Documento_Anno: Date | string
+    Documento_Id: number
   }
 
   export type AllegatoUpdateInput = {
@@ -17572,16 +17668,14 @@ export namespace Prisma {
     Id?: IntFieldUpdateOperationsInput | number
     Nome?: StringFieldUpdateOperationsInput | string
     Percorso?: StringFieldUpdateOperationsInput | string
-    Documento_Studente_Email?: StringFieldUpdateOperationsInput | string
-    Documento_Anno?: DateTimeFieldUpdateOperationsInput | Date | string
+    Documento_Id?: IntFieldUpdateOperationsInput | number
   }
 
   export type AllegatoCreateManyInput = {
     Id?: number
     Nome: string
     Percorso: string
-    Documento_Studente_Email: string
-    Documento_Anno: Date | string
+    Documento_Id: number
   }
 
   export type AllegatoUpdateManyMutationInput = {
@@ -17593,8 +17687,7 @@ export namespace Prisma {
     Id?: IntFieldUpdateOperationsInput | number
     Nome?: StringFieldUpdateOperationsInput | string
     Percorso?: StringFieldUpdateOperationsInput | string
-    Documento_Studente_Email?: StringFieldUpdateOperationsInput | string
-    Documento_Anno?: DateTimeFieldUpdateOperationsInput | Date | string
+    Documento_Id?: IntFieldUpdateOperationsInput | number
   }
 
   export type ICFCreateInput = {
@@ -17712,6 +17805,7 @@ export namespace Prisma {
 
   export type Materia_IndicatoreCreateInput = {
     Valore: boolean
+    Nota?: string | null
     Materia: MateriaCreateNestedOneWithoutMaterie_IndicatoreInput
     Indicatore: IndicatoreCreateNestedOneWithoutMateria_IndicatoriInput
   }
@@ -17720,10 +17814,12 @@ export namespace Prisma {
     Materia_Nome: string
     Indicatore_Id: number
     Valore: boolean
+    Nota?: string | null
   }
 
   export type Materia_IndicatoreUpdateInput = {
     Valore?: BoolFieldUpdateOperationsInput | boolean
+    Nota?: NullableStringFieldUpdateOperationsInput | string | null
     Materia?: MateriaUpdateOneRequiredWithoutMaterie_IndicatoreNestedInput
     Indicatore?: IndicatoreUpdateOneRequiredWithoutMateria_IndicatoriNestedInput
   }
@@ -17732,22 +17828,26 @@ export namespace Prisma {
     Materia_Nome?: StringFieldUpdateOperationsInput | string
     Indicatore_Id?: IntFieldUpdateOperationsInput | number
     Valore?: BoolFieldUpdateOperationsInput | boolean
+    Nota?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type Materia_IndicatoreCreateManyInput = {
     Materia_Nome: string
     Indicatore_Id: number
     Valore: boolean
+    Nota?: string | null
   }
 
   export type Materia_IndicatoreUpdateManyMutationInput = {
     Valore?: BoolFieldUpdateOperationsInput | boolean
+    Nota?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type Materia_IndicatoreUncheckedUpdateManyInput = {
     Materia_Nome?: StringFieldUpdateOperationsInput | string
     Indicatore_Id?: IntFieldUpdateOperationsInput | number
     Valore?: BoolFieldUpdateOperationsInput | boolean
+    Nota?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type Materia_DocumentoCreateInput = {
@@ -17757,8 +17857,7 @@ export namespace Prisma {
 
   export type Materia_DocumentoUncheckedCreateInput = {
     Materia_Nome: string
-    Documento_Anno: Date | string
-    Documento_Studente_Email: string
+    Documento_Id: number
   }
 
   export type Materia_DocumentoUpdateInput = {
@@ -17768,14 +17867,12 @@ export namespace Prisma {
 
   export type Materia_DocumentoUncheckedUpdateInput = {
     Materia_Nome?: StringFieldUpdateOperationsInput | string
-    Documento_Anno?: DateTimeFieldUpdateOperationsInput | Date | string
-    Documento_Studente_Email?: StringFieldUpdateOperationsInput | string
+    Documento_Id?: IntFieldUpdateOperationsInput | number
   }
 
   export type Materia_DocumentoCreateManyInput = {
     Materia_Nome: string
-    Documento_Anno: Date | string
-    Documento_Studente_Email: string
+    Documento_Id: number
   }
 
   export type Materia_DocumentoUpdateManyMutationInput = {
@@ -17784,8 +17881,7 @@ export namespace Prisma {
 
   export type Materia_DocumentoUncheckedUpdateManyInput = {
     Materia_Nome?: StringFieldUpdateOperationsInput | string
-    Documento_Anno?: DateTimeFieldUpdateOperationsInput | Date | string
-    Documento_Studente_Email?: StringFieldUpdateOperationsInput | string
+    Documento_Id?: IntFieldUpdateOperationsInput | number
   }
 
   export type Documento_ICFCreateInput = {
@@ -17795,8 +17891,7 @@ export namespace Prisma {
 
   export type Documento_ICFUncheckedCreateInput = {
     ICF_Codice: string
-    Documento_Anno: Date | string
-    Documento_Studente_Email: string
+    Documento_Id: number
   }
 
   export type Documento_ICFUpdateInput = {
@@ -17806,14 +17901,12 @@ export namespace Prisma {
 
   export type Documento_ICFUncheckedUpdateInput = {
     ICF_Codice?: StringFieldUpdateOperationsInput | string
-    Documento_Anno?: DateTimeFieldUpdateOperationsInput | Date | string
-    Documento_Studente_Email?: StringFieldUpdateOperationsInput | string
+    Documento_Id?: IntFieldUpdateOperationsInput | number
   }
 
   export type Documento_ICFCreateManyInput = {
     ICF_Codice: string
-    Documento_Anno: Date | string
-    Documento_Studente_Email: string
+    Documento_Id: number
   }
 
   export type Documento_ICFUpdateManyMutationInput = {
@@ -17822,8 +17915,7 @@ export namespace Prisma {
 
   export type Documento_ICFUncheckedUpdateManyInput = {
     ICF_Codice?: StringFieldUpdateOperationsInput | string
-    Documento_Anno?: DateTimeFieldUpdateOperationsInput | Date | string
-    Documento_Studente_Email?: StringFieldUpdateOperationsInput | string
+    Documento_Id?: IntFieldUpdateOperationsInput | number
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -18092,12 +18184,13 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type DocumentoIdCompoundUniqueInput = {
+  export type DocumentoStudente_AnnoCompoundUniqueInput = {
     Studente_Email: string
     Anno: Date | string
   }
 
   export type DocumentoCountOrderByAggregateInput = {
+    Id?: SortOrder
     Studente_Email?: SortOrder
     Anno?: SortOrder
     Stato?: SortOrder
@@ -18105,7 +18198,12 @@ export namespace Prisma {
     Data_Approvazione?: SortOrder
   }
 
+  export type DocumentoAvgOrderByAggregateInput = {
+    Id?: SortOrder
+  }
+
   export type DocumentoMaxOrderByAggregateInput = {
+    Id?: SortOrder
     Studente_Email?: SortOrder
     Anno?: SortOrder
     Stato?: SortOrder
@@ -18114,11 +18212,16 @@ export namespace Prisma {
   }
 
   export type DocumentoMinOrderByAggregateInput = {
+    Id?: SortOrder
     Studente_Email?: SortOrder
     Anno?: SortOrder
     Stato?: SortOrder
     Tipologia?: SortOrder
     Data_Approvazione?: SortOrder
+  }
+
+  export type DocumentoSumOrderByAggregateInput = {
+    Id?: SortOrder
   }
 
   export type EnumStatoWithAggregatesFilter<$PrismaModel = never> = {
@@ -18249,32 +18352,31 @@ export namespace Prisma {
     Id?: SortOrder
     Nome?: SortOrder
     Percorso?: SortOrder
-    Documento_Studente_Email?: SortOrder
-    Documento_Anno?: SortOrder
+    Documento_Id?: SortOrder
   }
 
   export type AllegatoAvgOrderByAggregateInput = {
     Id?: SortOrder
+    Documento_Id?: SortOrder
   }
 
   export type AllegatoMaxOrderByAggregateInput = {
     Id?: SortOrder
     Nome?: SortOrder
     Percorso?: SortOrder
-    Documento_Studente_Email?: SortOrder
-    Documento_Anno?: SortOrder
+    Documento_Id?: SortOrder
   }
 
   export type AllegatoMinOrderByAggregateInput = {
     Id?: SortOrder
     Nome?: SortOrder
     Percorso?: SortOrder
-    Documento_Studente_Email?: SortOrder
-    Documento_Anno?: SortOrder
+    Documento_Id?: SortOrder
   }
 
   export type AllegatoSumOrderByAggregateInput = {
     Id?: SortOrder
+    Documento_Id?: SortOrder
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -18414,6 +18516,7 @@ export namespace Prisma {
     Materia_Nome?: SortOrder
     Indicatore_Id?: SortOrder
     Valore?: SortOrder
+    Nota?: SortOrder
   }
 
   export type Materia_IndicatoreAvgOrderByAggregateInput = {
@@ -18424,12 +18527,14 @@ export namespace Prisma {
     Materia_Nome?: SortOrder
     Indicatore_Id?: SortOrder
     Valore?: SortOrder
+    Nota?: SortOrder
   }
 
   export type Materia_IndicatoreMinOrderByAggregateInput = {
     Materia_Nome?: SortOrder
     Indicatore_Id?: SortOrder
     Valore?: SortOrder
+    Nota?: SortOrder
   }
 
   export type Materia_IndicatoreSumOrderByAggregateInput = {
@@ -18438,26 +18543,30 @@ export namespace Prisma {
 
   export type Materia_DocumentoIdCompoundUniqueInput = {
     Materia_Nome: string
-    Documento_Anno: Date | string
-    Documento_Studente_Email: string
+    Documento_Id: number
   }
 
   export type Materia_DocumentoCountOrderByAggregateInput = {
     Materia_Nome?: SortOrder
-    Documento_Anno?: SortOrder
-    Documento_Studente_Email?: SortOrder
+    Documento_Id?: SortOrder
+  }
+
+  export type Materia_DocumentoAvgOrderByAggregateInput = {
+    Documento_Id?: SortOrder
   }
 
   export type Materia_DocumentoMaxOrderByAggregateInput = {
     Materia_Nome?: SortOrder
-    Documento_Anno?: SortOrder
-    Documento_Studente_Email?: SortOrder
+    Documento_Id?: SortOrder
   }
 
   export type Materia_DocumentoMinOrderByAggregateInput = {
     Materia_Nome?: SortOrder
-    Documento_Anno?: SortOrder
-    Documento_Studente_Email?: SortOrder
+    Documento_Id?: SortOrder
+  }
+
+  export type Materia_DocumentoSumOrderByAggregateInput = {
+    Documento_Id?: SortOrder
   }
 
   export type ICFScalarRelationFilter = {
@@ -18467,26 +18576,30 @@ export namespace Prisma {
 
   export type Documento_ICFIdCompoundUniqueInput = {
     ICF_Codice: string
-    Documento_Anno: Date | string
-    Documento_Studente_Email: string
+    Documento_Id: number
   }
 
   export type Documento_ICFCountOrderByAggregateInput = {
     ICF_Codice?: SortOrder
-    Documento_Anno?: SortOrder
-    Documento_Studente_Email?: SortOrder
+    Documento_Id?: SortOrder
+  }
+
+  export type Documento_ICFAvgOrderByAggregateInput = {
+    Documento_Id?: SortOrder
   }
 
   export type Documento_ICFMaxOrderByAggregateInput = {
     ICF_Codice?: SortOrder
-    Documento_Anno?: SortOrder
-    Documento_Studente_Email?: SortOrder
+    Documento_Id?: SortOrder
   }
 
   export type Documento_ICFMinOrderByAggregateInput = {
     ICF_Codice?: SortOrder
-    Documento_Anno?: SortOrder
-    Documento_Studente_Email?: SortOrder
+    Documento_Id?: SortOrder
+  }
+
+  export type Documento_ICFSumOrderByAggregateInput = {
+    Documento_Id?: SortOrder
   }
 
   export type InsegnamentoCreateNestedManyWithoutDocenteInput = {
@@ -19637,6 +19750,7 @@ export namespace Prisma {
   }
 
   export type DocumentoUncheckedCreateWithoutStudenteInput = {
+    Id?: number
     Anno?: Date | string
     Stato: $Enums.Stato
     Tipologia: $Enums.Tipologia_Doc
@@ -19694,6 +19808,7 @@ export namespace Prisma {
     AND?: DocumentoScalarWhereInput | DocumentoScalarWhereInput[]
     OR?: DocumentoScalarWhereInput[]
     NOT?: DocumentoScalarWhereInput | DocumentoScalarWhereInput[]
+    Id?: IntFilter<"Documento"> | number
     Studente_Email?: StringFilter<"Documento"> | string
     Anno?: DateTimeFilter<"Documento"> | Date | string
     Stato?: EnumStatoFilter<"Documento"> | $Enums.Stato
@@ -19816,8 +19931,7 @@ export namespace Prisma {
     OR?: Materia_DocumentoScalarWhereInput[]
     NOT?: Materia_DocumentoScalarWhereInput | Materia_DocumentoScalarWhereInput[]
     Materia_Nome?: StringFilter<"Materia_Documento"> | string
-    Documento_Anno?: DateTimeFilter<"Materia_Documento"> | Date | string
-    Documento_Studente_Email?: StringFilter<"Materia_Documento"> | string
+    Documento_Id?: IntFilter<"Materia_Documento"> | number
   }
 
   export type Documento_ICFUpsertWithWhereUniqueWithoutDocumentoInput = {
@@ -19841,8 +19955,7 @@ export namespace Prisma {
     OR?: Documento_ICFScalarWhereInput[]
     NOT?: Documento_ICFScalarWhereInput | Documento_ICFScalarWhereInput[]
     ICF_Codice?: StringFilter<"Documento_ICF"> | string
-    Documento_Anno?: DateTimeFilter<"Documento_ICF"> | Date | string
-    Documento_Studente_Email?: StringFilter<"Documento_ICF"> | string
+    Documento_Id?: IntFilter<"Documento_ICF"> | number
   }
 
   export type StudenteUpsertWithoutDocumentoInput = {
@@ -19895,8 +20008,7 @@ export namespace Prisma {
     Id?: IntFilter<"Allegato"> | number
     Nome?: StringFilter<"Allegato"> | string
     Percorso?: StringFilter<"Allegato"> | string
-    Documento_Studente_Email?: StringFilter<"Allegato"> | string
-    Documento_Anno?: DateTimeFilter<"Allegato"> | Date | string
+    Documento_Id?: IntFilter<"Allegato"> | number
   }
 
   export type InsegnamentoCreateWithoutMateriaInput = {
@@ -19921,12 +20033,14 @@ export namespace Prisma {
 
   export type Materia_IndicatoreCreateWithoutMateriaInput = {
     Valore: boolean
+    Nota?: string | null
     Indicatore: IndicatoreCreateNestedOneWithoutMateria_IndicatoriInput
   }
 
   export type Materia_IndicatoreUncheckedCreateWithoutMateriaInput = {
     Indicatore_Id: number
     Valore: boolean
+    Nota?: string | null
   }
 
   export type Materia_IndicatoreCreateOrConnectWithoutMateriaInput = {
@@ -19944,8 +20058,7 @@ export namespace Prisma {
   }
 
   export type Materia_DocumentoUncheckedCreateWithoutMateriaInput = {
-    Documento_Anno: Date | string
-    Documento_Studente_Email: string
+    Documento_Id: number
   }
 
   export type Materia_DocumentoCreateOrConnectWithoutMateriaInput = {
@@ -19997,6 +20110,7 @@ export namespace Prisma {
     Materia_Nome?: StringFilter<"Materia_Indicatore"> | string
     Indicatore_Id?: IntFilter<"Materia_Indicatore"> | number
     Valore?: BoolFilter<"Materia_Indicatore"> | boolean
+    Nota?: StringNullableFilter<"Materia_Indicatore"> | string | null
   }
 
   export type Materia_DocumentoUpsertWithWhereUniqueWithoutMateriaInput = {
@@ -20017,12 +20131,14 @@ export namespace Prisma {
 
   export type Materia_IndicatoreCreateWithoutIndicatoreInput = {
     Valore: boolean
+    Nota?: string | null
     Materia: MateriaCreateNestedOneWithoutMaterie_IndicatoreInput
   }
 
   export type Materia_IndicatoreUncheckedCreateWithoutIndicatoreInput = {
     Materia_Nome: string
     Valore: boolean
+    Nota?: string | null
   }
 
   export type Materia_IndicatoreCreateOrConnectWithoutIndicatoreInput = {
@@ -20062,6 +20178,7 @@ export namespace Prisma {
   }
 
   export type DocumentoUncheckedCreateWithoutAllegatiInput = {
+    Id?: number
     Studente_Email: string
     Anno?: Date | string
     Stato: $Enums.Stato
@@ -20098,6 +20215,7 @@ export namespace Prisma {
   }
 
   export type DocumentoUncheckedUpdateWithoutAllegatiInput = {
+    Id?: IntFieldUpdateOperationsInput | number
     Studente_Email?: StringFieldUpdateOperationsInput | string
     Anno?: DateTimeFieldUpdateOperationsInput | Date | string
     Stato?: EnumStatoFieldUpdateOperationsInput | $Enums.Stato
@@ -20112,8 +20230,7 @@ export namespace Prisma {
   }
 
   export type Documento_ICFUncheckedCreateWithoutICFInput = {
-    Documento_Anno: Date | string
-    Documento_Studente_Email: string
+    Documento_Id: number
   }
 
   export type Documento_ICFCreateOrConnectWithoutICFInput = {
@@ -20480,6 +20597,7 @@ export namespace Prisma {
   }
 
   export type DocumentoUncheckedCreateWithoutMaterie_DocumentoInput = {
+    Id?: number
     Studente_Email: string
     Anno?: Date | string
     Stato: $Enums.Stato
@@ -20539,6 +20657,7 @@ export namespace Prisma {
   }
 
   export type DocumentoUncheckedUpdateWithoutMaterie_DocumentoInput = {
+    Id?: IntFieldUpdateOperationsInput | number
     Studente_Email?: StringFieldUpdateOperationsInput | string
     Anno?: DateTimeFieldUpdateOperationsInput | Date | string
     Stato?: EnumStatoFieldUpdateOperationsInput | $Enums.Stato
@@ -20574,6 +20693,7 @@ export namespace Prisma {
   }
 
   export type DocumentoUncheckedCreateWithoutDocumento_ICFsInput = {
+    Id?: number
     Studente_Email: string
     Anno?: Date | string
     Stato: $Enums.Stato
@@ -20631,6 +20751,7 @@ export namespace Prisma {
   }
 
   export type DocumentoUncheckedUpdateWithoutDocumento_ICFsInput = {
+    Id?: IntFieldUpdateOperationsInput | number
     Studente_Email?: StringFieldUpdateOperationsInput | string
     Anno?: DateTimeFieldUpdateOperationsInput | Date | string
     Stato?: EnumStatoFieldUpdateOperationsInput | $Enums.Stato
@@ -20697,6 +20818,7 @@ export namespace Prisma {
   }
 
   export type DocumentoCreateManyStudenteInput = {
+    Id?: number
     Anno?: Date | string
     Stato: $Enums.Stato
     Tipologia: $Enums.Tipologia_Doc
@@ -20718,6 +20840,7 @@ export namespace Prisma {
   }
 
   export type DocumentoUncheckedUpdateWithoutStudenteInput = {
+    Id?: IntFieldUpdateOperationsInput | number
     Anno?: DateTimeFieldUpdateOperationsInput | Date | string
     Stato?: EnumStatoFieldUpdateOperationsInput | $Enums.Stato
     Tipologia?: EnumTipologia_DocFieldUpdateOperationsInput | $Enums.Tipologia_Doc
@@ -20728,6 +20851,7 @@ export namespace Prisma {
   }
 
   export type DocumentoUncheckedUpdateManyWithoutStudenteInput = {
+    Id?: IntFieldUpdateOperationsInput | number
     Anno?: DateTimeFieldUpdateOperationsInput | Date | string
     Stato?: EnumStatoFieldUpdateOperationsInput | $Enums.Stato
     Tipologia?: EnumTipologia_DocFieldUpdateOperationsInput | $Enums.Tipologia_Doc
@@ -20809,11 +20933,11 @@ export namespace Prisma {
   export type Materia_IndicatoreCreateManyMateriaInput = {
     Indicatore_Id: number
     Valore: boolean
+    Nota?: string | null
   }
 
   export type Materia_DocumentoCreateManyMateriaInput = {
-    Documento_Anno: Date | string
-    Documento_Studente_Email: string
+    Documento_Id: number
   }
 
   export type InsegnamentoUpdateWithoutMateriaInput = {
@@ -20833,17 +20957,20 @@ export namespace Prisma {
 
   export type Materia_IndicatoreUpdateWithoutMateriaInput = {
     Valore?: BoolFieldUpdateOperationsInput | boolean
+    Nota?: NullableStringFieldUpdateOperationsInput | string | null
     Indicatore?: IndicatoreUpdateOneRequiredWithoutMateria_IndicatoriNestedInput
   }
 
   export type Materia_IndicatoreUncheckedUpdateWithoutMateriaInput = {
     Indicatore_Id?: IntFieldUpdateOperationsInput | number
     Valore?: BoolFieldUpdateOperationsInput | boolean
+    Nota?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type Materia_IndicatoreUncheckedUpdateManyWithoutMateriaInput = {
     Indicatore_Id?: IntFieldUpdateOperationsInput | number
     Valore?: BoolFieldUpdateOperationsInput | boolean
+    Nota?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type Materia_DocumentoUpdateWithoutMateriaInput = {
@@ -20851,38 +20978,39 @@ export namespace Prisma {
   }
 
   export type Materia_DocumentoUncheckedUpdateWithoutMateriaInput = {
-    Documento_Anno?: DateTimeFieldUpdateOperationsInput | Date | string
-    Documento_Studente_Email?: StringFieldUpdateOperationsInput | string
+    Documento_Id?: IntFieldUpdateOperationsInput | number
   }
 
   export type Materia_DocumentoUncheckedUpdateManyWithoutMateriaInput = {
-    Documento_Anno?: DateTimeFieldUpdateOperationsInput | Date | string
-    Documento_Studente_Email?: StringFieldUpdateOperationsInput | string
+    Documento_Id?: IntFieldUpdateOperationsInput | number
   }
 
   export type Materia_IndicatoreCreateManyIndicatoreInput = {
     Materia_Nome: string
     Valore: boolean
+    Nota?: string | null
   }
 
   export type Materia_IndicatoreUpdateWithoutIndicatoreInput = {
     Valore?: BoolFieldUpdateOperationsInput | boolean
+    Nota?: NullableStringFieldUpdateOperationsInput | string | null
     Materia?: MateriaUpdateOneRequiredWithoutMaterie_IndicatoreNestedInput
   }
 
   export type Materia_IndicatoreUncheckedUpdateWithoutIndicatoreInput = {
     Materia_Nome?: StringFieldUpdateOperationsInput | string
     Valore?: BoolFieldUpdateOperationsInput | boolean
+    Nota?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type Materia_IndicatoreUncheckedUpdateManyWithoutIndicatoreInput = {
     Materia_Nome?: StringFieldUpdateOperationsInput | string
     Valore?: BoolFieldUpdateOperationsInput | boolean
+    Nota?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type Documento_ICFCreateManyICFInput = {
-    Documento_Anno: Date | string
-    Documento_Studente_Email: string
+    Documento_Id: number
   }
 
   export type Documento_ICFUpdateWithoutICFInput = {
@@ -20890,13 +21018,11 @@ export namespace Prisma {
   }
 
   export type Documento_ICFUncheckedUpdateWithoutICFInput = {
-    Documento_Anno?: DateTimeFieldUpdateOperationsInput | Date | string
-    Documento_Studente_Email?: StringFieldUpdateOperationsInput | string
+    Documento_Id?: IntFieldUpdateOperationsInput | number
   }
 
   export type Documento_ICFUncheckedUpdateManyWithoutICFInput = {
-    Documento_Anno?: DateTimeFieldUpdateOperationsInput | Date | string
-    Documento_Studente_Email?: StringFieldUpdateOperationsInput | string
+    Documento_Id?: IntFieldUpdateOperationsInput | number
   }
 
 

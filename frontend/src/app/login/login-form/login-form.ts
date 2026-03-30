@@ -1,6 +1,7 @@
 import { Component, OnInit, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { LoginService } from '../../shared/services/login.service';
+import { Router } from '@angular/router';
 
 declare var google: any;
 
@@ -14,6 +15,8 @@ export class LoginForm implements OnInit {
     private loginService = inject(LoginService);
     private platformId = inject(PLATFORM_ID); //variabile per capire se browser o server
     private static isInitialized = false; //static così mantiene il suo valore
+
+    private router: Router = inject(Router);
 
     ngOnInit() {
         if (isPlatformBrowser(this.platformId)) {  //solo se file eseguito da browser
@@ -69,7 +72,19 @@ export class LoginForm implements OnInit {
             console.log("TOKEN JWT:", token);
 
             // invierà il token al nostro server
-            this.loginService.Login(token);
+            this.loginService.Login(token).subscribe({
+                next: (data: any) => {
+                    this.router.navigate(["/"]);
+                },
+                error: (err: any) => {
+                    console.log(err);
+
+                    if(err.status == 401)
+                        console.error("Login non valido")
+                    else
+                        console.error(err.status + ": " + err.error);
+                }
+            });
         }
     }
 }

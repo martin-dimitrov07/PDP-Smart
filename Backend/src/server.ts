@@ -56,6 +56,7 @@ app.use("/", queryStringParser);
 
 //middleware 5: log dei parametri
 app.use((req: any, res, next) => {
+    console.log("body", req.body);
     if(req.body && Object.keys(req.body).length > 0)
         console.log("   Parametri body: " + JSON.stringify(req.body));
 

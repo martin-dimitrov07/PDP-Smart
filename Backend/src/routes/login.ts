@@ -3,9 +3,11 @@ import { OAuth2Client } from 'google-auth-library';
 import { prisma } from "../server.js";
 
 async function GestioneLogin(req: any, res: any) {
-    const token = req.query.token;
+    const token = req.body.token;
     const clientGoogle = new OAuth2Client(process.env.CLIENT_ID);
 
+   console.log("token", token, "CLIENT_ID", process.env.CLIENT_ID);
+    
     try {
         const payload: any = await GetPayload(token, clientGoogle);
 
