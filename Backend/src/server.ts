@@ -3,21 +3,15 @@ import https from "https";
 import fs from "fs";
 import express from "express";
 import dotenv from "dotenv";
-import queryStringParser from "./routes/queryStringParser.js";
+import queryStringParser from "./routes/queryStringParser.ts";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
 // routes
-import GestioneLogin from "./routes/login.js"; 
+import GestioneLogin from "./routes/login.ts"; 
 
 import { PrismaClient } from "../prisma/generated/client/index.js";
 import { PrismaPg } from "@prisma/adapter-pg";
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL!,
-});
-
-export const prisma = new PrismaClient({ adapter }); //export così da poterlo usare nelle API route (root dinamiche)
 
 //B. configurazioni
 //riconosce i tipi automaticamente (non è any) -> grazie @types/node in devDependencies (sviluppo)
@@ -25,6 +19,13 @@ const app = express();
 //stessa cosa -> const app: express.Express = express();
 dotenv.config({ path: ".env" });
 const https_port = process.env.HTTPS_PORT;
+
+// configurazioni PrismaClient
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+});
+
+export const prisma = new PrismaClient({ adapter }); //export così da poterlo usare nelle API route (root dinamiche)
 
 //C. creazione ed avvio di un server https
 const privateKey = fs.readFileSync("keys/privateKey.pem", "utf8");
@@ -56,7 +57,6 @@ app.use("/", queryStringParser);
 
 //middleware 5: log dei parametri
 app.use((req: any, res, next) => {
-    console.log("body", req.body);
     if(req.body && Object.keys(req.body).length > 0)
         console.log("   Parametri body: " + JSON.stringify(req.body));
 
@@ -78,10 +78,10 @@ app.use("/", cors(corsOptions));
 //middleware 7: Parsing dei cookies (serve per usare req.cookies)
 app.use(cookieParser());
 
-//middleware 8: Gestione login e token
-app.use((res, req, next) => { GestioneLogin(res, req); next(); });
-
 //E. gestione delle root dinamiche
+
+//Login
+app.post("/api/login", GestioneLogin);
 
 //F. default root e gestione errori
 app.use(function(req, res){    
