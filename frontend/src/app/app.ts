@@ -1,18 +1,14 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { Header } from './header/header';
-// import { Login } from './login/login';
-// import { Studenti } from './studenti/studenti';
-import { Sezioni } from './main/sezioni/sezioni';
-import { Login } from './login/login';
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, Sezioni, Header, Login],
+    imports: [RouterOutlet, Header],
     templateUrl: './app.html',
     styleUrl: './app.css'
 })
 
 export class App {
-
+    public router: Router = inject(Router);
 }

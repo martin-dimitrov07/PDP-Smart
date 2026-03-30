@@ -74,7 +74,7 @@ export class LoginForm implements OnInit {
             // invierà il token al nostro server
             this.loginService.Login(token).subscribe({
                 next: (data: any) => {
-                    this.router.navigate(["/"]);
+                    this.router.navigate(["/sezioni"]);
                 },
                 error: (err: any) => {
                     console.log(err);

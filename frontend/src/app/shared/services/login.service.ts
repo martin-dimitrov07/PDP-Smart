@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { DataStorageService } from './data-storage.service';
+import { Docente } from '../../models/docente';
 
 @Injectable({
     providedIn: 'root',
@@ -8,7 +9,7 @@ import { DataStorageService } from './data-storage.service';
 export class LoginService {
     private dataStorageService: DataStorageService = inject(DataStorageService);
 
-    docente = {};
+    docente: Docente = {} as Docente;
 
     //chiamata post per maggior sicurezza
     Login(token: string): Observable<any> {
