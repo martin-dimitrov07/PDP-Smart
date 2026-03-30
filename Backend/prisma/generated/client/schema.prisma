@@ -54,7 +54,6 @@ enum Tipologia_Doc {
 }
 
 model Documento {
-  Id                Int           @id @default(autoincrement())
   Studente_Email    String        @db.VarChar(255)
   Anno              DateTime      @default(now())
   Stato             Stato
@@ -66,7 +65,7 @@ model Documento {
   Studente          Studente            @relation(fields: [Studente_Email], references: [Email])
   Allegati          Allegato[] //può essere vuoto
 
-  @@unique([Studente_Email, Anno], name: "Studente_Anno")
+  @@id([Studente_Email, Anno], name: "Id")
 }
 
 model Materia {
@@ -100,12 +99,13 @@ model Indicatore {
 }
 
 model Allegato {
-  Id           Int    @id @default(autoincrement())
-  Nome         String
-  Percorso     String
-  Documento_Id Int
+  Id                       Int      @id @default(autoincrement())
+  Nome                     String
+  Percorso                 String
+  Documento_Studente_Email String
+  Documento_Anno           DateTime
 
-  Documento Documento @relation(fields: [Documento_Id], references: [Id])
+  Documento Documento @relation(fields: [Documento_Studente_Email, Documento_Anno], references: [Studente_Email, Anno])
 }
 
 model ICF {
@@ -143,7 +143,6 @@ model Materia_Indicatore {
   Materia_Nome  String
   Indicatore_Id Int
   Valore        Boolean
-  Nota          String?
 
   Materia    Materia    @relation(fields: [Materia_Nome], references: [Nome])
   Indicatore Indicatore @relation(fields: [Indicatore_Id], references: [Id])
@@ -152,21 +151,23 @@ model Materia_Indicatore {
 }
 
 model Materia_Documento {
-  Materia_Nome String
-  Documento_Id Int
+  Materia_Nome             String
+  Documento_Anno           DateTime
+  Documento_Studente_Email String
 
   Materia   Materia   @relation(fields: [Materia_Nome], references: [Nome])
-  Documento Documento @relation(fields: [Documento_Id], references: [Id])
+  Documento Documento @relation(fields: [Documento_Studente_Email, Documento_Anno], references: [Studente_Email, Anno])
 
-  @@id([Materia_Nome, Documento_Id], name: "Id")
+  @@id([Materia_Nome, Documento_Anno, Documento_Studente_Email], name: "Id")
 }
 
 model Documento_ICF {
-  ICF_Codice   String
-  Documento_Id Int
+  ICF_Codice               String
+  Documento_Anno           DateTime
+  Documento_Studente_Email String
 
   ICF       ICF       @relation(fields: [ICF_Codice], references: [Codice])
-  Documento Documento @relation(fields: [Documento_Id], references: [Id])
+  Documento Documento @relation(fields: [Documento_Studente_Email, Documento_Anno], references: [Studente_Email, Anno])
 
-  @@id([ICF_Codice, Documento_Id], name: "Id")
+  @@id([ICF_Codice, Documento_Anno, Documento_Studente_Email], name: "Id")
 }

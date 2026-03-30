@@ -1,1 +1,187 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --bg-blue-dark-color: #12294d;
+    --bg-blue-color: #23417a;
+
+    --light-blue-color: #8ab6e3;
+    --bg-blue-color-fade: #234973e7;
+    --bg-icon-color-fade: #3b6288aa;
+    --light-color: #f0f5fa;
+    --blue-color: #1e3a5f;
+    --dark-blue-color: #193355;
+
+    --grey-color: #555;
+    --light-grey: #e2e8f0;
+
+    --white: #fff;
+
+    --dark-shadow-color: #000000BB;
+
+    /* colori sezioni PORCO DIO*/
+    --inf-color: #1a7f5a;
+    --inf-color-hover: #e8f7f1;
+    --inf-color-hover-dark: #c6edde;
+
+    --elt-color: #d45000;
+    --elt-color-hover: #fff0e8;
+    --elt-color-hover-dark: #fdd9c4;
+
+    --mec-color: #2563b0;
+    --mec-color-hover: #e8f0fb;
+    --mec-color-hover-dark: #c8dbf5;
+
+    --afm-color: #7b1fa2;
+    --afm-color-hover: #f5e8fb;
+    --afm-color-hover-dark: #e8c8f7;
+
+    --lic-color: #0e7490;
+    --lic-color-hover: #e0f5f9;
+    --lic-color-hover-dark: #b3e8f3;
+
+    --tur-color:#b45309;
+    --tur-color-hover: #fef3e2;
+    --tur-color-hover-dark: #fde3b0;
+
+    --ene-color: #b91c1c;
+    --ene-color-hover: #fde8e8;
+    --ene-color-hover-dark: #fac5c5;
+}
+
+.dark-mode {
+    --bg-blue-dark-color: #0c1c36;
+    --bg-blue-color: #233f74;
+
+    --light-blue-color: #7aa0c7;
+    --bg-blue-color-fade: #1a2f57e7;
+    --bg-icon-color-fade: #2a4a6aaa;
+    --light-color: #212121;
+    --blue-color: #162c4a;
+    --dark-blue-color: #7aa0c7;
+
+    --grey-color: #aaa;
+    --light-grey: #555555;
+
+    --white: #fff;
+
+    --dark-shadow-color: #333333dd;
+}
+
+@font-face {
+    font-family: 'Geist';
+    src: url('/fonts/Geist/Geist-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Geist Bold';
+    src: url('/fonts/Geist/Geist-Bold.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Geist SemiBold';
+    src: url('/fonts/Geist/Geist-SemiBold.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Geist', sans-serif;
+}
+
+body *{
+    transition: 0.3s;
+}
+
+.text-color-light {
+    color: var(--light-color) !important;
+}
+
+.bg-light{
+    background-color: var(--light-color) !important;
+}
+
+.fw-bold,
+strong,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Geist Bold', sans-serif !important;
+}
+
+.fw-semi-bold {
+    font-family: 'Geist SemiBold', sans-serif !important;
+}
+
+.primary-text-color {
+    color: var(--light-blue-color);
+}
+
+.secondary-text-color {
+    color: var(--dark-blue-color);
+}
+
+.third-text-color {
+    color: var(--grey-color);
+}
+
+.img-logo {
+    max-width: 80px;
+    aspect-ratio: 1 / 1;
+}
+
+.img-logo-vallauri {
+    max-width: 90px;
+    max-width: 80px;
+    aspect-ratio: 1 / 0.85;
+}
+
+.img-logo-sm {
+    max-width: 70px !important;
+}
+
+.img-logo-xl {
+    max-width: 150px !important;
+}
+
+.img-logo-shadow {
+    filter: drop-shadow(0 0 20px var(--bg-blue-color));
+}
+
+
+.btn-theme {
+    width: 50px;
+    height: 50px;
+    bottom: 30px;
+    right: 30px;
+    transition: 0.3s;
+}
+
+.btn-theme:has(> .bi-moon-fill) {
+    background-color: var(--bg-blue-dark-color);
+    border: 2px solid var(--bg-blue-dark-color);
+    box-shadow: 0 0 15px var(--bg-blue-dark-color);
+}
+
+.btn-theme:has(> .bi-sun-fill) {
+    background-color: var(--white);
+    box-shadow: 0 0 10px var(--light-blue-color);
+}
+
+.btn-theme .bi-moon-fill::before {
+    color: var(--light-color);
+    transition: 0.3s;
+}
+
+.btn-theme:hover {
+    cursor: pointer;
+    transform: scale(1.15);
+}
+
+.btn-theme .bi::before {
+    transform: scale(1.5);
+}
