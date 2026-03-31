@@ -10,23 +10,15 @@ import { Router } from '@angular/router';
     styleUrl: './sezioni.css',
 })
 export class Sezioni {
-    private studentiService: StudentiService = inject(StudentiService);
-    
-    private router: Router = inject(Router);
-
-    sezioniDocente: string[] = [];
+    public readonly studentiService: StudentiService = inject(StudentiService);
 
     ngOnInit() {
         this.studentiService.GetSections().subscribe({
             next: data => {
                 console.log(data);
-                this.sezioniDocente = this.studentiService.sezioni;
             },
             error: err => {
-                if (err.status == 403)
-                    this.router.navigate(["/login"]);
-                else
-                    console.error(err.status + ": " + err.error);
+                console.error(err.status + ": " + err.error);
             }
         })
     }

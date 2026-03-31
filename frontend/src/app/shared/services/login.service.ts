@@ -7,7 +7,7 @@ import { Docente } from '../../models/docente';
     providedIn: 'root',
 })
 export class LoginService {
-    private dataStorageService: DataStorageService = inject(DataStorageService);
+    private readonly dataStorageService: DataStorageService = inject(DataStorageService);
 
     docente: Docente = {} as Docente;
 

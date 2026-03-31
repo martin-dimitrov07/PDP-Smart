@@ -65,7 +65,7 @@ async function ControlloToken(req: any, res: any, next: any) {
 
     // quando il cookie scade
     if(!token)
-        res.status(401).send("Token mancante");
+        return res.status(401).send("Token mancante");
 
     try
     {

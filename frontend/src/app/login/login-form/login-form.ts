@@ -12,7 +12,7 @@ declare var google: any;
     styleUrl: './login-form.css',
 })
 export class LoginForm implements OnInit {
-    private loginService = inject(LoginService);
+    private readonly loginService = inject(LoginService);
     private platformId = inject(PLATFORM_ID); //variabile per capire se browser o server
     private static isInitialized = false; //static così mantiene il suo valore
 

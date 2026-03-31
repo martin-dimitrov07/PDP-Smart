@@ -8,7 +8,7 @@
 
     <div class="d-flex flex-column gap-3">
 
-        @if (sezioniDocente.includes('INF')) 
+        @if (studentiService.sezioni.includes('INF')) 
         {
             <!-- INF -->
             <button class="sezione-card s-inf position-relative d-flex align-items-center bg-white border shadow-sm" (click)="SetSezione('INF')">
@@ -30,7 +30,7 @@
             </button>
         }
 
-        @if (sezioniDocente.includes('ELT')) 
+        @if (studentiService.sezioni.includes('ELT')) 
         {
             <!-- ELT -->
             <button class="sezione-card s-elt position-relative d-flex align-items-center bg-white border shadow-sm" (click)="SetSezione('ELT')">
@@ -52,7 +52,7 @@
             </button>
         }   
 
-        @if (sezioniDocente.includes('MEC')) 
+        @if (studentiService.sezioni.includes('MEC')) 
         {
             <!-- MEC -->
             <button class="sezione-card s-mec position-relative d-flex align-items-center bg-white border shadow-sm" (click)="SetSezione('MEC')">
@@ -74,7 +74,7 @@
             </button>
         }
 
-        @if (sezioniDocente.includes('AFM')) 
+        @if (studentiService.sezioni.includes('AFM')) 
         {
             <!-- AFM -->
             <button class="sezione-card s-afm position-relative d-flex align-items-center bg-white border shadow-sm" (click)="SetSezione('AFM')">
@@ -96,7 +96,7 @@
             </button>
         }
 
-        @if (sezioniDocente.includes('LIC')) 
+        @if (studentiService.sezioni.includes('LIC')) 
         {
             <!-- LIC -->
             <button class="sezione-card s-lic position-relative d-flex align-items-center bg-white border shadow-sm" (click)="SetSezione('LIC')">
@@ -118,7 +118,7 @@
             </button>
         }
 
-        @if (sezioniDocente.includes('TUR')) 
+        @if (studentiService.sezioni.includes('TUR')) 
         {
             <!-- TUR -->
             <button class="sezione-card s-tur position-relative d-flex align-items-center bg-white border shadow-sm" (click)="SetSezione('TUR')">
@@ -140,7 +140,7 @@
             </button>
         }
 
-        @if (sezioniDocente.includes('ENE')) 
+        @if (studentiService.sezioni.includes('ENE')) 
         {
             <!-- ENE -->
             <button class="sezione-card s-ene position-relative d-flex align-items-center bg-white border shadow-sm" (click)="SetSezione('ENE')">

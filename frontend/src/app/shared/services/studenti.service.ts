@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { DataStorageService } from './data-storage.service';
 import { LoginService } from './login.service';
+import { Studente } from '../../models/studente';
 
 @Injectable({
     providedIn: 'root',
@@ -10,11 +11,10 @@ export class StudentiService {
     private dataStorageService = inject(DataStorageService);
     private loginService: LoginService = inject(LoginService);
     
-    sezioni = [];
-    sezioneSelected = "";
-    classe = "";
-    studenti = [];
-
+    sezioni: string[] = [];
+    sezioneSelected: string = "";
+    classe: string = "";
+    studenti: Studente[] = [];
 
     GetSections(): Observable<any> {
         const filters = {
