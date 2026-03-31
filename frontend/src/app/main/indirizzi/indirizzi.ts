@@ -1,30 +1,29 @@
 import { Component, inject } from '@angular/core';
 import { StudentiService } from '../../shared/services/studenti.service';
-import { LoginService } from '../../shared/services/login.service';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-sezioni',
+    selector: 'app-indirizzi',
     imports: [],
-    templateUrl: './sezioni.html',
-    styleUrl: './sezioni.css',
+    templateUrl: './indirizzi.html',
+    styleUrl: './indirizzi.css',
 })
-export class Sezioni {
-    private studentiService: StudentiService = inject(StudentiService);
+export class Indirizzi {
+    public readonly studentiService: StudentiService = inject(StudentiService);
     
-    private router: Router = inject(Router);
-
-    sezioniDocente: string[] = [];
+    private readonly router: Router = inject(Router);
 
     ngOnInit() {
-        this.studentiService.GetSections().subscribe({
+        this.studentiService.GetIndirizzi().subscribe({
             next: data => {
                 console.log(data);
-                this.sezioniDocente = this.studentiService.sezioni;
             },
             error: err => {
-                if (err.status == 403)
+                if (err.status == 401)
+                {
+                    console.error(err);
                     this.router.navigate(["/login"]);
+                }
                 else
                     console.error(err.status + ": " + err.error);
             }

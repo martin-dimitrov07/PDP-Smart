@@ -1,23 +1,23 @@
-export class Docente {
+export class Studente {
     Nome: string;
     Cognome: string;
     Email: string;
-    Ruolo: Ruolo;
+    DSA_BES: boolean;
 
     constructor(
         nome: string,
         cognome: string,
         email: string,
-        Ruolo: Ruolo
+        DSA_BES: boolean
     ) {
         this.Nome = nome;
         this.Cognome = cognome;
         this.Email = email;
-        this.Ruolo = Ruolo;
+        this.DSA_BES = DSA_BES;
     }
 }
 
-enum Ruolo{
-    "ADMIN" = "Admin",
-    "DOCENTE" = "Docente"
-}
+// enum DSA_BES {
+//     DSA = "DSA",
+//     BES = "BES"
+// }

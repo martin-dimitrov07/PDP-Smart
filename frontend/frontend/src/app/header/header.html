@@ -9,9 +9,9 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="col-6 collapse navbar-collapse justify-content-center" id="navbarNavAltMarkup">
-            <div class="navbar-nav gap-2 my-3 my-lg-0">
+            <div class="navbar-nav gap-2 mt-3 mb-2 my-lg-0">
                 <div class="nav-item">
-                    <a class="nav-link text-white" routerLink="/indirizzi" routerLinkActive="active">Studenti</a>
+                    <a class="nav-link text-white" routerLink="/sezioni" routerLinkActive="active">Studenti</a>
                 </div>
                 <div class="nav-item">
                     <a class="nav-link text-white" routerLink="/documenti" routerLinkActive="active">Documenti</a>
@@ -20,14 +20,14 @@
                 <div class="nav-item text-white d-flex d-lg-none gap-3 align-items-center">
                     <i class="bi bi-person-circle text-white fs-3 d-flex align-items-center"></i>
                     <a class="nav-link m-0 prof-name text-white">
-                        Prof. {{loginService.docente.Cognome}}
+                        Prof. {{docentiService.emailDocente}}
                     </a>
                 </div>
             </div>
         </div>
         <div class="nav-item col-3 d-none d-lg-flex gap-3 justify-content-end align-items-center">
             <a class="nav-link py-2 m-0 prof-name text-white">
-                Prof. {{loginService.docente.Cognome}}
+                Prof. {{docentiService.emailDocente}}
             </a>
             <i class="bi bi-person-circle text-white fs-3 d-flex align-items-center"></i>
         </div>

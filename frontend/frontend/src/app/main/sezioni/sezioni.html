@@ -1,0 +1,165 @@
+<section class="px-md-5 py-5 mx-3 mx-sm-5">
+    <div class="mb-4">
+        <h1 class="mb-1 fs-2">
+            Seleziona la Sezione
+        </h1>
+        <p class="text-secondary">Scegli l'indirizzo scolastico</p>
+    </div>
+
+    <div class="d-flex flex-column gap-3">
+
+        @if (studentiService.sezioni.includes('INF')) 
+        {
+            <!-- INF -->
+            <button class="sezione-card s-inf position-relative d-flex align-items-center bg-white border shadow-sm" (click)="SetSezione('INF')">
+                <div class="overlay"></div>
+                <div class="left-bar align-self-stretch"></div>
+                <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
+                    <div class="icon-box"><i class="bi bi-pc-display-horizontal"></i></div>
+                    <div class="flex-grow-1">
+                        <h2 class="sigla text-start fs-3 lh-1">INF</h2>
+                        <p class="text-secondary text-start small m-0">
+                            Informatica e Telecomunicazioni
+                        </p>
+                    </div>
+                    <i class="bg-icon bi bi-pc-display-horizontal"></i>
+                    <div class="arrow-btn bg-light text-secondary">
+                        <i class="bi bi-chevron-right"></i>
+                    </div>
+                </div>
+            </button>
+        }
+
+        @if (studentiService.sezioni.includes('ELT')) 
+        {
+            <!-- ELT -->
+            <button class="sezione-card s-elt position-relative d-flex align-items-center bg-white border shadow-sm" (click)="SetSezione('ELT')">
+                <div class="overlay"></div>
+                <div class="left-bar align-self-stretch"></div>
+                <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
+                    <div class="icon-box"><i class="bi bi-lightning-charge-fill"></i></div>
+                    <div class="flex-grow-1">
+                        <h2 class="sigla text-start fs-3 lh-1">ELT</h2>
+                        <p class="text-secondary text-start small m-0">
+                            Elettronica ed Elettrotecnica
+                        </p>
+                    </div>
+                    <i class="bg-icon bi bi-lightning-charge-fill"></i>
+                    <div class="arrow-btn bg-light text-secondary">
+                        <i class="bi bi-chevron-right"></i>
+                    </div>
+                </div>
+            </button>
+        }   
+
+        @if (studentiService.sezioni.includes('MEC')) 
+        {
+            <!-- MEC -->
+            <button class="sezione-card s-mec position-relative d-flex align-items-center bg-white border shadow-sm" (click)="SetSezione('MEC')">
+                <div class="overlay"></div>
+                <div class="left-bar align-self-stretch"></div>
+                <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
+                    <div class="icon-box"><i class="bi bi-gear-fill"></i></div>
+                    <div class="flex-grow-1">
+                        <h2 class="sigla text-start fs-3 lh-1">MEC</h2>
+                        <p class="text-secondary text-start small m-0">
+                            Meccanica, Meccatronica ed Energia
+                        </p>
+                    </div>
+                    <i class="bg-icon bi bi-gear-fill"></i>
+                    <div class="arrow-btn bg-light text-secondary">
+                        <i class="bi bi-chevron-right"></i>
+                    </div>
+                </div>
+            </button>
+        }
+
+        @if (studentiService.sezioni.includes('AFM')) 
+        {
+            <!-- AFM -->
+            <button class="sezione-card s-afm position-relative d-flex align-items-center bg-white border shadow-sm" (click)="SetSezione('AFM')">
+            <div class="overlay"></div>
+            <div class="left-bar align-self-stretch"></div>
+            <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
+                <div class="icon-box"><i class="bi bi-cash-coin"></i></div>
+                <div class="flex-grow-1">
+                    <h2 class="sigla text-start fs-3 lh-1">AFM</h2>
+                    <p class="text-secondary text-start small m-0">
+                        Amministrazione, Finanza e Marketing
+                    </p>
+                </div>
+                <i class="bg-icon bi bi-cash-coin"></i>
+                <div class="arrow-btn bg-light text-secondary">
+                    <i class="bi bi-chevron-right"></i>
+                </div>
+            </div>
+            </button>
+        }
+
+        @if (studentiService.sezioni.includes('LIC')) 
+        {
+            <!-- LIC -->
+            <button class="sezione-card s-lic position-relative d-flex align-items-center bg-white border shadow-sm" (click)="SetSezione('LIC')">
+            <div class="overlay"></div>
+            <div class="left-bar align-self-stretch"></div>
+            <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
+                <div class="icon-box"><i class="bi bi-book-fill"></i></div>
+                <div class="flex-grow-1">
+                    <h2 class="sigla text-start fs-3 lh-1">LIC</h2>
+                    <p class="text-secondary text-start small m-0">
+                        Liceo Scientifico delle Scienze Applicate
+                    </p>
+                </div>
+                <i class="bg-icon bi bi-book-fill"></i>
+                <div class="arrow-btn bg-light text-secondary">
+                    <i class="bi bi-chevron-right"></i>
+                </div>
+            </div>
+            </button>
+        }
+
+        @if (studentiService.sezioni.includes('TUR')) 
+        {
+            <!-- TUR -->
+            <button class="sezione-card s-tur position-relative d-flex align-items-center bg-white border shadow-sm" (click)="SetSezione('TUR')">
+            <div class="overlay"></div>
+            <div class="left-bar align-self-stretch"></div>
+            <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
+                <div class="icon-box"><i class="bi bi-airplane-fill"></i></div>
+                <div class="flex-grow-1">
+                    <h2 class="sigla text-start fs-3 lh-1">TUR</h2>
+                    <p class="text-secondary text-start small m-0">
+                        Turismo
+                    </p>
+                </div>
+                <i class="bg-icon bi bi-airplane-fill"></i>
+                <div class="arrow-btn bg-light text-secondary">
+                    <i class="bi bi-chevron-right"></i>
+                </div>
+            </div>
+            </button>
+        }
+
+        @if (studentiService.sezioni.includes('ENE')) 
+        {
+            <!-- ENE -->
+            <button class="sezione-card s-ene position-relative d-flex align-items-center bg-white border shadow-sm" (click)="SetSezione('ENE')">
+            <div class="overlay"></div>
+            <div class="left-bar align-self-stretch"></div>
+            <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
+                <div class="icon-box"><i class="bi bi-battery-charging"></i></div>
+                <div class="flex-grow-1">
+                    <h2 class="sigla text-start fs-3 lh-1">ENE</h2>
+                    <p class="text-secondary text-start small m-0">
+                        Energia
+                    </p>
+                </div>
+                <i class="bg-icon bi bi-battery-charging"></i>
+                <div class="arrow-btn bg-light text-secondary">
+                    <i class="bi bi-chevron-right"></i>
+                </div>
+            </div>
+            </button>
+        }
+    </div>
+</section>
