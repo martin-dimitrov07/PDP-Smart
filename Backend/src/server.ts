@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 import queryStringParser from "./routes/queryStringParser.ts";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 
 // routes
 import GestioneLogin from "./routes/login.ts";
@@ -21,9 +23,14 @@ const app = express();
 dotenv.config({ path: ".env" });
 const https_port = process.env.HTTPS_PORT;
 
+// sicurezza con http headers di sicurezza
+app.use(helmet());
+
 // configurazioni PrismaClient
 const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL!,
+    // Aggiungi questo per dire al driver di accettare il tuo certificato self-signed
+    ssl: { rejectUnauthorized: false }
 });
 
 export const prisma = new PrismaClient({ adapter }); //export così da poterlo usare nelle API route (root dinamiche)
@@ -81,8 +88,15 @@ app.use(cookieParser());
 
 //E. gestione delle root dinamiche
 
+// Gestione delle troppe richieste
+const LoginLimiter = rateLimit({
+    windowMs: 60 * 1000, // Finestra di 1 minuto
+    max: 7, // Massimo 7 tentativi al minuto per IP
+    message: "Troppi tentativi di login. Riprova tra 1 minuto.",
+    legacyHeaders: false,
+});
 //Login
-app.post("/api/login", GestioneLogin);
+app.post("/api/login", LoginLimiter, GestioneLogin);
 
 //Studenti
 app.get("/api/sezioni", GestioneStudenti.GetSezioni);
@@ -108,4 +122,20 @@ app.use(function (err: Error, req: express.Request, res: express.Response, next:
     next();
 });
 
-await prisma.$disconnect;
+
+//H. Gestione della chiusura pulita
+const ChiusuraPrisma = async () => {
+  try {
+    await prisma.$disconnect();
+    console.log("Chiusura della connessione con il database avvenuta correttamente");
+    process.exit(0); // 0 -> chiusura corretta
+  } catch (err) {
+    console.error("Errore durante la chiusura di Prisma:", err);
+    process.exit(1); // 1 -> chiusura con errori
+  }
+};
+
+// Intercetta il segnale di chiusura (CTRL+C)
+process.on("SIGINT", ChiusuraPrisma);
+// Intercetta il segnale di terminazione (es. da Heroku o Docker)
+process.on("SIGTERM", ChiusuraPrisma);
