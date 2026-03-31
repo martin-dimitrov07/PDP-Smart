@@ -13,7 +13,7 @@ export class DocentiService {
     GetEmailDocente() {
         return this.dataStorageService.InviaRichiesta("GET", "/email-docente")!
             .pipe(tap((data: any) => {  //pipe: intercetta //tap: legge dati   
-                this.emailDocente = data;
+                this.emailDocente = data.email;
                 console.log(this.emailDocente);
             }));
     }
