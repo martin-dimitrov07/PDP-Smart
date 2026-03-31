@@ -30,7 +30,7 @@ app.use(helmet());
 const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL!,
     // Aggiungi questo per dire al driver di accettare il tuo certificato self-signed
-    ssl: { rejectUnauthorized: false }
+    // ssl: { rejectUnauthorized: false }
 });
 
 export const prisma = new PrismaClient({ adapter }); //export così da poterlo usare nelle API route (root dinamiche)
@@ -86,11 +86,7 @@ app.use("/", cors(corsOptions));
 //middleware 7: Parsing dei cookies (serve per usare req.cookies)
 app.use(cookieParser());
 
-//middleware 8: Controllo token
-app.use(Login.ControlloToken);
-
-//E. gestione delle root dinamiche
-
+// Gestione Login
 // Gestione delle troppe richieste
 const LoginLimiter = rateLimit({
     windowMs: 60 * 1000, // Finestra di 1 minuto
@@ -101,10 +97,15 @@ const LoginLimiter = rateLimit({
 //Login
 app.post("/api/login", LoginLimiter, Login.GestioneLogin);
 
+//middleware 8: Controllo token
+app.use("/api", Login.ControlloToken);
+
+//E. gestione delle root dinamiche
+
 //Email docente
 app.get("/api/email-docente", (req: any, res: any) => {
     if(req.email)
-        res.send(req.email);
+        res.send({ email: req.email });
     else
         res.status(500).send("Errore nell'invio della mail del docente");
 })

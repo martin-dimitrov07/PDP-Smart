@@ -2,8 +2,8 @@ import { prisma } from "../server.ts";
 
 async function GetSezioni(req: any, res: any) {
     try {
-        const filters: any = req.query.filters || {};
-        const distinct: any = req.query.distinct || "";
+        const filters: any = req["parsedQuery"].filters || {};
+        const distinct: any = req["parsedQuery"].distinct || "";
 
         let query: any = {
             where: filters,
@@ -34,8 +34,8 @@ async function GetSezioni(req: any, res: any) {
 
 async function GetClassi(req: any, res: any) {
     try {
-        const filters: any = req.query.filters || {};
-        const distinct: any = req.query.distinct || "";
+        const filters: any = req["parsedQuery"].filters || {};
+        const distinct: any = req["parsedQuery"].distinct || "";
 
         let query: any = {
             where: filters
@@ -59,7 +59,7 @@ async function GetClassi(req: any, res: any) {
 
 async function GetStudenti(req: any, res: any) {
     try {
-        const filters: any = req.query.filters || {};
+        const filters: any = req["parsedQuery"].filters || {};
 
         const studenti = await prisma.studente.findMany({
             where: filters
