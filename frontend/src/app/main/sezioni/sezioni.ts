@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class Sezioni {
     private studentiService: StudentiService = inject(StudentiService);
-
+    
     private router: Router = inject(Router);
 
     sezioniDocente: string[] = [];

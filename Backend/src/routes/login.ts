@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: ".env" });
 
+// costanti globali
 const cookiesOptions: CookieOptions = {
     "path": "/", // vale per tutte le sotto-route
     "httpOnly": true, // il cookie non è visibile da javascript
@@ -12,13 +13,14 @@ const cookiesOptions: CookieOptions = {
     "maxAge": parseInt(process.env.DURATA_TOKEN!) * 1000, // durata relativa a partire da ora espressa in millisecondi
     "sameSite": "none" // deve essere messo anche extra-domain (lo manda anche ai server che non appartengono allo stesso dominio della pagina)
 }
+const clientGoogle: any = new OAuth2Client(process.env.CLIENT_ID);
 
+// funzioni
 async function GestioneLogin(req: any, res: any) {
     const token = req.body.token;
-    const clientGoogle = new OAuth2Client(process.env.CLIENT_ID);
     
     try {
-        const payload: any = await GetPayload(token, clientGoogle);
+        const payload: any = await GetPayload(token);
 
         if (payload && payload.email) {
             const email = payload.email;
@@ -40,7 +42,7 @@ async function GestioneLogin(req: any, res: any) {
     }
 }
 
-async function GetPayload(token: string, clientGoogle: any) {
+async function GetPayload(token: string) {
     const ticket = await clientGoogle.verifyIdToken({
         idToken: token,
         audience: process.env.CLIENT_ID,
@@ -58,4 +60,30 @@ async function GetDocente(email: string) {
     });
 }
 
-export default GestioneLogin;
+async function ControlloToken(req: any, res: any, next: any) {
+    const token = req.cookies.TOKEN;
+
+    // quando il cookie scade
+    if(!token)
+        res.status(401).send("Token mancante");
+
+    try
+    {
+        const payload: any = await GetPayload(token);
+
+        req.email = payload.email;
+
+        // viene resettato il cookie con il token
+        res.cookie("TOKEN", token, cookiesOptions);
+
+        next();
+    }
+    catch(err: any)
+    {
+        // entra in caso scade il token di google (dopo 1 ora)
+        console.error('Errore validazione token:', err.message);
+        res.status(401).send('Token non valido o scaduto');
+    }
+}
+
+export { GestioneLogin, ControlloToken };

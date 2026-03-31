@@ -10,7 +10,7 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
 // routes
-import GestioneLogin from "./routes/login.ts";
+import * as Login from "./routes/login.ts";
 import * as GestioneStudenti from "./routes/studenti.ts";
 
 import { PrismaClient } from "../prisma/generated/client/index.js";
@@ -86,6 +86,9 @@ app.use("/", cors(corsOptions));
 //middleware 7: Parsing dei cookies (serve per usare req.cookies)
 app.use(cookieParser());
 
+//middleware 8: Controllo token
+app.use(Login.ControlloToken);
+
 //E. gestione delle root dinamiche
 
 // Gestione delle troppe richieste
@@ -96,7 +99,15 @@ const LoginLimiter = rateLimit({
     legacyHeaders: false,
 });
 //Login
-app.post("/api/login", LoginLimiter, GestioneLogin);
+app.post("/api/login", LoginLimiter, Login.GestioneLogin);
+
+//Email docente
+app.get("/api/email-docente", (req: any, res: any) => {
+    if(req.email)
+        res.send(req.email);
+    else
+        res.status(500).send("Errore nell'invio della mail del docente");
+})
 
 //Studenti
 app.get("/api/sezioni", GestioneStudenti.GetSezioni);
