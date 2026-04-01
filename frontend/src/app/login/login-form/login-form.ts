@@ -37,14 +37,19 @@ export class LoginForm implements OnInit {
                     });
 
                     // renderizza il bottone nascosto
-                    google.accounts.id.renderButton(
-                        document.getElementById("googleBtn"),
-                        {
-                            theme: "outline",
-                            size: "large",
-                            width: document.getElementById("googleBtn")?.offsetWidth
-                        }
-                    );
+                    const googleButtons = document.querySelectorAll(".google-overlay");
+
+                    googleButtons.forEach((btn: any) => {
+                        google.accounts.id.renderButton(
+                            btn, // Passiamo direttamente l'elemento corrente del ciclo
+                            {
+                                theme: "outline",
+                                size: "large",
+                                // Usiamo l'ampiezza dell'elemento specifico
+                                width: btn.offsetWidth
+                            }
+                        );
+                    });
 
                     LoginForm.isInitialized = true;
                 }
@@ -79,7 +84,7 @@ export class LoginForm implements OnInit {
                 error: (err: any) => {
                     console.log(err);
 
-                    if(err.status == 401)
+                    if (err.status == 401)
                         console.error("Login non valido")
                     else
                         console.error(err.status + ": " + err.error);

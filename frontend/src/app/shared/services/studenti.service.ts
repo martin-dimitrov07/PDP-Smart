@@ -65,6 +65,7 @@ export class StudentiService {
         return this.dataStorageService.InviaRichiesta("GET", "/classi", params)!
             .pipe(tap((data: any) => {  //pipe: intercetta //tap: legge dati   
                 this.classi = Array.from(data).map((classe: any) => new Classe(classe.Id, classe.Classe, classe.Sezione, classe.Indirizzo, classe.Anno_Scolastico));
+                console.log(data);
                 console.log(this.classi);
             }));
     }

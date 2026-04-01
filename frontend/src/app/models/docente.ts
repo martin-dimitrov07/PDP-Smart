@@ -18,6 +18,6 @@ export class Docente {
 }
 
 export enum Ruolo{
-    "ADMIN" = "Admin",
-    "DOCENTE" = "Docente"
+    "ADMIN" = "ADMIN",
+    "DOCENTE" = "DOCENTE"
 }

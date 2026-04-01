@@ -1,25 +1,34 @@
 export class Classe {
-    Id: Int32Array;
-    Classe: Int32Array;
+    Id: number;
+    Classe: number;
     Sezione: string;
     Indirizzo: string;
     Anno_Scolastico: number;
 
     constructor(
-        id: Int32Array,
-        classe: Int32Array,
+        id: number,
+        classe: number,
         sezione: string,
         indirizzo: string,
-        anno_Scolastico: Date
+        anno_Scolastico: Date | string  //Prisma potrebbe mandare date anche come stringa
     ) {
         this.Id = id;
         this.Classe = classe;
         this.Sezione = sezione;
         this.Indirizzo = indirizzo;
-        this.Anno_Scolastico = anno_Scolastico.getFullYear();
+
+        const date = typeof anno_Scolastico == 'string'
+            ? new Date(anno_Scolastico)
+            : anno_Scolastico;
+
+        this.Anno_Scolastico = date.getFullYear();
     }
 
-    GetAnnoScolastico(){
+    GetAnnoScolastico() {
         return this.Anno_Scolastico.toString() + "/" + (this.Anno_Scolastico + 1).toString();
+    }
+
+    GetFullNome() {
+        return this.Classe.toString() + this.Sezione.toString() + " " + this.Indirizzo.toString();
     }
 }
