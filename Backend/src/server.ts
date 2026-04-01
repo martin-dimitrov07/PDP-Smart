@@ -98,20 +98,20 @@ const LoginLimiter = rateLimit({
 app.post("/api/login", LoginLimiter, Login.GestioneLogin);
 
 //middleware 8: Controllo token
-app.use("/api", Login.ControlloToken);
+app.use("/api/", Login.ControlloToken);
 
 //E. gestione delle root dinamiche
 
 //Email docente
-app.get("/api/email-docente", (req: any, res: any) => {
-    if(req.email)
-        res.send({ email: req.email });
-    else
-        res.status(500).send("Errore nell'invio della mail del docente");
-})
+// app.get("/api/email-docente", (req: any, res: any) => {
+//     if(req.email)
+//         res.send({ email: req.email });
+//     else
+//         res.status(500).send("Errore nell'invio della mail del docente");
+// })
 
 //Studenti
-app.get("/api/sezioni", GestioneStudenti.GetSezioni);
+app.get("/api/indirizzi", GestioneStudenti.GetIndirizzi);
 app.get("/api/classi", GestioneStudenti.GetClassi);
 app.get("/api/studenti", GestioneStudenti.GetStudenti);
 app.get("/api/studente/:id", GestioneStudenti.GetStudenteById);

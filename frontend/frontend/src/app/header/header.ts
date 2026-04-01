@@ -1,10 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-<<<<<<< HEAD
 import { DocentiService } from '../shared/services/docenti.service';
-=======
-import { LoginService } from '../shared/services/login.service';
->>>>>>> main
 
 @Component({
     selector: 'app-header',
@@ -13,7 +9,6 @@ import { LoginService } from '../shared/services/login.service';
     styleUrl: './header.css',
 })
 export class Header {
-<<<<<<< HEAD
     public readonly docentiService: DocentiService = inject(DocentiService);
 
     private router: Router = inject(Router);
@@ -25,13 +20,13 @@ export class Header {
             },
             error: err => {
                 if (err.status == 401)
+                {
+                    console.log(err);
                     this.router.navigate(["/login"]);
+                }
                 else
                     console.error(err.status + ": " + err.error);
             }
         })
     }
-=======
-    public readonly loginService: LoginService = inject(LoginService);
->>>>>>> main
 }

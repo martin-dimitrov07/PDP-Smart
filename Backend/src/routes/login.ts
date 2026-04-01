@@ -71,7 +71,7 @@ async function ControlloToken(req: any, res: any, next: any) {
     {
         const payload: any = await GetPayload(token);
 
-        req.email = payload.email;
+        // req.email = payload.email;
 
         // viene resettato il cookie con il token
         res.cookie("TOKEN", token, cookiesOptions);

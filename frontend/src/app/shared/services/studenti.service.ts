@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { distinct, Observable, tap } from 'rxjs';
 import { DataStorageService } from './data-storage.service';
 import { LoginService } from './login.service';
 import { Studente } from '../../models/studente';
@@ -8,9 +8,10 @@ import { Studente } from '../../models/studente';
     providedIn: 'root',
 })
 export class StudentiService {
-    private dataStorageService = inject(DataStorageService);
-    private loginService: LoginService = inject(LoginService);
+    private readonly dataStorageService = inject(DataStorageService);
+    private readonly loginService: LoginService = inject(LoginService);
     
+<<<<<<< HEAD
     sezioni: string[] = [];
     sezioneSelected: string = "";
     classe: string = "";
@@ -18,18 +19,33 @@ export class StudentiService {
 
     GetSections(): Observable<any> {
         const filters = {
+=======
+    indirizzi: string[] = [];
+    indirizzoSelected: string = "";
+    classe: string = "";
+    studenti: Studente[] = [];
+
+    GetIndirizzi(): Observable<any> {
+        const filters = this.loginService.docente.Ruolo == "Docente" ? {
+>>>>>>> main
             Insegnamenti: {
                 some: {  // serve per relazioni uno a molti
                     Docente_Email: this.loginService.docente.Email
                 }
             }
-        };
+        } : { };
 
-        return this.dataStorageService.InviaRichiesta("GET", "/sezioni", { filters, distinct: "Sezione" })!
+        const params = {
+            filters: JSON.stringify(filters),
+            distinct: "Indirizzo"
+        }
+
+        console.log(filters);
+
+        return this.dataStorageService.InviaRichiesta("GET", "/indirizzi", params)!
             .pipe(tap((data: any) => {  //pipe: intercetta //tap: legge dati   
-                this.sezioni = data;
-                console.log(this.sezioni);
+                this.indirizzi = Array.from(data).map((ind: any) => ind.Indirizzo);
+                console.log(this.indirizzi);
             }));
     }
-
 }

@@ -1,6 +1,6 @@
 import { prisma } from "../server.ts";
 
-async function GetSezioni(req: any, res: any) {
+async function GetIndirizzi(req: any, res: any) {
     try {
         const filters: any = req["parsedQuery"].filters || {};
         const distinct: any = req["parsedQuery"].distinct || "";
@@ -8,7 +8,7 @@ async function GetSezioni(req: any, res: any) {
         let query: any = {
             where: filters,
             select: {
-                Sezione: true
+                Indirizzo: true
             }
         };
 
@@ -19,16 +19,16 @@ async function GetSezioni(req: any, res: any) {
             };
         }
 
-        const sezioni = await prisma.classe.findMany(query);
+        const indirizzi = await prisma.classe.findMany(query);
 
-        if (sezioni && sezioni.length > 0)
-            res.send(sezioni);
+        if (indirizzi && indirizzi.length > 0)
+            res.send(indirizzi);
         else
-            res.status(404).send("Sezioni non trovate");
+            res.status(404).send("Indirizzi non trovati");
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
-        res.status(500).send("Errore nella esecuzione della richiesta delle sezioni: ", err);
+        res.status(500).send("Errore nella esecuzione della richiesta degli indirizzi: ", err);
     }
 }
 
@@ -95,4 +95,4 @@ async function GetStudenteById(req: any, res: any) {
     }
 }
 
-export { GetSezioni, GetClassi, GetStudenti, GetStudenteById };
+export { GetIndirizzi, GetClassi, GetStudenti, GetStudenteById };
