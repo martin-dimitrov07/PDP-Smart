@@ -33,7 +33,27 @@ const adapter = new PrismaPg({
     // ssl: { rejectUnauthorized: false }
 });
 
-export const prisma = new PrismaClient({ adapter }); //export così da poterlo usare nelle API route (root dinamiche)
+export const prisma = new PrismaClient({
+  log: [
+    {
+      emit: 'stdout',
+      level: 'query',
+    },
+    {
+      emit: 'stdout',
+      level: 'error',
+    },
+    {
+      emit: 'stdout',
+      level: 'info',
+    },
+    {
+      emit: 'stdout',
+      level: 'warn',
+    },
+  ], 
+  adapter
+}); //export così da poterlo usare nelle API route (root dinamiche)
 
 //C. creazione ed avvio di un server https
 const privateKey = fs.readFileSync("keys/privateKey.pem", "utf8");

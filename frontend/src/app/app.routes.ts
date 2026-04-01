@@ -17,19 +17,11 @@ export const routes: Routes = [
     },
     {
         path: "indirizzi",
-        component: Indirizzi,
-        children: [
-            {
-                path: ':indirizziId/classi',
-                component: Classi,
-                children: [
-                    {
-                        path: ":classeId/studenti",
-                        component: Studenti
-                    }
-                ]
-            }
-        ]
+        component: Indirizzi
+    },
+    {
+        path: "classi",
+        component: Classi
     },
     {
         path: "studenti",

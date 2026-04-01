@@ -22,17 +22,18 @@ export class Indirizzi {
                 if (err.status == 401)
                 {
                     console.error(err);
-                    this.router.navigate(["/login"]);
+                    this.router.navigate(["login"]);
                 }
                 else
+                    // console.error("Errore in indirizzi.ts");
                     console.error(err.status + ": " + err.error);
             }
         })
     }
 
-    SetSezione(section: string) {
-        // sectionId = this.sezioniDocente.find(sezione => sezione.nome == section).id;
+    GoClassi(indirizzo: string) {
+        this.studentiService.indirizzoSelected = indirizzo;
 
-        // this.studentiService.sezioneSelected = sectionId;
+        this.router.navigate(["classi"]);
     }
 }
