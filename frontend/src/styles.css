@@ -16,7 +16,7 @@
 
     --dark-shadow-color: #000000BB;
 
-    /* colori sezioni PORCO DIO*/
+    /* #region colori sezioni*/
     --inf-color: #1a7f5a;
     --inf-color-hover: #e8f7f1;
     --inf-color-hover-dark: #c6edde;
@@ -44,6 +44,8 @@
     --ene-color: #b91c1c;
     --ene-color-hover: #fde8e8;
     --ene-color-hover-dark: #fac5c5;
+
+    /* #endregion */
 }
 
 .dark-mode {

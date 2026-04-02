@@ -34,24 +34,24 @@ const adapter = new PrismaPg({
 });
 
 export const prisma = new PrismaClient({
-  log: [
-    {
-      emit: 'stdout',
-      level: 'query',
-    },
-    {
-      emit: 'stdout',
-      level: 'error',
-    },
-    {
-      emit: 'stdout',
-      level: 'info',
-    },
-    {
-      emit: 'stdout',
-      level: 'warn',
-    },
-  ], 
+//   log: [
+//     {
+//       emit: 'stdout',
+//       level: 'query',
+//     },
+//     {
+//       emit: 'stdout',
+//       level: 'error',
+//     },
+//     {
+//       emit: 'stdout',
+//       level: 'info',
+//     },
+//     {
+//       emit: 'stdout',
+//       level: 'warn',
+//     },
+//   ], 
   adapter
 }); //export così da poterlo usare nelle API route (root dinamiche)
 
@@ -123,12 +123,12 @@ app.use("/api/", Login.ControlloToken);
 //E. gestione delle root dinamiche
 
 //Email docente
-// app.get("/api/email-docente", (req: any, res: any) => {
-//     if(req.email)
-//         res.send({ email: req.email });
-//     else
-//         res.status(500).send("Errore nell'invio della mail del docente");
-// })
+app.get("/api/email-docente", (req: any, res: any) => {
+    if(req.docente)
+        res.send(req.docente);
+    else
+        res.status(500).send("Errore nell'invio della mail del docente");
+})
 
 //Studenti
 app.get("/api/indirizzi", GestioneStudenti.GetIndirizzi);

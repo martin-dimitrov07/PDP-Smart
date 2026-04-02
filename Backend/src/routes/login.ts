@@ -71,10 +71,14 @@ async function ControlloToken(req: any, res: any, next: any) {
     {
         const payload: any = await GetPayload(token);
 
-        // req.email = payload.email;
+        const docente = await GetDocente(payload.email);
 
-        // viene resettato il cookie con il token
-        res.cookie("TOKEN", token, cookiesOptions);
+        if (docente) {
+            res.cookie("TOKEN", token, cookiesOptions);
+            req.docente = docente;
+        } else {
+            res.status(404).send("Docente loggato non trovato");
+        }
 
         next();
     }

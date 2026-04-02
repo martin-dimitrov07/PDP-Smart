@@ -19,14 +19,8 @@ export class Indirizzi {
                 console.log(data);
             },
             error: err => {
-                if (err.status == 401)
-                {
-                    console.error(err);
-                    this.router.navigate(["login"]);
-                }
-                else
-                    // console.error("Errore in indirizzi.ts");
-                    console.error(err.status + ": " + err.error);
+                // console.error("Errore in indirizzi.ts");
+                console.error(err.status + ": " + err.error);
             }
         })
     }
@@ -34,6 +28,6 @@ export class Indirizzi {
     GoClassi(indirizzo: string) {
         this.studentiService.indirizzoSelected = indirizzo;
 
-        this.router.navigate(["classi"]);
+        this.router.navigate(["indirizzi", indirizzo, "classi"]);
     }
 }

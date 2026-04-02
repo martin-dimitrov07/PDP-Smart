@@ -1,6 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { Header } from './header/header';
+import { DocentiService } from './shared/services/docenti.service';
+import { filter } from 'rxjs';
 
 @Component({
     selector: 'app-root',
@@ -10,5 +12,5 @@ import { Header } from './header/header';
 })
 
 export class App {
-    public router: Router = inject(Router);
+    public readonly router: Router = inject(Router);
 }

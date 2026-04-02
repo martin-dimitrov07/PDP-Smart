@@ -1,17 +1,18 @@
 import { inject, Injectable } from '@angular/core';
-import { distinct, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { DataStorageService } from './data-storage.service';
-import { LoginService } from './login.service';
 import { Studente } from '../../models/studente';
 import { Classe } from '../../models/classe';
-import { Ruolo } from '../../models/docente';
+import { Docente, Ruolo } from '../../models/docente';
+import { DocentiService } from './docenti.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class StudentiService {
     private readonly dataStorageService = inject(DataStorageService);
-    private readonly loginService: LoginService = inject(LoginService);
+
+    private readonly docentiService: DocentiService = inject(DocentiService);
 
     indirizzi: string[] = [];
     indirizzoSelected?: string;
@@ -22,10 +23,10 @@ export class StudentiService {
     studenti: Studente[] = [];
 
     GetIndirizzi(): Observable<any> {
-        const filters = this.loginService.docente.Ruolo == Ruolo.DOCENTE ? {
+        const filters = this.docentiService.docente.Ruolo == Ruolo.DOCENTE ? {
             Insegnamenti: {
                 some: {  // serve per relazioni uno a molti
-                    Docente_Email: this.loginService.docente.Email
+                    Docente_Email: this.docentiService.docente.Email
                 }
             }
         } : {};
@@ -35,7 +36,7 @@ export class StudentiService {
             distinct: "Indirizzo"
         }
 
-        // console.log(params);
+        console.log(this.docentiService.docente);
 
         return this.dataStorageService.InviaRichiesta("GET", "/indirizzi", params)!
             .pipe(tap((data: any) => {  //pipe: intercetta //tap: legge dati   
@@ -45,10 +46,10 @@ export class StudentiService {
     }
 
     GetClassi(): Observable<any> {
-        const filters = this.loginService.docente.Ruolo == Ruolo.DOCENTE ? {
+        const filters = this.docentiService.docente.Ruolo == Ruolo.DOCENTE ? {
             Insegnamenti: {
                 some: {  // serve per relazioni uno a molti
-                    Docente_Email: this.loginService.docente.Email
+                    Docente_Email: this.docentiService.docente.Email
                 }
             },
             Indirizzo: this.indirizzoSelected

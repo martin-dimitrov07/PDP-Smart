@@ -4,11 +4,12 @@ import { Classi } from './main/classi/classi';
 import { Studenti } from './main/studenti/studenti';
 import { Documenti } from './main/documenti/documenti';
 import { Login } from './login/login';
+import { docenteResolver } from './shared/utilities/docente-resolver';
 
 export const routes: Routes = [
     {
         path: "",
-        redirectTo: "/indirizzi",
+        redirectTo: "indirizzi",
         pathMatch: "full"
     },
     {
@@ -17,18 +18,31 @@ export const routes: Routes = [
     },
     {
         path: "indirizzi",
-        component: Indirizzi
-    },
-    {
-        path: "classi",
-        component: Classi
-    },
-    {
-        path: "studenti",
-        component: Studenti
+        resolve: { docente: docenteResolver },
+        children: [
+            {
+                path: "",
+                component: Indirizzi
+            },
+            {
+                path: ":indirizzo/classi",
+                component: Classi,
+                children: [
+                    {
+                        path: "",
+                        component: Classi
+                    },
+                    {
+                        path: ":idClasse/studenti",
+                        component: Studenti
+                    }
+                ]
+            }
+        ]
     },
     {
         path: "documenti",
-        component: Documenti
+        component: Documenti,
+        resolve: { docente: docenteResolver }
     }
 ];

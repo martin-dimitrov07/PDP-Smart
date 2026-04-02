@@ -43,10 +43,12 @@ export class LoginForm implements OnInit {
                         google.accounts.id.renderButton(
                             btn, // Passiamo direttamente l'elemento corrente del ciclo
                             {
+                                type: "standard",
+                                shape: "rectangular",
                                 theme: "outline",
                                 size: "large",
-                                // Usiamo l'ampiezza dell'elemento specifico
-                                width: btn.offsetWidth
+                                width: 400, // Mettiamo il massimo consentito da Google
+                                locale: "it"
                             }
                         );
                     });

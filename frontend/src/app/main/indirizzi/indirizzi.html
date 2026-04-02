@@ -8,10 +8,11 @@
 
     <div class="d-flex flex-column gap-3">
 
-        @if (studentiService.indirizzi.includes('INF')) 
+        @if (studentiService.indirizzi.includes('INF'))
         {
             <!-- INF -->
-            <button class="sezione-card s-inf position-relative d-flex align-items-center bg-white border shadow-sm" (click)="GoClassi('INF')">
+            <button class="sezione-card s-inf position-relative d-flex align-items-center bg-white border shadow-sm"
+                (click)="GoClassi('INF')">
                 <div class="overlay"></div>
                 <div class="left-bar align-self-stretch"></div>
                 <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
@@ -30,10 +31,11 @@
             </button>
         }
 
-        @if (studentiService.indirizzi.includes('ELT')) 
+        @if (studentiService.indirizzi.includes('ELT'))
         {
             <!-- ELT -->
-            <button class="sezione-card s-elt position-relative d-flex align-items-center bg-white border shadow-sm" (click)="GoClassi('ELT')">
+            <button class="sezione-card s-elt position-relative d-flex align-items-center bg-white border shadow-sm"
+                (click)="GoClassi('ELT')">
                 <div class="overlay"></div>
                 <div class="left-bar align-self-stretch"></div>
                 <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
@@ -50,12 +52,13 @@
                     </div>
                 </div>
             </button>
-        }   
+        }
 
-        @if (studentiService.indirizzi.includes('MEC')) 
+        @if (studentiService.indirizzi.includes('MEC'))
         {
             <!-- MEC -->
-            <button class="sezione-card s-mec position-relative d-flex align-items-center bg-white border shadow-sm" (click)="GoClassi('MEC')">
+            <button class="sezione-card s-mec position-relative d-flex align-items-center bg-white border shadow-sm"
+                (click)="GoClassi('MEC')">
                 <div class="overlay"></div>
                 <div class="left-bar align-self-stretch"></div>
                 <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
@@ -74,91 +77,95 @@
             </button>
         }
 
-        @if (studentiService.indirizzi.includes('AFM')) 
+        @if (studentiService.indirizzi.includes('AFM'))
         {
             <!-- AFM -->
-            <button class="sezione-card s-afm position-relative d-flex align-items-center bg-white border shadow-sm" (click)="GoClassi('AFM')">
-            <div class="overlay"></div>
-            <div class="left-bar align-self-stretch"></div>
-            <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
-                <div class="icon-box"><i class="bi bi-cash-coin"></i></div>
-                <div class="flex-grow-1">
-                    <h2 class="sigla text-start fs-3 lh-1">AFM</h2>
-                    <p class="text-secondary text-start small m-0">
-                        Amministrazione, Finanza e Marketing
-                    </p>
+            <button class="sezione-card s-afm position-relative d-flex align-items-center bg-white border shadow-sm"
+                (click)="GoClassi('AFM')">
+                <div class="overlay"></div>
+                <div class="left-bar align-self-stretch"></div>
+                <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
+                    <div class="icon-box"><i class="bi bi-cash-coin"></i></div>
+                    <div class="flex-grow-1">
+                        <h2 class="sigla text-start fs-3 lh-1">AFM</h2>
+                        <p class="text-secondary text-start small m-0">
+                            Amministrazione, Finanza e Marketing
+                        </p>
+                    </div>
+                    <i class="bg-icon bi bi-cash-coin"></i>
+                    <div class="arrow-btn bg-light text-secondary">
+                        <i class="bi bi-chevron-right"></i>
+                    </div>
                 </div>
-                <i class="bg-icon bi bi-cash-coin"></i>
-                <div class="arrow-btn bg-light text-secondary">
-                    <i class="bi bi-chevron-right"></i>
-                </div>
-            </div>
             </button>
         }
 
-        @if (studentiService.indirizzi.includes('LIC')) 
+        @if (studentiService.indirizzi.includes('LIC'))
         {
             <!-- LIC -->
-            <button class="sezione-card s-lic position-relative d-flex align-items-center bg-white border shadow-sm" (click)="GoClassi('LIC')">
-            <div class="overlay"></div>
-            <div class="left-bar align-self-stretch"></div>
-            <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
-                <div class="icon-box"><i class="bi bi-book-fill"></i></div>
-                <div class="flex-grow-1">
-                    <h2 class="sigla text-start fs-3 lh-1">LIC</h2>
-                    <p class="text-secondary text-start small m-0">
-                        Liceo Scientifico delle Scienze Applicate
-                    </p>
+            <button class="sezione-card s-lic position-relative d-flex align-items-center bg-white border shadow-sm"
+                (click)="GoClassi('LIC')">
+                <div class="overlay"></div>
+                <div class="left-bar align-self-stretch"></div>
+                <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
+                    <div class="icon-box"><i class="bi bi-book-fill"></i></div>
+                    <div class="flex-grow-1">
+                        <h2 class="sigla text-start fs-3 lh-1">LIC</h2>
+                        <p class="text-secondary text-start small m-0">
+                            Liceo Scientifico delle Scienze Applicate
+                        </p>
+                    </div>
+                    <i class="bg-icon bi bi-book-fill"></i>
+                    <div class="arrow-btn bg-light text-secondary">
+                        <i class="bi bi-chevron-right"></i>
+                    </div>
                 </div>
-                <i class="bg-icon bi bi-book-fill"></i>
-                <div class="arrow-btn bg-light text-secondary">
-                    <i class="bi bi-chevron-right"></i>
-                </div>
-            </div>
             </button>
         }
 
-        @if (studentiService.indirizzi.includes('TUR')) 
+        @if (studentiService.indirizzi.includes('TUR'))
         {
             <!-- TUR -->
-            <button class="sezione-card s-tur position-relative d-flex align-items-center bg-white border shadow-sm" (click)="GoClassi('TUR')">
-            <div class="overlay"></div>
-            <div class="left-bar align-self-stretch"></div>
-            <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
-                <div class="icon-box"><i class="bi bi-airplane-fill"></i></div>
-                <div class="flex-grow-1">
-                    <h2 class="sigla text-start fs-3 lh-1">TUR</h2>
-                    <p class="text-secondary text-start small m-0">
-                        Turismo
-                    </p>
+            <button class="sezione-card s-tur position-relative d-flex align-items-center bg-white border shadow-sm"
+                (click)="GoClassi('TUR')">
+                <div class="overlay"></div>
+                <div class="left-bar align-self-stretch"></div>
+                <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
+                    <div class="icon-box"><i class="bi bi-airplane-fill"></i></div>
+                    <div class="flex-grow-1">
+                        <h2 class="sigla text-start fs-3 lh-1">TUR</h2>
+                        <p class="text-secondary text-start small m-0">
+                            Turismo
+                        </p>
+                    </div>
+                    <i class="bg-icon bi bi-airplane-fill"></i>
+                    <div class="arrow-btn bg-light text-secondary">
+                        <i class="bi bi-chevron-right"></i>
+                    </div>
                 </div>
-                <i class="bg-icon bi bi-airplane-fill"></i>
-                <div class="arrow-btn bg-light text-secondary">
-                    <i class="bi bi-chevron-right"></i>
-                </div>
-            </div>
             </button>
         }
 
-        @if (studentiService.indirizzi.includes('ENE')) 
+        @if (studentiService.indirizzi.includes('ENE'))
         {
             <!-- ENE -->
-            <button class="sezione-card s-ene position-relative d-flex align-items-center bg-white border shadow-sm" (click)="GoClassi('ENE')">
-            <div class="overlay"></div>
-            <div class="left-bar align-self-stretch"></div>
-            <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
-                <div class="icon-box"><i class="bi bi-battery-charging"></i></div>
-                <div class="flex-grow-1">
-                    <h2 class="sigla text-start fs-3 lh-1">ENE</h2>
-                    <p class="text-secondary text-start small m-0">
-                        Energia
-                    </p>
+            <button class="sezione-card s-ene position-relative d-flex align-items-center bg-white border shadow-sm"
+                (click)="GoClassi('ENE')">
+                <div class="overlay"></div>
+                <div class="left-bar align-self-stretch"></div>
+                <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 w-100 position-relative z-1">
+                    <div class="icon-box"><i class="bi bi-battery-charging"></i></div>
+                    <div class="flex-grow-1">
+                        <h2 class="sigla text-start fs-3 lh-1">ENE</h2>
+                        <p class="text-secondary text-start small m-0">
+                            Energia
+                        </p>
+                    </div>
+                    <i class="bg-icon bi bi-battery-charging"></i>
+                    <div class="arrow-btn bg-light text-secondary">
+                        <i class="bi bi-chevron-right"></i>
+                    </div>
                 </div>
-                <i class="bg-icon bi bi-battery-charging"></i>
-                <div class="arrow-btn bg-light text-secondary">
-                    <i class="bi bi-chevron-right"></i>
-                </div>
-            </div>
             </button>
         }
     </div>

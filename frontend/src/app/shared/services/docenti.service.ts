@@ -1,19 +1,21 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
 import { DataStorageService } from './data-storage.service';
+import { Observable, tap } from 'rxjs';
 import { Docente } from '../../models/docente';
 
 @Injectable({
     providedIn: 'root',
 })
-export class LoginService {
+export class DocentiService {
     private readonly dataStorageService: DataStorageService = inject(DataStorageService);
 
+    public docente: Docente = {} as Docente;
+
     //chiamata post per maggior sicurezza
-    Login(token: string): Observable<any> {
-        return this.dataStorageService.InviaRichiesta("POST", "/login", { token })!
+    GetDocente(): Observable<any> {
+        return this.dataStorageService.InviaRichiesta("GET", "/email-docente")!
             .pipe(tap((data: any) => {
-                console.log(data);
+                this.docente = new Docente(data.Nome, data.Cognome, data.Email, data.Ruolo);
             }));
     }
 }

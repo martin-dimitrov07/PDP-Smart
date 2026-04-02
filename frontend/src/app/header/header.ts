@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { LoginService } from '../shared/services/login.service';
+import { DocentiService } from '../shared/services/docenti.service';
 
 @Component({
     selector: 'app-header',
@@ -9,5 +9,5 @@ import { LoginService } from '../shared/services/login.service';
     styleUrl: './header.css',
 })
 export class Header {
-    public readonly loginService: LoginService = inject(LoginService);
+    public readonly docentiService: DocentiService = inject(DocentiService);
 }
