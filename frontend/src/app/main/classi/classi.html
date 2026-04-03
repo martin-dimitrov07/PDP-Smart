@@ -1,16 +1,31 @@
-<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="px-5 my-4">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/indirizzi"
-                class="text-decoration-none third-text-color opacity-75">Indirizzi</a></li>
-        <li class="breadcrumb-item secondary-text-color fw-bold" aria-current="page">Classi</li>
-    </ol>
-</nav>
+<div class="d-flex justify-content-between align-items-center px-3 mt-3">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="px-3 my-3">
+        <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a href="/indirizzi"
+                    class="text-decoration-none third-text-color opacity-75">Indirizzi</a></li>
+            <li class="breadcrumb-item secondary-text-color fw-bold" aria-current="page">Classi</li>
+        </ol>
+    </nav>
 
-<div class="sezione-card d-flex align-items-center my-4">
+    <div class="dropdown px-3">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Anno
+        </button>
+        <ul class="dropdown-menu">
+            @for (anno of studentiService.anniScolastici; track $index) {
+            <li><a class="dropdown-item cursor-pointer"
+                    (click)="SetFilterAnnoScolastico(anno)">{{anno.getFullYear().toString()}}/{{(anno.getFullYear() +
+                    1).toString()}}</a></li>
+            }
+        </ul>
+    </div>
+</div>
+
+<div class="sezione-card d-flex align-items-center my-3">
     <div class="d-flex align-items-center gap-3 gap-sm-4 px-4 px-sm-4 w-100">
-        <div class="icon-box shadow"><i class="bi bi-pc-display-horizontal"></i></div>
+        <div class="icon-box shadow"><i class="bi" ngClass="{{iconClass}}"></i></div>
         <div class="flex-grow-1">
-            <h2 class="sigla text-start text-white fs-3 lh-1 m-0">INF</h2>
+            <h2 class="sigla text-start text-white fs-3 lh-1 m-0">{{this.studentiService.indirizzoSelected}}</h2>
         </div>
         <div class="icon-box p-3 shadow" style="width: auto !important;">
             <p class="m-0 fw-bold">11 classi</p>
@@ -19,18 +34,73 @@
 </div>
 
 <div class="d-flex flex-wrap flex-md-nowrap justify-content-center gap-3 gap-xl-5 px-3 px-md-5 my-4" id="annoTabs">
-    <button class="col-5 col-sm-3 flex-md-fill anno-tab all active" data-anno="all">Tutte</button>
-    <button class="col-5 col-sm-3 flex-md-fill anno-tab" data-anno="1">1° Anno</button>
-    <button class="col-5 col-sm-3 flex-md-fill anno-tab" data-anno="2">2° Anno</button>
-    <button class="col-5 col-sm-3 flex-md-fill anno-tab" data-anno="3">3° Anno</button>
-    <button class="col-5 col-sm-3 flex-md-fill anno-tab" data-anno="4">4° Anno</button>
-    <button class="col-5 col-sm-3 flex-md-fill anno-tab" data-anno="5">5° Anno</button>
+    <button class="col-5 col-sm-3 flex-md-fill anno-tab all active" (click)="SetFilterAnno(0)"
+        id="anno-all">Tutte</button>
+    <button id="anno-1" class="col-5 col-sm-3 flex-md-fill anno-tab" (click)="SetFilterAnno(1)">1° Anno</button>
+    <button id="anno-2" class="col-5 col-sm-3 flex-md-fill anno-tab" (click)="SetFilterAnno(2)">2° Anno</button>
+    <button id="anno-3" class="col-5 col-sm-3 flex-md-fill anno-tab" (click)="SetFilterAnno(3)">3° Anno</button>
+    <button id="anno-4" class="col-5 col-sm-3 flex-md-fill anno-tab" (click)="SetFilterAnno(4)">4° Anno</button>
+    <button id="anno-5" class="col-5 col-sm-3 flex-md-fill anno-tab" (click)="SetFilterAnno(5)">5° Anno</button>
 </div>
 
-<div class="mx-4 mt-5">
-    @for (classe of studentiService.classi; track $index)
-    {
-
+<div class="mx-3 mt-5">
+    @if(studentiService.classi[1].length != 0) {
+    <section class="title-classe d-flex my-2">
+        <p class="text-uppercase mb-0 fw-bold">Primo anno</p>
+    </section>
+    <div class="px-3">
+        @for (classe of studentiService.classi[1]; track $index)
+        {
+        <app-classi-card [classe]="classe"></app-classi-card>
+        }
+    </div>
     }
-    <app-classi-card></app-classi-card>
+
+    @if(studentiService.classi[2].length != 0) {
+    <section class="title-classe d-flex my-2">
+        <p class="text-uppercase mb-0 fw-bold">Secondo anno</p>
+    </section>
+    <div class="px-3">
+        @for (classe of studentiService.classi[2]; track $index)
+        {
+        <app-classi-card [classe]="classe"></app-classi-card>
+        }
+    </div>
+    }
+
+    @if(studentiService.classi[3].length != 0) {
+    <section class="title-classe d-flex my-2">
+        <p class="text-uppercase mb-0 fw-bold">Terzo anno</p>
+    </section>
+    <div class="px-3">
+        @for (classe of studentiService.classi[3]; track $index)
+        {
+        <app-classi-card [classe]="classe"></app-classi-card>
+        }
+    </div>
+    }
+
+    @if(studentiService.classi[4].length != 0) {
+    <section class="title-classe d-flex my-2">
+        <p class="text-uppercase mb-0 fw-bold">Quarto anno</p>
+    </section>
+    <div class="px-3">
+        @for (classe of studentiService.classi[4]; track $index)
+        {
+        <app-classi-card [classe]="classe"></app-classi-card>
+        }
+    </div>
+    }
+
+    @if(studentiService.classi[5].length != 0) {
+    <section class="title-classe d-flex my-2">
+        <p class="text-uppercase mb-0 fw-bold">Quinto anno</p>
+    </section>
+    <div class="px-3">
+        @for (classe of studentiService.classi[5]; track $index)
+        {
+        <app-classi-card [classe]="classe"></app-classi-card>
+        }
+    </div>
+    }
 </div>

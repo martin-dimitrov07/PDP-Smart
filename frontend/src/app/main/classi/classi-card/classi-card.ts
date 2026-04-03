@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Classe } from '../../../models/classe';
 
 @Component({
   selector: 'app-classi-card',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './classi-card.css',
 })
 export class ClassiCard {
-
+    @Input() classe: Classe = {} as Classe;
 }

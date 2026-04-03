@@ -1,28 +1,31 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
 import { DataStorageService } from './data-storage.service';
 import { Studente } from '../../models/studente';
 import { Classe } from '../../models/classe';
-import { Docente, Ruolo } from '../../models/docente';
+import { Ruolo } from '../../models/docente';
 import { DocentiService } from './docenti.service';
+import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class StudentiService {
     private readonly dataStorageService = inject(DataStorageService);
-
+    private readonly router: Router = inject(Router);
     private readonly docentiService: DocentiService = inject(DocentiService);
 
     indirizzi: string[] = [];
     indirizzoSelected?: string;
 
-    classi: Classe[] = [];
+    classi: any = {};
     classeSelected: string = "";
+
+    anniScolastici: Date[] = [];
 
     studenti: Studente[] = [];
 
-    GetIndirizzi(): Observable<any> {
+    GetIndirizzi() {
         const filters = this.docentiService.docente.Ruolo == Ruolo.DOCENTE ? {
             Insegnamenti: {
                 some: {  // serve per relazioni uno a molti
@@ -38,15 +41,23 @@ export class StudentiService {
 
         console.log(this.docentiService.docente);
 
-        return this.dataStorageService.InviaRichiesta("GET", "/indirizzi", params)!
-            .pipe(tap((data: any) => {  //pipe: intercetta //tap: legge dati   
-                this.indirizzi = Array.from(data).map((ind: any) => ind.Indirizzo);
-                // console.log(this.indirizzi);
-            }));
+        this.dataStorageService.InviaRichiesta("GET", "/indirizzi", params)?.subscribe({
+            next: (data: any) => {
+                this.indirizzi = Array.from(data).map((item: any) => item.Indirizzo);
+                console.log(this.indirizzi);
+            },
+            error: (err: any) => {
+                if (err.status == 401) {
+                    this.router.navigate(["/login"]);
+                }
+                else
+                    console.error(err.status + ": " + err.error);
+            }
+        });
     }
 
-    GetClassi(): Observable<any> {
-        const filters = this.docentiService.docente.Ruolo == Ruolo.DOCENTE ? {
+    GetClassi(filterClassi: any, filterAnnoScolastico: any) {
+        let filters: any = this.docentiService.docente.Ruolo == Ruolo.DOCENTE ? {
             Insegnamenti: {
                 some: {  // serve per relazioni uno a molti
                     Docente_Email: this.docentiService.docente.Email
@@ -57,17 +68,62 @@ export class StudentiService {
             Indirizzo: this.indirizzoSelected
         };
 
+        if (filterClassi["in"])
+            filters.Classe = filterClassi;
+
+        if (filterAnnoScolastico)
+            filters.Anno_Scolastico = filterAnnoScolastico;
+
         const params = {
             filters: JSON.stringify(filters)
         }
 
         console.log(filters);
 
-        return this.dataStorageService.InviaRichiesta("GET", "/classi", params)!
-            .pipe(tap((data: any) => {  //pipe: intercetta //tap: legge dati   
-                this.classi = Array.from(data).map((classe: any) => new Classe(classe.Id, classe.Classe, classe.Sezione, classe.Indirizzo, classe.Anno_Scolastico));
-                console.log(data);
+        this.dataStorageService.InviaRichiesta("GET", "/classi", params)?.subscribe({
+            next: (data: any) => {
+                this.classi = data;
                 console.log(this.classi);
-            }));
+            },
+            error: (err: any) => {
+                if (err.status == 401) {
+                    this.router.navigate(["/login"]);
+                }
+                else
+                    console.error(err.status + ": " + err.error);
+            }
+        });
+    }
+
+    async GetAnniScolastici() {
+
+        try {
+            // Aspetta il primo valore (o l'errore)
+            const data: any = await firstValueFrom(this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici")!);
+
+            this.anniScolastici = Array.from(data).map((item: any) => new Date(item));
+            console.log(new Date(data), new Date(data).getFullYear().toString());
+        }
+        catch (err: any) {
+            if (err.status === 401) {
+                this.router.navigate(["/login"]);
+            } else {
+                console.error("Errore API:", err.status, err.error);
+            }
+        }
+
+        // this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici")?.subscribe({
+        //     next: (data: any) => {
+        //         this.anniScolastici = Array.from(data).map((item: any) => new Date(item.Anno_Scolastico));
+        //         console.log(new Date(data));
+        //     },
+        //     error: (err: any) => {
+        //         if (err.status == 401) {
+        //             this.router.navigate(["/login"]);
+        //         }
+        //         else
+        //             console.error(err.status + ": " + err.error);
+        //     }
+        // });
     }
 }

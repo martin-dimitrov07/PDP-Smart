@@ -1,5 +1,7 @@
 import { prisma } from "../server.ts";
 
+// INDIRIZZI
+
 async function GetIndirizzi(req: any, res: any) {
     try {
         const filters: any = req["parsedQuery"].filters || {};
@@ -32,30 +34,112 @@ async function GetIndirizzi(req: any, res: any) {
     }
 }
 
+// CLASSI
+
 async function GetClassi(req: any, res: any) {
     try {
         const filters: any = req["parsedQuery"].filters || {};
         const distinct: any = req["parsedQuery"].distinct || "";
 
-        let query: any = {
-            where: filters
-        };
+        if(filters.Anno_Scolastico)
+            filters.Anno_Scolastico = new Date(filters.Anno_Scolastico);
 
-        if (distinct)
-            query.distinct = [distinct];
+        const query: any = {
+            where: filters,
+            orderBy: [
+                { Classe: 'asc' },
+                { Sezione: 'asc' }
+            ]
+        }
 
         const classi = await prisma.classe.findMany(query);
 
-        if (classi && classi.length > 0)
-            res.send(classi);
-        else
-            res.status(404).send("Classi non trovate");
+        const groupsClassi: any = {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": []
+        };
+
+        classi.forEach((c: any) => {
+            const anno = c.Classe.toString();
+
+            if (groupsClassi[anno]) {
+                groupsClassi[anno].push(c);
+            }
+        });
+
+        res.send(groupsClassi);
+    } catch (err) {
+        console.error("Errore:", err);
+        res.status(500).send("Errore nel recupero delle classi");
+    }
+}
+
+async function GetCountClassiPerIndirizzo(req: any, res: any) {
+    try {
+        const filters = req["parsedQuery"]?.filters || {};
+
+        const countClassi = await prisma.classe.groupBy({
+            by: ['Indirizzo'],
+            where: filters,
+            _count: {
+                _all: true
+            }
+        });
+
+        res.status(200).send({ countClassi });
+
+    } catch (err) {
+        console.error("Errore:", err);
+        res.status(500).send("Errore nel conteggio delle classi");
+    }
+}
+
+async function GetAnniScolastici(req: any, res: any) {
+    try {
+        const classi = await prisma.classe.findMany({
+            distinct: ['Anno_Scolastico'],
+            orderBy: {
+                Anno_Scolastico: 'desc'
+            },
+            select: {
+                Anno_Scolastico: true
+            }
+        });
+
+        const anniVettore = classi.map(c => c.Anno_Scolastico);
+
+        if (anniVettore.length > 0) {
+            res.status(200).send(anniVettore);
+        } else {
+            res.status(404).send("Anni non trovati");
+        }
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
-        res.status(500).send("Errore nella esecuzione della richiesta delle classi: ", err);
+        res.status(500).send("Errore nella esecuzione della richiesta degli anni: ", err);
     }
 }
+
+async function GetCountStudentiPerClasse(req: any, res: any) {
+    try {
+        const filters = req["parsedQuery"]?.filters || {};
+
+        const countStudenti = await prisma.classe_Studente.count({
+            where: filters
+        });
+
+        res.status(200).send({ countStudenti });
+
+    } catch (err) {
+        console.error("Errore:", err);
+        res.status(500).send("Errore nel conteggio degli studenti per classe");
+    }
+}
+
+// STUDENTI
 
 async function GetStudenti(req: any, res: any) {
     try {
@@ -95,4 +179,4 @@ async function GetStudenteById(req: any, res: any) {
     }
 }
 
-export { GetIndirizzi, GetClassi, GetStudenti, GetStudenteById };
+export { GetIndirizzi, GetClassi, GetStudenti, GetStudenteById, GetCountClassiPerIndirizzo, GetAnniScolastici, GetCountStudentiPerClasse };

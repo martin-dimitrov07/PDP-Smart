@@ -135,6 +135,9 @@ app.get("/api/indirizzi", GestioneStudenti.GetIndirizzi);
 app.get("/api/classi", GestioneStudenti.GetClassi);
 app.get("/api/studenti", GestioneStudenti.GetStudenti);
 app.get("/api/studente/:id", GestioneStudenti.GetStudenteById);
+app.get("/api/anni-scolastici", GestioneStudenti.GetAnniScolastici);
+app.get("/api/count-classi-per-indirizzo", GestioneStudenti.GetCountClassiPerIndirizzo);
+app.get("/api/count-studenti-per-classe", GestioneStudenti.GetCountStudentiPerClasse);
 
 //F. default root e gestione errori
 app.use(function (req, res) {

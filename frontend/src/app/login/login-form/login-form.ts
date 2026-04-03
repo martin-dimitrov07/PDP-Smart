@@ -31,7 +31,7 @@ export class LoginForm implements OnInit {
                     // Configura le opzioni di Google Identity Services
                     google.accounts.id.initialize({
                         client_id: '347150437093-4tp8ucj4t6slqj78htvu3gert4tk4isj.apps.googleusercontent.com',
-                        callback: (res: any) => this.handleLogin(res),
+                        callback: (res: any) => this.HandleLogin(res),
                         // Impediamo a Google di scegliere un account a caso senza l'intervento dell'utente
                         auto_select: true
                     });
@@ -61,7 +61,7 @@ export class LoginForm implements OnInit {
         }, 500);
     }
 
-    signInWithGoogle() {
+    SignInWithGoogle() {
         if (typeof google != 'undefined') {
             google.accounts.id.prompt();
             console.log("Login eseguito correttamente");
@@ -69,7 +69,7 @@ export class LoginForm implements OnInit {
     }
 
 
-    handleLogin(response: any) {
+    HandleLogin(response: any) {
         if (response.credential) {
             console.log("ACCESSO PDP-SMART ESEGUITO!");
 
@@ -79,19 +79,7 @@ export class LoginForm implements OnInit {
             console.log("TOKEN JWT:", token);
 
             // invierà il token al nostro server
-            this.loginService.Login(token).subscribe({
-                next: (data: any) => {
-                    this.router.navigate(["/indirizzi"]);
-                },
-                error: (err: any) => {
-                    console.log(err);
-
-                    if (err.status == 401)
-                        console.error("Login non valido")
-                    else
-                        console.error(err.status + ": " + err.error);
-                }
-            });
+            this.loginService.Login(token);
         }
     }
 }

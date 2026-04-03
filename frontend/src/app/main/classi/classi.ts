@@ -1,45 +1,43 @@
 import { Component, inject, PLATFORM_ID } from '@angular/core';
 import { StudentiService } from '../../shared/services/studenti.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { NgStyle, NgClass, isPlatformBrowser } from "@angular/common";
 import { ClassiCard } from './classi-card/classi-card';
 
 @Component({
     selector: 'app-classi',
-    imports: [NgStyle, NgClass, ClassiCard],
+    imports: [ClassiCard, NgClass],
     templateUrl: './classi.html',
     styleUrl: './classi.css',
 })
 export class Classi {
     public readonly studentiService: StudentiService = inject(StudentiService);
     private readonly activatedRouter: ActivatedRoute = inject(ActivatedRoute);
-    private readonly router: Router = inject(Router);
 
     public mainColor: any = {};
+    public iconClass: string = "";
     public sectionIndirizzo: string = "";
 
     private platformId = inject(PLATFORM_ID);
 
-    ngOnInit() {
+    private filterClassi: any = {};
+    private filterAnnoScolastico: any = {};
+
+    async ngOnInit() {
         this.studentiService.indirizzoSelected = this.activatedRouter.snapshot.paramMap.get("indirizzo")!;
 
-        this.studentiService.GetClassi().subscribe({
-            next: data => {
-                console.log(data);
-            },
-            error: err => {
-                if (err.status == 401) {
-                    console.error(err);
-                    this.router.navigate(["login"]);
-                }
-                else
-                    console.error(err.status + ": " + err.error);
-            }
-        })
+        await this.studentiService.GetAnniScolastici();
 
-        // Eseguiamo il cambio colore SOLO se siamo nel browser
-        if (isPlatformBrowser(this.platformId))
+        this.filterAnnoScolastico = this.studentiService.anniScolastici[0];
+        this.studentiService.GetClassi({}, this.filterAnnoScolastico);
+
+        // Eseguiamo SOLO se siamo nel browser
+        if (isPlatformBrowser(this.platformId)) {
             this.SetColorsSectionIndirizzo(this.studentiService.indirizzoSelected);
+            this.SetIconSectionIndirizzo(this.studentiService.indirizzoSelected);
+            // console.log(this.studentiService.anniScolastici);
+            document.querySelector(".dropdown-toggle")!.textContent = this.studentiService.anniScolastici[0].getFullYear().toString() + "/" + (this.studentiService.anniScolastici[0].getFullYear() + 1).toString();
+        }
     }
 
     SetColorsSectionIndirizzo(indirizzo: string) {
@@ -80,5 +78,69 @@ export class Classi {
                 document.documentElement.style.setProperty('--color-hover-dark', 'var(--ene-color-hover-dark)');
                 break;
         }
+    }
+
+    SetIconSectionIndirizzo(indirizzo: string) {
+        switch (indirizzo) {
+            case 'INF':
+                this.iconClass = "bi-pc-display-horizontal";
+                break;
+            case 'ELT':
+                this.iconClass = "bi-lightning-charge-fill";
+                break;
+            case 'MEC':
+                this.iconClass = "bi-gear-fill";
+                break;
+            case 'AFM':
+                this.iconClass = "bi-cash-coin";
+                break;
+            case 'LIC':
+                this.iconClass = "bi-book-fill";
+                break;
+            case 'TUR':
+                this.iconClass = "bi-airplane-fill";
+                break;
+            case 'ENE':
+                this.iconClass = "bi-battery-charging";
+                break;
+        }
+    }
+
+    SetFilterAnno(anno: number) {
+        if (anno == 0) {
+            this.resetFiltersAnno();
+        }
+        else {
+            this.filterClassi["in"] = this.filterClassi["in"] || [];
+
+            if (this.filterClassi["in"].includes(anno)) {
+                this.filterClassi["in"].splice(this.filterClassi["in"].indexOf(anno), 1);
+                document.getElementById("anno-" + anno)?.classList.remove("active");
+            }
+            else {
+                this.filterClassi["in"].push(anno);
+                document.getElementById("anno-all")?.classList.remove("active");
+                document.getElementById("anno-" + anno)?.classList.add("active");
+            }
+
+            if (this.filterClassi["in"].length == document.querySelectorAll(".anno-tab").length - 1 || this.filterClassi["in"].length == 0) {
+                this.resetFiltersAnno();
+            }
+        }
+
+        this.studentiService.GetClassi(this.filterClassi, this.filterAnnoScolastico);
+    }
+
+    resetFiltersAnno() {
+        this.filterClassi = {};
+        document.getElementById("anno-all")?.classList.add("active");
+        for (let i = 1; i <= document.querySelectorAll(".anno-tab").length; i++)
+            document.getElementById("anno-" + i)?.classList.remove("active");
+    }
+
+    SetFilterAnnoScolastico(annoScolastico: Date) {
+        document.querySelector(".dropdown-toggle")!.textContent = annoScolastico.getFullYear().toString() + "/" + (annoScolastico.getFullYear() + 1).toString();
+        this.filterAnnoScolastico = annoScolastico;
+        this.studentiService.GetClassi(this.filterClassi, this.filterAnnoScolastico);
     }
 }

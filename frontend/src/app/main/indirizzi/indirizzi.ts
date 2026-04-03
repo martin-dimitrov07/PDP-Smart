@@ -14,15 +14,7 @@ export class Indirizzi {
     private readonly router: Router = inject(Router);
 
     ngOnInit() {
-        this.studentiService.GetIndirizzi().subscribe({
-            next: data => {
-                console.log(data);
-            },
-            error: err => {
-                // console.error("Errore in indirizzi.ts");
-                console.error(err.status + ": " + err.error);
-            }
-        })
+        this.studentiService.GetIndirizzi();
     }
 
     GoClassi(indirizzo: string) {

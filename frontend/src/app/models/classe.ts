@@ -24,10 +24,6 @@ export class Classe {
         this.Anno_Scolastico = date.getFullYear();
     }
 
-    GetAnnoScolastico() {
-        return this.Anno_Scolastico.toString() + "/" + (this.Anno_Scolastico + 1).toString();
-    }
-
     GetFullNome() {
         return this.Classe.toString() + this.Sezione.toString() + " " + this.Indirizzo.toString();
     }
