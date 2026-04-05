@@ -34,6 +34,8 @@ model Classe {
     Indirizzo       String   @db.VarChar(5)
     Anno_Scolastico DateTime @default(now())
 
+    @@unique([Classe, Sezione, Indirizzo, Anno_Scolastico], name: "UniqueClass")
+
     Insegnamenti    Insegnamento[]
     Classi_Studente Classe_Studente[]
 }

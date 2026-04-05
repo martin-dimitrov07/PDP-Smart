@@ -1,11 +1,17 @@
-<div class="col-5 col-sm-4 col-md-3">
-    <button class="classe-card d-flex align-items-center gap-4 py-4 px-3 w-100 border-0 rounded-4 position-relative">
+<div class="container-fluid p-0">
+    <button class="classe-card d-flex align-items-center gap-4 py-4 px-3 w-100 border-0 rounded-4 position-relative" [class.classe-hover]="nStudenti > 0" (click)="GoStudenti()">
         <div class="icon-box p-3 shadow border-0">
-            <p class="m-0 fw-bold">5B</p>
+            @if(classe.GetSigla())
+            {
+                <p class="m-0 fw-bold">{{classe.GetSigla()}}</p>
+            }
         </div>
         <div class="d-flex flex-column gap-2 flex-grow-1 text-start">
-            <h3 class="fs-5 m-0">5B INF</h3>
-            <p class="n-studenti m-0 small third-text-color"><i class="bi bi-person-fill me-1"></i>24 studenti</p>
+            @if(classe.GetFullNome())
+            {
+                <h3 class="fs-5 m-0">{{classe.GetFullNome()}}</h3>
+            }
+            <p class="n-studenti m-0 small third-text-color"><i class="bi bi-person-fill me-1"></i><span id="nStudenti">{{nStudenti}}</span> studenti</p>
         </div>
         <div class="card-arrow"><i class="bi bi-chevron-right"></i></div>
     </button>

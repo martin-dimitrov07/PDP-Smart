@@ -10,13 +10,17 @@
     z-index: 0;
 }
 
-.classe-card:hover{
+.classe-card:not(.classe-hover) {
+    cursor: default !important;
+}
+
+.classe-card.classe-hover:hover{
     background-color: var(--color-hover);
     color: var(--color);
     transform: translateY(-2px);
 }
 
-.classe-card:hover .n-studenti{
+.classe-card.classe-hover:hover .n-studenti{
     color: var(--color) !important;
 }
 
@@ -31,7 +35,7 @@
     font-size: 0.9rem;
 }
 
-.classe-card:hover .card-arrow {
+.classe-card.classe-hover:hover .card-arrow {
     background-color: var(--color);
     color: #fff;
     box-shadow: 0 0 7px var(--color);

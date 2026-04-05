@@ -13,9 +13,11 @@
         </button>
         <ul class="dropdown-menu">
             @for (anno of studentiService.anniScolastici; track $index) {
-            <li><a class="dropdown-item cursor-pointer"
-                    (click)="SetFilterAnnoScolastico(anno)">{{anno.getFullYear().toString()}}/{{(anno.getFullYear() +
-                    1).toString()}}</a></li>
+            <li><a class="dropdown-item cursor-pointer" (click)="SetFilterAnnoScolastico(anno)">
+                    {{anno.getFullYear().toString()}}/{{(anno.getFullYear() +
+                    1).toString()}}
+                </a>
+            </li>
             }
         </ul>
     </div>
@@ -28,7 +30,7 @@
             <h2 class="sigla text-start text-white fs-3 lh-1 m-0">{{this.studentiService.indirizzoSelected}}</h2>
         </div>
         <div class="icon-box p-3 shadow" style="width: auto !important;">
-            <p class="m-0 fw-bold">11 classi</p>
+            <p class="m-0 fw-bold">{{studentiService.nClassi}} classi</p>
         </div>
     </div>
 </div>
@@ -44,63 +46,17 @@
 </div>
 
 <div class="mx-3 mt-5">
-    @if(studentiService.classi[1].length != 0) {
-    <section class="title-classe d-flex my-2">
-        <p class="text-uppercase mb-0 fw-bold">Primo anno</p>
-    </section>
-    <div class="px-3">
-        @for (classe of studentiService.classi[1]; track $index)
-        {
-        <app-classi-card [classe]="classe"></app-classi-card>
+    @for (anno of anni; track $index) {
+        @if(studentiService.classi[anno.id] && studentiService.classi[anno.id].length != 0) {
+            <section class="title-classe d-flex my-2">
+                <p class="text-uppercase mb-0 fw-bold">{{anno.label}}</p>
+            </section>
+            <div class="row px-3 g-3">
+                @for (classe of studentiService.classi[anno.id]; track $index)
+                {
+                    <app-classi-card [classe]="classe" class="col-md-6 col-lg-4 col-xl-3"></app-classi-card>
+                }
+            </div>
         }
-    </div>
-    }
-
-    @if(studentiService.classi[2].length != 0) {
-    <section class="title-classe d-flex my-2">
-        <p class="text-uppercase mb-0 fw-bold">Secondo anno</p>
-    </section>
-    <div class="px-3">
-        @for (classe of studentiService.classi[2]; track $index)
-        {
-        <app-classi-card [classe]="classe"></app-classi-card>
-        }
-    </div>
-    }
-
-    @if(studentiService.classi[3].length != 0) {
-    <section class="title-classe d-flex my-2">
-        <p class="text-uppercase mb-0 fw-bold">Terzo anno</p>
-    </section>
-    <div class="px-3">
-        @for (classe of studentiService.classi[3]; track $index)
-        {
-        <app-classi-card [classe]="classe"></app-classi-card>
-        }
-    </div>
-    }
-
-    @if(studentiService.classi[4].length != 0) {
-    <section class="title-classe d-flex my-2">
-        <p class="text-uppercase mb-0 fw-bold">Quarto anno</p>
-    </section>
-    <div class="px-3">
-        @for (classe of studentiService.classi[4]; track $index)
-        {
-        <app-classi-card [classe]="classe"></app-classi-card>
-        }
-    </div>
-    }
-
-    @if(studentiService.classi[5].length != 0) {
-    <section class="title-classe d-flex my-2">
-        <p class="text-uppercase mb-0 fw-bold">Quinto anno</p>
-    </section>
-    <div class="px-3">
-        @for (classe of studentiService.classi[5]; track $index)
-        {
-        <app-classi-card [classe]="classe"></app-classi-card>
-        }
-    </div>
     }
 </div>

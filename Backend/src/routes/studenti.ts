@@ -41,7 +41,7 @@ async function GetClassi(req: any, res: any) {
         const filters: any = req["parsedQuery"].filters || {};
         const distinct: any = req["parsedQuery"].distinct || "";
 
-        if(filters.Anno_Scolastico)
+        if (filters.Anno_Scolastico)
             filters.Anno_Scolastico = new Date(filters.Anno_Scolastico);
 
         const query: any = {
@@ -77,7 +77,7 @@ async function GetClassi(req: any, res: any) {
     }
 }
 
-async function GetCountClassiPerIndirizzo(req: any, res: any) {
+async function GetCountClassi(req: any, res: any) {
     try {
         const filters = req["parsedQuery"]?.filters || {};
 
@@ -99,7 +99,9 @@ async function GetCountClassiPerIndirizzo(req: any, res: any) {
 
 async function GetAnniScolastici(req: any, res: any) {
     try {
-        const classi = await prisma.classe.findMany({
+        const indirizzo: any = req["parsedQuery"]?.Indirizzo || "";
+
+        const query: any = {
             distinct: ['Anno_Scolastico'],
             orderBy: {
                 Anno_Scolastico: 'desc'
@@ -107,7 +109,16 @@ async function GetAnniScolastici(req: any, res: any) {
             select: {
                 Anno_Scolastico: true
             }
-        });
+        };
+
+        if(indirizzo)
+        {
+            query.where = {
+                Indirizzo: indirizzo
+            };
+        }
+
+        const classi = await prisma.classe.findMany(query);
 
         const anniVettore = classi.map(c => c.Anno_Scolastico);
 
@@ -123,7 +134,7 @@ async function GetAnniScolastici(req: any, res: any) {
     }
 }
 
-async function GetCountStudentiPerClasse(req: any, res: any) {
+async function GetCountStudenti(req: any, res: any) {
     try {
         const filters = req["parsedQuery"]?.filters || {};
 
@@ -179,4 +190,4 @@ async function GetStudenteById(req: any, res: any) {
     }
 }
 
-export { GetIndirizzi, GetClassi, GetStudenti, GetStudenteById, GetCountClassiPerIndirizzo, GetAnniScolastici, GetCountStudentiPerClasse };
+export { GetIndirizzi, GetClassi, GetStudenti, GetStudenteById, GetCountClassi, GetAnniScolastici, GetCountStudenti };

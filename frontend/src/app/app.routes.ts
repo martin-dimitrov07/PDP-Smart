@@ -26,7 +26,6 @@ export const routes: Routes = [
             },
             {
                 path: ":indirizzo/classi",
-                component: Classi,
                 children: [
                     {
                         path: "",

@@ -4,6 +4,7 @@ export class Classe {
     Sezione: string;
     Indirizzo: string;
     Anno_Scolastico: number;
+    nStudenti?: number;
 
     constructor(
         id: number,
@@ -22,6 +23,10 @@ export class Classe {
             : anno_Scolastico;
 
         this.Anno_Scolastico = date.getFullYear();
+    }
+
+    GetSigla(): string {
+        return this.Classe.toString() + this.Sezione.toString();
     }
 
     GetFullNome() {

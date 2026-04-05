@@ -135,6 +135,9 @@ CREATE TABLE "Documento_ICF" (
     CONSTRAINT "Documento_ICF_pkey" PRIMARY KEY ("ICF_Codice","Documento_Anno","Documento_Studente_Email")
 );
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Classe_Classe_Sezione_Indirizzo_Anno_Scolastico_key" ON "Classe"("Classe", "Sezione", "Indirizzo", "Anno_Scolastico");
+
 -- AddForeignKey
 ALTER TABLE "Documento" ADD CONSTRAINT "Documento_Studente_Email_fkey" FOREIGN KEY ("Studente_Email") REFERENCES "Studente"("Email") ON DELETE RESTRICT ON UPDATE CASCADE;
 

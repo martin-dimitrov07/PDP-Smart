@@ -23,6 +23,14 @@ export class Classi {
     private filterClassi: any = {};
     private filterAnnoScolastico: any = {};
 
+    anni: any = [
+        { label: 'Primo anno', id: 1 },
+        { label: 'Secondo anno', id: 2 },
+        { label: 'Terzo anno', id: 3 },
+        { label: 'Quarto anno', id: 4 },
+        { label: 'Quinto anno', id: 5 }
+    ];
+
     async ngOnInit() {
         this.studentiService.indirizzoSelected = this.activatedRouter.snapshot.paramMap.get("indirizzo")!;
 
@@ -30,6 +38,7 @@ export class Classi {
 
         this.filterAnnoScolastico = this.studentiService.anniScolastici[0];
         this.studentiService.GetClassi({}, this.filterAnnoScolastico);
+        this.studentiService.GetNumeroClassi();
 
         // Eseguiamo SOLO se siamo nel browser
         if (isPlatformBrowser(this.platformId)) {

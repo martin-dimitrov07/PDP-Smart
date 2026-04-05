@@ -18,10 +18,11 @@ export class StudentiService {
     indirizzi: string[] = [];
     indirizzoSelected?: string;
 
-    classi: any = {};
-    classeSelected: string = "";
-
     anniScolastici: Date[] = [];
+
+    classi: any = {};
+    nClassi: number = 0;
+    classeSelected: number = 0;
 
     studenti: Studente[] = [];
 
@@ -96,10 +97,14 @@ export class StudentiService {
     }
 
     async GetAnniScolastici() {
-
         try {
+
+            const params: any = {};
+            if (this.indirizzoSelected)
+                params["Indirizzo"] = this.indirizzoSelected;
+
             // Aspetta il primo valore (o l'errore)
-            const data: any = await firstValueFrom(this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici")!);
+            const data: any = await firstValueFrom(this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici", params)!);
 
             this.anniScolastici = Array.from(data).map((item: any) => new Date(item));
             console.log(new Date(data), new Date(data).getFullYear().toString());
@@ -111,19 +116,45 @@ export class StudentiService {
                 console.error("Errore API:", err.status, err.error);
             }
         }
+    }
 
-        // this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici")?.subscribe({
-        //     next: (data: any) => {
-        //         this.anniScolastici = Array.from(data).map((item: any) => new Date(item.Anno_Scolastico));
-        //         console.log(new Date(data));
-        //     },
-        //     error: (err: any) => {
-        //         if (err.status == 401) {
-        //             this.router.navigate(["/login"]);
-        //         }
-        //         else
-        //             console.error(err.status + ": " + err.error);
-        //     }
-        // });
+    async GetNumeroClassi() {
+        const filters: any = {
+            Indirizzo: this.indirizzoSelected
+        }
+
+        this.dataStorageService.InviaRichiesta("GET", "/count-classi", { filters: JSON.stringify(filters) })?.subscribe({
+            next: (data: any) => {
+                this.nClassi = data.countClassi[0]._count._all;
+                console.log(this.nClassi);
+                console.log(data);
+            },
+            error: (err: any) => {
+                if (err.status == 401)
+                    this.router.navigate(["/login"]);
+                else
+                    console.error("Errore API:", err.status, err.error);
+            }
+        });
+    }
+
+    async GetNumeroStudenti(classeId: number): Promise<number> {
+        const filters: any = {
+            Classe_Id: classeId
+        }
+
+        try {
+            const data: any = await firstValueFrom(this.dataStorageService.InviaRichiesta("GET", "/count-studenti", { filters: JSON.stringify(filters) })!);
+            console.log(data);
+            return data.countStudenti;
+        }
+        catch (err: any) {
+            if (err.status == 401)
+                this.router.navigate(["/login"]);
+            else
+                console.error("Errore API:", err.status, err.error);
+
+            return 0; // Ritorna 0 in caso di errore
+        }
     }
 }
