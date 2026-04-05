@@ -1,65 +1,89 @@
-# PDP-Smart
+# PDP-Smart 
 ### La piattaforma digitale per la gestione semplice ed efficace dei PDP degli studenti DSA e BES
 
-....
+**Sviluppato da:** Dimitrov Martin e Martino Lorenzo 
 
-Questo progetto utilizza un database relazionale in modo moderno ed efficace utilizzando Prisma e PostgreSQL.
+---
 
-## Prisma
+## Che cos'è PDP-Smart?
+**PDP-Smart** è un'applicazione web creata per risolvere un problema concreto del mondo scolastico: la gestione dei **Piani Didattici Personalizzati (PDP)**. 
 
-Prisma è un ORM (Object Relational Mapping) che permette di interagire con il database attraverso il codice, evitando l’uso diretto di query SQL e rendendo lo sviluppo più chiaro, sicuro e manutenibile.
+Spesso i docenti si trovano a dover compilare documenti lunghi e complessi in formato cartaceo o Word, con il rischio di perdere dati o commettere errori. PDP-Smart digitalizza tutto il processo, permettendo ai professori di creare, aggiornare e consultare i piani dei propri studenti in modo rapido, ordinato e sicuro da qualsiasi dispositivo.
 
-All’interno del progetto, la struttura del database non viene definita manualmente tramite SQL, ma attraverso uno schema Prisma, un file che descrive tabelle, campi e relazioni in modo semplice e leggibile. A partire da questo schema, Prisma si occupa di generare automaticamente le tabelle nel database PostgreSQL e di mantenerle aggiornate tramite il sistema di migrazioni.
+---
 
-L’utilizzo di Prisma consente di eseguire le principali operazioni CRUD (Create, Read, Update, Delete) in maniera intuitiva, riducendo la possibilità di errori e migliorando la comprensione del codice.
+## Com'è fatta l'applicazione? (Tecnologie usate)
 
-## Comandi per configurare il backend dopo il clone
+Abbiamo costruito l'app dividendo il lavoro in due parti principali che comunicano tra loro:
 
-### 1. Clonare il progetto
-```
-git clone https://github.com/martin-dimitrov07/PDP-Smart.git
-```
+### 1. Il Backend (Il "Cervello")
+Questa è la parte che gestisce i dati e la logica, situata nel server.
+* **Node.js & Express:** Abbiamo usato questo ambiente per creare il server che riceve le richieste dei docenti.
+* **TypeScript:** Un linguaggio che rende il codice più robusto e facile da controllare, riducendo gli errori durante lo sviluppo.
+* **PostgreSQL:** Il nostro database relazionale. È come un grande archivio digitale dove tutte le informazioni (studenti, docenti, materie) sono salvate in tabelle collegate tra loro.
+* **Prisma ORM:** Uno strumento moderno che fa da "ponte" tra il codice e il database. Ci permette di leggere e scrivere i dati in modo semplice senza dover scrivere lunghe istruzioni in linguaggio SQL.
 
-### 2. Spostarsi nella cartella backend
-```
-cd PDP-Smart\Backend
-```
+### 2. Il Frontend (L'Interfaccia Utente)
+Questa è la parte che il docente vede e usa sul suo browser.
+* **Angular:** Un framework professionale che permette di creare pagine web veloci e dinamiche.
+* **Bootstrap:** Lo abbiamo utilizzato per curare il design e rendere l'app "responsive", ovvero capace di adattarsi automaticamente allo schermo di un computer, di un tablet o di uno smartphone.
 
-### 3. Installare le dipendenze
-```
-npm install
-```
-oppure 
-```
-npm i
-```
+---
 
-### 4. Configurare il database
-Creare un file **.env** e inserire:
-```
-DATABASE_URL="postgresql://utente:password@localhost:5432/nomedb?schema=public"
-```
-Verificare che:
-- PostgreSQL sia attivo  
-- Il database esista  
-- Le credenziali siano corrette  
+## Come configurare e avviare il progetto
 
-### 5. Applicare le migrazioni esistenti
-```
-npx prisma migrate deploy
-```
-### 6. Generare il Prisma Client
-Serve a creare (o rigenerare) il Prisma Client, cioè la libreria che il codice utilizza per comunicare con il database.<br>
-Non è garantito al 100% che il Prisma Client venga generato automaticamente in tutti gli ambienti; per questo motivo è consigliato rigenerarlo manualmente per evitare eventuali problemi.
-```
-npx prisma generate
-```
+### Passaggio 1: Configurazione del Backend
+Il backend deve essere configurato per primo perché contiene il database.
 
-## Modifiche al file .env
+1.  Spostati nella cartella dedicata:
+    ```bash
+    cd Backend
+    ```
+2.  Installa tutti i pacchetti necessari:
+    ```bash
+    npm install
+    ```
+3.  **Configura il database:** Crea un file chiamato `.env` nella cartella Backend e inserisci il link per connetterti al tuo database PostgreSQL:
+    ```env
+    DATABASE_URL="postgresql://utente:password@localhost:5432/nome_db?schema=public"
+    ```
+4.  **Prepara il database:** Esegui questi comandi per creare le tabelle e attivare il collegamento:
+    ```bash
+    npx prisma migrate deploy
+    npx prisma generate
+    ```
+5.  **Avvia il server:**
+    ```bash
+    npm start
+    ```
 
-Esempio:
-```
-DATABASE_URL="postgresql://utente:password@localhost:5432/nomedb?schema=public"
-```
+### Passaggio 2: Configurazione del Frontend
+Ora che il server è attivo, avviamo l'interfaccia grafica.
 
-### By Martino Lorenzo & Dimitrov Martin 
+1.  Apri una nuova finestra del terminale e vai nella cartella:
+    ```bash
+    cd Frontend
+    ```
+2.  Installa i pacchetti necessari:
+    ```bash
+    npm install
+    ```
+3.  **Avvia l'applicazione:**
+    ```bash
+    ng serve --ssl
+    ```
+4.  Apri il tuo browser e visita l'indirizzo: `https://localhost:4200`
+
+---
+
+## Fonti e Documentazione
+Per realizzare questo progetto abbiamo studiato le documentazioni ufficiali delle tecnologie utilizzate, seguendo le migliori pratiche di programmazione:
+
+* **Angular (Interfaccia):** [https://angular.io/docs](https://angular.io/docs)
+* **Express (Server):** [https://expressjs.com/](https://expressjs.com/)
+* **Prisma (Gestione Dati):** [https://www.prisma.io/docs/](https://www.prisma.io/docs/)
+* **PostgreSQL (Database):** [https://www.postgresql.org/docs/](https://www.postgresql.org/docs/)
+* **Bootstrap (Design):** [https://getbootstrap.com/docs/](https://getbootstrap.com/docs/)
+* **Normativa MIUR (Linee guida PDP):** Ci siamo basati sui modelli ministeriali ufficiali per garantire che i campi inseriti siano conformi alla legge italiana. [https://www.mim.gov.it/disturbi-specifici-dell-apprendimento-dsa-](https://www.mim.gov.it/disturbi-specifici-dell-apprendimento-dsa-)
+message.txt
+5 KB
