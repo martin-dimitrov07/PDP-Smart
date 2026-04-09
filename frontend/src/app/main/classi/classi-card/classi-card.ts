@@ -13,7 +13,8 @@ export class ClassiCard {
     private _classe!: Classe;
     public readonly studentiService = inject(StudentiService);
     private readonly router: Router = inject(Router);
-    nStudenti: number = 0;
+
+    public nStudenti: number = 0;
 
     @Input() set classe(valore: any) {
         //appena arriva il dato dal padre, lo trasformiamo in un'istanza di Classe
@@ -33,16 +34,24 @@ export class ClassiCard {
         return this._classe;
     }
 
-    async caricaStudenti() {
-        if (this.classe.Id) {
-            this.nStudenti = await this.studentiService.GetNumeroStudenti(this.classe.Id);
+    caricaStudenti() {
+        if (this._classe.Id) {
+            this.studentiService.GetNumeroStudenti(this._classe.Id).subscribe({
+                next: (data) => { this.nStudenti = data.countStudenti; },
+                error: (err: any) => {
+                    if (err.status == 401)
+                        this.router.navigate(["/login"]);
+                    else
+                        console.error("Errore API:", err.status, err.error);
+                }
+            });
         }
     }
 
     GoStudenti() {
         // console.log(this.nStudenti);
         if (this.nStudenti > 0) {
-            this.studentiService.classeSelected = this.classe.Id;
+            this.studentiService.classeSelected = this.classe;
 
             this.router.navigate(["/indirizzi", this.studentiService.indirizzoSelected, "classi", this.classe.Id, "studenti"]);
         }

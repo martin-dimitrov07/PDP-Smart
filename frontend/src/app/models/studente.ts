@@ -15,9 +15,12 @@ export class Studente {
         this.Email = email;
         this.DSA_BES = DSA_BES;
     }
-}
 
-// enum DSA_BES {
-//     DSA = "DSA",
-//     BES = "BES"
-// }
+    GetFullName(): string {
+        return this.Cognome + " " + this.Nome;
+    }
+
+    GetInitials(): string {
+        return this.Cognome.charAt(0) + this.Nome.charAt(0);
+    }
+}

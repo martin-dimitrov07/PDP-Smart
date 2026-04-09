@@ -1,0 +1,27 @@
+<div class="container-fluid p-0 mx-0 mx-sm-2 my-3">
+    <button class="studente-card d-flex align-items-center gap-2 gap-sm-4 py-4 px-3 w-100 border-0 rounded-4 position-relative">
+        <div class="icon-box p-3 shadow border-0">
+            <p class="m-0 fw-bold">{{ studente.GetInitials() }}</p>
+        </div>
+        <div class="d-flex flex-column gap-2 flex-grow-1 text-start">
+            <h3 class="fs-5 m-0">{{ studente.GetFullName() }}</h3>
+            <p class="m-0 small third-text-color">
+                {{ studente.Email }}
+            </p>
+        </div>
+        <div>
+            @if(studente.DSA_BES)
+            {
+                <span class="badge badge-dsa">DSA</span>
+            }
+            @else
+            {
+                <span class="badge badge-bes">BES</span>
+            }
+        </div>
+        <div class="card-arrow-document">
+            <p class="m-0 d-none d-md-block">Vai al documento</p>
+            <i class="bi bi-chevron-right"></i>
+        </div>
+    </button>
+</div>

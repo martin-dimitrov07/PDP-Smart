@@ -5,7 +5,7 @@ import { Classe } from '../../models/classe';
 import { Ruolo } from '../../models/docente';
 import { DocentiService } from './docenti.service';
 import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { filter, firstValueFrom, map, Observable, tap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -22,7 +22,7 @@ export class StudentiService {
 
     classi: any = {};
     nClassi: number = 0;
-    classeSelected: number = 0;
+    classeSelected?: Classe;
 
     studenti: Studente[] = [];
 
@@ -96,6 +96,20 @@ export class StudentiService {
         });
     }
 
+    GetClasseById(classeId: number): Observable<any> {
+        return this.dataStorageService.InviaRichiesta("GET", "/classe/" + classeId)!.pipe(
+            tap((data: any) => {
+                this.classeSelected = new Classe(
+                    data.Id,
+                    data.Classe,
+                    data.Sezione,
+                    data.Indirizzo,
+                    new Date(data.Anno_Scolastico)
+                );
+            })
+        );
+    }
+
     async GetAnniScolastici() {
         try {
 
@@ -138,23 +152,59 @@ export class StudentiService {
         });
     }
 
-    async GetNumeroStudenti(classeId: number): Promise<number> {
+    GetStudenti(classeId: number = 0, searchTerm: any = "", DSA_BES: any = -1, order: any = {}): Observable<any> {
+
+        let filters: any = {};
+
+        if (classeId != 0) {
+            filters = {
+                Classi_Studente: {
+                    some: {
+                        Classe_Id: classeId
+                    }
+                }
+            }
+        }
+
+        if (searchTerm) {
+            filters.OR = [
+                { Nome: { contains: searchTerm, mode: 'insensitive' } },
+                { Cognome: { contains: searchTerm, mode: 'insensitive' } },
+                { Email: { contains: searchTerm, mode: 'insensitive' } }
+            ];
+        }
+
+        if(DSA_BES != -1)
+            filters.DSA_BES = DSA_BES;
+
+
+        let params: any = {
+            filters: JSON.stringify(filters)
+        };
+
+        if(Object.keys(order).length > 0)
+            params.order = JSON.stringify({ [order]: "asc" });
+
+        console.log(params);
+
+        return this.dataStorageService.InviaRichiesta("GET", "/studenti", params)!.pipe(
+            tap((data: any) => {
+                this.studenti = Array.from(data).map((studente: any) => new Studente(
+                    studente.Nome,
+                    studente.Cognome,
+                    studente.Email,
+                    studente.DSA_BES
+                ));
+                console.log(data);
+            })
+        );
+    }
+
+    GetNumeroStudenti(classeId: number): Observable<any> {
         const filters: any = {
             Classe_Id: classeId
         }
 
-        try {
-            const data: any = await firstValueFrom(this.dataStorageService.InviaRichiesta("GET", "/count-studenti", { filters: JSON.stringify(filters) })!);
-            console.log(data);
-            return data.countStudenti;
-        }
-        catch (err: any) {
-            if (err.status == 401)
-                this.router.navigate(["/login"]);
-            else
-                console.error("Errore API:", err.status, err.error);
-
-            return 0; // Ritorna 0 in caso di errore
-        }
+        return this.dataStorageService.InviaRichiesta("GET", "/count-studenti", { filters: JSON.stringify(filters) })!;
     }
 }

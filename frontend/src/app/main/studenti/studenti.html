@@ -1,1 +1,69 @@
-<p>studenti works!</p>
+<div class="px-3 my-4">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="px-3 my-3">
+        <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a href="/indirizzi"
+                    class="text-decoration-none third-text-color opacity-75">Indirizzi</a></li>
+            <li class="breadcrumb-item"><a href="/indirizzi/{{indirizzo}}/classi"
+                    class="text-decoration-none third-text-color opacity-75">Classi</a></li>
+            <li class="breadcrumb-item secondary-text-color fw-bold" aria-current="page">Studenti</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="sezione-card d-flex align-items-center my-3 mx-3 mx-md-5">
+    <div class="d-flex align-items-center gap-3 gap-sm-4 px-2 px-sm-4 px-sm-4 w-100">
+        <div class="icon-box shadow"><i class="bi" [ngClass]="iconClass"></i></div>
+        <div class="flex-grow-1">
+            <h2 class="sigla text-start text-white fs-3 lh-1 m-0">{{studentiService.classeSelected?.GetFullNome()}}</h2>
+        </div>
+        <div class="icon-box p-3 shadow" style="width: auto !important;">
+            <p class="m-0 fw-bold fs-4">{{nStudenti}} studenti</p>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 justify-content-center container-filters mx-3 mx-md-5 my-4 p-3 rounded-3">
+    <!-- filtri-->
+    <div class="col-12 col-sm-6 col-md-7 col-lg-8 mt-0 d-flex align-items-center gap-2 gap-lg-4 ps-0 ps-sm-1 pe-0 pe-lg-2">
+        <i class="bi bi-funnel fs-4"></i>
+        <input type="text" class="form-control rounded-3 border-0 shadow-lg px-3 py-2" placeholder="Cerca studente..."
+            [(ngModel)]="searchTerm" (input)="Search()">
+    </div>
+    <div class="col-12 col-sm-6 col-md-5 col-lg-4 mt-0 d-flex align-items-center gap-2 gap-lg-4 pe-0 ps-0 ps-sm-2 mt-4 mt-sm-0">
+        <i class="bi bi-sort-alpha-down fs-4"></i>
+        <select class="form-control form-select rounded-3 border-0 shadow-lg px-3 py-2"
+            aria-label="Default select example" [(ngModel)]="orderValue" (change)="Search()">
+            <option selected value="Nome">
+                Ordina per nome
+            </option>
+            <option value="Cognome">
+                Ordina per cognome
+            </option>
+        </select>
+    </div>
+    <div class="col-12 col-md-10 col-lg-8 d-flex justify-content-center gap-3">
+        <button class="flex-fill active badges-filter" (click)="SetFilterDSA_BES(-1)"
+            id="badges-all">Tutti</button>
+        <button id="badges-dsa" class="flex-fill badges-filter" (click)="SetFilterDSA_BES(true)">DSA</button>
+        <button id="badges-bes" class="flex-fill badges-filter" (click)="SetFilterDSA_BES(false)">BES</button>
+    </div>
+</div>
+
+<div class="mx-3 mx-sm-5 py-4">
+    @if(studentiService.studenti.length > 0)
+    {
+    @for (studente of studentiService.studenti; track $index)
+    {
+    <app-studenti-card [studente]="studente"></app-studenti-card>
+    }
+    }
+    @else
+    {
+    <div class="my-5">
+        <h3 class="fw-bold text-center">Nessuno studente trovato</h3>
+        <p class="text-muted text-center">
+            Non ci sono studenti che corrispondono alla tua ricerca.
+        </p>
+    </div>
+    }
+</div>
