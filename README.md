@@ -85,5 +85,3 @@ Per realizzare questo progetto abbiamo studiato le documentazioni ufficiali dell
 * **PostgreSQL (Database):** [https://www.postgresql.org/docs/](https://www.postgresql.org/docs/)
 * **Bootstrap (Design):** [https://getbootstrap.com/docs/](https://getbootstrap.com/docs/)
 * **Normativa MIUR (Linee guida PDP):** Ci siamo basati sui modelli ministeriali ufficiali per garantire che i campi inseriti siano conformi alla legge italiana. [https://www.mim.gov.it/disturbi-specifici-dell-apprendimento-dsa-](https://www.mim.gov.it/disturbi-specifici-dell-apprendimento-dsa-)
-message.txt
-5 KB
