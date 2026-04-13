@@ -37,7 +37,7 @@
     --lic-color-hover: #e0f5f9;
     --lic-color-hover-dark: #b3e8f3;
 
-    --tur-color:#b45309;
+    --tur-color: #b45309;
     --tur-color-hover: #fef3e2;
     --tur-color-hover-dark: #fde3b0;
 
@@ -92,7 +92,7 @@ body {
     font-family: 'Geist', sans-serif;
 }
 
-body *{
+body * {
     transition: 0.3s;
 }
 
@@ -100,7 +100,7 @@ body *{
     color: var(--light-color) !important;
 }
 
-.bg-light{
+.bg-light {
     background-color: var(--light-color) !important;
 }
 

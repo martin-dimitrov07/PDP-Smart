@@ -2,8 +2,9 @@ import { Component, OnInit, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { LoginService } from '../../shared/services/login.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment.development';
 
-declare var google: any;
+declare const google: any;
 
 @Component({
     selector: 'app-login-form',
@@ -11,14 +12,14 @@ declare var google: any;
     templateUrl: './login-form.html',
     styleUrl: './login-form.css',
 })
-export class LoginForm implements OnInit {
+export class LoginForm {
     private readonly loginService = inject(LoginService);
     private platformId = inject(PLATFORM_ID); //variabile per capire se browser o server
     private static isInitialized = false; //static così mantiene il suo valore
 
     private router: Router = inject(Router);
 
-    ngOnInit() {
+    ngAfterViewInit() {
         if (isPlatformBrowser(this.platformId)) {  //solo se file eseguito da browser
             this.InitializeGoogle();
         }
@@ -30,26 +31,28 @@ export class LoginForm implements OnInit {
                 if (!LoginForm.isInitialized) {
                     // Configura le opzioni di Google Identity Services
                     google.accounts.id.initialize({
-                        client_id: '347150437093-4tp8ucj4t6slqj78htvu3gert4tk4isj.apps.googleusercontent.com',
+                        client_id: environment.googleClientId,
                         callback: (res: any) => this.HandleLogin(res),
                         // Impediamo a Google di scegliere un account a caso senza l'intervento dell'utente
                         auto_select: true
                     });
 
-                    // renderizza il bottone nascosto
-                    const googleButtons = document.querySelectorAll(".google-overlay");
-
-                    googleButtons.forEach((btn: any) => {
+                    const buttonContainers = document.getElementsByClassName("myGoogleDiv")
+                    for (const btn of buttonContainers) {
+                        btn!.innerHTML = ""
                         google.accounts.id.renderButton(
-                            btn, // Passiamo direttamente l'elemento corrente del ciclo
+                            btn,
                             {
-                                type: "standard",
-                                shape: "rectangular",
-                                theme: "outline",
-                                locale: "it"
+                                "theme": "outline",
+                                "size": "large",
+                                "type": "standard",
+                                "text": "continue_with",
+                                "shape": "rectangular",
+                                "logo_alignment": "center",
+                                "width": "250"
                             }
                         );
-                    });
+                    }
 
                     LoginForm.isInitialized = true;
                 }
@@ -58,14 +61,6 @@ export class LoginForm implements OnInit {
             }
         }, 500);
     }
-
-    SignInWithGoogle() {
-        if (typeof google != 'undefined') {
-            google.accounts.id.prompt();
-            console.log("Login eseguito correttamente");
-        }
-    }
-
 
     HandleLogin(response: any) {
         if (response.credential) {

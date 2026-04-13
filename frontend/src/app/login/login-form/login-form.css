@@ -3,7 +3,7 @@
     background-color: var(--light-color);
 }
 
-/* bottone di google nascosto
+/* /* bottone di google nascosto
 .google-overlay {
     position: absolute;
     top: 0;
@@ -27,53 +27,62 @@
     width: 100%;
 } */
 
-.google-overlay {
+/* .google-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 10;
-    opacity: 0.01; /* Quasi invisibile ma presente */
-    cursor: pointer;
+    opacity: 0.01; Quasi invisibile ma presente */
+/* cursor: pointer;
     overflow: hidden;
-}
+} */
 
 /* Importante: forziamo l'iframe interno di Google a prendersi tutto lo spazio */
-.google-overlay ::ng-deep iframe {
+/* .google-overlay ::ng-deep iframe {
     width: 100% !important;
     height: 54px !important;
-    /* transform: scale(10); Trucco: lo scaliamo tantissimo così l'area cliccabile copre tutto */
+    transform: scale(10); Trucco: lo scaliamo tantissimo così l'area cliccabile copre tutto
     transform-origin: center;
     padding-left: 10px !important;
-}
+} */
 
-.btn-google {
+/* .btn-google {
     border: 2px solid var(--light-grey);
     background-color: var(--light-color);
     padding: 12px 7px;
     transition: all 0.3s ease;
     cursor: pointer;
-}
+} */
 
-.btn-google:has(+ .google-overlay:hover) {
+/* .btn-google:has(+ .google-overlay:hover) {
     box-shadow:
         -3px -3px 8px rgba(66, 133, 244, 0.8),
-        /* Blu Google (Alto-Sinistra) */
+        Blu Google (Alto-Sinistra)
         3px -3px 8px rgba(234, 67, 53, 0.6),
-        /* Rosso Google (Alto-Destra) */
+        Rosso Google (Alto-Destra)
         3px 3px 8px rgba(251, 188, 5, 0.6),
-        /* Giallo Google (Basso-Destra) */
+        Giallo Google (Basso-Destra)
         -3px 3px 8px rgba(52, 168, 83, 0.6) !important;
-    /* Verde Google (Basso-Sinistra)*/
+    Verde Google (Basso-Sinistra)
 
     transform: scale(0.95);
     border-color: transparent;
-}
+} */
 
-.btn-google:has(+ .google-overlay:hover) svg {
+/* .btn-google:has(+ .google-overlay:hover) svg {
     transition: 0.3s;
     transform: rotate(360deg);
+}  */
+
+.myGoogleDiv {
+    border-radius: 20px;
+    transition: box-shadow 0.3s ease;
+}
+
+.myGoogleDiv:hover {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
 }
 
 .divider {
