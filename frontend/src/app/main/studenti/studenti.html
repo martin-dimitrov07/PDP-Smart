@@ -17,11 +17,11 @@
             <h2 class="sigla text-start text-white fs-3 lh-1 m-0">{{studentiService.classeSelected?.GetFullNome()}}</h2>
         </div>
         <div class="icon-box p-3 shadow" style="width: auto !important;">
-            @if (nStudenti > 1) {
-                <p class="m-0 fw-bold fs-4">{{nStudenti}} studenti</p>
+            @if (nStudenti == 1 ) {
+                <p class="m-0 fw-bold fs-4">{{nStudenti}} studente</p>
             }
             @else {
-                <p class="m-0 fw-bold fs-4">{{nStudenti}} studente</p>
+                <p class="m-0 fw-bold fs-4">{{nStudenti}} studenti</p>
             }
         </div>
     </div>

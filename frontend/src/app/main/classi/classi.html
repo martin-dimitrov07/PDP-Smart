@@ -30,11 +30,11 @@
             <h2 class="sigla text-start text-white fs-3 lh-1 m-0">{{this.studentiService.indirizzoSelected}}</h2>
         </div>
         <div class="icon-box p-3 shadow" style="width: auto !important;">
-            @if (studentiService.nClassi > 1) {
-            <p class="m-0 fw-bold">{{studentiService.nClassi}} classi</p>
+            @if (studentiService.nClassi == 1) {
+            <p class="m-0 fw-bold">{{studentiService.nClassi}} classe</p>
             }
             @else {
-            <p class="m-0 fw-bold">{{studentiService.nClassi}} classe</p>
+            <p class="m-0 fw-bold">{{studentiService.nClassi}} classi</p>
             }
         </div>
     </div>
