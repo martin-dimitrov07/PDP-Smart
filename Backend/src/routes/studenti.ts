@@ -96,25 +96,25 @@ async function GetClasseById(req: any, res: any) {
     }
 }
 
-async function GetCountClassi(req: any, res: any) {
-    try {
-        const filters = req["parsedQuery"]?.filters || {};
+// async function GetCountClassi(req: any, res: any) {
+//     try {
+//         const filters = req["parsedQuery"]?.filters || {};
 
-        const countClassi = await prisma.classe.groupBy({
-            by: ['Indirizzo'],
-            where: filters,
-            _count: {
-                _all: true
-            }
-        });
+//         const countClassi = await prisma.classe.groupBy({
+//             by: ['Indirizzo'],
+//             where: filters,
+//             _count: {
+//                 _all: true
+//             }
+//         });
 
-        res.status(200).send({ countClassi });
+//         res.status(200).send({ countClassi });
 
-    } catch (err) {
-        console.error("Errore:", err);
-        res.status(500).send("Errore nel conteggio delle classi");
-    }
-}
+//     } catch (err) {
+//         console.error("Errore:", err);
+//         res.status(500).send("Errore nel conteggio delle classi");
+//     }
+// }
 
 async function GetAnniScolastici(req: any, res: any) {
     try {
@@ -211,4 +211,4 @@ async function GetStudenteById(req: any, res: any) {
     }
 }
 
-export { GetIndirizzi, GetClassi, GetClasseById, GetStudenti, GetStudenteById, GetCountClassi, GetAnniScolastici, GetCountStudenti };
+export { GetIndirizzi, GetClassi, GetClasseById, GetStudenti, GetStudenteById, GetAnniScolastici, GetCountStudenti };

@@ -2,6 +2,7 @@ import { Component, inject, Input } from '@angular/core';
 import { Classe } from '../../../models/classe';
 import { StudentiService } from '../../../shared/services/studenti.service';
 import { Router } from '@angular/router';
+import { CheckError } from '../../../shared/utilities/check-error';
 
 @Component({
     selector: 'app-classi-card',
@@ -13,6 +14,7 @@ export class ClassiCard {
     private _classe!: Classe;
     public readonly studentiService = inject(StudentiService);
     private readonly router: Router = inject(Router);
+    private readonly checkError: CheckError = inject(CheckError);
 
     public nStudenti: number = 0;
 
@@ -38,18 +40,12 @@ export class ClassiCard {
         if (this._classe.Id) {
             this.studentiService.GetNumeroStudenti(this._classe.Id).subscribe({
                 next: (data) => { this.nStudenti = data.countStudenti; },
-                error: (err: any) => {
-                    if (err.status == 401)
-                        this.router.navigate(["/login"]);
-                    else
-                        console.error("Errore API:", err.status, err.error);
-                }
+                error: (err: any) => this.checkError.checkError(err)
             });
         }
     }
 
     GoStudenti() {
-        // console.log(this.nStudenti);
         if (this.nStudenti > 0) {
             this.studentiService.classeSelected = this.classe;
 
