@@ -104,6 +104,10 @@ body * {
     background-color: var(--light-color) !important;
 }
 
+.text-dark-color{
+    color: var(--dark-blue-color);
+}
+
 .fw-bold,
 strong,
 h1,
@@ -153,7 +157,6 @@ h6 {
 .img-logo-shadow {
     filter: drop-shadow(0 0 20px var(--bg-blue-color));
 }
-
 
 .btn-theme {
     width: 50px;
