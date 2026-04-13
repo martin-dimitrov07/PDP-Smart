@@ -50,7 +50,12 @@ export class Studenti {
 
         this.studentiService.GetStudenti(this.classeId).subscribe({
             next: () => { },
-            error: (err: any) => this.checkError.checkError(err)
+            error: (err: any) => {
+                if (err.status == 404)
+                    this.studentiService.studenti = [];
+
+                this.checkError.checkError(err)
+            }
         });
     }
 
@@ -91,8 +96,13 @@ export class Studenti {
         }
 
         this.studentiService.GetStudenti(this.classeId, this.searchTerm, this.DSA_BES, this.orderValue).subscribe({
-            next: () => {},
-            error: (err: any) => this.checkError.checkError(err)
+            next: () => { },
+            error: (err: any) => {
+                if (err.status == 404)
+                    this.studentiService.studenti = [];
+
+                this.checkError.checkError(err)
+            }
         });
     }
 }

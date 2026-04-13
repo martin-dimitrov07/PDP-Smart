@@ -46,8 +46,6 @@ export class LoginForm implements OnInit {
                                 type: "standard",
                                 shape: "rectangular",
                                 theme: "outline",
-                                size: "large",
-                                width: 400, // Mettiamo il massimo consentito da Google
                                 locale: "it"
                             }
                         );

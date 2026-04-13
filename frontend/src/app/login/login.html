@@ -1,5 +1,5 @@
 <div class="container-fluid vh-100 row m-0 p-0">
-    <section class="d-none d-md-block bg-blue col-6 col-lg-7 h-100 px-4 px-lg-5 py-4">
+    <section class="d-none d-md-block bg-blue col-6 col-lg-7 px-4 px-lg-5 py-4">
         <div class="sfuma sfuma top-0 start-0 rounded-circle opacity-25"></div>
         <div class="sfuma sfuma bottom-0 end-0 rounded-circle opacity-25"></div>
 
@@ -63,10 +63,10 @@
         </button>
     </section>
 
-    <section class="d-flex d-md-none bg-blue col-12 p-4 p-sm-5 h-100 d-flex justify-content-center align-items-center">
+    <section class="d-flex d-md-none bg-blue col-12 p-4 p-sm-5 d-flex justify-content-end flex-column align-items-center">
         <div class="sfuma-lg rounded-circle opacity-25"></div>
         <app-login-form class="position-relative z-2"></app-login-form>
-        <button class="btn-theme position-absolute rounded-circle ratio-1x1" (click)="ChangeTheme()">
+        <button class="btn-theme ms-auto mt-2 rounded-circle ratio-1x1" (click)="ChangeTheme()">
             @if(isDark){
                 <i #icon class="bi bi-sun-fill d-flex align-items-center justify-content-center"></i>
             }
