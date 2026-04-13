@@ -108,7 +108,13 @@ export class StudentiService {
     }
 
     GetNumeroClassi() {
-        this.nClassi = this.classi.length;
+        let cont = 0;
+
+        for (const anno of Object.values(this.classi)) {
+            cont += (anno as any[]).length;
+        }
+
+        this.nClassi = cont;
     }
 
     GetStudenti(classeId: number = 0, searchTerm: any = "", DSA_BES: any = -1, order: any = {}): Observable<any> {

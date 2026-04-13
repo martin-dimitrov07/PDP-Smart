@@ -72,7 +72,17 @@ export class LoginForm {
             console.log("TOKEN JWT:", token);
 
             // invierà il token al nostro server
-            this.loginService.Login(token);
+            this.loginService.Login(token).subscribe({
+                "next": (data: any) => {
+                    this.router.navigate(["/indirizzi"]);
+                },
+                "error": (err: any) => {
+                    if (err.status == 401)
+                        console.error("Login non valido")
+                    else
+                        console.error(err.status + ": " + err.error);
+                }
+            });
         }
     }
 }

@@ -30,7 +30,12 @@
             <h2 class="sigla text-start text-white fs-3 lh-1 m-0">{{this.studentiService.indirizzoSelected}}</h2>
         </div>
         <div class="icon-box p-3 shadow" style="width: auto !important;">
+            @if (studentiService.nClassi > 1) {
             <p class="m-0 fw-bold">{{studentiService.nClassi}} classi</p>
+            }
+            @else {
+            <p class="m-0 fw-bold">{{studentiService.nClassi}} classe</p>
+            }
         </div>
     </div>
 </div>
@@ -47,16 +52,16 @@
 
 <div class="mx-3 mt-5 pb-4">
     @for (anno of anni; track $index) {
-        @if(studentiService.classi[anno.id] && studentiService.classi[anno.id].length != 0) {
-            <section class="title-classe d-flex my-2">
-                <p class="text-uppercase mb-0 fw-bold">{{anno.label}}</p>
-            </section>
-            <div class="row px-3 g-3">
-                @for (classe of studentiService.classi[anno.id]; track $index)
-                {
-                    <app-classi-card [classe]="classe" class="col-md-6 col-lg-4 col-xl-3"></app-classi-card>
-                }
-            </div>
+    @if(studentiService.classi[anno.id] && studentiService.classi[anno.id].length != 0) {
+    <section class="title-classe d-flex my-2">
+        <p class="text-uppercase mb-0 fw-bold">{{anno.label}}</p>
+    </section>
+    <div class="row px-3 g-3">
+        @for (classe of studentiService.classi[anno.id]; track $index)
+        {
+        <app-classi-card [classe]="classe" class="col-md-6 col-lg-4 col-xl-3"></app-classi-card>
         }
+    </div>
+    }
     }
 </div>
