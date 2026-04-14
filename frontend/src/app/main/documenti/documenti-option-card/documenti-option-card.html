@@ -1,10 +1,11 @@
-<button class="col-md-6 option-card position-relative z-1 d-flex align-items-center gap-3 gap-sm-4 ps-4 ps-xl-5 pe-3 w-100 bg-white border shadow-sm">
+<a [routerLink]="option.route"
+    class="col-md-6 option-card position-relative z-1 d-flex align-items-center gap-3 gap-sm-4 ps-4 ps-xl-5 pe-3 w-100 bg-white border shadow-sm text-decoration-none">
     <div class="flex-grow-1">
-        <h2 class="sigla text-start fs-3 lh-1">Lista</h2>
-        <p class="text-secondary text-start small m-0 description">Visualizza tutti i tuoi documenti</p>
+        <h2 class="sigla text-start fs-3 lh-1">{{ option.title }}</h2>
+        <p class="text-secondary text-start small m-0 description">{{ option.description }}</p>
     </div>
-    <i class="bg-icon bi bi-file-earmark-text-fill"></i>
+    <i class="bg-icon bi" [ngClass]="option.icon"></i>
     <div class="arrow-btn bg-light text-secondary">
         <i class="bi bi-chevron-right"></i>
     </div>
-</button>
+</a>
