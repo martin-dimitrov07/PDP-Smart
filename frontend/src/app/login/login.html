@@ -5,7 +5,8 @@
 
         <div class="position-relative z-2 d-flex justify-content-center h-100 flex-column gap-5 gap-lg-4">
             <div class="d-flex justify-content-start align-items-center gap-4 my-2">
-                <img src="imgs/logos/logo-pdp-smart-white.png" alt="immagine logo sito" class="img-logo img-logo-shadow rounded-3">
+                <img src="imgs/logos/logo-pdp-smart-white.png" alt="immagine logo sito"
+                    class="img-logo img-logo-shadow rounded-3">
                 <div class="d-flex flex-column justify-content-center">
                     <h1 class="text-white fs-1 m-0">PDP Smart</h1>
                     <p class="subtitle m-0">Gestione Documenti DSA e BES</p>
@@ -50,28 +51,30 @@
                 </p>
             </div>
         </div>
-    </section> 
-    <section class="position-relative d-none d-md-flex col-6 bg-light col-lg-5 p-4 p-lg-5 d-flex justify-content-center align-items-center">
-        <app-login-form></app-login-form>
+    </section>
+    <section
+        class="position-relative d-none d-md-flex col-6 bg-light col-lg-5 p-4 p-lg-5 d-flex justify-content-center align-items-center">
+        <app-login-form [isDark]="isDark"></app-login-form>
         <button class="btn-theme position-absolute rounded-circle ratio-1x1" (click)="ChangeTheme()">
             @if(isDark){
-                <i #icon class="bi bi-sun-fill d-flex align-items-center justify-content-center"></i>
+            <i #icon class="bi bi-sun-fill d-flex align-items-center justify-content-center"></i>
             }
             @else {
-                <i #icon class="bi bi-moon-fill d-flex align-items-center justify-content-center"></i>
+            <i #icon class="bi bi-moon-fill d-flex align-items-center justify-content-center"></i>
             }
         </button>
     </section>
 
-    <section class="d-flex d-md-none bg-blue col-12 p-4 p-sm-5 d-flex justify-content-center flex-column align-items-center">
+    <section
+        class="d-flex d-md-none bg-blue col-12 p-4 p-sm-5 d-flex justify-content-end flex-column align-items-center">
         <div class="sfuma-lg rounded-circle opacity-25"></div>
-        <app-login-form class="position-relative z-2"></app-login-form>
+        <app-login-form class="position-relative z-2" [isDark]="isDark"></app-login-form>
         <button class="btn-theme ms-auto mt-2 rounded-circle ratio-1x1" (click)="ChangeTheme()">
             @if(isDark){
-                <i #icon class="bi bi-sun-fill d-flex align-items-center justify-content-center"></i>
+            <i #icon class="bi bi-sun-fill d-flex align-items-center justify-content-center"></i>
             }
             @else {
-                <i #icon class="bi bi-moon-fill d-flex align-items-center justify-content-center"></i>
+            <i #icon class="bi bi-moon-fill d-flex align-items-center justify-content-center"></i>
             }
         </button>
     </section>

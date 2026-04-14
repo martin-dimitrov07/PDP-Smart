@@ -1,4 +1,4 @@
-import { Component, OnInit, PLATFORM_ID, inject } from '@angular/core';
+import { Component, Input, OnInit, PLATFORM_ID, SimpleChanges, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { LoginService } from '../../shared/services/login.service';
 import { Router } from '@angular/router';
@@ -13,15 +13,23 @@ declare const google: any;
     styleUrl: './login-form.css',
 })
 export class LoginForm {
+    @Input() isDark: boolean = false;
+
     private readonly loginService = inject(LoginService);
     private platformId = inject(PLATFORM_ID); //variabile per capire se browser o server
     private static isInitialized = false; //static così mantiene il suo valore
-
     private router: Router = inject(Router);
 
     ngAfterViewInit() {
         if (isPlatformBrowser(this.platformId)) {  //solo se file eseguito da browser
             this.InitializeGoogle();
+        }
+    }
+
+    // Questo metodo scatta ogni volta che il padre cambia isDark
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['isDark'] && !changes['isDark'].firstChange) {
+            this.renderButton();
         }
     }
 
@@ -37,29 +45,31 @@ export class LoginForm {
                         auto_select: true
                     });
 
-                    const buttonContainers = document.getElementsByClassName("myGoogleDiv")
-                    for (const btn of buttonContainers) {
-                        btn!.innerHTML = ""
-                        google.accounts.id.renderButton(
-                            btn,
-                            {
-                                "theme": "outline",
-                                "size": "large",
-                                "type": "standard",
-                                "text": "continue_with",
-                                "shape": "rectangular",
-                                "logo_alignment": "center",
-                                "width": "250"
-                            }
-                        );
-                    }
-
+                    this.renderButton();
                     LoginForm.isInitialized = true;
                 }
 
                 clearInterval(interval);
             }
         }, 500);
+    }
+
+    private renderButton() {
+        const buttonContainers = document.getElementsByClassName("myGoogleDiv")
+        for (const btn of buttonContainers) {
+            btn!.innerHTML = ""
+            google.accounts.id.renderButton(
+                btn,
+                {
+                    "theme": this.isDark ? "filled_black" : "outline",
+                    "size": "large",
+                    "type": "standard",
+                    "text": "continue_with",
+                    "shape": "rectangular",
+                    "logo_alignment": "center",
+                }
+            );
+        }
     }
 
     HandleLogin(response: any) {
