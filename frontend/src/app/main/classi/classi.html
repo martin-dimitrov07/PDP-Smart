@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-between align-items-center px-3 my-2">
+<div class="d-flex justify-content-between align-items-center px-2 px-sm-3 my-2">
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="px-3 my-3">
         <ol class="breadcrumb m-0">
             <li class="breadcrumb-item"><a href="/indirizzi"
@@ -24,7 +24,7 @@
 </div>
 
 <div class="sezione-card d-flex align-items-center mb-3">
-    <div class="d-flex align-items-center gap-3 gap-sm-4 px-4 px-sm-4 w-100">
+    <div class="d-flex align-items-center gap-2 gap-sm-4 px-4 px-sm-4 w-100">
         <div class="icon-box shadow"><i class="bi" [ngClass]="iconClass"></i></div>
         <div class="flex-grow-1">
             <h2 class="sigla text-start text-white fs-3 lh-1 m-0">{{this.studentiService.indirizzoSelected}}</h2>
@@ -56,10 +56,12 @@
     <section class="title-classe d-flex my-2">
         <p class="text-uppercase mb-0 fw-bold">{{anno.label}}</p>
     </section>
-    <div class="row px-3 g-3">
+    <div class="d-flex flex-wrap gap-4 px-3 g-3">
         @for (classe of studentiService.classi[anno.id]; track $index)
         {
-        <app-classi-card [classe]="classe" class="col-md-6 col-lg-4 col-xl-3"></app-classi-card>
+            <div class="container-card">
+                <app-classi-card [classe]="classe"></app-classi-card>
+            </div>
         }
     </div>
     }

@@ -1,4 +1,4 @@
-<section class="px-md-5 py-5 mx-3 mx-sm-5">
+<section class="px-0 px-sm-3 px-md-5 px-lg-0 px-xl-5 py-5 mx-3 mx-sm-5">
     <div class="mb-4">
         <h1 class="mb-1 fs-2 text-dark-color">
             Seleziona l'indirizzo
@@ -6,9 +6,11 @@
         <p class="text-secondary">Scegli l'indirizzo scolastico</p>
     </div>
 
-    <div class="d-flex flex-column gap-3">
+    <div class="row justify-content-center g-4">
         @for (indirizzo of studentiService.indirizzi; track $index) {
-        <app-indirizzi-card [indirizzo]="indirizzo"></app-indirizzi-card>
+            <div class="col-lg-6">
+                <app-indirizzi-card [indirizzo]="indirizzo"></app-indirizzi-card>
+            </div>
         }
     </div>
 </section>

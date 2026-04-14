@@ -48,7 +48,7 @@ export class Studenti {
             error: (err: any) => this.checkError.checkError(err)
         });
 
-        this.studentiService.GetStudenti(this.classeId).subscribe({
+        this.studentiService.GetStudenti(this.classeId, this.searchTerm, this.DSA_BES, this.orderValue).subscribe({
             next: () => { },
             error: (err: any) => {
                 if (err.status == 404)

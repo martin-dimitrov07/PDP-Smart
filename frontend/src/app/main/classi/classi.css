@@ -73,3 +73,13 @@
     position: absolute;
     z-index: 0;
 }
+
+.container-card{
+    min-width: 330px;
+}
+
+@media (max-width: 768px){
+    .container-card{
+        min-width: 100%;
+    }   
+}

@@ -1,7 +1,18 @@
+.container-fluid.container-card{
+    max-width: 900px;
+}
+
 .studente-card:hover {
     background-color: var(--color-hover);
     color: var(--color);
     transform: translateY(-2px);
+}
+
+@media (max-width: 400px){
+    .studente-card {
+        gap: .5rem !important;
+        padding: 1.5rem .75rem !important;
+    }
 }
 
 .studente-card .card-arrow-document {
@@ -22,20 +33,10 @@
     }
 }
 
-@media (max-width: 430px){
-    .studente-card .card-arrow-document{
-        display: none !important;
-    }
-}
-
 .studente-card:hover .card-arrow-document {
     opacity: 1;
     visibility: visible;
     transform: translateX(0); /* Torna in posizione naturale */
-}
-
-.studente-card:hover .card-arrow-document p {
-    display: block;
 }
 
 .studente-card:hover .card-arrow-document {
@@ -63,7 +64,7 @@
     margin: 0 20px;
 }
 
-@media (max-width: 415px){
+@media (max-width: 576px), (min-width: 992px) and (max-width: 1400px){
     .badge{
         margin: 0 5px !important;
     }

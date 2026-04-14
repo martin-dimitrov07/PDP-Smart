@@ -63,6 +63,7 @@
 
 /* Front icon box */
 .icon-box {
+    aspect-ratio: 1/ 1;
     width: 60px;
     height: 60px;
     border-radius: 16px;
