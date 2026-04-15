@@ -36,7 +36,7 @@ export class Classi {
         { label: 'Quinto anno', id: 5 }
     ];
 
-    async ngOnInit() {
+    ngOnInit() {
         this.studentiService.indirizzoSelected = this.activatedRouter.snapshot.paramMap.get("indirizzo")!;
 
         this.studentiService.GetAnniScolastici().subscribe({

@@ -125,7 +125,7 @@ app.use("/api/", Login.ControlloToken);
 //Email docente
 app.get("/api/email-docente", (req: any, res: any) => {
     if(req.docente)
-        res.send({ docente: req.docente, fotourl: req.fotourl });
+        res.send({ docente: req.docente, fotoUrl: req.fotoUrl });
     else
         res.status(500).send("Errore nell'invio della mail del docente");
 });

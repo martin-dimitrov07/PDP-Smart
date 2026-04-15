@@ -8,6 +8,16 @@ import { docenteResolver } from './shared/utilities/docente-resolver';
 import { DocumentiList } from './main/documenti/documenti-list/documenti-list';
 import { DocumentiForm } from './main/documenti/documenti-form/documenti-form';
 import { NotFoundComponent } from './not-found-component/not-found-component';
+import { FormStudenti } from './documenti/documenti-form/form-studenti/form-studenti';
+import { FormMaterie } from './documenti/documenti-form/form-materie/form-materie';
+import { FormIndicatori } from './documenti/documenti-form/form-indicatori/form-indicatori';
+
+const formSteps: Routes = [
+    { path: "", redirectTo: "studenti", pathMatch: "full" },
+    { path: "studenti", component: FormStudenti },
+    { path: "materie", component: FormMaterie },
+    { path: "indicatori", component: FormIndicatori }
+];
 
 export const routes: Routes = [
     {
@@ -56,11 +66,13 @@ export const routes: Routes = [
             },
             {
                 path: "crea",
-                component: DocumentiForm
+                component: DocumentiForm,
+                children: formSteps
             },
             {
                 path: "edit/:id",
-                component: DocumentiForm
+                component: DocumentiForm,
+                children: formSteps
             }
         ]
     },

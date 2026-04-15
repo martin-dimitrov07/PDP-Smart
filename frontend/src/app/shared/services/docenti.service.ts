@@ -17,15 +17,15 @@ export class DocentiService {
     GetDocente(): Observable<boolean> {
         return this.dataStorageService.InviaRichiesta("GET", "/email-docente")!.pipe(
             map((data: any) => {
-                // Se arriviamo qui, la chiamata è riuscita
                 console.log(data);
-                this.docente = new Docente(data.docente.Nome, data.docente.Cognome, data.docente.Email, data.docente.Ruolo, data.fotourl);
+                this.docente = new Docente(data.docente.Nome, data.docente.Cognome, data.docente.Email, data.docente.Ruolo, data.fotoUrl);
                 console.log("Docente caricato:", this.docente);
                 return true; // Questo valore verrà emesso dall'Observable
             }),
             catchError((err) => {
-                // Gestione errore
-                if (err.status === 401) {
+                if (err.status == 401 || err.status == 403 || err.status == 404) {
+                    this.docente = {} as Docente;
+                    this.fotoUrl = undefined;
                     this.router.navigate(["login"]);
                 }
                 console.error(err.status + ": " + err.error);
