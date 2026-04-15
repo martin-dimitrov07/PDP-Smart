@@ -1,0 +1,38 @@
+nav {
+    background-color: #0f2044;
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+.nav-brand-sub {
+    font-size: .72rem;
+    color: #94a3b8;
+    display: block;
+    line-height: 1;
+}
+
+.error-number {
+    font-size: 7rem;
+    font-weight: 700;
+    color: #cbd5e1;
+    line-height: 1;
+}
+
+.card {
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+}
+
+.btn-primary {
+    background-color: #0f2044;
+    border-color: #0f2044;
+}
+
+.btn-primary:hover {
+    background-color: #1a3260;
+    border-color: #1a3260;
+}
+
+footer {
+    font-size: .72rem;
+    color: #94a3b8;
+}

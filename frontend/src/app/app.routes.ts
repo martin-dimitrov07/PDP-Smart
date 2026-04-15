@@ -7,6 +7,7 @@ import { Login } from './login/login';
 import { docenteResolver } from './shared/utilities/docente-resolver';
 import { DocumentiList } from './main/documenti/documenti-list/documenti-list';
 import { DocumentiForm } from './main/documenti/documenti-form/documenti-form';
+import { NotFoundComponent } from './not-found-component/not-found-component';
 
 export const routes: Routes = [
     {
@@ -53,7 +54,7 @@ export const routes: Routes = [
                 path: "lista",
                 component: DocumentiList
             },
-            {   
+            {
                 path: "crea",
                 component: DocumentiForm
             },
@@ -62,5 +63,9 @@ export const routes: Routes = [
                 component: DocumentiForm
             }
         ]
+    },
+    {
+        path: "**",
+        component: NotFoundComponent,
     }
 ];

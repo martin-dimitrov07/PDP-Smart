@@ -13,4 +13,5 @@ import { filter } from 'rxjs';
 
 export class App {
     public readonly router: Router = inject(Router);
+    public readonly docenteService: DocentiService = inject(DocentiService);
 }
