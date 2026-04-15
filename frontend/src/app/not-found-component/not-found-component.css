@@ -20,6 +20,8 @@ nav {
 .card {
     border: 1px solid #e2e8f0;
     border-radius: 16px;
+    max-width: 480px;
+    width: 100%;
 }
 
 .btn-primary {
