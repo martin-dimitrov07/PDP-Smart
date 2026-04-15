@@ -4,7 +4,6 @@ import { prisma } from "../server.ts";
 import dotenv from "dotenv";
 
 dotenv.config({ path: ".env" });
-let fotoUrl: string;
 
 // costanti globali
 const cookiesOptions: CookieOptions = {
@@ -25,7 +24,6 @@ async function GestioneLogin(req: any, res: any) {
 
         if (payload && payload.email) {
             const email = payload.email;
-            fotoUrl = payload.picture;
 
             const docente = await GetDocente(email);
 
@@ -77,7 +75,7 @@ async function ControlloToken(req: any, res: any, next: any) {
         if (docente) {
             res.cookie("TOKEN", token, cookiesOptions);
             req.docente = docente;
-            req.fotoUrl = fotoUrl;
+            req.fotoUrl = payload.picture;
         } else {
             res.status(404).send("Docente loggato non trovato");
         }
