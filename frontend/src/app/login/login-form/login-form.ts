@@ -17,48 +17,48 @@ export class LoginForm {
     @Input() isDark: boolean = false;
 
     private readonly loginService = inject(LoginService);
-    private platformId = inject(PLATFORM_ID); //variabile per capire se browser o server
-    private static isInitialized = false; //static così mantiene il suo valore
+    private platformId = inject(PLATFORM_ID);
     private router: Router = inject(Router);
 
+    private static googleInitialized = false;
+
     ngAfterViewInit() {
-        if (isPlatformBrowser(this.platformId)) {  //solo se file eseguito da browser
-            this.InitializeGoogle();
+        if (isPlatformBrowser(this.platformId)) {
+            const checkGoogle = setInterval(() => {
+                if (typeof google != 'undefined') {
+                    clearInterval(checkGoogle);
+                    this.setupAndRender();
+                }
+            }, 100);
         }
     }
 
-    // Questo metodo scatta ogni volta che il padre cambia isDark
     ngOnChanges(changes: SimpleChanges) {
         if (changes['isDark'] && !changes['isDark'].firstChange) {
-            this.renderButton();
+            if (typeof google != 'undefined') {
+                this.renderGoogleButton();
+            }
         }
     }
 
-    private InitializeGoogle() {
-        const interval = setInterval(() => {
-            if (typeof google != 'undefined') {
-                if (!LoginForm.isInitialized) {
-                    // Configura le opzioni di Google Identity Services
-                    google.accounts.id.initialize({
-                        client_id: environment.googleClientId,
-                        callback: (res: any) => this.HandleLogin(res),
-                        // Impediamo a Google di scegliere un account a caso senza l'intervento dell'utente
-                        auto_select: true
-                    });
+    private setupAndRender() {
+        if (!LoginForm.googleInitialized) {
+            google.accounts.id.initialize({
+                client_id: environment.googleClientId,
+                callback: (response: any) => this.loginWithGoogle(response),
+                auto_select: false
+            });
+            LoginForm.googleInitialized = true;
+        }
 
-                    this.renderButton();
-                    LoginForm.isInitialized = true;
-                }
-
-                clearInterval(interval);
-            }
-        }, 500);
+        this.renderGoogleButton();
     }
 
-    private renderButton() {
-        const buttonContainers = document.getElementsByClassName("myGoogleDiv")
-        for (const btn of buttonContainers) {
-            btn!.innerHTML = ""
+    private renderGoogleButton() {
+        const buttonContainers = document.getElementsByClassName("myGoogleDiv");
+        for (const btn of Array.from(buttonContainers)) {
+            btn.innerHTML = "";
+
             google.accounts.id.renderButton(
                 btn,
                 {
@@ -73,10 +73,8 @@ export class LoginForm {
         }
     }
 
-    HandleLogin(response: any) {
+    loginWithGoogle(response: any) {
         if (response.credential) {
-            console.log("ACCESSO PDP-SMART ESEGUITO!");
-
             const token = response.credential;
 
             // stampa token creato da google

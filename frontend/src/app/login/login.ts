@@ -13,7 +13,7 @@ export class Login {
     isDark: boolean = false;
     @ViewChild("icon") themeIcon: any;
 
-    async ChangeTheme(){
+    ChangeTheme(){
         this.isDark = !this.isDark;
         document.body.classList.toggle("dark-mode");
 
