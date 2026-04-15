@@ -3,17 +3,20 @@ export class Docente {
     Cognome: string;
     Email: string;
     Ruolo: Ruolo;
+    FotoUrl?: string;
 
     constructor(
         nome: string,
         cognome: string,
         email: string,
-        Ruolo: Ruolo
+        Ruolo: Ruolo,
+        fotoUrl?: string
     ) {
         this.Nome = nome;
         this.Cognome = cognome;
         this.Email = email;
         this.Ruolo = Ruolo;
+        this.FotoUrl = fotoUrl || "";
     }
 }
 

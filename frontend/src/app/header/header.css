@@ -2,11 +2,11 @@
     background-color: var(--bg-blue-dark-color);
 }
 
-.navbar-toggler{
+.navbar-toggler {
     width: 50px;
 }
 
-.nav-item{
+.nav-item {
     display: flex;
 }
 
@@ -34,7 +34,7 @@
     transition: transform 0.3s ease-out;
 }
 
-.bi-person-circle:hover + .nav-link::after {
+.bi-person-circle:hover+.nav-link::after {
     transform: scale(1);
 }
 
@@ -44,4 +44,10 @@
 
 .nav-link.active {
     font-family: 'Geist Bold', sans-serif;
+}
+
+.icon-profile {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
 }

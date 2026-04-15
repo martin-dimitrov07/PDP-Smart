@@ -12,12 +12,14 @@ export class DocentiService {
     private readonly router: Router = inject(Router);
 
     public docente: Docente = {} as Docente;
+    public fotoUrl?: string;
 
     GetDocente(): Observable<boolean> {
         return this.dataStorageService.InviaRichiesta("GET", "/email-docente")!.pipe(
             map((data: any) => {
                 // Se arriviamo qui, la chiamata è riuscita
-                this.docente = new Docente(data.Nome, data.Cognome, data.Email, data.Ruolo);
+                console.log(data);
+                this.docente = new Docente(data.docente.Nome, data.docente.Cognome, data.docente.Email, data.docente.Ruolo, data.fotourl);
                 console.log("Docente caricato:", this.docente);
                 return true; // Questo valore verrà emesso dall'Observable
             }),

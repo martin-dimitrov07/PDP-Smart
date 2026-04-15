@@ -4,6 +4,7 @@ import { prisma } from "../server.ts";
 import dotenv from "dotenv";
 
 dotenv.config({ path: ".env" });
+let fotourl: string;
 
 // costanti globali
 const cookiesOptions: CookieOptions = {
@@ -18,12 +19,13 @@ const clientGoogle: any = new OAuth2Client(process.env.CLIENT_ID);
 // funzioni
 async function GestioneLogin(req: any, res: any) {
     const token = req.body.token;
-    
+
     try {
         const payload: any = await GetPayload(token);
 
         if (payload && payload.email) {
             const email = payload.email;
+            fotourl = payload.picture;
 
             const docente = await GetDocente(email);
 
@@ -64,11 +66,10 @@ async function ControlloToken(req: any, res: any, next: any) {
     const token = req.cookies.TOKEN;
 
     // quando il cookie scade
-    if(!token)
+    if (!token)
         return res.status(401).send("Token mancante");
 
-    try
-    {
+    try {
         const payload: any = await GetPayload(token);
 
         const docente = await GetDocente(payload.email);
@@ -76,14 +77,14 @@ async function ControlloToken(req: any, res: any, next: any) {
         if (docente) {
             res.cookie("TOKEN", token, cookiesOptions);
             req.docente = docente;
+            req.fotourl = fotourl;
         } else {
             res.status(404).send("Docente loggato non trovato");
         }
 
         next();
     }
-    catch(err: any)
-    {
+    catch (err: any) {
         // entra in caso scade il token di google (dopo 1 ora)
         console.error('Errore validazione token:', err.message);
         res.status(401).send('Token non valido o scaduto');
