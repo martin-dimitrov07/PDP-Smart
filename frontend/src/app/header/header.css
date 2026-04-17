@@ -17,6 +17,7 @@
 
 .nav-link {
     position: relative;
+    padding: 0.2rem !important;
 }
 
 .nav-link::after {
@@ -34,12 +35,8 @@
     transition: transform 0.3s ease-out;
 }
 
-.bi-person-circle:hover+.nav-link::after {
-    transform: scale(1);
-}
-
-.nav-link:not(.active):hover::after {
-    transform: scale(1);
+.nav-link:hover::after {
+    transform: scaleX(1);
 }
 
 .nav-link.active {
@@ -50,4 +47,26 @@
     width: 36px;
     height: 36px;
     object-fit: cover;
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+.dropdown-menu {
+    border-radius: 8px;
+    margin-top: 10px !important;
+    background-color: var(--bg-blue-dark-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-item {
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--white);
+    background-color: var(--bg-blue-dark-color);
+}
+
+.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
