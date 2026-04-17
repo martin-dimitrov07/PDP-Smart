@@ -19,7 +19,8 @@
                 <hr class="text-white">
                 <div class="nav-item text-white d-flex d-lg-none gap-3 align-items-center">
                     @if (docentiService.docente.FotoUrl) {
-                    <img [src]="docentiService.docente.FotoUrl" class="icon-profile rounded-circle border border-1" alt="Profilo">
+                    <img [src]="docentiService.docente.FotoUrl" class="icon-profile rounded-circle border border-1"
+                        alt="Profilo">
                     } @else {
                     <i class="bi bi-person-circle text-white fs-3 d-flex align-items-center"></i>
                     }
@@ -31,7 +32,8 @@
         </div>
         <div class="nav-item col-3 d-none d-lg-flex gap-3 justify-content-end align-items-center">
             @if (docentiService.docente.FotoUrl) {
-            <img [src]="docentiService.docente.FotoUrl" class="icon-profile rounded-circle border border-1" alt="Profilo">
+            <img [src]="docentiService.docente.FotoUrl" class="icon-profile rounded-circle border border-1"
+                alt="Profilo">
             } @else {
             <i class="bi bi-person-circle text-white fs-3 d-flex align-items-center"></i>
             }

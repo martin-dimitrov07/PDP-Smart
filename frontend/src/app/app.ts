@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { NavigationStart, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { Header } from './header/header';
 import { DocentiService } from './shared/services/docenti.service';
 import { filter } from 'rxjs';
@@ -13,5 +13,5 @@ import { filter } from 'rxjs';
 
 export class App {
     public readonly router: Router = inject(Router);
-    public readonly docenteService: DocentiService = inject(DocentiService);
+    public readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 }

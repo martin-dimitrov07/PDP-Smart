@@ -1,5 +1,5 @@
 <div class="container-fluid vh-100 m-0 p-0">
-    @if (router.url != "/login" && docenteService.docente)
+    @if (router.url != "/login" && activatedRoute.snapshot.firstChild?.routeConfig?.path != '**')
     {
     <app-header></app-header>
     }
