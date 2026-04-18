@@ -192,9 +192,9 @@ async function GetStudenti(req: any, res: any) {
     }
 }
 
-async function GetStudenteById(req: any, res: any) {
+async function GetStudenteByEmail(req: any, res: any) {
     try {
-        const studenteMail: any = req.params.id || "";
+        const studenteMail: any = req.params.email || "";
 
         const studente = await prisma.studente.findUnique({
             where: { Email: studenteMail }
@@ -211,4 +211,4 @@ async function GetStudenteById(req: any, res: any) {
     }
 }
 
-export { GetIndirizzi, GetClassi, GetClasseById, GetStudenti, GetStudenteById, GetAnniScolastici, GetCountStudenti };
+export { GetIndirizzi, GetClassi, GetClasseById, GetStudenti, GetStudenteByEmail, GetAnniScolastici, GetCountStudenti };

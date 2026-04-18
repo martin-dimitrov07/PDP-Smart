@@ -1,0 +1,60 @@
+.step-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 2.7rem 0;
+}
+
+.sp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    color: #aaa;
+    font-size: 0.9rem;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.dot {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+    font-weight: bold;
+    /* transition: 0.3s; */
+}
+
+/* linea tra step */
+.sp-line {
+    flex: 1;
+    height: 4px;
+    background-color: #ddd;
+    margin: 0 5px;
+    border-radius: 2px;
+    /* transition: 0.3s; */
+}
+
+/* STEP ATTIVO */
+.sp.active {
+    color: var(--blue-color);
+}
+
+.sp-line.active{
+    background-color: var(--blue-color);
+}
+
+.sp.active .dot {
+    background-color: var(--blue-color);
+    color: white;
+    transform: scale(1.1);
+}
+
+/* effetto hover */
+.sp:hover .dot {
+    transform: scale(1.15);
+}

@@ -100,6 +100,7 @@ export class Classi {
     }
 
     SetFilterAnnoScolastico(annoScolastico: Date) {
+        console.log(annoScolastico);
         document.querySelector(".dropdown-toggle")!.textContent = annoScolastico.getFullYear().toString() + "/" + (annoScolastico.getFullYear() + 1).toString();
         this.filterAnnoScolastico = annoScolastico;
         this.studentiService.GetClassi(this.filterClassi, this.filterAnnoScolastico).subscribe({

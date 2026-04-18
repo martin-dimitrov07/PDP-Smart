@@ -8,9 +8,9 @@ import { docenteResolver } from './shared/utilities/docente-resolver';
 import { DocumentiList } from './main/documenti/documenti-list/documenti-list';
 import { DocumentiForm } from './main/documenti/documenti-form/documenti-form';
 import { NotFoundComponent } from './not-found-component/not-found-component';
-import { FormStudenti } from './documenti/documenti-form/form-studenti/form-studenti';
-import { FormMaterie } from './documenti/documenti-form/form-materie/form-materie';
-import { FormIndicatori } from './documenti/documenti-form/form-indicatori/form-indicatori';
+import { FormStudenti } from './main/documenti/documenti-form/steps/form-studenti/form-studenti';
+import { FormMaterie } from './main/documenti/documenti-form/steps/form-materie/form-materie';
+import { FormIndicatori } from './main/documenti/documenti-form/steps/form-indicatori/form-indicatori';
 
 const formSteps: Routes = [
     { path: "", redirectTo: "studenti", pathMatch: "full" },

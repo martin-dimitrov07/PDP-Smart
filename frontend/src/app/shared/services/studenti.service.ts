@@ -4,17 +4,13 @@ import { Studente } from '../../models/studente';
 import { Classe } from '../../models/classe';
 import { Ruolo } from '../../models/docente';
 import { DocentiService } from './docenti.service';
-import { Router } from '@angular/router';
-import { filter, firstValueFrom, map, Observable, tap } from 'rxjs';
-import { Classi } from '../../main/classi/classi';
-import { Indirizzi } from '../../main/indirizzi/indirizzi';
+import { firstValueFrom, map, Observable, switchMap, tap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class StudentiService {
     private readonly dataStorageService = inject(DataStorageService);
-    private readonly router: Router = inject(Router);
     private readonly docentiService: DocentiService = inject(DocentiService);
 
     indirizzi: string[] = [];
@@ -23,6 +19,7 @@ export class StudentiService {
     anniScolastici: Date[] = [];
 
     classi: any = {};
+    classiNoEmpty: any = {};
     nClassi: number = 0;
     classeSelected?: Classe;
 
@@ -56,11 +53,11 @@ export class StudentiService {
                 some: {  // serve per relazioni uno a molti
                     Docente_Email: this.docentiService.docente.Email
                 }
-            },
-            Indirizzo: this.indirizzoSelected
-        } : {
-            Indirizzo: this.indirizzoSelected
-        };
+            }
+        } : {};
+
+        if(this.indirizzoSelected)
+            filters.Indirizzo = this.indirizzoSelected;
 
         if (filterClassi["in"])
             filters.Classe = filterClassi;
@@ -79,6 +76,25 @@ export class StudentiService {
             console.log(this.classi);
         }));
     }
+
+    GetClassiNoEmpty(filterClassi: any, filterAnnoScolastico: any) {
+        return this.GetClassi(filterClassi, filterAnnoScolastico).pipe(
+            //switchMap serve per eseguire operazioni asincrone dopo aver ottenuto i dati delle classi
+            switchMap(async (data: any) => {
+            for (const key in this.classi) {
+                this.classiNoEmpty[key] = [];
+
+                for (const classe of data[key]) {
+                    const result = await firstValueFrom(this.GetNumeroStudenti(classe.Id));
+
+                    if(result.countStudenti > 0)
+                        this.classiNoEmpty[key].push(classe);
+                }
+            }
+
+            return this.classiNoEmpty;
+        }))
+    }   
 
     GetClasseById(classeId: number): Observable<any> {
         return this.dataStorageService.InviaRichiesta("GET", "/classe/" + classeId)!.pipe(
@@ -161,6 +177,18 @@ export class StudentiService {
                     studente.DSA_BES
                 ));
                 console.log(data);
+            })
+        );
+    }
+
+    GetStudenteByEmail(email: string): Observable<any> {
+        return this.dataStorageService.InviaRichiesta("GET", "/studente/" + email)!.pipe(tap((data: any) => {
+                return new Studente(
+                    data.Nome,
+                    data.Cognome,
+                    data.Email,
+                    data.DSA_BES
+                );
             })
         );
     }

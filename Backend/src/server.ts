@@ -135,7 +135,7 @@ app.get("/api/indirizzi", GestioneStudenti.GetIndirizzi);
 app.get("/api/classi", GestioneStudenti.GetClassi);
 app.get("/api/classe/:id", GestioneStudenti.GetClasseById);
 app.get("/api/studenti", GestioneStudenti.GetStudenti);
-app.get("/api/studente/:id", GestioneStudenti.GetStudenteById);
+app.get("/api/studente/:email", GestioneStudenti.GetStudenteByEmail);
 app.get("/api/anni-scolastici", GestioneStudenti.GetAnniScolastici);
 app.get("/api/count-studenti", GestioneStudenti.GetCountStudenti);
 

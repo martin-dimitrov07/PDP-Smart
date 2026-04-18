@@ -1,0 +1,27 @@
+.btn-add, .btn-add:focus {
+    width: 100%;
+    gap: 1rem;
+    padding: 15px 20px;
+    margin: 10px 0;
+    border: 2px solid transparent;
+    background-color: var(--light-grey-color) !important;
+    border-radius: 10px;
+}
+
+@media (min-width: 340px) {
+    .btn-add {
+        padding: 10px 15px;
+    }
+}
+
+.btn-add:hover {
+    border: 2px dashed var(--dark-blue-color) !important;
+}
+
+.btn-add:hover .text-add{
+    font-weight: 900;
+}
+
+.btn-add:hover .bi{
+    transform: scale(1.2);
+}

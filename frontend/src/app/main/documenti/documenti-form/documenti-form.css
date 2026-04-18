@@ -1,0 +1,8 @@
+/* Questo colpirà tutti i componenti dentro il router-outlet */
+:host ::ng-deep .section-form {
+    border-radius: 15px;
+    margin: 20px auto;
+    padding: 1.5rem 1.8rem;
+    border: 1px solid var(--blue-color);
+    background-color: var(--light-grey);
+}
