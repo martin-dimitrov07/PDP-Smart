@@ -5,7 +5,7 @@
 
         <div class="py-2 px-sm-3 d-flex flex-column gap-3">
             <div class="row g-2">
-                @for (studente of studentiSelected; track $index)
+                @for (studente of documentiService.studentiSelected; track $index)
                 {
                 <div class="col-4 px-2" style="max-width: 350px !important;">
                     <div class="card">
@@ -30,7 +30,7 @@
     </section>
 
     <div class="d-flex justify-content-between">
-        @if(studentiSelected.length < 1) { <span class="text-add secondary-text-color">
+        @if(documentiService.studentiSelected.length < 1) { <span class="text-add secondary-text-color">
             Nessun studente selezionato
             </span>
             }

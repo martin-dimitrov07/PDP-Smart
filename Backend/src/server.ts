@@ -12,6 +12,8 @@ import rateLimit from "express-rate-limit";
 // routes
 import * as Login from "./routes/login.ts";
 import * as GestioneStudenti from "./routes/studenti.ts";
+import * as GestioneDocumenti from "./routes/documenti.ts";
+import * as GestioneMaterie from "./routes/materie.ts";
 
 import { PrismaClient } from "../prisma/generated/client/index.js";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -138,6 +140,16 @@ app.get("/api/studenti", GestioneStudenti.GetStudenti);
 app.get("/api/studente/:email", GestioneStudenti.GetStudenteByEmail);
 app.get("/api/anni-scolastici", GestioneStudenti.GetAnniScolastici);
 app.get("/api/count-studenti", GestioneStudenti.GetCountStudenti);
+
+
+//Documenti
+app.post("/api/documento/create", GestioneDocumenti.CreateDocumento);
+app.post("/api/documento/materie/add", GestioneDocumenti.AddMaterieDocumento);
+
+
+//Materie
+app.get("/api/materie", GestioneDocumenti.CreateDocumento);
+
 
 //F. default root e gestione errori
 app.use(function (req, res) {
