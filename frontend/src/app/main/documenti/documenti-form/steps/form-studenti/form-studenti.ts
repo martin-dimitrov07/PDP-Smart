@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, PLATFORM_ID, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Output, PLATFORM_ID, ViewChild } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
 import { Studente } from '../../../../../models/studente';
@@ -17,8 +17,13 @@ export class FormStudenti {
     private readonly checkError: CheckError = inject(CheckError);
     private readonly router: Router = inject(Router);
 
+    ngOnInit() {
+        this.documentiService.tappa = "studenti";
+        this.documentiService.avanzamentoCrea = "studenti";
+    }
+
     SaveStudente(studente: Studente) {
-        if(this.documentiService.studentiSelected.findIndex(s => s.Email == studente.Email) == -1) {
+        if (this.documentiService.studentiSelected.findIndex(s => s.Email == studente.Email) == -1) {
             this.documentiService.studentiSelected.push(new Studente(
                 studente.Nome,
                 studente.Cognome,
@@ -33,13 +38,8 @@ export class FormStudenti {
     }
 
     SaveStudenti() {
-        this.documentiService.CreateDocumenti().subscribe({
-            next: (data: any) => {
-                console.log(data);
-            },
-            error: (err: any) => this.checkError.checkError(err)
-        });
-        
+        this.documentiService.avanzamentoCrea = "materie";
+
         this.router.navigate(["documenti", "crea", "materie"]);
     }
 }

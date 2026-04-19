@@ -4,7 +4,9 @@ import { Studente } from '../../models/studente';
 import { Classe } from '../../models/classe';
 import { Ruolo } from '../../models/docente';
 import { DocentiService } from './docenti.service';
-import { firstValueFrom, map, Observable, switchMap, tap } from 'rxjs';
+import { firstValueFrom, forkJoin, map, Observable, switchMap, tap } from 'rxjs';
+import { DocumentiService } from './documenti.service';
+import { CheckError } from '../utilities/check-error';
 
 @Injectable({
     providedIn: 'root',
@@ -12,6 +14,8 @@ import { firstValueFrom, map, Observable, switchMap, tap } from 'rxjs';
 export class StudentiService {
     private readonly dataStorageService = inject(DataStorageService);
     private readonly docentiService: DocentiService = inject(DocentiService);
+    private readonly documentiService: DocumentiService = inject(DocumentiService);
+    public readonly checkError: CheckError = inject(CheckError);
 
     indirizzi: string[] = [];
     indirizzoSelected?: string;
@@ -24,6 +28,7 @@ export class StudentiService {
     classeSelected?: Classe;
 
     studenti: Studente[] = [];
+    studentiNoDoc: Studente[] = [];
 
     GetIndirizzi(): Observable<any> {
         const filters = this.docentiService.docente.Ruolo == Ruolo.DOCENTE ? {
@@ -56,7 +61,7 @@ export class StudentiService {
             }
         } : {};
 
-        if(this.indirizzoSelected)
+        if (this.indirizzoSelected)
             filters.Indirizzo = this.indirizzoSelected;
 
         if (filterClassi["in"])
@@ -81,20 +86,28 @@ export class StudentiService {
         return this.GetClassi(filterClassi, filterAnnoScolastico).pipe(
             //switchMap serve per eseguire operazioni asincrone dopo aver ottenuto i dati delle classi
             switchMap(async (data: any) => {
-            for (const key in this.classi) {
-                this.classiNoEmpty[key] = [];
+                for (const key in this.classi) {
+                    this.classiNoEmpty[key] = [];
 
-                for (const classe of data[key]) {
-                    const result = await firstValueFrom(this.GetNumeroStudenti(classe.Id));
+                    for (const classe of data[key]) {
+                        const result = await firstValueFrom(this.GetNumeroStudenti(classe.Id));
 
-                    if(result.countStudenti > 0)
-                        this.classiNoEmpty[key].push(classe);
+                        if (result.countStudenti > 0) {
+                            this.GetStudentiNoDocumento(classe.Id).subscribe({
+                                next: (data) => {
+                                    // console.log(data);
+                                    if (data.length > 0)
+                                        this.classiNoEmpty[key].push(classe);
+                                },
+                                error: (err) => this.checkError.checkError(err)
+                            })
+                        }
+                    }
                 }
-            }
 
-            return this.classiNoEmpty;
-        }))
-    }   
+                return this.classiNoEmpty;
+            }))
+    }
 
     GetClasseById(classeId: number): Observable<any> {
         return this.dataStorageService.InviaRichiesta("GET", "/classe/" + classeId)!.pipe(
@@ -183,11 +196,35 @@ export class StudentiService {
 
     GetStudenteByEmail(email: string): Observable<any> {
         return this.dataStorageService.InviaRichiesta("GET", "/studente/" + email)!.pipe(tap((data: any) => {
-                return new Studente(
-                    data.Nome,
-                    data.Cognome,
-                    data.Email,
-                    data.DSA_BES
+            return new Studente(
+                data.Nome,
+                data.Cognome,
+                data.Email,
+                data.DSA_BES
+            );
+        })
+        );
+    }
+
+    GetStudentiNoDocumento(classeId: number): Observable<Studente[]> {
+        return this.GetStudenti(classeId).pipe(
+            switchMap((studenti: Studente[]) => {
+                // Se non ci sono studenti, emettiamo un array vuoto
+                if (!studenti || studenti.length === 0) {
+                    return [];
+                }
+
+                // Creiamo un array di richieste (una per ogni studente)
+                const checkDocumenti = studenti.map(studente =>
+                    this.documentiService.GetNumeroDocumenti(studente.Email).pipe(
+                        // Se il numero documenti è 0, teniamo lo studente, altrimenti ritorniamo null
+                        map((res: any) => (res.countDocumenti === 0 ? studente : null))
+                    )
+                );
+
+                return forkJoin(checkDocumenti).pipe(
+                    // Filtriamo i 'null' per ottenere solo gli studenti senza documenti
+                    map(risultati => risultati.filter(s => s !== null) as Studente[])
                 );
             })
         );

@@ -13,7 +13,6 @@
     color: #aaa;
     font-size: 0.9rem;
     transition: 0.3s;
-    cursor: pointer;
 }
 
 .dot {
@@ -41,6 +40,7 @@
 
 /* STEP ATTIVO */
 .sp.active {
+    cursor: pointer;
     color: var(--blue-color);
 }
 
@@ -55,6 +55,6 @@
 }
 
 /* effetto hover */
-.sp:hover .dot {
+.sp.active:hover .dot {
     transform: scale(1.15);
 }

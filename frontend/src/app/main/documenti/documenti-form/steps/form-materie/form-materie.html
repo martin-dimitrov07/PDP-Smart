@@ -11,7 +11,7 @@
                     <div class="card">
                         <div class="card-body d-flex gap-3 align-items-center justify-content-between">
                             <div>
-                                <h5 class="card-title">{{materia}}</h5>
+                                <h5 class="card-title m-0">{{materia}}</h5>
                             </div>
                             <i class="bi bi-x-lg text-danger" (click)="RemoveMateria(materia)"
                                 style="cursor: pointer;"></i>
@@ -32,11 +32,12 @@
         @if(documentiService.materieSelected.length < 1) { <span class="text-add secondary-text-color">
             Nessuna materia selezionata
             </span>
-            }
-            <button type="button" class="btn btn-primary d-flex gap-2 align-items-center ms-auto" (click)="SaveMaterie()">
-                <p class="m-0">Avanti</p>
-                <i class="bi bi-chevron-right"></i>
-            </button>
+        }
+        
+        <button type="button" class="btn btn-primary d-flex gap-2 align-items-center ms-auto" (click)="SaveMaterie()">
+            <p class="m-0">Avanti</p>
+            <i class="bi bi-chevron-right"></i>
+        </button>
     </div>
 
 

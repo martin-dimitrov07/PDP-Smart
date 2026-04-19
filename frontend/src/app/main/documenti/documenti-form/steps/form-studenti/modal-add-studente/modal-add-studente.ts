@@ -44,6 +44,7 @@ export class ModalAddStudente {
         this.studentiService.indirizzoSelected = "";
         this.studentiService.GetClassiNoEmpty({}, this.studentiService.anniScolastici[0]).subscribe({
             next: (data: any) => {
+                console.log(data);
                 for (const key in data) {
                     for (const classe of data[key]) {
                         this.allClasses.push(
@@ -64,9 +65,9 @@ export class ModalAddStudente {
     }
 
     GetStudenti() {
-        this.studentiService.GetStudenti(Number(this.classeId)).subscribe({
+        this.studentiService.GetStudentiNoDocumento(Number(this.classeId)).subscribe({
             next: (data: any) => {
-                console.log(this.studentiService.studenti);
+                this.studentiService.studentiNoDoc = data.map((studente: Studente) => new Studente(studente.Nome, studente.Cognome, studente.Email, studente.DSA_BES));
                 this.studenteEmail = data[0].Email;
             },
             error: (err: any) => this.checkError.checkError(err)

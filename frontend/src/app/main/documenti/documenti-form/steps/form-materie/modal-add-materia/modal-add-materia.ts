@@ -19,7 +19,9 @@ export class ModalAddMateria {
 
     ngOnInit(){
         this.documentiService.GetMaterieDocente().subscribe({
-            next: () => {},
+            next: (data) => {
+                this.materia = data[0].Nome
+            },
             error: (err: any) => this.checkError.checkError(err)
         })
     }

@@ -14,6 +14,9 @@ export class DocumentiService {
     // private readonly router: Router = inject(Router);
     private readonly docentiService: DocentiService = inject(DocentiService);
 
+    tappa: String = "studenti";
+    avanzamentoCrea: String = "studenti";
+
     studentiSelected: Studente[] = [];
 
     materie: String[] = [];
@@ -61,22 +64,12 @@ export class DocumentiService {
             console.log(data);
         }));
     }
+    
+    GetNumeroDocumenti(email: string) {
+        const filters = {
+            Studente_Email: email
+        };
 
-    AddMaterieDocumento() {
-        let richieste: any[] = [];
-
-        for (const studente of this.studentiSelected) {
-            for (const materia of this.materieSelected) {
-                richieste.push(this.dataStorageService.InviaRichiesta("POST", "/documento/materie/add", {
-                    materia,
-                    documento: JSON.stringify({
-                        Anno: Documento.SetAnnoCorrect(new Date()),
-                        Email: studente.Email
-                    })
-                }));
-            }
-        }
-
-        return forkJoin(richieste);
+        return this.dataStorageService.InviaRichiesta("GET", "/count-documenti", { filters: JSON.stringify(filters) })!;
     }
 }

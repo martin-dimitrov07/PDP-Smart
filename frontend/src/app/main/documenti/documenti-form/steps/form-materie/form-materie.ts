@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { DocumentiService } from '../../../../../shared/services/documenti.service';
 import { CheckError } from '../../../../../shared/utilities/check-error';
 import { Router } from '@angular/router';
@@ -15,6 +15,11 @@ export class FormMaterie {
     private readonly checkError: CheckError = inject(CheckError);
     private readonly router: Router = inject(Router);
 
+    ngOnInit(){
+        this.documentiService.tappa = "materie";
+        this.documentiService.avanzamentoCrea = "materie";
+    }
+
     SaveMateria(nome: String) {
         if(this.documentiService.materieSelected.findIndex(materia => materia == nome) == -1) {
             this.documentiService.materieSelected.push(nome);
@@ -26,12 +31,7 @@ export class FormMaterie {
     }
 
     SaveMaterie() {
-        // this.documentiService.CreateDocumenti(this.materieSelected).subscribe({
-        //     next: (data: any) => {
-        //         console.log(data);
-        //     },
-        //     error: (err: any) => this.checkError.checkError(err)
-        // });
+        this.documentiService.avanzamentoCrea = "indicatori";
         
         this.router.navigate(["documenti", "crea", "indicatori"]);
     }

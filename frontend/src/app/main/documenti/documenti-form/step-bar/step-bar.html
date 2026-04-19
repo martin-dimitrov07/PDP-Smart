@@ -1,21 +1,27 @@
 <!-- STEP BAR -->
 <div class="step-bar px-2 px-sm-5">
-    <div class="sp" [class.active]="route === 'studenti' || route === 'materie' || route === 'indicatori' || route === 'conferma'" id="sp1" (click)="GoPage('studenti')">
+    <div class="sp studenti" 
+    [ngClass]="{ 'fw-bold': this.documentiService.tappa === 'studenti' }" 
+    [class.active]="this.documentiService.avanzamentoCrea === 'studenti' || this.documentiService.avanzamentoCrea === 'materie' || this.documentiService.avanzamentoCrea === 'indicatori' || this.documentiService.avanzamentoCrea === 'conferma'" id="sp1" (click)="GoPage('studenti')">
         <div class="dot">1</div>Studente
     </div>
 
-    <div class="sp-line" [class.active]="route === 'materie' || route === 'indicatori' || route === 'conferma'"></div>
-    <div class="sp" [class.active]="route === 'materie' || route === 'indicatori' || route === 'conferma'" id="sp2" (click)="GoPage('materie')">
+    <div class="sp-line" [class.active]="this.documentiService.avanzamentoCrea === 'materie' || this.documentiService.avanzamentoCrea === 'indicatori' || this.documentiService.avanzamentoCrea === 'conferma'"></div>
+    <div class="sp materie" 
+    [ngClass]="{ 'fw-bold': this.documentiService.tappa === 'materie' }" 
+    [class.active]="this.documentiService.avanzamentoCrea === 'materie' || this.documentiService.avanzamentoCrea === 'indicatori' || this.documentiService.avanzamentoCrea === 'conferma'" id="sp2" (click)="GoPage('materie')">
         <div class="dot">2</div>Discipline
     </div>
 
-    <div class="sp-line" [class.active]="route === 'indicatori' || route === 'conferma'"></div>
-    <div class="sp" [class.active]="route === 'indicatori' || route === 'conferma'" id="sp3" (click)="GoPage('indicatori')">
+    <div class="sp-line" [class.active]="this.documentiService.avanzamentoCrea === 'indicatori' || this.documentiService.avanzamentoCrea === 'conferma'"></div>
+    <div class="sp indicatori" 
+    [ngClass]="{ 'fw-bold': this.documentiService.tappa === 'indicatori' }" 
+    [class.active]="this.documentiService.avanzamentoCrea === 'indicatori' || this.documentiService.avanzamentoCrea === 'conferma'" id="sp3" (click)="GoPage('indicatori')">
         <div class="dot">3</div>Indicatori
     </div>
 
-    <div class="sp-line" [class.active]="route === 'conferma'"></div>
-    <div class="sp" [class.active]="route === 'conferma'" id="sp4" (click)="GoPage('conferma')">
+    <div class="sp-line" [class.active]="this.documentiService.avanzamentoCrea === 'conferma'"></div>
+    <div class="sp" [class.active]="this.documentiService.avanzamentoCrea === 'conferma'" id="sp4" (click)="GoPage('conferma')">
         <div class="dot">4</div>Conferma
     </div>
 </div>

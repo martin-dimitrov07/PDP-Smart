@@ -22,7 +22,8 @@
                 }
             </div>
 
-            <button class="btn-add d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#aggiuntaStudente">
+            <button class="btn-add d-flex align-items-center justify-content-center" data-bs-toggle="modal"
+                data-bs-target="#aggiuntaStudente">
                 <i class="bi bi-plus-circle fs-5 secondary-text-color"></i>
                 <span class="text-add secondary-text-color">Aggiungi nuovo studente</span>
             </button>
@@ -30,14 +31,19 @@
     </section>
 
     <div class="d-flex justify-content-between">
-        @if(documentiService.studentiSelected.length < 1) { <span class="text-add secondary-text-color">
-            Nessun studente selezionato
+        @if(documentiService.studentiSelected.length < 1) { 
+            <span class="text-add secondary-text-color">
+                Nessun studente selezionato
             </span>
-            }
-            <button type="button" class="btn btn-primary d-flex gap-2 align-items-center ms-auto" (click)="SaveStudenti()">
+        }
+        @else
+        {
+            <button type="button" class="btn btn-primary d-flex gap-2 align-items-center ms-auto"
+                (click)="SaveStudenti()">
                 <p class="m-0">Avanti</p>
                 <i class="bi bi-chevron-right"></i>
             </button>
+        }
     </div>
 
 

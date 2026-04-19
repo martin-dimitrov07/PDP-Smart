@@ -15,18 +15,15 @@ export class DocumentiForm {
     public readonly studentiService: StudentiService = inject(StudentiService);
     private readonly checkError: CheckError = inject(CheckError);
     private readonly router: Router = inject(Router);
-    public currentRoute: string = "";
-    private readonly cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+    public avanzamento: String = "studenti";
 
-    // Questo metodo scatta automaticamente ogni volta che il router-outlet cambia contenuto
-    onActivate() {
-        console.log('Current route:', this.router.url);
-        this.currentRoute = this.router.url.split('/').pop() || '';
-
-        this.cdr.detectChanges(); // Forza Angular a rilevare il cambiamento della route
+    Avanzamento(tappa: String){
+        this.avanzamento = tappa;
     }
 
     ngOnInit() {
+        this.router.navigate(["documenti", "crea"]);
+        
         this.studentiService.GetAnniScolastici().subscribe({
             next: (data: any) => {
             },

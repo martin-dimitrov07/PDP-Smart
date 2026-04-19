@@ -19,8 +19,8 @@
                     <label for="studenteSelected" class="form-label">Studente</label>
                     <select class="form-select" id="studenteSelected" [(ngModel)]="studenteEmail"
                         name="studenteSelected">
-                        @if(studentiService.studenti && studentiService.studenti.length > 0) {
-                        @for (studente of studentiService.studenti; track $index) {
+                        @if(studentiService.studentiNoDoc && studentiService.studentiNoDoc.length > 0) {
+                        @for (studente of studentiService.studentiNoDoc; track $index) {
                         <option [value]="studente.Email">{{studente.GetFullName()}}</option>
                         }
                         }
