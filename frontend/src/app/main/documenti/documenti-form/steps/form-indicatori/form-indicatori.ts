@@ -7,37 +7,41 @@ import { FormsModule } from '@angular/forms';
 import { CategoriaInd } from './categoria-ind/categoria-ind';
 
 @Component({
-  selector: 'app-form-indicatori',
-  imports: [FormsModule, CategoriaInd],
-  templateUrl: './form-indicatori.html',
-  styleUrl: './form-indicatori.css',
+    selector: 'app-form-indicatori',
+    imports: [FormsModule, CategoriaInd],
+    templateUrl: './form-indicatori.html',
+    styleUrl: './form-indicatori.css',
 })
 export class FormIndicatori {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
-    private readonly checkError: CheckError = inject(CheckError);
     private readonly router: Router = inject(Router);
 
     materiaSelected: string = "";
+    checkError: any;
 
-    ngOnInit(){
-        this.documentiService.tappa = "indicatori";
-        this.documentiService.avanzamentoCrea = "indicatori";
+    ngOnInit() {
+        if (this.documentiService.materieSelected.length > 0) {
+            this.documentiService.tappa = "indicatori";
+            this.documentiService.avanzamentoCrea = "indicatori";
 
-        this.materiaSelected = this.documentiService.materieSelected[0];
+            this.materiaSelected = this.documentiService.materieSelected[0];
 
-        this.documentiService.GetIndicatoriByMateria(this.materiaSelected).subscribe({
-            next: (data) => { },
-            error: (err) => this.checkError.checkError(err)
-        })
+            this.documentiService.GetCategorieIndicatore().subscribe({
+                next: (data) => { console.log(this.documentiService.categorieInd) },
+                error: (err) => this.checkError.checkError(err)
+            })
+        }
+        else
+            this.router.navigate(["documenti", "crea", "ICF"]);
     }
 
-    SetValue(){
+    SetValue() {
 
     }
 
     SaveMaterie() {
         this.documentiService.avanzamentoCrea = "ICF";
-        
+
         this.router.navigate(["documenti", "crea", "ICF"]);
     }
 }

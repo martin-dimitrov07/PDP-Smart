@@ -11,12 +11,16 @@ import { NotFoundComponent } from './not-found-component/not-found-component';
 import { FormStudenti } from './main/documenti/documenti-form/steps/form-studenti/form-studenti';
 import { FormMaterie } from './main/documenti/documenti-form/steps/form-materie/form-materie';
 import { FormIndicatori } from './main/documenti/documenti-form/steps/form-indicatori/form-indicatori';
+import { FormICF } from './main/documenti/documenti-form/steps/form-icf/form-icf';
+import { FormAllegati } from './main/documenti/documenti-form/steps/form-allegati/form-allegati';
 
 const formSteps: Routes = [
     { path: "", redirectTo: "studenti", pathMatch: "full" },
     { path: "studenti", component: FormStudenti },
     { path: "materie", component: FormMaterie },
-    { path: "indicatori", component: FormIndicatori }
+    { path: "indicatori", component: FormIndicatori },
+    { path: "ICF", component: FormICF },
+    { path: "Allegati", component: FormAllegati }
 ];
 
 export const routes: Routes = [

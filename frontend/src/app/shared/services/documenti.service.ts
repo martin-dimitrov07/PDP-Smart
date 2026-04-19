@@ -76,19 +76,25 @@ export class DocumentiService {
         return this.dataStorageService.InviaRichiesta("GET", "/count-documenti", { filters: JSON.stringify(filters) })!;
     }
 
-    GetIndicatori(materia: string) {
-        return this.dataStorageService.InviaRichiesta("GET", "/materie/" + materia + "/indicatori")!.pipe(tap((data: any) => {
+    GetIndicatori(categoria: string = "") {
+        let filters = {};
+
+        if (categoria) {
+            filters = {
+                Categoria: categoria
+            };
+        }
+
+        return this.dataStorageService.InviaRichiesta("GET", "/indicatori", filters)!.pipe(tap((data: any) => {
             console.log(data);
             this.indicatori = data.map((ind: Indicatore) => new Indicatore(ind.Id, ind.Tipologia, ind.Categoria, ind.Descrizione));
-            this.categorieInd = [...new Set<string>(data.map((ind: Indicatore) => ind.Categoria))];
         }));
     }
 
-    GetIndicatoriByMateria(materia: string) {
-        return this.dataStorageService.InviaRichiesta("GET", "/materie/" + materia + "/indicatori")!.pipe(tap((data: any) => {
+    GetCategorieIndicatore() {
+        return this.dataStorageService.InviaRichiesta("GET", "/indicatori")!.pipe(tap((data: any) => {
             console.log(data);
-            this.indicatori = data.map((ind: Indicatore) => new Indicatore(ind.Id, ind.Tipologia, ind.Categoria, ind.Descrizione));
-            this.categorieInd = [...new Set<string>(data.map((ind: Indicatore) => ind.Categoria))];
+            this.categorieInd = [...new Set<string>(data.map((ind: Indicatore) => ind.Categoria.replace('_', ' ')))];
         }));
     }
 }

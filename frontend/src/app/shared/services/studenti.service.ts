@@ -96,7 +96,7 @@ export class StudentiService {
                             this.GetStudentiNoDocumento(classe.Id).subscribe({
                                 next: (data) => {
                                     // console.log(data);
-                                    if (data.length > 0)
+                                    if (this.studentiNoDoc.length > 0)
                                         this.classiNoEmpty[key].push(classe);
                                 },
                                 error: (err) => this.checkError.checkError(err)
@@ -206,28 +206,11 @@ export class StudentiService {
         );
     }
 
-    GetStudentiNoDocumento(classeId: number): Observable<Studente[]> {
-        return this.GetStudenti(classeId).pipe(
-            switchMap((studenti: Studente[]) => {
-                // Se non ci sono studenti, emettiamo un array vuoto
-                if (!studenti || studenti.length === 0) {
-                    return [];
-                }
+    GetStudentiNoDocumento(classeId: number): Observable<any> {
+        return this.dataStorageService.InviaRichiesta("GET", "/studenti/no-doc")!.pipe(tap((data: any) => {
+            this.studentiNoDoc = data.map((studente: Studente) => new Studente(studente.Nome, studente.Cognome, studente.Email, studente.DSA_BES));
 
-                // Creiamo un array di richieste (una per ogni studente)
-                const checkDocumenti = studenti.map(studente =>
-                    this.documentiService.GetNumeroDocumenti(studente.Email).pipe(
-                        // Se il numero documenti è 0, teniamo lo studente, altrimenti ritorniamo null
-                        map((res: any) => (res.countDocumenti === 0 ? studente : null))
-                    )
-                );
-
-                return forkJoin(checkDocumenti).pipe(
-                    // Filtriamo i 'null' per ottenere solo gli studenti senza documenti
-                    map(risultati => risultati.filter(s => s !== null) as Studente[])
-                );
-            })
-        );
+        }));
     }
 
     GetNumeroStudenti(classeId: number): Observable<any> {

@@ -1,11 +1,11 @@
 import { prisma } from "../server.ts";
 
-async function GetIndicatoriByMateria(req: any, res: any) {
+async function GetIndicatori(req: any, res: any) {
     try {
-        const materia = req.params.materia || "";
+        const filters = req["parsedQuery"]?.filters || {};
 
-        const indicatori = await prisma.materia_Indicatore.findMany({
-            where: { Materia_Nome: materia }
+        const indicatori = await prisma.indicatore.findMany({
+            where: filters
         });
 
         if (indicatori && indicatori.length > 0)
@@ -19,4 +19,4 @@ async function GetIndicatoriByMateria(req: any, res: any) {
     }
 }
 
-export { GetIndicatoriByMateria };
+export { GetIndicatori as GetIndicatori };

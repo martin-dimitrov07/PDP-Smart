@@ -220,4 +220,29 @@ async function GetStudenteByEmail(req: any, res: any) {
     }
 }
 
-export { GetIndirizzi, GetClassi, GetClasseById, GetStudenti, GetStudenteByEmail, GetAnniScolastici, GetCountStudenti };
+async function GetStudentiNoDoc(req: any, res: any) {
+    try {
+        const filters: any = req["parsedQuery"].filters || {};
+        const order: any = req["parsedQuery"].order || { Nome: 'asc' };
+
+        filters.Documento = {
+            none: {}
+        };
+
+        const studenti = await prisma.studente.findMany({
+            where: filters,
+            orderBy: order
+        });
+
+        if (studenti && studenti.length > 0)
+            res.send(studenti);
+        else
+            res.status(404).send("Studenti non trovati");
+    }
+    catch (err) {
+        console.error("Errore esecuzione richiesta");
+        res.status(500).send("Errore nella esecuzione della richiesta delle studenti: ", err);
+    }
+}
+
+export { GetIndirizzi, GetClassi, GetClasseById, GetStudenti, GetStudenteByEmail, GetStudentiNoDoc, GetAnniScolastici, GetCountStudenti };

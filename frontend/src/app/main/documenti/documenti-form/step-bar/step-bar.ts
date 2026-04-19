@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { DocumentiService } from '../../../../shared/services/documenti.service';
 import { NgClass } from "@angular/common";
@@ -24,11 +24,9 @@ export class StepBar {
     }
 
     GoPage(page: string) {
-        let avanzamento = this.documentiService.avanzamentoCrea;
-
         if (document.querySelector(`.${page}`)?.classList.contains('active')) {
             console.log('Navigating to:', page);
-            if (avanzamento === 'studenti' || avanzamento === 'materie' || avanzamento === 'indicatori' || avanzamento === 'conferma') {
+            if (page == 'studenti' || page == 'materie' || page == 'indicatori' || page == 'ICF' || page == "allegati") {
                 this.router.navigate(['documenti', 'crea', page]);
             }
         }

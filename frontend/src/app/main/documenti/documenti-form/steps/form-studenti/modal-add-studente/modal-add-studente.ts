@@ -53,10 +53,10 @@ export class ModalAddStudente {
                     }
                 }
 
-                this.classeId = this.allClasses[0].Id;
-
                 console.log(data);
                 console.log(this.allClasses);
+
+                this.classeId = this.allClasses[0].Id;
 
                 this.GetStudenti();
             },

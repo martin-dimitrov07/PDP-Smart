@@ -141,6 +141,7 @@ app.get("/api/indirizzi", GestioneStudenti.GetIndirizzi);
 app.get("/api/classi", GestioneStudenti.GetClassi);
 app.get("/api/classe/:id", GestioneStudenti.GetClasseById);
 app.get("/api/studenti", GestioneStudenti.GetStudenti);
+app.get("/api/studenti/no-doc", GestioneStudenti.GetStudentiNoDoc);
 app.get("/api/studente/:email", GestioneStudenti.GetStudenteByEmail);
 app.get("/api/anni-scolastici", GestioneStudenti.GetAnniScolastici);
 app.get("/api/count-studenti", GestioneStudenti.GetCountStudenti);
@@ -153,6 +154,9 @@ app.get("/api/count-documenti", GestioneDocumenti.GetCountDocumenti);
 
 //Materie
 app.get("/api/materie", GestioneMaterie.GetMaterieDocente);
+
+//Indicatori
+app.get("/api/indicatori", GestioneIndicatori.GetIndicatori);
 
 
 //F. default root e gestione errori

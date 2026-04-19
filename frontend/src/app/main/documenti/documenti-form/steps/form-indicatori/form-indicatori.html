@@ -1,21 +1,21 @@
-<div class="container-lg">
+<div class="container-lg pt-2 pb-4">
     <section class="section-form">
         <h3 class="fs-5">Assegna gli indicatori</h3>
+        <p class="small mt-1">Seleziona le misure applicabili per ogni disciplina. Ogni spunta sarà riportata nel
+            documento finale</p>
         <hr>
 
-        <div class="py-2 px-sm-2 d-flex flex-column gap-3">
-            <div class="d-flex gap-3">
-                <label for="materiaSelected" class="form-label">Materia</label>
+        <div class="px-sm-2 d-flex flex-column gap-3">
+            <div class="d-flex gap-2 ms-auto">
+                <label for="materiaSelected" class="form-label m-0 align-content-center">Materia:</label>
                 <select class="form-select" id="materiaSelected" name="materiaSelected" [(ngModel)]="materiaSelected">
                     @if(documentiService.materieSelected && documentiService.materieSelected.length > 0) {
-                    @for (nomeMateria of documentiService.materieSelected; track $index) {
-                    <option [value]="nomeMateria">{{nomeMateria}}</option>
-                    }
+                        @for (nomeMateria of documentiService.materieSelected; track $index) {
+                        <option [value]="nomeMateria">{{nomeMateria}}</option>
+                        }
                     }
                 </select>
             </div>
-            <p class="small mt-1">Seleziona le misure applicabili per ogni disciplina. Ogni spunta sarà riportata nel
-                documento finale</p>
             @for (categoria of documentiService.categorieInd; track $index) {
                 <app-categoria-ind [categoria]="categoria"></app-categoria-ind>
             }
