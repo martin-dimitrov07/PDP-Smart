@@ -59,4 +59,4 @@ async function GetIndicatoriByMateria(req: any, res: any) {
     }
 }
 
-export { CreateDocumento, AddMaterieDocumento, GetCountDocumenti, GetIndicatoriByMateria };
+export { CreateDocumento, GetCountDocumenti, GetIndicatoriByMateria };
