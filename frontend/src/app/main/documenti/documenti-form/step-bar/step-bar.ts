@@ -13,6 +13,16 @@ export class StepBar {
     private readonly router = inject(Router);
     public readonly documentiService: DocumentiService = inject(DocumentiService);
 
+    steps = ['studenti', 'materie', 'indicatori', 'ICF', 'allegati'];
+
+    // Crea una funzione di supporto per verificare lo stato
+    isStepActive(stepName: string): boolean {
+        const currentStep = this.steps.indexOf(this.documentiService.avanzamentoCrea);
+        const step = this.steps.indexOf(stepName);
+        // È attivo se il passo attuale è uguale o successivo a questo
+        return currentStep >= step;
+    }
+
     GoPage(page: string) {
         let avanzamento = this.documentiService.avanzamentoCrea;
 

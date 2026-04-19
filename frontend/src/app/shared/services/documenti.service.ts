@@ -5,6 +5,7 @@ import { Studente } from '../../models/studente';
 import { Documento } from '../../models/documento';
 import { concatMap, forkJoin, tap } from 'rxjs';
 import { Ruolo } from '../../models/docente';
+import { Indicatore } from '../../models/indicatore';
 
 @Injectable({
     providedIn: 'root',
@@ -14,29 +15,32 @@ export class DocumentiService {
     // private readonly router: Router = inject(Router);
     private readonly docentiService: DocentiService = inject(DocentiService);
 
-    tappa: String = "studenti";
-    avanzamentoCrea: String = "studenti";
+    tappa: string = "studenti";
+    avanzamentoCrea: string = "studenti";
 
     studentiSelected: Studente[] = [];
 
-    materie: String[] = [];
-    materieSelected: String[] = [];
+    materie: string[] = [];
+    materieSelected: string[] = [];
 
-    CreateDocumenti() {
-        const richieste = this.studentiSelected.map((studente: Studente) => {
-            let documento = new Documento(
-                studente.Email,
-                new Date(),
-                studente.DSA_BES
-            )
+    indicatori: Indicatore[] = [];
+    categorieInd: string[] = [];
 
-            console.log(documento);
+    // CreateDocumenti() {
+    //     const richieste = this.studentiSelected.map((studente: Studente) => {
+    //         let documento = new Documento(
+    //             studente.Email,
+    //             new Date(),
+    //             studente.DSA_BES
+    //         )
 
-            return this.dataStorageService.InviaRichiesta("POST", "/documento/create", documento);
-        });
+    //         console.log(documento);
 
-        return forkJoin(richieste);
-    }
+    //         return this.dataStorageService.InviaRichiesta("POST", "/documento/create", documento);
+    //     });
+
+    //     return forkJoin(richieste);
+    // }
 
     GetMaterieDocente() {
         const filters = this.docentiService.docente.Ruolo == Ruolo.DOCENTE ? {
@@ -49,8 +53,7 @@ export class DocumentiService {
 
         let params = {};
 
-        if (filters) 
-        {
+        if (filters) {
             params = {
                 filters: JSON.stringify(filters)
             }
@@ -64,12 +67,28 @@ export class DocumentiService {
             console.log(data);
         }));
     }
-    
+
     GetNumeroDocumenti(email: string) {
         const filters = {
             Studente_Email: email
         };
 
         return this.dataStorageService.InviaRichiesta("GET", "/count-documenti", { filters: JSON.stringify(filters) })!;
+    }
+
+    GetIndicatori(materia: string) {
+        return this.dataStorageService.InviaRichiesta("GET", "/materie/" + materia + "/indicatori")!.pipe(tap((data: any) => {
+            console.log(data);
+            this.indicatori = data.map((ind: Indicatore) => new Indicatore(ind.Id, ind.Tipologia, ind.Categoria, ind.Descrizione));
+            this.categorieInd = [...new Set<string>(data.map((ind: Indicatore) => ind.Categoria))];
+        }));
+    }
+
+    GetIndicatoriByMateria(materia: string) {
+        return this.dataStorageService.InviaRichiesta("GET", "/materie/" + materia + "/indicatori")!.pipe(tap((data: any) => {
+            console.log(data);
+            this.indicatori = data.map((ind: Indicatore) => new Indicatore(ind.Id, ind.Tipologia, ind.Categoria, ind.Descrizione));
+            this.categorieInd = [...new Set<string>(data.map((ind: Indicatore) => ind.Categoria))];
+        }));
     }
 }

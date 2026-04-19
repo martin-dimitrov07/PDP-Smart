@@ -20,13 +20,13 @@ export class FormMaterie {
         this.documentiService.avanzamentoCrea = "materie";
     }
 
-    SaveMateria(nome: String) {
+    SaveMateria(nome: string) {
         if(this.documentiService.materieSelected.findIndex(materia => materia == nome) == -1) {
             this.documentiService.materieSelected.push(nome);
         }
     }
 
-    RemoveMateria(nome: String) {
+    RemoveMateria(nome: string) {
         this.documentiService.materieSelected.splice(this.documentiService.materieSelected.findIndex(materia => materia == nome), 1);
     }
 

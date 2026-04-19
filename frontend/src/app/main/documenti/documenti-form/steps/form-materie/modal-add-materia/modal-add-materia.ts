@@ -11,11 +11,11 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './modal-add-materia.css',
 })
 export class ModalAddMateria {
-    materia: String = '';
+    materia: string = '';
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     private readonly checkError: CheckError = inject(CheckError);
 
-    @Output() materiaEvent = new EventEmitter<String>();
+    @Output() materiaEvent = new EventEmitter<string>();
 
     ngOnInit(){
         this.documentiService.GetMaterieDocente().subscribe({

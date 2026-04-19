@@ -14,6 +14,7 @@ import * as Login from "./routes/login.ts";
 import * as GestioneStudenti from "./routes/studenti.ts";
 import * as GestioneDocumenti from "./routes/documenti.ts";
 import * as GestioneMaterie from "./routes/materie.ts";
+import * as GestioneIndicatori from "./routes/indicatori.ts";
 
 import { PrismaClient } from "../prisma/generated/client/index.js";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -152,8 +153,8 @@ app.get("/api/count-documenti", GestioneDocumenti.GetCountDocumenti)
 
 //Materie
 app.get("/api/materie", GestioneMaterie.GetMaterieDocente);
-app.get("api/materie/:materia/indicatori", GestioneMaterie.GetIndicatori);
-
+app.get("/api/materie/:materia/indicatori", )
+app.get("api/materie/:materia/indicatori", GestioneIndicatori.GetIndicatoriByMateria);
 
 //F. default root e gestione errori
 app.use(function (req, res) {
