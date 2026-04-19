@@ -45,16 +45,17 @@ export class Classi {
                 if (isPlatformBrowser(this.platformId)) {
                     this.colorSectionDirective.GetColorSection(this.studentiService.indirizzoSelected!);
                     this.iconClass = this.colorSectionDirective.GetIconSection(this.studentiService.indirizzoSelected!);
-                    document.querySelector(".dropdown-toggle")!.textContent = this.studentiService.anniScolastici[0].getFullYear().toString() + "/" + (this.studentiService.anniScolastici[0].getFullYear() + 1).toString();
+                    console.log(document.querySelector("#annoDropdown"));
+                    document.querySelector("#annoDropdown")!.textContent = this.studentiService.anniScolastici[0].getFullYear().toString() + "/" + (this.studentiService.anniScolastici[0].getFullYear() + 1).toString();
                 }
-            },
-            error: (err: any) => this.checkError.checkError(err)
-        });
 
-        this.filterAnnoScolastico = this.studentiService.anniScolastici[0];
-        this.studentiService.GetClassi({}, this.filterAnnoScolastico).subscribe({
-            next: (data: any) => {
-                this.studentiService.GetNumeroClassi();
+                this.filterAnnoScolastico = this.studentiService.anniScolastici[0];
+                this.studentiService.GetClassi({}, this.filterAnnoScolastico).subscribe({
+                    next: (data: any) => {
+                        this.studentiService.GetNumeroClassi();
+                    },
+                    error: (err: any) => this.checkError.checkError(err)
+                });
             },
             error: (err: any) => this.checkError.checkError(err)
         });
@@ -101,7 +102,7 @@ export class Classi {
 
     SetFilterAnnoScolastico(annoScolastico: Date) {
         console.log(annoScolastico);
-        document.querySelector(".dropdown-toggle")!.textContent = annoScolastico.getFullYear().toString() + "/" + (annoScolastico.getFullYear() + 1).toString();
+        document.querySelector("#annoDropdown")!.textContent = annoScolastico.getFullYear().toString() + "/" + (annoScolastico.getFullYear() + 1).toString();
         this.filterAnnoScolastico = annoScolastico;
         this.studentiService.GetClassi(this.filterClassi, this.filterAnnoScolastico).subscribe({
             next: (data: any) => {
