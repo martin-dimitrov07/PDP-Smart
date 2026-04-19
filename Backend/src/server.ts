@@ -148,13 +148,12 @@ app.get("/api/count-studenti", GestioneStudenti.GetCountStudenti);
 
 //Documenti
 app.post("/api/documento/create", GestioneDocumenti.CreateDocumento);
-app.get("/api/count-documenti", GestioneDocumenti.GetCountDocumenti)
+app.get("/api/count-documenti", GestioneDocumenti.GetCountDocumenti);
 
 
 //Materie
 app.get("/api/materie", GestioneMaterie.GetMaterieDocente);
-app.get("/api/materie/:materia/indicatori", )
-app.get("api/materie/:materia/indicatori", GestioneIndicatori.GetIndicatoriByMateria);
+
 
 //F. default root e gestione errori
 app.use(function (req, res) {

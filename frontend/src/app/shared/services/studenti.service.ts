@@ -31,7 +31,7 @@ export class StudentiService {
     studentiNoDoc: Studente[] = [];
 
     GetIndirizzi(): Observable<any> {
-        const filters = this.docentiService.docente.Ruolo == Ruolo.DOCENTE ? {
+        const filters = this.docentiService.docente.Ruolo != Ruolo.ADMIN ? {
             Insegnamenti: {
                 some: {  // serve per relazioni uno a molti
                     Docente_Email: this.docentiService.docente.Email
@@ -53,7 +53,7 @@ export class StudentiService {
     }
 
     GetClassi(filterClassi: any, filterAnnoScolastico: any): Observable<any> {
-        let filters: any = this.docentiService.docente.Ruolo == Ruolo.DOCENTE ? {
+        let filters: any = this.docentiService.docente.Ruolo != Ruolo.ADMIN ? {
             Insegnamenti: {
                 some: {  // serve per relazioni uno a molti
                     Docente_Email: this.docentiService.docente.Email

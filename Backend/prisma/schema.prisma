@@ -14,8 +14,9 @@ datasource db {
 }
 
 enum Ruolo {
-    DOCENTE @map("Docente")
-    ADMIN   @map("Admin")
+    DOCENTE      @map("Docente")
+    ADMIN        @map("Admin")
+    COORDINATORE @map("Coordinatore")
 }
 
 model Docente {
@@ -25,20 +26,38 @@ model Docente {
     Ruolo   Ruolo  @default(DOCENTE)
 
     Insegnamenti Insegnamento[]
+    ClassiCoordinatore Classe[]
 }
 
 model Classe {
-    Id              Int      @id @default(autoincrement())
-    Classe          Int
-    Sezione         String   @db.Char(1)
-    Indirizzo       String   @db.VarChar(5)
-    Anno_Scolastico DateTime @default(now())
-
-    @@unique([Classe, Sezione, Indirizzo, Anno_Scolastico], name: "UniqueClass")
+    Id                 Int      @id @default(autoincrement())
+    Classe             Int
+    Sezione            String   @db.Char(1)
+    Indirizzo          String   @db.VarChar(5)
+    Anno_Scolastico    DateTime @default(now())
+    Coordinatore_Email String   @db.VarChar(255)
 
     Insegnamenti    Insegnamento[]
     Classi_Studente Classe_Studente[]
+    Coordinatore    Docente           @relation(fields: [Coordinatore_Email], references: [Email])
+
+    @@unique([Classe, Sezione, Indirizzo, Anno_Scolastico], name: "UniqueClass")
 }
+
+// model Documento {
+//     Studente_Email    String        @db.VarChar(255)
+//     Anno              DateTime      @default(now())
+//     Stato             Stato
+//     Tipologia         Tipologia_Doc
+//     Data_Approvazione DateTime?
+
+//     Materie_Documento Materia_Documento[]
+//     Documento_ICFs    Documento_ICF[]
+//     Studente          Studente            @relation(fields: [Studente_Email], references: [Email])
+//     Allegati          Allegato[] //può essere vuoto
+
+//     @@id([Studente_Email, Anno], name: "Id")
+// }
 
 model Studente {
     Email   String  @id @db.VarChar(255)

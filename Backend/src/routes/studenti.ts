@@ -130,8 +130,7 @@ async function GetAnniScolastici(req: any, res: any) {
             }
         };
 
-        if(indirizzo)
-        {
+        if (indirizzo) {
             query.where = {
                 Indirizzo: indirizzo
             };
@@ -157,6 +156,12 @@ async function GetCountStudenti(req: any, res: any) {
     try {
         const filters = req["parsedQuery"]?.filters || {};
 
+        filters.Studente = {
+            Documento: {
+                some: {} 
+            }
+        }
+
         const countStudenti = await prisma.classe_Studente.count({
             where: filters
         });
@@ -175,6 +180,10 @@ async function GetStudenti(req: any, res: any) {
     try {
         const filters: any = req["parsedQuery"].filters || {};
         const order: any = req["parsedQuery"].order || { Nome: 'asc' };
+
+        filters.Documento = {
+            some: {}
+        };
 
         const studenti = await prisma.studente.findMany({
             where: filters,
