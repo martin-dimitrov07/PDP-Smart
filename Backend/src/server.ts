@@ -36,25 +36,25 @@ const adapter = new PrismaPg({
 });
 
 export const prisma = new PrismaClient({
-//   log: [
-//     {
-//       emit: 'stdout',
-//       level: 'query',
-//     },
-//     {
-//       emit: 'stdout',
-//       level: 'error',
-//     },
-//     {
-//       emit: 'stdout',
-//       level: 'info',
-//     },
-//     {
-//       emit: 'stdout',
-//       level: 'warn',
-//     },
-//   ], 
-  adapter
+    //   log: [
+    //     {
+    //       emit: 'stdout',
+    //       level: 'query',
+    //     },
+    //     {
+    //       emit: 'stdout',
+    //       level: 'error',
+    //     },
+    //     {
+    //       emit: 'stdout',
+    //       level: 'info',
+    //     },
+    //     {
+    //       emit: 'stdout',
+    //       level: 'warn',
+    //     },
+    //   ], 
+    adapter
 }); //export così da poterlo usare nelle API route (root dinamiche)
 
 //C. creazione ed avvio di un server https
@@ -122,11 +122,14 @@ app.post("/api/login", LoginLimiter, Login.GestioneLogin);
 //middleware 8: Controllo token
 app.use("/api/", Login.ControlloToken);
 
+// Logout
+app.post("/api/logout", Login.Logout);
+
 //E. gestione delle root dinamiche
 
 //Email docente
 app.get("/api/email-docente", (req: any, res: any) => {
-    if(req.docente)
+    if (req.docente)
         res.send({ docente: req.docente, fotoUrl: req.fotoUrl });
     else
         res.status(500).send("Errore nell'invio della mail del docente");
@@ -172,14 +175,14 @@ app.use(function (err: Error, req: express.Request, res: express.Response, next:
 
 //H. Gestione della chiusura pulita
 const ChiusuraPrisma = async () => {
-  try {
-    await prisma.$disconnect();
-    console.log("Chiusura della connessione con il database avvenuta correttamente");
-    process.exit(0); // 0 -> chiusura corretta
-  } catch (err) {
-    console.error("Errore durante la chiusura di Prisma:", err);
-    process.exit(1); // 1 -> chiusura con errori
-  }
+    try {
+        await prisma.$disconnect();
+        console.log("Chiusura della connessione con il database avvenuta correttamente");
+        process.exit(0); // 0 -> chiusura corretta
+    } catch (err) {
+        console.error("Errore durante la chiusura di Prisma:", err);
+        process.exit(1); // 1 -> chiusura con errori
+    }
 };
 
 // Intercetta il segnale di chiusura (CTRL+C)

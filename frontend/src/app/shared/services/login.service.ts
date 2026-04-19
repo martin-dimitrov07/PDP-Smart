@@ -12,7 +12,11 @@ export class LoginService {
     private readonly router: Router = inject(Router);
 
     //chiamata post per maggior sicurezza
-    Login(token:string) {
+    Login(token: string) {
         return this.dataStorageService.InviaRichiesta("POST", "/login", { token })!
+    }
+
+    Logout() {
+        return this.dataStorageService.InviaRichiesta("POST", "/logout")!
     }
 }

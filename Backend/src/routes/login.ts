@@ -89,4 +89,14 @@ async function ControlloToken(req: any, res: any, next: any) {
     }
 }
 
-export { GestioneLogin, ControlloToken };
+async function Logout(req: any, res: any, next: any) {
+    const options = {
+        // mi da tutte le chiavi dentro a cookieOptions
+        ...cookiesOptions, maxAge: -1
+    }
+    // gli mandiamo un token vuoto con valore -1
+    res.cookie("TOKEN", "", cookiesOptions);
+    res.send({ "ok": 1 });
+};
+
+export { GestioneLogin, ControlloToken, Logout };
