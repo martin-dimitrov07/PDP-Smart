@@ -7,7 +7,15 @@
         Accedi per gestire i documenti PDP dei tuoi studenti
     </p>
 
-    <div class="myGoogleDiv"></div>
+    @if (isLoading) {
+    <div class="d-flex justify-content-center my-2">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    }
+
+    <div class="myGoogleDiv" [ngClass]="{ 'd-none': isLoading }"></div>
 
     <div class="divider">
         <p class="m-0 third-text-color text-nowrap px-2">Accesso Istituzionale</p>

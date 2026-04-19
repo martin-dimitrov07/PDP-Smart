@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, PLATFORM_ID, SimpleChanges, inject } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, NgClass } from '@angular/common';
 import { LoginService } from '../../shared/services/login.service';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
@@ -12,9 +12,12 @@ declare const google: any;
     standalone: true,
     templateUrl: './login-form.html',
     styleUrl: './login-form.css',
+    imports: [NgClass],
 })
 export class LoginForm {
     @Input() isDark: boolean = false;
+
+    isLoading: boolean = true;
 
     private readonly loginService = inject(LoginService);
     private platformId = inject(PLATFORM_ID);
@@ -55,6 +58,7 @@ export class LoginForm {
     }
 
     private renderGoogleButton() {
+        this.isLoading = true;
         const buttonContainers = document.getElementsByClassName("myGoogleDiv");
         for (const btn of Array.from(buttonContainers)) {
             btn.innerHTML = "";
@@ -71,6 +75,10 @@ export class LoginForm {
                 }
             );
         }
+
+        setTimeout(() => {
+            this.isLoading = false;
+        }, 100);
     }
 
     loginWithGoogle(response: any) {
