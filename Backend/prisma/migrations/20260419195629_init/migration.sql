@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Ruolo" AS ENUM ('Docente', 'Admin');
+CREATE TYPE "Ruolo" AS ENUM ('Docente', 'Admin', 'Coordinatore');
 
 -- CreateEnum
 CREATE TYPE "Stato" AS ENUM ('In bozza', 'Validato', 'Scaduto');
@@ -30,6 +30,7 @@ CREATE TABLE "Classe" (
     "Sezione" CHAR(1) NOT NULL,
     "Indirizzo" VARCHAR(5) NOT NULL,
     "Anno_Scolastico" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "Coordinatore_Email" VARCHAR(255) NOT NULL,
 
     CONSTRAINT "Classe_pkey" PRIMARY KEY ("Id")
 );
@@ -137,6 +138,9 @@ CREATE TABLE "Documento_ICF" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Classe_Classe_Sezione_Indirizzo_Anno_Scolastico_key" ON "Classe"("Classe", "Sezione", "Indirizzo", "Anno_Scolastico");
+
+-- AddForeignKey
+ALTER TABLE "Classe" ADD CONSTRAINT "Classe_Coordinatore_Email_fkey" FOREIGN KEY ("Coordinatore_Email") REFERENCES "Docente"("Email") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Documento" ADD CONSTRAINT "Documento_Studente_Email_fkey" FOREIGN KEY ("Studente_Email") REFERENCES "Studente"("Email") ON DELETE RESTRICT ON UPDATE CASCADE;
