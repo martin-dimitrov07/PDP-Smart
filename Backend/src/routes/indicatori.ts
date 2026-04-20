@@ -8,14 +8,11 @@ async function GetIndicatori(req: any, res: any) {
             where: filters
         });
 
-        if (indicatori && indicatori.length > 0)
-            res.send(indicatori);
-        else
-            res.status(404).send("Indicatori non trovati per la materia specificata");
+        res.send(indicatori);
 
     } catch (err) {
         console.error("Errore:", err);
-        res.status(500).send("Errore nel recupero degli indicatori per materia");
+        res.status(500).send("Errore nel recupero degli indicatori");
     }
 }
 

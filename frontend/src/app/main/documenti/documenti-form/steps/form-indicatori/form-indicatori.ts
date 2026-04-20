@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { DocumentiService } from '../../../../../shared/services/documenti.service';
 import { Router } from '@angular/router';
 import { CheckError } from '../../../../../shared/utilities/check-error';
@@ -19,6 +19,8 @@ export class FormIndicatori {
 
     datiCaricati: boolean = false;
 
+    private readonly cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+
     ngOnInit() {
         if (this.documentiService.materieSelected.length > 0) {
             this.documentiService.tappa = "indicatori";
@@ -26,20 +28,25 @@ export class FormIndicatori {
 
             this.documentiService.materiaSelected = this.documentiService.materieSelected[0];
 
-            this.SetIndicatori();
+            for (const materia of this.documentiService.materieSelected) {
+                this.SetIndicatori(materia);
+            }
         }
         else
             this.router.navigate(["documenti", "crea", "ICF"]);
     }
 
-    SetIndicatori(){
+    SetIndicatori(materia: string) {
         this.datiCaricati = false;
-        this.documentiService.indicatori[this.documentiService.materiaSelected] = {};
+        // Forziamo Angular a capire che c'è stato un cambiamento
+        this.cdr.detectChanges();
 
-        this.documentiService.CaricaIndicatoriPerMateria(this.documentiService.materiaSelected).subscribe({
+        this.documentiService.CaricaIndicatoriPerMateria(materia).subscribe({
             next: (data) => {
-                // console.log(this.documentiService.indicatori);
+                console.log(data);
+
                 this.datiCaricati = true;
+                this.cdr.detectChanges();
             },
             error: (err) => this.checkError.checkError(err)
         });

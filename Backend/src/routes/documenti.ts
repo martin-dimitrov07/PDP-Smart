@@ -16,7 +16,7 @@ async function CreateDocumento(req: any, res: any) {
             }
         });
 
-        res.status(200).send(result);
+        res.send(result);
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
@@ -32,7 +32,7 @@ async function GetCountDocumenti(req: any, res: any) {
             where: filters
         });
 
-        res.status(200).send({ countDocumenti });
+        res.send({ countDocumenti });
 
     } catch (err) {
         console.error("Errore:", err);

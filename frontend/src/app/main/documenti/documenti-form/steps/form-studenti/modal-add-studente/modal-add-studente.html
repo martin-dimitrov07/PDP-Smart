@@ -8,7 +8,7 @@
                 <div class="modal-body">
                     <label for="classeSelected" class="form-label">Classe</label>
                     <select class="form-select" id="classeSelected" name="classeSelected" [(ngModel)]="classeId"
-                        (change)="GetStudenti()">
+                        (change)="GetStudentiNoDoc()">
                         @if(allClasses && allClasses.length > 0) {
                         @for (classe of allClasses; track $index) {
                         <option [value]="classe.Id">{{classe.GetFullNome()}}</option>

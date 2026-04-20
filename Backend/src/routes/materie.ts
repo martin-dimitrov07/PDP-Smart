@@ -9,10 +9,7 @@ async function GetMaterieDocente(req: any, res: any) {
             orderBy: { Nome: 'asc' }
         });
 
-        if (materie && materie.length > 0)
-            res.send(materie);
-        else
-            res.status(404).send("Materie non trovate");
+        res.send(materie);
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");

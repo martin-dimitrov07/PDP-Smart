@@ -32,6 +32,10 @@ export class FormMaterie {
 
     SaveMaterie() {
         this.documentiService.avanzamentoCrea = "indicatori";
+
+        for (const materia of this.documentiService.materiaSelected) {
+            this.documentiService.indicatori[materia] = {};
+        }
         
         this.router.navigate(["documenti", "crea", "indicatori"]);
     }

@@ -3,7 +3,7 @@ import { DocentiService } from './docenti.service';
 import { DataStorageService } from './data-storage.service';
 import { Studente } from '../../models/studente';
 import { Documento } from '../../models/documento';
-import { concatMap, forkJoin, map, mergeMap, tap } from 'rxjs';
+import { concatMap, forkJoin, map, mergeMap, of, tap } from 'rxjs';
 import { Ruolo } from '../../models/docente';
 import { Indicatore } from '../../models/indicatore';
 
@@ -18,7 +18,7 @@ export class DocumentiService {
     tappa: string = "studenti";
     avanzamentoCrea: string = "studenti";
 
-    studentiSelected: Studente[] = [];
+    studenteSelected: Studente = {} as Studente;
 
     materieDocente: string[] = [];
     materiaSelected: string = "";
@@ -86,16 +86,18 @@ export class DocumentiService {
         return this.dataStorageService.InviaRichiesta("GET", "/count-documenti", { filters: JSON.stringify(filters) })!;
     }
 
-    GetIndicatori(categoria: string = "") {
-        let filters = {};
+    GetIndicatori(categoria: string = "", tipologia: string) {
+        let filters: any = {};
 
         if (categoria) {
-            filters = {
-                Categoria: categoria
-            };
+            filters.Categoria = categoria;
         }
 
-        return this.dataStorageService.InviaRichiesta("GET", "/indicatori", filters)!.pipe(tap((data: any) => {
+        if(tipologia){
+            filters.Tipologia = { in: [tipologia, "ENTRAMBI"] }
+        }
+
+        return this.dataStorageService.InviaRichiesta("GET", "/indicatori", {filters: JSON.stringify(filters)})!.pipe(tap((data: any) => {
             // console.log(data);
             return data.map((ind: Indicatore) => new Indicatore(ind.Id, ind.Tipologia, ind.Categoria, ind.Descrizione));
         }));
@@ -110,22 +112,31 @@ export class DocumentiService {
 
     // Aggiungi questo metodo nel tuo DocumentiService
     CaricaIndicatoriPerMateria(materia: string) {
+
+        console.log(this.indicatori[materia])
+
+        // restituisce un Observable che emette immediatamente i dati esistenti
+        if (this.indicatori[materia] && Object.keys(this.indicatori[materia]).length > 0) {
+            return of(this.indicatori[materia]);
+        }
+
         return this.GetCategorieIndicatore().pipe(
             // MergeMap: esegue tutte le chiamate che gli arrivano 
             // le esegue tutte in parallelo e aspetta che tutte finiscano per emettere il risultato
             mergeMap(() => {
-                const richieste = this.categorieInd.map(cat =>
-                    this.GetIndicatori(cat).pipe(
+                const richieste = this.categorieInd.map(cat => {
+                    const tipologia = this.studenteSelected.DSA_BES ? "DSA" : "BES";
+                    return this.GetIndicatori(cat, tipologia).pipe(
                         map(listaIndicatori => ({ categoria: cat, lista: listaIndicatori }))
                     )
-                );
+            });
                 return forkJoin(richieste);
             }),
             // Formatta i dati per la struttura
             map((risultati) => {
                 // risultati è un array: [{categoria: 'A', lista: [...]}, {categoria: 'B', lista: [...]}]
-                const struttura: any = { };
-                
+                const struttura: any = {};
+
                 for (const ris of risultati) {
                     struttura[ris.categoria] = ris.lista.map((ind: Indicatore) => ({ Id: ind.Id, Valore: false, Descrizione: ind.Descrizione }))
                 }

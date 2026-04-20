@@ -22,22 +22,15 @@ export class FormStudenti {
         this.documentiService.avanzamentoCrea = "studenti";
     }
 
-    SaveStudente(studente: Studente) {
-        if (this.documentiService.studentiSelected.findIndex(s => s.Email == studente.Email) == -1) {
-            this.documentiService.studentiSelected.push(new Studente(
-                studente.Nome,
-                studente.Cognome,
-                studente.Email,
-                studente.DSA_BES
-            ));
-        }
+    SaveStudente(studente: Studente){
+        this.documentiService.studenteSelected = studente;
     }
 
-    RemoveStudente(email: string) {
-        this.documentiService.studentiSelected.splice(this.documentiService.studentiSelected.findIndex(s => s.Email == email), 1);
+    RemoveStudente() {
+        this.documentiService.studenteSelected = {} as Studente;
     }
 
-    SaveStudenti() {
+    GoStep() {
         this.documentiService.avanzamentoCrea = "materie";
 
         this.router.navigate(["documenti", "crea", "materie"]);

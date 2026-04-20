@@ -23,10 +23,7 @@ async function GetIndirizzi(req: any, res: any) {
 
         const indirizzi = await prisma.classe.findMany(query);
 
-        if (indirizzi && indirizzi.length > 0)
-            res.send(indirizzi);
-        else
-            res.status(404).send("Indirizzi non trovati");
+        res.send(indirizzi);
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
@@ -85,10 +82,7 @@ async function GetClasseById(req: any, res: any) {
             where: { Id: classeId }
         });
 
-        if (classe)
-            res.send(classe);
-        else
-            res.status(404).send("Classe non trovata");
+        res.send(classe);
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
@@ -139,11 +133,7 @@ async function GetAnniScolastici(req: any, res: any) {
 
         const anniVettore = classi.map(c => c.Anno_Scolastico);
 
-        if (anniVettore.length > 0) {
-            res.status(200).send(anniVettore);
-        } else {
-            res.status(404).send("Anni non trovati");
-        }
+        res.status(200).send(anniVettore);
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
@@ -189,10 +179,7 @@ async function GetStudenti(req: any, res: any) {
             orderBy: order
         });
 
-        if (studenti && studenti.length > 0)
-            res.send(studenti);
-        else
-            res.status(404).send("Studenti non trovati");
+        res.send(studenti);
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
@@ -233,10 +220,7 @@ async function GetStudentiNoDoc(req: any, res: any) {
             orderBy: order
         });
 
-        if (studenti && studenti.length > 0)
-            res.send(studenti);
-        else
-            res.status(404).send("Studenti non trovati");
+        res.send(studenti);
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");

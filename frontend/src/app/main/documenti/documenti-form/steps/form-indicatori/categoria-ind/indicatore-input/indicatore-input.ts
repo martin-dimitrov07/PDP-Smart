@@ -1,5 +1,4 @@
 import { Component, inject, Input } from '@angular/core';
-import { Indicatore } from '../../../../../../../models/indicatore';
 import { FormsModule } from "@angular/forms";
 import { DocumentiService } from '../../../../../../../shared/services/documenti.service';
 
@@ -37,7 +36,9 @@ export class IndicatoreInput {
         // console.log(listaInd);
     }
 
-    // ngOnInit(){
-    //     // console.log(this._indicatore);
-    // }
+    ngOnInit(){
+        this.isChecked = this.documentiService.indicatori[this.documentiService.materiaSelected][this.categoria].find((i: any) => i.Id === this.indicatore.Id).Valore
+
+        // console.log(this.documentiService.indicatori[this.documentiService.materiaSelected][this.categoria]);
+    }
 }

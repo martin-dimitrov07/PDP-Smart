@@ -58,13 +58,13 @@ export class ModalAddStudente {
 
                 this.classeId = this.allClasses[0].Id;
 
-                this.GetStudenti();
+                this.GetStudentiNoDoc();
             },
             error: (err: any) => this.checkError.checkError(err)
         });
     }
 
-    GetStudenti() {
+    GetStudentiNoDoc() {
         console.log(this.classeId);
         this.studentiService.GetStudentiNoDocumento(Number(this.classeId)).subscribe({
             next: (data: any) => {
