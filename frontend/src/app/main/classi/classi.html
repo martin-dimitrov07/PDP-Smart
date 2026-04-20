@@ -1,54 +1,6 @@
-<div class="d-flex justify-content-between align-items-center px-2 px-sm-3 my-2">
-    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="px-3 my-3">
-        <ol class="breadcrumb m-0">
-            <li class="breadcrumb-item"><a href="/indirizzi"
-                    class="text-decoration-none third-text-color opacity-75">Indirizzi</a></li>
-            <li class="breadcrumb-item secondary-text-color fw-bold" aria-current="page">Classi</li>
-        </ol>
-    </nav>
+<app-classi-header (annoScolastico)="SetFilterAnnoScolastico($event)"></app-classi-header>
 
-    <div class="dropdown px-3">
-        <button class="btn btn-secondary dropdown-toggle" id="annoDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Anno
-        </button>
-        <ul class="dropdown-menu">
-            @for (anno of studentiService.anniScolastici; track $index) {
-            <li><a class="dropdown-item cursor-pointer" (click)="SetFilterAnnoScolastico(anno)">
-                    {{anno.getFullYear().toString()}}/{{(anno.getFullYear() +
-                    1).toString()}}
-                </a>
-            </li>
-            }
-        </ul>
-    </div>
-</div>
-
-<div class="sezione-card d-flex align-items-center mb-3">
-    <div class="d-flex align-items-center gap-2 gap-sm-4 px-4 px-sm-4 w-100">
-        <div class="icon-box shadow"><i class="bi" [ngClass]="iconClass"></i></div>
-        <div class="flex-grow-1">
-            <h2 class="sigla text-start text-white fs-3 lh-1 m-0">{{this.studentiService.indirizzoSelected}}</h2>
-        </div>
-        <div class="icon-box p-3 shadow" style="width: auto !important;">
-            @if (studentiService.nClassi == 1) {
-            <p class="m-0 fw-bold">{{studentiService.nClassi}} classe</p>
-            }
-            @else {
-            <p class="m-0 fw-bold">{{studentiService.nClassi}} classi</p>
-            }
-        </div>
-    </div>
-</div>
-
-<div class="d-flex flex-wrap flex-md-nowrap justify-content-center gap-3 gap-xl-5 px-3 px-md-5 my-4" id="annoTabs">
-    <button class="col-5 col-sm-3 flex-md-fill anno-tab all active" (click)="SetFilterAnno(0)"
-        id="anno-all">Tutte</button>
-    <button id="anno-1" class="col-5 col-sm-3 flex-md-fill anno-tab" (click)="SetFilterAnno(1)">1° Anno</button>
-    <button id="anno-2" class="col-5 col-sm-3 flex-md-fill anno-tab" (click)="SetFilterAnno(2)">2° Anno</button>
-    <button id="anno-3" class="col-5 col-sm-3 flex-md-fill anno-tab" (click)="SetFilterAnno(3)">3° Anno</button>
-    <button id="anno-4" class="col-5 col-sm-3 flex-md-fill anno-tab" (click)="SetFilterAnno(4)">4° Anno</button>
-    <button id="anno-5" class="col-5 col-sm-3 flex-md-fill anno-tab" (click)="SetFilterAnno(5)">5° Anno</button>
-</div>
+<app-classi-filters [IconClass]="iconClass" (anno)="SetFilterAnno($event)"></app-classi-filters>
 
 <div class="mx-3 mt-5 pb-4">
     @for (anno of anni; track $index) {

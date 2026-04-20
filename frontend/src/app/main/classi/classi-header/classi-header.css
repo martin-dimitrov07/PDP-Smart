@@ -1,0 +1,9 @@
+.dropdown-toggle{
+    background-color: var(--color);
+}
+
+.dropdown-item:hover {
+    background-color: var(--color-hover);
+    color: var(--color);
+    cursor: pointer;
+}

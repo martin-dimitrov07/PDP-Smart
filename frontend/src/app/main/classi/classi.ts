@@ -5,10 +5,12 @@ import { isPlatformBrowser, CommonModule } from "@angular/common";
 import { ClassiCard } from './classi-card/classi-card';
 import { ColorSection } from '../../shared/directives/color-section';
 import { CheckError } from '../../shared/utilities/check-error';
+import { ClassiFilters } from "./classi-filters/classi-filters";
+import { ClassiHeader } from './classi-header/classi-header';
 
 @Component({
     selector: 'app-classi',
-    imports: [ClassiCard, CommonModule],
+    imports: [ClassiCard, CommonModule, ClassiFilters, ClassiHeader],
     providers: [ColorSection],
     templateUrl: './classi.html',
     styleUrl: './classi.css',
@@ -45,7 +47,6 @@ export class Classi {
                 if (isPlatformBrowser(this.platformId)) {
                     this.colorSectionDirective.GetColorSection(this.studentiService.indirizzoSelected!);
                     this.iconClass = this.colorSectionDirective.GetIconSection(this.studentiService.indirizzoSelected!);
-                    console.log(document.querySelector("#annoDropdown"));
                     document.querySelector("#annoDropdown")!.textContent = this.studentiService.anniScolastici[0].getFullYear().toString() + "/" + (this.studentiService.anniScolastici[0].getFullYear() + 1).toString();
                 }
 
@@ -101,7 +102,6 @@ export class Classi {
     }
 
     SetFilterAnnoScolastico(annoScolastico: Date) {
-        console.log(annoScolastico);
         document.querySelector("#annoDropdown")!.textContent = annoScolastico.getFullYear().toString() + "/" + (annoScolastico.getFullYear() + 1).toString();
         this.filterAnnoScolastico = annoScolastico;
         this.studentiService.GetClassi(this.filterClassi, this.filterAnnoScolastico).subscribe({

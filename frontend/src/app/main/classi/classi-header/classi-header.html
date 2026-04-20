@@ -1,0 +1,24 @@
+<div class="d-flex justify-content-between align-items-center px-2 px-sm-3 my-2">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="px-3 my-3">
+        <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a href="/indirizzi"
+                    class="text-decoration-none third-text-color opacity-75">Indirizzi</a></li>
+            <li class="breadcrumb-item secondary-text-color fw-bold" aria-current="page">Classi</li>
+        </ol>
+    </nav>
+
+    <div class="dropdown px-3">
+        <button class="btn btn-secondary dropdown-toggle" id="annoDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Anno
+        </button>
+        <ul class="dropdown-menu">
+            @for (anno of studentiService.anniScolastici; track $index) {
+            <li><a class="dropdown-item cursor-pointer" (click)="SetFilterAnnoScolastico(anno)">
+                    {{anno.getFullYear().toString()}}/{{(anno.getFullYear() +
+                    1).toString()}}
+                </a>
+            </li>
+            }
+        </ul>
+    </div>
+</div>
