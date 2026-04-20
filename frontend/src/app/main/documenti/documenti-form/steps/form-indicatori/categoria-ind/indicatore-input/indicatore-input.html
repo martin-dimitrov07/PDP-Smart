@@ -1,4 +1,4 @@
 <div class="d-flex justify-content-between gap-2 py-2">
     <label class="form-label m-0" for="ind-{{indicatore.Id}}">{{indicatore.Descrizione}}</label>
-    <input type="checkbox" class="form-check-input my-auto" id="ind-{{indicatore.Id}}" [ngModel]="isChecked">
+    <input type="checkbox" class="form-check-input my-auto" id="ind-{{indicatore.Id}}" [ngModel]="isChecked" value="{{indicatore.Valore}}" (input)="SetValue()">
 </div>

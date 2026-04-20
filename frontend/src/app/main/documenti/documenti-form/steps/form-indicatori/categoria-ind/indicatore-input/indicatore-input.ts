@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { Indicatore } from '../../../../../../../models/indicatore';
 import { FormsModule } from "@angular/forms";
+import { DocumentiService } from '../../../../../../../shared/services/documenti.service';
 
 @Component({
     selector: 'app-indicatore-input',
@@ -9,20 +10,34 @@ import { FormsModule } from "@angular/forms";
     styleUrl: './indicatore-input.css',
 })
 export class IndicatoreInput {
-    private _indicatore!: Indicatore;
+    private readonly documentiService: DocumentiService = inject(DocumentiService);
+    private _indicatore!: any;
+    @Input() categoria!: string;
 
     isChecked: boolean = false;
 
-    @Input() set indicatore(valore: Indicatore) {
-        this._indicatore = new Indicatore(valore.Id, valore.Tipologia, valore.Categoria, valore.Descrizione);
-        console.log(this._indicatore);
+    @Input() set indicatore(valore: any) {
+        this._indicatore = valore;
+        // console.log(this._indicatore);
     }
 
-    get indicatore(): Indicatore {
+    get indicatore(): any {
         return this._indicatore;
     }
 
-    ngOnInit(){
-        console.log(this._indicatore);
+    SetValue() {
+        const listaInd = this.documentiService.indicatori[this.documentiService.materiaSelected][this.categoria];
+
+        const ind = listaInd.find((i: any) => i.Id === this.indicatore.Id);
+
+        if (ind) {
+            ind.Valore = !ind.Valore;
+        }
+
+        // console.log(listaInd);
     }
+
+    // ngOnInit(){
+    //     // console.log(this._indicatore);
+    // }
 }

@@ -8,8 +8,8 @@
                 <div class="modal-body">
                     <label for="materiaSelected" class="form-label">Materia</label>
                     <select class="form-select" id="materiaSelected" name="materiaSelected" [(ngModel)]="materia">
-                        @if(documentiService.materie && documentiService.materie.length > 0) {
-                        @for (nomeMateria of documentiService.materie; track $index) {
+                        @if(documentiService.materieDocente && documentiService.materieDocente.length > 0) {
+                        @for (nomeMateria of documentiService.materieDocente; track $index) {
                         <option [value]="nomeMateria">{{nomeMateria}}</option>
                         }
                         }

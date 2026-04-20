@@ -2,6 +2,7 @@ import { Component, inject, Input } from '@angular/core';
 import { DocumentiService } from '../../../../../../shared/services/documenti.service';
 import { CheckError } from '../../../../../../shared/utilities/check-error';
 import { IndicatoreInput } from './indicatore-input/indicatore-input';
+import { Indicatore } from '../../../../../../models/indicatore';
 
 @Component({
     selector: 'app-categoria-ind',
@@ -11,9 +12,9 @@ import { IndicatoreInput } from './indicatore-input/indicatore-input';
 })
 export class CategoriaInd {
     private _categoria!: string;
-    @Input() materiaSelected: string = "";
+    public indicatoriCategoria: any[] = []; 
     public readonly documentiService: DocumentiService = inject(DocumentiService);
-    private readonly checkError: CheckError = inject(CheckError);
+    // private readonly checkError: CheckError = inject(CheckError);
 
     @Input() set categoria(valore: string) {
         this._categoria = valore;
@@ -24,9 +25,9 @@ export class CategoriaInd {
     }
 
     ngOnInit(){
-        this.documentiService.GetIndicatori(this.categoria).subscribe({
-            next: (data) => { console.log(this.documentiService.indicatori) },
-            error: (err) => this.checkError.checkError(err)
-        })
+        // console.log(this.materiaSelected);
+        // console.log(this.documentiService.indicatori[this.materiaSelected])
+        this.indicatoriCategoria = this.documentiService.indicatori[this.documentiService.materiaSelected][this.categoria];
+        // console.log(this.indicatoriCategoria);
     }
 }

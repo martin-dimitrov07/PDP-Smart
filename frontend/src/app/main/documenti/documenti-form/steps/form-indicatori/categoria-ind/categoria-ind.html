@@ -1,10 +1,11 @@
 <ul class="list-group">
-    <li class="list-group-item active fw-bold" aria-current="true">{{categoria}}</li>
-    
-    @for (ind of documentiService.indicatori; track $index) 
-    {
+    <li class="list-group-item active fw-bold" aria-current="true">
+        {{categoria.replace('_', ' ')}}
+    </li>
+
+    @for (ind of indicatoriCategoria; track $index) {
     <li class="list-group-item px-sm-5">
-        <app-indicatore-input [indicatore]="ind"></app-indicatore-input>
+        <app-indicatore-input [indicatore]="ind" [categoria]="categoria"></app-indicatore-input>
     </li>
     }
 </ul>

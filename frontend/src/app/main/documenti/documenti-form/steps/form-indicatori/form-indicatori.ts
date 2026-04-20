@@ -2,41 +2,47 @@ import { Component, inject } from '@angular/core';
 import { DocumentiService } from '../../../../../shared/services/documenti.service';
 import { Router } from '@angular/router';
 import { CheckError } from '../../../../../shared/utilities/check-error';
-import { Indicatore } from '../../../../../models/indicatore';
 import { FormsModule } from '@angular/forms';
 import { CategoriaInd } from './categoria-ind/categoria-ind';
+import { CommonModule, } from "@angular/common";
 
 @Component({
     selector: 'app-form-indicatori',
-    imports: [FormsModule, CategoriaInd],
+    imports: [FormsModule, CategoriaInd, CommonModule],
     templateUrl: './form-indicatori.html',
     styleUrl: './form-indicatori.css',
 })
 export class FormIndicatori {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     private readonly router: Router = inject(Router);
+    private readonly checkError: CheckError = inject(CheckError);
 
-    materiaSelected: string = "";
-    checkError: any;
+    datiCaricati: boolean = false;
 
     ngOnInit() {
         if (this.documentiService.materieSelected.length > 0) {
             this.documentiService.tappa = "indicatori";
             this.documentiService.avanzamentoCrea = "indicatori";
 
-            this.materiaSelected = this.documentiService.materieSelected[0];
+            this.documentiService.materiaSelected = this.documentiService.materieSelected[0];
 
-            this.documentiService.GetCategorieIndicatore().subscribe({
-                next: (data) => { console.log(this.documentiService.categorieInd) },
-                error: (err) => this.checkError.checkError(err)
-            })
+            this.SetIndicatori();
         }
         else
             this.router.navigate(["documenti", "crea", "ICF"]);
     }
 
-    SetValue() {
+    SetIndicatori(){
+        this.datiCaricati = false;
+        this.documentiService.indicatori[this.documentiService.materiaSelected] = {};
 
+        this.documentiService.CaricaIndicatoriPerMateria(this.documentiService.materiaSelected).subscribe({
+            next: (data) => {
+                // console.log(this.documentiService.indicatori);
+                this.datiCaricati = true;
+            },
+            error: (err) => this.checkError.checkError(err)
+        });
     }
 
     SaveMaterie() {
