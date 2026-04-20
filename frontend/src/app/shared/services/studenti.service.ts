@@ -124,7 +124,17 @@ export class StudentiService {
     }
 
     GetAnniScolastici(): Observable<any> {
-        const params: any = {};
+        let params: any = {};
+
+        if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
+            const filtroDocente = {
+                some: {
+                    Docente_Email: this.docentiService.docente.Email
+                }
+            };
+            params["Insegnamenti"] = JSON.stringify(filtroDocente);
+        }
+
         if (this.indirizzoSelected)
             params["Indirizzo"] = this.indirizzoSelected;
 
@@ -219,7 +229,7 @@ export class StudentiService {
             }
         }
 
-        return this.dataStorageService.InviaRichiesta("GET", "/studenti/no-doc", {filters: JSON.stringify(filters)})!.pipe(tap((data: any) => {
+        return this.dataStorageService.InviaRichiesta("GET", "/studenti/no-doc", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
             this.studentiNoDoc = data.map((studente: Studente) => new Studente(studente.Nome, studente.Cognome, studente.Email, studente.DSA_BES));
 
         }));
