@@ -18,7 +18,6 @@ export class StudentiCard {
             valore.Email,
             valore.DSA_BES
         );
-        // console.log(this._studente);
     }
 
     get studente(): Studente {

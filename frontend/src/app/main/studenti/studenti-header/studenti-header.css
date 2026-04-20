@@ -1,19 +1,10 @@
-.dropdown-toggle {
-    background-color: var(--color);
-}
-
-.dropdown-item:hover {
-    background-color: var(--color-hover);
-    color: var(--color);
-    cursor: pointer;
-}
-
 .sezione-card {
     background-color: var(--color);
     padding-top: 0;
     padding-bottom: 0;
     height: 120px;
     overflow: hidden;
+    border-radius: 20px;
 }
 
 .icon-box {

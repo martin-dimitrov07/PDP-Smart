@@ -5,12 +5,13 @@ import { ColorSection } from '../../shared/directives/color-section';
 import { CommonModule } from '@angular/common';
 import { CheckError } from '../../shared/utilities/check-error';
 import { StudentiCard } from './studenti-card/studenti-card';
-import { error, time } from 'console';
 import { FormsModule } from '@angular/forms';
+import { StudentiHeader } from "./studenti-header/studenti-header";
+import { StudentiFilters } from "./studenti-filters/studenti-filters";
 
 @Component({
     selector: 'app-studenti',
-    imports: [CommonModule, StudentiCard, FormsModule],
+    imports: [CommonModule, StudentiCard, FormsModule, StudentiHeader, StudentiFilters],
     providers: [ColorSection],
     templateUrl: './studenti.html',
     styleUrl: './studenti.css',
@@ -78,7 +79,6 @@ export class Studenti {
     SetFilterDSA_BES(filter: any) {
         this.DSA_BES = filter;
 
-        console.log(this.DSA_BES);
         if (filter == -1) {
             document.getElementById("badges-dsa")?.classList.remove("active");
             document.getElementById("badges-bes")?.classList.remove("active");

@@ -1,13 +1,15 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { StudentiService } from '../../../shared/services/studenti.service';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-classi-header',
-    imports: [],
+    imports: [NgClass],
     templateUrl: './classi-header.html',
     styleUrl: './classi-header.css',
 })
 export class ClassiHeader {
+    @Input() IconClass!: string;
     @Output() annoScolastico = new EventEmitter<Date>();
 
     public readonly studentiService: StudentiService = inject(StudentiService);

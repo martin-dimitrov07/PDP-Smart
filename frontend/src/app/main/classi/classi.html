@@ -1,6 +1,6 @@
-<app-classi-header (annoScolastico)="SetFilterAnnoScolastico($event)"></app-classi-header>
+<app-classi-header [IconClass]="iconClass" (annoScolastico)="SetFilterAnnoScolastico($event)"></app-classi-header>
 
-<app-classi-filters [IconClass]="iconClass" (anno)="SetFilterAnno($event)"></app-classi-filters>
+<app-classi-filters (anno)="SetFilterAnno($event)"></app-classi-filters>
 
 <div class="mx-3 mt-5 pb-4">
     @for (anno of anni; track $index) {

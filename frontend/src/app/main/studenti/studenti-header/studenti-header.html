@@ -1,0 +1,28 @@
+<div class="px-3 my-4">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="px-3 my-3">
+        <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a href="/indirizzi"
+                    class="text-decoration-none third-text-color opacity-75">Indirizzi</a></li>
+            <li class="breadcrumb-item"><a href="/indirizzi/{{indirizzo}}/classi"
+                    class="text-decoration-none third-text-color opacity-75">Classi</a></li>
+            <li class="breadcrumb-item secondary-text-color fw-bold" aria-current="page">Studenti</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="sezione-card d-flex align-items-center my-3 mx-2 mx-sm-3 mx-md-5">
+    <div class="d-flex align-items-center gap-2 gap-sm-4 px-2 px-sm-4 px-sm-4 w-100">
+        <div class="icon-box shadow"><i class="bi" [ngClass]="iconClass"></i></div>
+        <div class="flex-grow-1">
+            <h2 class="sigla text-start text-white fs-3 lh-1 m-0">{{studentiService.classeSelected?.GetFullNome()}}</h2>
+        </div>
+        <div class="icon-box p-1 p-sm-3 shadow" style="width: auto !important;">
+            @if (nStudenti == 1 ) {
+                <p class="m-0 fw-bold fs-4">{{nStudenti}} studente</p>
+            }
+            @else {
+                <p class="m-0 fw-bold fs-4">{{nStudenti}} studenti</p>
+            }
+        </div>
+    </div>
+</div>
