@@ -65,6 +65,7 @@ export class ModalAddStudente {
     }
 
     GetStudenti() {
+        console.log(this.classeId);
         this.studentiService.GetStudentiNoDocumento(Number(this.classeId)).subscribe({
             next: (data: any) => {
                 this.studentiService.studentiNoDoc = data.map((studente: Studente) => new Studente(studente.Nome, studente.Cognome, studente.Email, studente.DSA_BES));
