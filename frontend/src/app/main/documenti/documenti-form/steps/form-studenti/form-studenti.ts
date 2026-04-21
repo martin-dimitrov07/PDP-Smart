@@ -31,6 +31,7 @@ export class FormStudenti {
     }
 
     GoStep() {
+        this.documentiService.tappa = "materie";
         this.documentiService.avanzamentoCrea = "materie";
 
         this.router.navigate(["documenti", "crea", "materie"]);

@@ -6,6 +6,7 @@ import { Documento } from '../../models/documento';
 import { concatMap, forkJoin, map, mergeMap, of, tap } from 'rxjs';
 import { Ruolo } from '../../models/docente';
 import { Indicatore } from '../../models/indicatore';
+import { Icf } from '../../models/icf';
 
 @Injectable({
     providedIn: 'root',
@@ -26,6 +27,9 @@ export class DocumentiService {
 
     indicatori: any = {};
     categorieInd: string[] = [];
+
+    icfs: Icf[] = [{"Codice": "1234", "Descrizione": "test"}];
+    icfsSelected: Icf[] = [];
 
     // indicatori = {
     //     "matematica": 
@@ -110,10 +114,9 @@ export class DocumentiService {
         }));
     }
 
-    // Aggiungi questo metodo nel tuo DocumentiService
     CaricaIndicatoriPerMateria(materia: string) {
 
-        console.log(this.indicatori[materia])
+        // console.log(this.indicatori[materia])
 
         // restituisce un Observable che emette immediatamente i dati esistenti
         if (this.indicatori[materia] && Object.keys(this.indicatori[materia]).length > 0) {
@@ -121,8 +124,7 @@ export class DocumentiService {
         }
 
         return this.GetCategorieIndicatore().pipe(
-            // MergeMap: esegue tutte le chiamate che gli arrivano 
-            // le esegue tutte in parallelo e aspetta che tutte finiscano per emettere il risultato
+            // MergeMap: esegue tutte le chiamate parallelo e aspetta che tutte finiscano per emettere il risultato
             mergeMap(() => {
                 const richieste = this.categorieInd.map(cat => {
                     const tipologia = this.studenteSelected.DSA_BES ? "DSA" : "BES";
@@ -134,7 +136,7 @@ export class DocumentiService {
             }),
             // Formatta i dati per la struttura
             map((risultati) => {
-                // risultati è un array: [{categoria: 'A', lista: [...]}, {categoria: 'B', lista: [...]}]
+                //array: [{categoria: 'A', lista: [...]}, {categoria: 'B', lista: [...]}]
                 const struttura: any = {};
 
                 for (const ris of risultati) {
@@ -146,5 +148,11 @@ export class DocumentiService {
                 return struttura;
             })
         );
+    }
+
+    GetICFs(){
+        return this.dataStorageService.InviaRichiesta("GET", "/icf")?.pipe(tap((data: any) => {
+            this.icfs = data.map((icf: Icf) => new Icf(icf.Codice, icf.Descrizione));
+        }))
     }
 }

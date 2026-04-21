@@ -1,11 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { DocumentiService } from '../../../../shared/services/documenti.service';
-import { NgClass } from "@angular/common";
 
 @Component({
     selector: 'app-step-bar',
-    imports: [NgClass],
+    imports: [],
     templateUrl: './step-bar.html',
     styleUrl: './step-bar.css',
 })

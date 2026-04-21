@@ -15,11 +15,6 @@ export class FormMaterie {
     private readonly checkError: CheckError = inject(CheckError);
     private readonly router: Router = inject(Router);
 
-    ngOnInit(){
-        this.documentiService.tappa = "materie";
-        this.documentiService.avanzamentoCrea = "materie";
-    }
-
     SaveMateria(nome: string) {
         if(this.documentiService.materieSelected.findIndex(materia => materia == nome) == -1) {
             this.documentiService.materieSelected.push(nome);
@@ -28,14 +23,16 @@ export class FormMaterie {
 
     RemoveMateria(nome: string) {
         this.documentiService.materieSelected.splice(this.documentiService.materieSelected.findIndex(materia => materia == nome), 1);
+        this.documentiService.indicatori[nome] = {};
     }
 
     SaveMaterie() {
+        this.documentiService.tappa = "indicatori";
         this.documentiService.avanzamentoCrea = "indicatori";
 
-        for (const materia of this.documentiService.materiaSelected) {
-            this.documentiService.indicatori[materia] = {};
-        }
+        // for (const materia of this.documentiService.materieSelected) {
+        //     this.documentiService.indicatori[materia] = {};
+        // }
         
         this.router.navigate(["documenti", "crea", "indicatori"]);
     }

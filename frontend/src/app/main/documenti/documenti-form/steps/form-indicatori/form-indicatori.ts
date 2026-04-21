@@ -23,17 +23,18 @@ export class FormIndicatori {
 
     ngOnInit() {
         if (this.documentiService.materieSelected.length > 0) {
-            this.documentiService.tappa = "indicatori";
-            this.documentiService.avanzamentoCrea = "indicatori";
-
             this.documentiService.materiaSelected = this.documentiService.materieSelected[0];
 
             for (const materia of this.documentiService.materieSelected) {
                 this.SetIndicatori(materia);
             }
         }
-        else
+        else {
+            this.documentiService.tappa = "ICF";
+            this.documentiService.avanzamentoCrea = "ICF";
+
             this.router.navigate(["documenti", "crea", "ICF"]);
+        }
     }
 
     SetIndicatori(materia: string) {
@@ -53,6 +54,7 @@ export class FormIndicatori {
     }
 
     SaveMaterie() {
+        this.documentiService.tappa = "ICF";
         this.documentiService.avanzamentoCrea = "ICF";
 
         this.router.navigate(["documenti", "crea", "ICF"]);

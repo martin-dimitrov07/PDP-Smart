@@ -1,0 +1,25 @@
+<div class="modal fade" id="aggiuntaMateria" tabindex="-1" aria-labelledby="aggiuntaMateriaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fs-5" id="aggiuntaMateriaLabel">Inserisci il codice ICF</h3>
+            </div>
+            <div class="modal-body">
+                <label for="exampleDataList" class="form-label">Seleziona un'opzione</label>
+                <input class="form-control" list="ifcOptions" id="icfs"
+                    placeholder="Scrivi per cercare..." [(ngModel)]="icfValue" (input)="SaveICF()">
+
+                <datalist id="ifcOptions">
+                    @for (icf of documentiService.icfs; track $index) {
+                        <option value="{{icf.Codice}} - {{icf.Descrizione}}"></option>
+                    }
+                </datalist>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-primary disabled" (click)="SaveICF()" data-bs-dismiss="modal">Salva
+                    aggiunta</button>
+            </div>
+        </div>
+    </div>
+</div>
