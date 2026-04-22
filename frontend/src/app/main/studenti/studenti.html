@@ -4,7 +4,7 @@
     (FilterDSA_BES)="SetFilterDSA_BES($event)"
     (orderValueEvent)="orderValue = $event.toString(); Search()"></app-studenti-filters>
 
-<div class="row g-4 mx-2 mx-sm-3 mx-md-5 mx-lg-3 mx-xl-5 py-4">
+<div class="row g-4 mx-2 mx-sm-3 mx-md-5 py-4">
     @if(studentiService.studenti.length > 0)
     {
         @for (studente of studentiService.studenti; track $index)
