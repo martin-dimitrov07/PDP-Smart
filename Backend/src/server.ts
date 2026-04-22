@@ -15,6 +15,7 @@ import * as GestioneStudenti from "./routes/studenti.ts";
 import * as GestioneDocumenti from "./routes/documenti.ts";
 import * as GestioneMaterie from "./routes/materie.ts";
 import * as GestioneIndicatori from "./routes/indicatori.ts";
+import * as GestioneICF from "./routes/icf.ts";
 
 import { PrismaClient } from "../prisma/generated/client/index.js";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -158,6 +159,8 @@ app.get("/api/materie", GestioneMaterie.GetMaterieDocente);
 //Indicatori
 app.get("/api/indicatori", GestioneIndicatori.GetIndicatori);
 
+//ICF
+app.get("/api/icf", GestioneICF.GetIcf);
 
 //F. default root e gestione errori
 app.use(function (req, res) {

@@ -17,12 +17,10 @@ export class Header {
     logout() {
         this.loginService.Logout().subscribe({
             "next": () => {
-                alert("Sessione chiusa correttamente");
                 this.router.navigate(["login"]);
             },
             "error": (error: any) => {
                 console.log(error);
-                alert("Token scaduto eseguire login");
                 this.router.navigate(["login"]);
             }
         })
