@@ -1,26 +1,28 @@
-<app-studenti-header [iconClass]="iconClass" [nStudenti]="nStudenti" [indirizzo]="indirizzo"></app-studenti-header>
+<section class="container-xl mx-auto">
+    <app-studenti-header [iconClass]="iconClass" [nStudenti]="nStudenti" [indirizzo]="indirizzo"></app-studenti-header>
 
-<app-studenti-filters (searchTermEvent)="searchTerm = $event.toString(); Search()"
-    (FilterDSA_BES)="SetFilterDSA_BES($event)"
-    (orderValueEvent)="orderValue = $event.toString(); Search()"></app-studenti-filters>
+    <app-studenti-filters (searchTermEvent)="searchTerm = $event.toString(); Search()"
+        (FilterDSA_BES)="SetFilterDSA_BES($event)"
+        (orderValueEvent)="orderValue = $event.toString(); Search()"></app-studenti-filters>
 
-<div class="row g-4 mx-2 mx-sm-3 mx-md-5 py-4">
-    @if(studentiService.studenti.length > 0)
-    {
+    <div class="row mx-sm-2 g-4 py-4">
+        @if(studentiService.studenti.length > 0)
+        {
         @for (studente of studentiService.studenti; track $index)
         {
-            <div class="col-12 col-lg-6">
-                <app-studenti-card [studente]="studente"></app-studenti-card>
-            </div>
+        <div class="col-12 col-lg-6">
+            <app-studenti-card [studente]="studente"></app-studenti-card>
+        </div>
         }
-    }
-    @else
-    {
+        }
+        @else
+        {
         <div class="col-12 my-5">
             <h3 class="fw-bold text-center">Nessuno studente trovato</h3>
             <p class="text-muted text-center">
                 Non ci sono studenti che corrispondono alla tua ricerca.
             </p>
         </div>
-    }
-</div>
+        }
+    </div>
+</section>

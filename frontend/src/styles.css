@@ -119,6 +119,12 @@ h6 {
     font-family: 'Geist Bold', sans-serif !important;
 }
 
+@media (max-width: 380px){
+    .extra-small{
+        font-size: 0.75rem !important;
+    }
+}
+
 .fw-semi-bold {
     font-family: 'Geist SemiBold', sans-serif !important;
 }
