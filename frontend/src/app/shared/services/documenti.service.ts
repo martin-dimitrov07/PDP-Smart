@@ -16,8 +16,7 @@ export class DocumentiService {
     // private readonly router: Router = inject(Router);
     private readonly docentiService: DocentiService = inject(DocentiService);
 
-    tappa: string = "studenti";
-    avanzamentoCrea: string = "studenti";
+    step: string = "studenti";
 
     studenteSelected: Studente = {} as Studente;
 

@@ -7,18 +7,17 @@
             <div class="modal-body">
                 <label for="exampleDataList" class="form-label">Seleziona un'opzione</label>
                 <input class="form-control" list="ifcOptions" id="icfs"
-                    placeholder="Scrivi per cercare..." [(ngModel)]="icfValue" (input)="SaveICF()">
+                    placeholder="Scrivi per cercare..." [(ngModel)]="icfValue" (input)="SetICF()" autocomplete="off">
 
                 <datalist id="ifcOptions">
                     @for (icf of documentiService.icfs; track $index) {
-                        <option value="{{icf.Codice}} - {{icf.Descrizione}}"></option>
+                        <option value="{{icf.Codice}}" id="{{icf.Codice}}">{{icf.Descrizione}}</option>
                     }
                 </datalist>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Annulla</button>
-                <button type="button" class="btn btn-primary disabled" (click)="SaveICF()" data-bs-dismiss="modal">Salva
-                    aggiunta</button>
+                <button type="button" class="btn btn-primary disabled" (click)="SaveICF()" data-bs-dismiss="modal">Salva aggiunta</button>
             </div>
         </div>
     </div>

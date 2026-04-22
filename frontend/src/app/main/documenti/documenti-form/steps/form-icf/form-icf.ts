@@ -14,10 +14,14 @@ export class FormICF {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     private readonly router: Router = inject(Router);
 
-    SaveICFs(icfs: Icf[]){
-        for (const icf of icfs) {
-            this.documentiService.icfsSelected.push(icf);
-        }   
+    ngOnInit(){
+        this.documentiService.step = "ICF";
+    }
+
+    SaveICF(icf: Icf){
+        if(this.documentiService.icfsSelected.findIndex((icfArray: Icf) => icfArray.Codice = icf.Codice) == -1) {
+            this.documentiService.icfsSelected.push(new Icf(icf.Codice, icf.Descrizione));
+        }
     }   
 
     RemoveICF(codice: string){
@@ -25,9 +29,6 @@ export class FormICF {
     }
     
     GoStep(){
-        this.documentiService.tappa = "allegati";
-        this.documentiService.avanzamentoCrea = "allegati";
-
         this.router.navigate(["documenti", "crea", "allegati"]);
     }
 }

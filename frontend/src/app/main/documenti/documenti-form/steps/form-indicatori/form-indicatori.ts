@@ -22,6 +22,8 @@ export class FormIndicatori {
     private readonly cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
     ngOnInit() {
+        this.documentiService.step = "indicatori";
+        
         if (this.documentiService.materieSelected.length > 0) {
             this.documentiService.materiaSelected = this.documentiService.materieSelected[0];
 
@@ -30,9 +32,6 @@ export class FormIndicatori {
             }
         }
         else {
-            this.documentiService.tappa = "ICF";
-            this.documentiService.avanzamentoCrea = "ICF";
-
             this.router.navigate(["documenti", "crea", "ICF"]);
         }
     }
@@ -54,9 +53,6 @@ export class FormIndicatori {
     }
 
     SaveMaterie() {
-        this.documentiService.tappa = "ICF";
-        this.documentiService.avanzamentoCrea = "ICF";
-
         this.router.navigate(["documenti", "crea", "ICF"]);
     }
 }

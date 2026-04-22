@@ -11,7 +11,6 @@ export class FormAllegati {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
 
     ngOnInit() {
-        this.documentiService.tappa = "allegati";
-        this.documentiService.avanzamentoCrea = "allegati";
+        this.documentiService.step = "allegati";
     }
 }

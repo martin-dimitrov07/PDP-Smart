@@ -14,7 +14,7 @@ export class ModalAddIcf {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     private readonly checkError: CheckError = inject(CheckError);
 
-    @Output() icfEvent = new EventEmitter<Icf[]>();
+    @Output() icfEvent = new EventEmitter<Icf>();
 
     icfValue: string = "";
 
@@ -25,7 +25,21 @@ export class ModalAddIcf {
         // })
     }
 
+    SetICF(){
+        const icfsCod = this.documentiService.icfs.map(icf => icf.Codice);
+
+        if(icfsCod.includes(this.icfValue))
+            document.querySelector(".modal-footer .btn-primary")!.classList.remove("disabled");
+        else
+            document.querySelector(".modal-footer .btn-primary")!.classList.add("disabled");
+
+        // console.log(document.querySelector(".btn-primary"));
+        // console.log(this.icfValue);
+        // console.log(icfsCod);
+    }
+
     SaveICF(){
-        console.log(this.icfValue);
+        this.icfEvent.emit(new Icf(this.icfValue, document.getElementById(this.icfValue)!.textContent));
+        this.icfValue = "";
     }
 }

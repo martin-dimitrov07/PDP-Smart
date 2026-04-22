@@ -16,7 +16,7 @@ export class StepBar {
 
     // Crea una funzione di supporto per verificare lo stato
     isStepActive(stepName: string): boolean {
-        const currentStep = this.steps.indexOf(this.documentiService.avanzamentoCrea);
+        const currentStep = this.steps.indexOf(this.documentiService.step);
         const step = this.steps.indexOf(stepName);
         // È attivo se il passo attuale è uguale o successivo a questo
         return currentStep >= step;

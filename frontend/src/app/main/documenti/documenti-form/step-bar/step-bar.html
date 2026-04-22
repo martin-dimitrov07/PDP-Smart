@@ -1,7 +1,7 @@
 <!-- STEP BAR -->
 <div class="step-bar px-2 px-sm-5">
     <div class="sp studenti" 
-        [class.fw-bold]="this.documentiService.tappa === 'studenti'"
+        [class.fw-bold]="this.documentiService.step === 'studenti'"
         [class.active]="isStepActive('studenti')" 
         id="sp1" (click)="GoPage('studenti')">
         <div class="dot">1</div>Studente
@@ -11,7 +11,7 @@
     [class.active]="isStepActive('materie')">
     </div>
     <div class="sp materie" 
-        [class.fw-bold]="this.documentiService.tappa === 'materie'"
+        [class.fw-bold]="this.documentiService.step === 'materie'"
         [class.active]="isStepActive('materie')"
         id="sp2" (click)="GoPage('materie')">
         <div class="dot">2</div>Discipline
@@ -21,7 +21,7 @@
     [class.active]="isStepActive('indicatori')">
     </div>
     <div class="sp indicatori" 
-        [class.fw-bold]="this.documentiService.tappa === 'indicatori'"
+        [class.fw-bold]="this.documentiService.step === 'indicatori'"
         [class.active]="isStepActive('indicatori')"
         id="sp3" (click)="GoPage('indicatori')">
         <div class="dot">3</div>Indicatori
@@ -31,7 +31,7 @@
     [class.active]="isStepActive('ICF')">
     </div>
     <div class="sp ICF" 
-        [class.fw-bold]="this.documentiService.tappa === 'ICF'"
+        [class.fw-bold]="this.documentiService.step === 'ICF'"
         [class.active]="isStepActive('ICF')"
         id="sp4" (click)="GoPage('ICF')">
         <div class="dot">4</div>ICF
@@ -41,7 +41,7 @@
     [class.active]="isStepActive('allegati')">
     </div>
     <div class="sp allegati" 
-        [class.fw-bold]="this.documentiService.tappa === 'allegati'"
+        [class.fw-bold]="this.documentiService.step === 'allegati'"
         [class.active]="isStepActive('allegati')"
         id="sp5" (click)="GoPage('allegati')">
         <div class="dot">5</div>Allegati

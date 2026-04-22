@@ -18,8 +18,7 @@ export class FormStudenti {
     private readonly router: Router = inject(Router);
 
     ngOnInit() {
-        this.documentiService.tappa = "studenti";
-        this.documentiService.avanzamentoCrea = "studenti";
+        this.documentiService.step = "studenti";
     }
 
     SaveStudente(studente: Studente){
@@ -31,9 +30,6 @@ export class FormStudenti {
     }
 
     GoStep() {
-        this.documentiService.tappa = "materie";
-        this.documentiService.avanzamentoCrea = "materie";
-
         this.router.navigate(["documenti", "crea", "materie"]);
     }
 }
