@@ -11,10 +11,47 @@ INSERT INTO "Materia" ("Nome") VALUES
 ('Relazioni Internazionali'), ('Fisica'), ('Chimica'), ('Scienze Naturali'),
 ('Lingua Spagnola'), ('Lingua Tedesca'), ('Scienze Motorie'), ('Religione');
 
--- CODICI ICF
+-- CODICI ICF (Aggiornato con i codici specifici per PDP)
 INSERT INTO "ICF" ("Codice", "Descrizione") VALUES 
-('d160', 'Attenzione focalizzata'), ('d170', 'Scrittura'), 
-('d175', 'Risoluzione di problemi'), ('b117', 'Funzioni intellettive');
+('b117', 'Funzioni intellettive'),
+-- Apprendimento e applicazione delle conoscenze (Area d1)
+('d110', 'Guardare'),
+('d115', 'Ascoltare'),
+('d130', 'Copiare'),
+('d131', 'Imparare a giocare'),
+('d133', 'Acquisire il linguaggio'),
+('d140', 'Imparare a leggere'),
+('d145', 'Imparare a scrivere'),
+('d150', 'Imparare a calcolare'),
+('d155', 'Acquisizione di abilità pratiche'),
+('d160', 'Attenzione focalizzata'),
+('d161', 'Dirigere l''attenzione'),
+('d166', 'Lettura'),
+('d170', 'Scrittura'),
+('d172', 'Calcolo'),
+('d175', 'Risoluzione di problemi'),
+-- Compiti e richieste generali (Area d2)
+('d210', 'Intraprendere un compito singolo'),
+('d2102', 'Intraprendere un compito complesso'),
+('d220', 'Intraprendere compiti articolati'),
+('d230', 'Eseguire la routine quotidiana'),
+('d240', 'Gestire la tensione e altre richieste psicologiche'),
+-- Comunicazione (Area d3)
+('d310', 'Comunicare con - ricevere - messaggi verbali'),
+('d315', 'Comunicare con - ricevere - messaggi non verbali'),
+('d330', 'Parlare'),
+('d335', 'Produrre messaggi non verbali'),
+('d350', 'Conversazione'),
+-- Interazioni e relazioni interpersonali (Area d7)
+('d710', 'Interazioni interpersonali semplici'),
+('d720', 'Interazioni interpersonali complesse'),
+('d820', 'Istruzione scolastica (partecipazione)'),
+-- Fattori Ambientali / Strumenti e Supporto (Area e1 ed e3)
+('e115', 'Prodotti e tecnologia per l''uso personale quotidiano'),
+('e125', 'Prodotti e tecnologia per la mobilità'),
+('e130', 'Prodotti e tecnologia per l''istruzione (compensativi)'),
+('e310', 'Famiglia ristretta'),
+('e330', 'Persone in posizione di autorità (insegnanti)');
 
 -- INDICATORI (Misure e Strumenti)
 INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES 
@@ -63,7 +100,7 @@ BEGIN
 END $$;
 
 -- ==========================================================
--- 4. POOL DI STUDENTI (600 Record, Nomi moderni e lunghi)
+-- 4. POOL DI STUDENTI (600 Record)
 -- ==========================================================
 
 DO $$
@@ -98,14 +135,11 @@ DECLARE
 BEGIN
     FOR v_class IN SELECT "Id", "Coordinatore_Email", "Anno_Scolastico" FROM "Classe" ORDER BY "Id" LOOP
         
-        -- Numero di studenti casuale (0-20)
         v_num_stud := floor(random() * 21);
         
-        -- Assegnazione studenti alla classe
         FOR v_stud IN (SELECT "Email", "DSA_BES" FROM "Studente" ORDER BY "Email" LIMIT v_num_stud OFFSET v_offset) LOOP
             INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (v_class."Id", v_stud."Email");
             
-            -- Se lo studente ha bisogni speciali, creiamo il PDP completo
             IF v_stud."DSA_BES" THEN
                 INSERT INTO "Documento" ("Studente_Email", "Anno", "Stato", "Tipologia", "Data_Approvazione")
                 VALUES (v_stud."Email", v_class."Anno_Scolastico", 'Validato', 'DSA', NOW());
@@ -116,7 +150,6 @@ BEGIN
                 INSERT INTO "Documento_ICF" ("ICF_Codice", "Documento_Anno", "Documento_Studente_Email")
                 VALUES ('d160', v_class."Anno_Scolastico", v_stud."Email"), ('d175', v_class."Anno_Scolastico", v_stud."Email");
 
-                -- Associa 3 materie a caso al PDP
                 FOR v_mat_nome IN (SELECT "Nome" FROM "Materia" ORDER BY random() LIMIT 3) LOOP
                     INSERT INTO "Materia_Documento" ("Materia_Nome", "Documento_Anno", "Documento_Studente_Email")
                     VALUES (v_mat_nome, v_class."Anno_Scolastico", v_stud."Email");
@@ -126,20 +159,16 @@ BEGIN
         
         v_offset := v_offset + v_num_stud;
 
-        -- ASSEGNAZIONE INSEGNAMENTI (Martino e Dimitrov)
-        -- Lorenzo Martino insegna Matematica in circa il 50% delle classi
         IF random() > 0.5 THEN
             INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome")
             VALUES ('l.martino.3175@vallauri.edu', v_class."Id", 'Matematica');
         END IF;
         
-        -- Martin Dimitrov insegna Informatica in circa il 50% delle classi
         IF random() > 0.5 THEN
             INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome")
             VALUES ('m.dimitrov.3065@vallauri.edu', v_class."Id", 'Informatica');
         END IF;
 
-        -- Il coordinatore insegna Sistemi e Reti
         INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome")
         VALUES (v_class."Coordinatore_Email", v_class."Id", 'Sistemi e Reti');
     END LOOP;

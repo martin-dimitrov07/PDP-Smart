@@ -16,6 +16,14 @@
 
     --dark-shadow-color: #000000BB;
 
+    /* #region DSA, BES, Anno */
+    --bg-DSA: #EDDCD2;
+    --bg-BES: #D8E2DC;
+    --bg-Anno: #000000BB;
+    --color-DSA: #895737;
+    --color-BES: #617165;
+    --color-Anno: #D8E2DC;
+
     /* #region colori sezioni*/
     --inf-color: #1a7f5a;
     --inf-color-hover: #e8f7f1;
@@ -65,6 +73,14 @@
     --white: #fff;
 
     --dark-shadow-color: #333333dd;
+
+    /* DSA, BES, Anno */
+    --bg-DSA: #EDDCD2;
+    --bg-BES: #D8E2DC;
+    --bg-Anno: #FFFFFFBB;
+    --color-DSA: #895737;
+    --color-BES: #617165;
+    --color-Anno: #000;
 }
 
 @font-face {
@@ -104,7 +120,7 @@ body * {
     background-color: var(--light-color) !important;
 }
 
-.text-dark-color{
+.text-dark-color {
     color: var(--dark-blue-color);
 }
 
@@ -119,8 +135,8 @@ h6 {
     font-family: 'Geist Bold', sans-serif !important;
 }
 
-@media (max-width: 380px){
-    .extra-small{
+@media (max-width: 380px) {
+    .extra-small {
         font-size: 0.75rem !important;
     }
 }
@@ -197,7 +213,8 @@ h6 {
     transform: scale(1.5);
 }
 
-.btn-primary, .btn-outline-primary {
+.btn-primary,
+.btn-outline-primary {
     padding: 10px 20px;
     border-radius: 8px;
     font-size: 1rem;
