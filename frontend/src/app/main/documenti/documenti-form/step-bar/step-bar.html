@@ -1,49 +1,41 @@
 <!-- STEP BAR -->
-<div class="step-bar px-2 px-sm-5">
-    <div class="sp studenti" 
-        [class.fw-bold]="this.documentiService.step === 'studenti'"
-        [class.active]="isStepActive('studenti')" 
-        id="sp1" (click)="GoPage('studenti')">
-        <div class="dot">1</div>Studente
+<div class="step-bar mt-5 mb-2 px-2 px-sm-5">
+    <div class="sp studenti"
+        [class.active]="isStepActive('studenti')" id="sp1" (click)="GoPage('studenti')">
+        <div class="dot">1</div>
+        <p class="sp-text m-0" [class.fw-bold]="this.documentiService.step === 'studenti'">Studente</p>
     </div>
 
-    <div class="sp-line"
-    [class.active]="isStepActive('materie')">
+    <div class="sp-line" [class.active]="isStepActive('materie')">
     </div>
-    <div class="sp materie" 
-        [class.fw-bold]="this.documentiService.step === 'materie'"
-        [class.active]="isStepActive('materie')"
-        id="sp2" (click)="GoPage('materie')">
-        <div class="dot">2</div>Discipline
+    <div class="sp materie"
+        [class.active]="isStepActive('materie')" id="sp2" (click)="GoPage('materie')">
+        <div class="dot">2</div>
+        <p class="sp-text m-0" [class.fw-bold]="this.documentiService.step === 'materie'">Discipline</p>
     </div>
 
-    <div class="sp-line"
-    [class.active]="isStepActive('indicatori')">
+    <div class="sp-line" [class.active]="isStepActive('indicatori')">
     </div>
-    <div class="sp indicatori" 
-        [class.fw-bold]="this.documentiService.step === 'indicatori'"
-        [class.active]="isStepActive('indicatori')"
-        id="sp3" (click)="GoPage('indicatori')">
-        <div class="dot">3</div>Indicatori
+    <div class="sp indicatori"
+        [class.active]="isStepActive('indicatori')" id="sp3" (click)="GoPage('indicatori')">
+        <div class="dot">3</div>
+        <p class="sp-text m-0" [class.fw-bold]="this.documentiService.step === 'indicatori'">Indicatori</p>
     </div>
 
-    <div class="sp-line"
-    [class.active]="isStepActive('ICF')">
+    <div class="sp-line" [class.active]="isStepActive('ICF')">
     </div>
-    <div class="sp ICF" 
-        [class.fw-bold]="this.documentiService.step === 'ICF'"
-        [class.active]="isStepActive('ICF')"
+    <div class="sp ICF" [class.active]="isStepActive('ICF')"
         id="sp4" (click)="GoPage('ICF')">
-        <div class="dot">4</div>ICF
+        <div class="dot">4</div>
+        <p class="sp-text m-0" [class.fw-bold]="this.documentiService.step === 'ICF'">ICF</p>
+
     </div>
 
-    <div class="sp-line"
-    [class.active]="isStepActive('allegati')">
+    <div class="sp-line" [class.active]="isStepActive('allegati')">
     </div>
-    <div class="sp allegati" 
-        [class.fw-bold]="this.documentiService.step === 'allegati'"
-        [class.active]="isStepActive('allegati')"
-        id="sp5" (click)="GoPage('allegati')">
-        <div class="dot">5</div>Allegati
+    <div class="sp allegati"
+        [class.active]="isStepActive('allegati')" id="sp5" (click)="GoPage('allegati')">
+        <div class="dot">5</div>
+        <p class="sp-text m-0" [class.fw-bold]="this.documentiService.step === 'allegati'">Allegati</p>
     </div>
 </div>

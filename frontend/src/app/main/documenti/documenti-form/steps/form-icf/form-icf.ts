@@ -14,6 +14,8 @@ export class FormICF {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     private readonly router: Router = inject(Router);
 
+    prevPage: string = "";
+
     ngOnInit(){
         this.documentiService.step = "ICF";
     }
@@ -28,7 +30,17 @@ export class FormICF {
         this.documentiService.icfsSelected.splice(this.documentiService.icfsSelected.findIndex(icf => icf.Codice == codice), 1);
     }
     
-    GoStep(){
-        this.router.navigate(["documenti", "crea", "allegati"]);
+    SetPrevPage(){
+        if(this.documentiService.materieSelected.length > 0){
+            this.prevPage = "indicatori";
+        }
+        else
+            this.prevPage = "materie";
+
+        this.GoStep(this.prevPage);
+    }
+
+    GoStep(page: string){
+        this.router.navigate(["documenti", "crea", page]);
     }
 }

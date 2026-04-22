@@ -52,7 +52,7 @@ export class FormIndicatori {
         });
     }
 
-    SaveMaterie() {
-        this.router.navigate(["documenti", "crea", "ICF"]);
+    GoStep(page: string) {
+        this.router.navigate(["documenti", "crea", page]);
     }
 }

@@ -30,11 +30,11 @@ export class FormMaterie {
         this.documentiService.indicatori[nome] = {};
     }
 
-    SaveMaterie() {
+    GoStep(page: string) {
         // for (const materia of this.documentiService.materieSelected) {
         //     this.documentiService.indicatori[materia] = {};
         // }
 
-        this.router.navigate(["documenti", "crea", "indicatori"]);
+        this.router.navigate(["documenti", "crea", page]);
     }
 }

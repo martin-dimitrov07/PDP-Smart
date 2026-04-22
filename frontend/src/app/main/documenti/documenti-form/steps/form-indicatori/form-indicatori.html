@@ -1,5 +1,5 @@
 <div class="container-lg pt-2 pb-4">
-    <section class="section-form">
+    <section class="section-form px-3 px-sm-4">
         <h3 class="fs-5">Assegna gli indicatori</h3>
         <p class="small mt-1">Seleziona le misure applicabili per ogni disciplina. Ogni spunta sarà riportata nel
             documento finale</p>
@@ -24,8 +24,13 @@
         </div>
     </section>
 
-    <div class="d-flex justify-content-between">
-        <button type="button" class="btn btn-primary d-flex gap-2 align-items-center ms-auto" (click)="SaveMaterie()">
+    <div class="d-flex justify-content-between flex-wrap">
+        <button type="button" class="btn btn-secondary d-flex gap-2 align-items-center py-2 pe-3 ps-2" (click)="GoStep('materie')">
+            <i class="bi bi-chevron-left"></i>
+            <p class="m-0">Indietro</p>
+        </button>
+
+        <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 ps-3 pe-2 border-0" (click)="GoStep('ICF')">
             <p class="m-0">Avanti</p>
             <i class="bi bi-chevron-right"></i>
         </button>

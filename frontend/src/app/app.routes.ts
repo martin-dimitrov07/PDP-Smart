@@ -20,7 +20,7 @@ const formSteps: Routes = [
     { path: "materie", component: FormMaterie },
     { path: "indicatori", component: FormIndicatori },
     { path: "ICF", component: FormICF },
-    { path: "Allegati", component: FormAllegati }
+    { path: "allegati", component: FormAllegati }
 ];
 
 export const routes: Routes = [
