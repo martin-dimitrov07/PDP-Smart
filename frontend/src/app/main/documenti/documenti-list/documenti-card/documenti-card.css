@@ -5,7 +5,7 @@
 }
 
 .documento-card:hover {
-    background-color: var(--light-grey); 
+    background-color: var(--light-grey);
     transform: translateY(-2px);
 }
 
@@ -34,26 +34,29 @@
     border-radius: 10px;
 }
 
-.badge-dsa { background-color: var(--bg-DSA); color: var(--color-DSA); }
-.badge-bes { background-color: var(--bg-BES); color: var(--color-BES); }
-.badge-anno { background-color: var(--bg-Anno); color: var(--color-Anno); }
+.badge-dsa {
+    background-color: var(--bg-DSA);
+    color: var(--color-DSA);
+}
 
-/* Freccia Animata */
-.documento-card .card-arrow-document {
+.badge-bes {
+    background-color: var(--bg-BES);
+    color: var(--color-BES);
+}
+
+.badge-anno {
+    background-color: var(--bg-Anno);
+    color: var(--color-Anno);
+}
+
+/* Action btn */
+.action-btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    transform: translateX(20px);
-    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    padding: 8px;
-    border-radius: 10px;
-    color: var(--blue-color);
-}
-
-.documento-card:hover .card-arrow-document {
-    opacity: 1;
-    transform: translateX(0);
 }
 
 /* Responsive */
@@ -62,10 +65,16 @@
         gap: .5rem !important;
         padding: 1.25rem .75rem !important;
     }
+
     .icon-box {
         width: 50px;
         height: 50px;
         min-width: 50px;
         font-size: 1.2rem;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 7px 9px;
     }
 }
