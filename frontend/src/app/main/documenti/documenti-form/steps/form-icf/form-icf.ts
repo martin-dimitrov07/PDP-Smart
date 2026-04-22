@@ -19,7 +19,7 @@ export class FormICF {
     }
 
     SaveICF(icf: Icf){
-        if(this.documentiService.icfsSelected.findIndex((icfArray: Icf) => icfArray.Codice = icf.Codice) == -1) {
+        if(this.documentiService.icfsSelected.findIndex((icfArray: Icf) => icfArray.Codice == icf.Codice) == -1) {
             this.documentiService.icfsSelected.push(new Icf(icf.Codice, icf.Descrizione));
         }
     }   

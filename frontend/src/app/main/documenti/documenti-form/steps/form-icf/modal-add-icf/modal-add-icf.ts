@@ -19,10 +19,10 @@ export class ModalAddIcf {
     icfValue: string = "";
 
     ngOnInit(){
-        // this.documentiService.GetICFs()?.subscribe({
-        //     next: (data) => { },
-        //     error: (err) => this.checkError.checkError(err)
-        // })
+        this.documentiService.GetICFs()?.subscribe({
+            next: (data) => { },
+            error: (err) => this.checkError.checkError(err)
+        })
     }
 
     SetICF(){
