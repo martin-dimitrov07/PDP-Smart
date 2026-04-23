@@ -51,12 +51,11 @@
 
 /* Action btn */
 .action-btn {
-    width: 40px;
+    width: 120px;
+    /* stessa larghezza per tutti */
     height: 40px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    /* stessa altezza */
+    padding: 0 10px;
 }
 
 /* Responsive */
@@ -76,5 +75,11 @@
     .badge {
         font-size: 0.75rem;
         padding: 7px 9px;
+    }
+}
+
+@media (max-width: 576px) {
+    .action-btn {
+        width: 40px;
     }
 }
