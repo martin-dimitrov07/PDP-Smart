@@ -3,6 +3,7 @@ import { DocumentiService } from '../../../../../shared/services/documenti.servi
 import { CheckError } from '../../../../../shared/utilities/check-error';
 import { Router } from '@angular/router';
 import { ModalAddMateria } from './modal-add-materia/modal-add-materia';
+import { StepsService } from '../../../../../shared/services/steps.service';
 
 @Component({
     selector: 'app-form-materie',
@@ -12,11 +13,10 @@ import { ModalAddMateria } from './modal-add-materia/modal-add-materia';
 })
 export class FormMaterie {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
-    private readonly checkError: CheckError = inject(CheckError);
-    private readonly router: Router = inject(Router);
+    public readonly stepsService: StepsService = inject(StepsService);
 
     ngOnInit() {
-        this.documentiService.step = "materie";
+        this.stepsService.step = "materie";
     }
 
     SaveMateria(nome: string) {
@@ -28,13 +28,5 @@ export class FormMaterie {
     RemoveMateria(nome: string) {
         this.documentiService.materieSelected.splice(this.documentiService.materieSelected.findIndex(materia => materia == nome), 1);
         this.documentiService.indicatori[nome] = {};
-    }
-
-    GoStep(page: string) {
-        // for (const materia of this.documentiService.materieSelected) {
-        //     this.documentiService.indicatori[materia] = {};
-        // }
-
-        this.router.navigate(["documenti", "crea", page]);
     }
 }

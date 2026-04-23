@@ -5,6 +5,7 @@ import { CheckError } from '../../../../../shared/utilities/check-error';
 import { FormsModule } from '@angular/forms';
 import { CategoriaInd } from './categoria-ind/categoria-ind';
 import { CommonModule, } from "@angular/common";
+import { StepsService } from '../../../../../shared/services/steps.service';
 
 @Component({
     selector: 'app-form-indicatori',
@@ -14,7 +15,7 @@ import { CommonModule, } from "@angular/common";
 })
 export class FormIndicatori {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
-    private readonly router: Router = inject(Router);
+    public readonly stepsService: StepsService = inject(StepsService);
     private readonly checkError: CheckError = inject(CheckError);
 
     datiCaricati: boolean = false;
@@ -22,7 +23,7 @@ export class FormIndicatori {
     private readonly cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
     ngOnInit() {
-        this.documentiService.step = "indicatori";
+        this.stepsService.step = "indicatori";
         
         if (this.documentiService.materieSelected.length > 0) {
             this.documentiService.materiaSelected = this.documentiService.materieSelected[0];
@@ -32,7 +33,7 @@ export class FormIndicatori {
             }
         }
         else {
-            this.router.navigate(["documenti", "crea", "ICF"]);
+            this.stepsService.GoStep("ICF");
         }
     }
 
@@ -50,9 +51,5 @@ export class FormIndicatori {
             },
             error: (err) => this.checkError.checkError(err)
         });
-    }
-
-    GoStep(page: string) {
-        this.router.navigate(["documenti", "crea", page]);
     }
 }

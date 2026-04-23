@@ -3,6 +3,7 @@ import { DocumentiService } from '../../../../../shared/services/documenti.servi
 import { ModalAddIcf } from './modal-add-icf/modal-add-icf';
 import { Icf } from '../../../../../models/icf';
 import { Router } from '@angular/router';
+import { StepsService } from '../../../../../shared/services/steps.service';
 
 @Component({
     selector: 'app-form-icf',
@@ -12,12 +13,12 @@ import { Router } from '@angular/router';
 })
 export class FormICF {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
-    private readonly router: Router = inject(Router);
+    public readonly stepsService: StepsService = inject(StepsService);
 
     prevPage: string = "";
 
     ngOnInit(){
-        this.documentiService.step = "ICF";
+        this.stepsService.step = "ICF";
     }
 
     SaveICF(icf: Icf){
@@ -37,10 +38,6 @@ export class FormICF {
         else
             this.prevPage = "materie";
 
-        this.GoStep(this.prevPage);
-    }
-
-    GoStep(page: string){
-        this.router.navigate(["documenti", "crea", page]);
+        this.stepsService.GoStep(this.prevPage);
     }
 }
