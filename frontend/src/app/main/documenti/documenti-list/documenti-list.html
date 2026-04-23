@@ -1,17 +1,21 @@
-<div class="row container-lg g-4 mx-auto py-4 px-0 px-sm-3 px-md-5 px-lg-0">
-    @if(true)
-    {
-    <div class="col-12 col-lg-6">
-        <app-documenti-card></app-documenti-card>
+<section class="container-xl mx-auto">
+    <app-documenti-header></app-documenti-header>
+
+    <div class="row container-lg g-4 mx-auto py-4 px-0 px-sm-3 px-md-5 px-lg-0">
+        @if(true)
+        {
+        <div class="col-12 col-lg-6">
+            <app-documenti-card></app-documenti-card>
+        </div>
+        }
+        @else
+        {
+        <div class="col-12 my-5">
+            <h3 class="fw-bold text-center">Nessuno documento trovato</h3>
+            <p class="text-muted text-center">
+                Non ci sono documenti che corrispondono alla tua ricerca.
+            </p>
+        </div>
+        }
     </div>
-    }
-    @else
-    {
-    <div class="col-12 my-5">
-        <h3 class="fw-bold text-center">Nessuno documento trovato</h3>
-        <p class="text-muted text-center">
-            Non ci sono documenti che corrispondono alla tua ricerca.
-        </p>
-    </div>
-    }
-</div>
+</section>
