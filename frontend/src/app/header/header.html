@@ -42,8 +42,8 @@
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle d-flex align-items-center gap-3 text-white" 
                    href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    @if (docentiService.docente.FotoUrl) {
-                        <img [src]="docentiService.docente.FotoUrl" class="icon-profile rounded-circle border border-1" alt="Profilo">
+                    @if (userImgPath) {
+                        <img [src]="userImgPath" class="icon-profile rounded-circle border border-1" alt="Profilo">
                     } @else {
                         <i class="bi bi-person-circle fs-3 d-flex align-items-center"></i>
                     }

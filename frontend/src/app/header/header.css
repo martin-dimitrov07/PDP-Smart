@@ -35,7 +35,7 @@
     transition: transform 0.3s ease-out;
 }
 
-.nav-link:hover::after {
+.nav-link:not(.active):hover::after {
     transform: scaleX(1);
 }
 

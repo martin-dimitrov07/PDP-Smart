@@ -14,6 +14,14 @@ export class Header {
     private readonly loginService: LoginService = inject(LoginService);
     private readonly router: Router = inject(Router);
 
+    userImgPath: string | undefined = undefined;
+
+    ngOnInit(){
+        setTimeout(() => {
+            this.userImgPath = this.docentiService.docente.FotoUrl;
+        }, 300)
+    }
+
     logout() {
         this.loginService.Logout().subscribe({
             "next": () => {

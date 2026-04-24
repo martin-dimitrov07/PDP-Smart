@@ -12,7 +12,6 @@ export class DocentiService {
     private readonly router: Router = inject(Router);
 
     public docente: Docente = {} as Docente;
-    public fotoUrl?: string;
 
     GetDocente(): Observable<boolean> {
         return this.dataStorageService.InviaRichiesta("GET", "/email-docente")!.pipe(
@@ -25,7 +24,6 @@ export class DocentiService {
             catchError((err) => {
                 if (err.status == 401 || err.status == 403 || err.status == 404) {
                     this.docente = {} as Docente;
-                    this.fotoUrl = undefined;
                     this.router.navigate(["login"]);
                 }
                 console.error(err.status + ": " + err.error);
