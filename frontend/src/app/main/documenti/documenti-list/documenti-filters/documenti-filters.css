@@ -1,0 +1,46 @@
+.bi {
+    color: var(--bg-blue-dark-color);
+}
+
+input[type="text"]{
+    transition: 0.2s;
+    border: 1px solid transparent;
+}
+
+input[type="text"]:focus {
+    border: 1px solid var(--bg-blue-dark-color) !important;
+}
+
+.badges-filter {
+    padding: 8px 17px;
+    border-radius: 20px;
+    border: 1px solid var(--bg-blue-dark-color);
+    background-color: var(--light-grey);
+    transition: .2s;
+}
+
+.badges-filter:hover {
+    border-color: var(--color);
+    color: var(--light-grey);
+    background-color: var(--bg-blue-dark-color);
+}
+
+.badges-filter.active {
+    border-color: var(--color);
+    color: var(--light-grey);
+    background-color: var(--bg-blue-dark-color);
+}
+
+.container-filters {
+    background-color: var(--bg-blue-color-fade);
+}
+
+/* Titoli sezioni filtri */
+.fw-semibold {
+    color: var(--bg-blue-dark-color);
+}
+
+/* linea destra e sinistra titoli*/
+.text-muted div {
+    border-top: 1px solid var(--bg-blue-dark-color);
+}

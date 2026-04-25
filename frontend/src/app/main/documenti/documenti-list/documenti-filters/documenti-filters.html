@@ -1,1 +1,72 @@
-<p>documenti-filters works!</p>
+<div class="row g-4 justify-content-center container-filters mx-0 my-4 p-3 rounded-3">
+
+    <!-- ricerca -->
+    <div class="col-12 col-lg-10 mt-0 d-flex align-items-center gap-2 gap-lg-4 ps-0 pe-0 pe-lg-2">
+        <i class="bi bi-funnel fs-4"></i>
+        <input type="text" class="form-control rounded-3 border-0 shadow-lg px-3 py-2" placeholder="Cerca documento...">
+        <!-- [(ngModel)]="searchTerm" (input)="Search()"> -->
+    </div>
+
+    <!-- filtri DSA/BES -->
+
+    <div class="col-12 d-flex align-items-center text-muted small">
+        <div class="flex-grow-1"></div>
+        <span class="px-3 fw-semibold">Tipo Documento</span>
+        <div class="flex-grow-1"></div>
+    </div>
+
+    <div class="col-12 d-flex justify-content-center gap-3 flex-wrap">
+        <button class="flex-fill badges-filter" id="badges-all">
+            <!-- (click)="SetFilterDSA_BES(-1)" -->
+            Tutti
+        </button>
+
+        <button class="flex-fill badges-filter" id="badges-dsa">
+            <!-- (click)="SetFilterDSA_BES(true)" -->
+            DSA
+        </button>
+
+        <button class="flex-fill badges-filter" id="badges-bes">
+            <!-- (click)="SetFilterDSA_BES(false)" -->
+            BES
+        </button>
+    </div>
+
+    <!-- filtri stato -->
+    <div class="col-12 d-flex align-items-center text-muted small">
+        <div class="flex-grow-1"></div>
+        <span class="px-3 fw-semibold">Stato Documento</span>
+        <div class="flex-grow-1"></div>
+    </div>
+
+    <div class="col-12">
+        <div class="row g-3 justify-content-center">
+
+            <div class="col-6 col-sm-3">
+                <button class="w-100 badges-filter" id="stato-tutti">
+                    Tutti
+                </button>
+            </div>
+
+            <div class="col-6 col-sm-3">
+                <button class="w-100 badges-filter" id="stato-scaduto">
+                    Scaduto
+                </button>
+            </div>
+
+            <div class="col-6 col-sm-3">
+                <button class="w-100 badges-filter" id="stato-bozza">
+                    In bozza
+                </button>
+            </div>
+
+            <div class="col-6 col-sm-3">
+                <button class="w-100 badges-filter" id="stato-approvato">
+                    Approvato
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div>

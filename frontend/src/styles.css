@@ -17,12 +17,15 @@
     --dark-shadow-color: #000000BB;
 
     /* #region DSA, BES, Anno*/
+
     --bg-DSA: #EDDCD2;
     --bg-BES: #D8E2DC;
     --bg-Anno: var(--bg-blue-dark-color);
     --color-DSA: #010101;
     --color-BES: #617165;
     --color-Anno: var(--white);
+
+    /* #endregion */
 
     /* #region colori sezioni*/
     --inf-color: #1a7f5a;
@@ -74,13 +77,16 @@
 
     --dark-shadow-color: #333333dd;
 
-    /* DSA, BES, Anno */
+    /* #region DSA, BES, Anno */
+
     --bg-DSA: #EDDCD2;
     --bg-BES: #D8E2DC;
     --bg-Anno: var(--white);
     --color-DSA: #895737;
     --color-BES: #617165;
     --color-Anno: var(--bg-blue-dark-color);
+
+    /* #endregion */
 }
 
 @font-face {

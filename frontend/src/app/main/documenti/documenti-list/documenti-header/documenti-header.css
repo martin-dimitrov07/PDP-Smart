@@ -28,7 +28,19 @@
     justify-content: center;
 }
 
-@media (max-width: 400px) { 
+/* dropdown */
+
+.dropdown-toggle {
+    background-color: var(--bg-blue-dark-color);
+}
+
+.dropdown-item:hover {
+    background-color: var(--bg-blue-color);
+    color: var(--white);
+    cursor: pointer;
+}
+
+@media (max-width: 400px) {
     .flex-grow-1 h2 {
         font-size: 14pt !important;
     }

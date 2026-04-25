@@ -12,8 +12,8 @@
                 a.pasqualAntonio.3175@vallauri.edu
             </p>
 
-            <div class="d-flex gap-2 align-items-strech flex-wrap">
-                <span class="badge badge-anno">2025</span>
+            <div class="d-flex gap-1 align-items-strech flex-wrap">
+                <span class="badge badge-anno">2025/26</span>
                 @if(true) {
                 <span class="badge badge-dsa">DSA</span>
                 } @else {
@@ -31,17 +31,32 @@
                     Scaduto
                 </span>
                 } -->
+                <div class="d-flex d-sm-none gap-1">
+                    <button type="button"
+                        class="btn btn-sm btn-outline-primary d-flex justify-content-center align-items-center gap-2 action-btn">
+                        <i class="bi bi-eye"></i>
+                        <!-- <span class="d-none d-sm-inline">Visualizza</span> -->
+                    </button>
+
+                    <button type="button"
+                        class="btn btn-sm btn-outline-secondary d-flex justify-content-center align-items-center gap-2 action-btn">
+                        <i class="bi bi-pencil-square"></i>
+                        <!-- <span class="d-none d-sm-inline">Modifica</span> -->
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="d-flex flex-column gap-2">
-        <button type="button" class="btn btn-sm btn-outline-primary d-flex justify-content-center align-items-center gap-2 action-btn">
+    <div class="d-none d-sm-flex flex-column gap-2">
+        <button type="button"
+            class="btn btn-sm btn-outline-primary d-flex justify-content-center align-items-center gap-2 action-btn">
             <i class="bi bi-eye"></i>
             <!-- <span class="d-none d-sm-inline">Visualizza</span> -->
         </button>
 
-        <button type="button" class="btn btn-sm btn-outline-secondary d-flex justify-content-center align-items-center gap-2 action-btn">
+        <button type="button"
+            class="btn btn-sm btn-outline-secondary d-flex justify-content-center align-items-center gap-2 action-btn">
             <i class="bi bi-pencil-square"></i>
             <!-- <span class="d-none d-sm-inline">Modifica</span> -->
         </button>
