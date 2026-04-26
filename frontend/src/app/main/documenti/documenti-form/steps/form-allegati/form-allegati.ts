@@ -22,8 +22,12 @@ export class FormAllegati {
 
     onSelect(event: any) {
         console.log(event);
-        // Aggiunge i nuovi file a quelli esistenti (o sostituisci se ne vuoi solo uno)
+        // Aggiunge i nuovi file a quelli esistenti
         this.allegati.push(...event.addedFiles);
+
+        
+
+        // TODO: mostrare modal di errore (dimensione, formato)
     }
 
     onRemove(event: any) {

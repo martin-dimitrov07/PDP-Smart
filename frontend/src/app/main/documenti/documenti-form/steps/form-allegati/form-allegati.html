@@ -4,7 +4,9 @@
         <hr>
         <!-- Area di drop principale -->
         <div class="dropzone-wrapper">
-            <ngx-dropzone (change)="onSelect($event)" [multiple]="false" class="custom-dropzone p-3">
+            <ngx-dropzone (change)="onSelect($event)" class="custom-dropzone px-1 px-sm-3 py-2" [multiple]="true"
+                [maxFileSize]="5000000"
+                [accept]="'image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'">
 
                 <ngx-dropzone-label class="dropzone-content">
                     <i class="bi bi-folder-plus secondary-text-color fs-1"></i>
@@ -16,13 +18,35 @@
                     <small class="opacity-75">Dimensione massima: 5MB</small>
                 </ngx-dropzone-label>
 
-                <div class="d-flex gap-3 flex-wrap justify-content-center">
+                <div class="d-flex gap-2 flex-wrap justify-content-center overflow-hidden">
                     @for (file of allegati; track $index)
                     {
-                    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" [file]="file" [removable]="true"
+                    <ngx-dropzone-preview class="px-2" ngProjectAs="ngx-dropzone-preview" [file]="file" [removable]="true"
                         (removed)="onRemove(file)">
-                        <ngx-dropzone-label>{{ file.name }}</ngx-dropzone-label>
-                    </ngx-dropzone-image-preview>
+                        <ngx-dropzone-label class="m-0">
+                            <!-- ICONE -->
+                            @if (file.type.startsWith('image/')) {
+                                <i class="bi bi-file-earmark-image text-success fs-1"></i>
+                            }
+                            @else if (file.type === 'application/pdf') {
+                                <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
+                            }
+                            @else if (file.name.endsWith('.docx')) {
+                                <i class="bi bi-filetype-docx text-primary fs-1"></i>
+                            }
+                            @else if (file.name.endsWith('.doc')) {
+                                <i class="bi bi-filetype-doc text-primary fs-1"></i>
+                            }
+                            @else {
+                               <i class="bi bi-file-earmark text-secondary fs-1"></i>
+                            }
+
+                            <div class="file-info">
+                                <span class="file-name text-dark fw-bold text-break">{{ file.name }}</span>
+                                <small class="text-muted d-block">{{ (file.size / 1024).toFixed(1) }} KB</small>
+                            </div>
+                        </ngx-dropzone-label>
+                    </ngx-dropzone-preview>
                     }
                 </div>
 

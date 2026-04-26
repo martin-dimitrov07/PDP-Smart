@@ -13,7 +13,7 @@
 .custom-dropzone:hover,
 .custom-dropzone.ngx-dt-hovered {
     border-color: var(--blue-color);
-    background: rgb(from var(--light-blue-color) r g b / 0.2);
+    background-color: rgb(from var(--light-blue-color) r g b / 0.2);
     transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgb(from var(--blue-color) r g b / 0.15);
 }
@@ -22,26 +22,25 @@
     transform: scale(1.05);
 }
 
-.bi::before {
+.bi-folder-plus::before {
     transition: 0.2s;
 }
 
-.custom-dropzone:hover .bi::before {
+.custom-dropzone:hover .bi-folder-plus::before {
     transform: scale(1.2) rotate(5deg);
 }
 
-ngx-dropzone-image-preview {
-    width: 230px !important;
+ngx-dropzone-preview{
+    background-color: rgb(from var(--blue-color) r g b / 0.05);
+    max-width: 100% !important;
+    min-width: 100% !important;
 }
 
-@media (max-width: 540px) {
-    ngx-dropzone-image-preview {
-        width: 250px !important;
-    }
+::ng-deep ngx-dropzone-preview img {
+    display: none !important;
 }
 
-@media (max-width: 350px) {
-    ngx-dropzone-image-preview {
-        width: 100% !important;
-    }
+::ng-deep ngx-dropzone-remove-badge {
+    z-index: 10 !important;
+    pointer-events: auto !important; /* Forza la ricezione del clic */
 }
