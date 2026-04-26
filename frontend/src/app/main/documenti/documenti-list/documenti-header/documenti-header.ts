@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { DocumentiService } from '../../../../shared/services/documenti.service';
 
 @Component({
@@ -8,6 +8,11 @@ import { DocumentiService } from '../../../../shared/services/documenti.service'
     styleUrl: './documenti-header.css',
 })
 export class DocumentiHeader {
+    @Output() annoScolastico = new EventEmitter<Date>();
+    
     public readonly documentiService: DocumentiService = inject(DocumentiService);
 
+    SetFilterAnnoScolastico(annoScolastico: Date) {
+        this.annoScolastico.emit(annoScolastico);
+    }
 }

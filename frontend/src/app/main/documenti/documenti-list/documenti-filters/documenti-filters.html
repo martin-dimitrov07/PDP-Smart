@@ -3,8 +3,8 @@
     <!-- Ricerca -->
     <div class="col-12 col-lg-10 mt-0 d-flex align-items-center gap-2 gap-lg-4 ps-0 pe-0 pe-lg-2">
         <i class="bi bi-funnel fs-4"></i>
-        <input type="text" class="form-control rounded-3 border-0 shadow-lg px-3 py-2" placeholder="Cerca documento...">
-        <!-- [(ngModel)]="searchTerm" (input)="Search()"> -->
+        <input type="text" class="form-control rounded-3 border-0 shadow-lg px-3 py-2" placeholder="Cerca documento..." 
+        [(ngModel)]="searchTerm" (input)="Search()"/>
     </div>
 
     <!-- filtri -->
@@ -21,15 +21,15 @@
 
                 <div class="d-flex justify-content-center gap-3 flex-wrap">
 
-                    <button class="flex-fill badges-filter dsa-bes-tab" id="badges-all" (click)="SetFilterDSA_BES(-1)">
+                    <button class="flex-fill badges-filter" id="badges-all" (click)="SetFilterDSA_BES(-1)">
                         Tutti
                     </button>
 
-                    <button class="flex-fill badges-filter dsa-bes-tab" id="badges-dsa" (click)="SetFilterDSA_BES(true)">
+                    <button class="flex-fill badges-filter" id="badges-dsa" (click)="SetFilterDSA_BES(true)">
                         DSA
                     </button>
 
-                    <button class="flex-fill badges-filter dsa-bes-tab" id="badges-bes" (click)="SetFilterDSA_BES(false)">
+                    <button class="flex-fill badges-filter" id="badges-bes" (click)="SetFilterDSA_BES(false)">
                         BES
                     </button>
 
@@ -47,19 +47,19 @@
                 <div class="row g-3 justify-content-center">
 
                     <div class="col-6 col-sm-3">
-                        <button class="w-100 badges-filter" (click)="SetFilterStato('Tutti')">Tutti</button>
+                        <button id="tipoDoc-all" class="w-100 badges-filter tipoDoc-tab" (click)="SetFilterStato('Tutti')">Tutti</button>
                     </div>
                     
                     <div class="col-6 col-sm-3">
-                        <button class="w-100 badges-filter" (click)="SetFilterStato('Scaduto')">Scaduto</button>
+                        <button id="tipoDoc-scaduto" class="w-100 badges-filter tipoDoc-tab" (click)="SetFilterStato('SCADUTO')">Scaduto</button>
                     </div>
 
                     <div class="col-6 col-sm-3">
-                        <button class="w-100 badges-filter" (click)="SetFilterStato('In bozza')">In bozza</button>
+                        <button id="tipoDoc-in-bozza" class="w-100 badges-filter tipoDoc-tab" (click)="SetFilterStato('IN_BOZZA')">In bozza</button>
                     </div>
 
                     <div class="col-6 col-sm-3">
-                        <button class="w-100 badges-filter" (click)="SetFilterStato('Approvato')">Approvato</button>
+                        <button id="tipoDoc-approvato" class="w-100 badges-filter tipoDoc-tab" (click)="SetFilterStato('VALIDATO')">Validato</button>
                     </div>
                     
                 </div>

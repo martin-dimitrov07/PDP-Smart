@@ -165,7 +165,7 @@ export class DocumentiService {
         );
     }
 
-    GetDocumenti(searchTerm: string = "", DSA_BES: number = -1, Tipo_Documento: number = -1, filterAnnoScolastico: any): Observable<any> {
+    GetDocumenti(searchTerm: string = "", DSA_BES: any = -1, Stato_Documento: any = -1, filterAnnoScolastico: Date): Observable<any> {
         let filters: any = {};
 
         filters.Anno = filterAnnoScolastico;
@@ -180,8 +180,8 @@ export class DocumentiService {
         if (DSA_BES != -1)
             filters.Tipologia = DSA_BES;
 
-        if (Tipo_Documento != -1)
-            filters.Tipo_Documento = Tipo_Documento;
+        if (Stato_Documento != -1)
+            filters.Stato = Stato_Documento;
 
         let params: any = {
             filters: JSON.stringify(filters)

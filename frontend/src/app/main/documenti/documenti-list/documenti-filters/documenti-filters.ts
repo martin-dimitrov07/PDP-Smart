@@ -1,14 +1,22 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-documenti-filters',
-    imports: [],
+    imports: [FormsModule],
     templateUrl: './documenti-filters.html',
     styleUrl: './documenti-filters.css',
 })
 export class DocumentiFilters {
     @Output() FilterDSA_BES = new EventEmitter<any>();
     @Output() FilterStato = new EventEmitter<string>();
+    @Output() searchTermEvent = new EventEmitter<string>();
+
+    searchTerm: string = "";
+
+    Search() {
+        this.searchTermEvent.emit(this.searchTerm);
+    }
 
     SetFilterDSA_BES(filter: any) {
         this.FilterDSA_BES.emit(filter);

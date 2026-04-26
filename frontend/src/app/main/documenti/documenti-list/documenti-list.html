@@ -1,23 +1,27 @@
 <section class="container-xl mx-auto">
-    <app-documenti-header></app-documenti-header>
+    <app-documenti-header (annoScolastico)="SetFilterAnnoScolastico($event)"></app-documenti-header>
 
-    <app-documenti-filters (FilterDSA_BES)="SetFilterDSA_BES($event)" (FilterStato)="SetFilterStato($event)"></app-documenti-filters>
+    <app-documenti-filters (FilterDSA_BES)="SetFilterDSA_BES($event)"
+        (FilterStato)="SetFilterStato($event)" (searchTermEvent)="SearchDocuments($event)"></app-documenti-filters>
 
     <div class="row container-xl g-4 mx-auto py-4 px-0 px-sm-5 px-lg-3 px-xl-4">
-        @if(true)
+        @if(documentiService.documenti.length > 0)
         {
-        <div class="col-12 col-lg-6 px-0 px-sm-2">
-            <app-documenti-card></app-documenti-card>
-        </div>
+            @for (documenti of documentiService.documenti; track $index)
+            {
+                <div class="col-12 col-lg-6 px-0 px-sm-2">
+                    <app-documenti-card [documento]="documenti"></app-documenti-card>
+                </div>
+            }
         }
         @else
         {
-        <div class="col-12 my-5">
-            <h3 class="fw-bold text-center">Nessuno documento trovato</h3>
-            <p class="text-muted text-center">
-                Non ci sono documenti che corrispondono alla tua ricerca.
-            </p>
-        </div>
+            <div class="col-12 my-5">
+                <h3 class="fw-bold text-center">Nessuno documento trovato</h3>
+                <p class="text-muted text-center">
+                    Non ci sono documenti che corrispondono alla tua ricerca.
+                </p>
+            </div>
         }
     </div>
 </section>

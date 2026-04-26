@@ -9,28 +9,34 @@
         <div class="d-flex flex-column gap-3 align-items-start">
 
             <p class="p-0 m-0 text-start third-text-color extra-small small">
-                a.pasqualAntonio.3175@vallauri.edu
+                {{documento.Studente_Email}}
             </p>
 
             <div class="d-flex gap-1 align-items-strech flex-wrap">
-                <span class="badge badge-anno">2025/26</span>
-                @if(true) {
-                <span class="badge badge-dsa">DSA</span>
+                <span class="badge badge-anno">
+                    {{documento.Anno.getFullYear().toString()}}/{{(documento.Anno.getFullYear() + 1).toString()}}
+                </span>
+                
+                @if(documento.Tipologia == 'DSA') {
+                    <span class="badge badge-dsa">DSA</span>
                 } @else {
-                <span class="badge badge-bes">BES</span>
+                    <span class="badge badge-bes">BES</span>
                 }
-                <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">
-                    Approvato
-                </span>
-                <!-- @if(true) {
-                <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">
-                    In Bozza
-                </span>
-                } @else {
-                <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">
-                    Scaduto
-                </span>
-                } -->
+
+                @if(documento.Stato == "IN_BOZZA") {
+                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">
+                        In Bozza
+                    </span>
+                } @else if(documento.Stato == "SCADUTO") {
+                    <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">
+                        Scaduto
+                    </span>
+                }@else if(documento.Stato == "VALIDATO") {
+                    <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">
+                        Validato
+                    </span>
+                }
+
                 <div class="d-flex d-sm-none gap-1">
                     <button type="button"
                         class="btn btn-sm d-flex justify-content-center align-items-center action-btn">
@@ -47,13 +53,11 @@
     </div>
 
     <div class="d-none d-sm-flex flex-column gap-2">
-        <button type="button"
-            class="btn btn-sm d-flex justify-content-center align-items-center action-btn">
+        <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn">
             <i class="bi bi-eye"></i>
         </button>
 
-        <button type="button"
-            class="btn btn-sm d-flex justify-content-center align-items-center action-btn">
+        <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn">
             <i class="bi bi-pencil-square"></i>
         </button>
     </div>

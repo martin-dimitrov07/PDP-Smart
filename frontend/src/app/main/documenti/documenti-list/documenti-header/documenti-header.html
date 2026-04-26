@@ -14,7 +14,7 @@
         </button>
         <ul class="dropdown-menu">
             @for (anno of documentiService.anniScolastici; track $index) {
-            <li><a class="dropdown-item cursor-pointer">
+            <li><a class="dropdown-item cursor-pointer" (click)="SetFilterAnnoScolastico(anno)">
                     {{anno.getFullYear().toString()}}/{{(anno.getFullYear() +
                     1).toString()}}
                 </a>

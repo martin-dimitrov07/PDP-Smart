@@ -17,10 +17,10 @@ export class Documento {
         this.Data_Approvazione = Data_Approvazione;
 
         if (Data_Approvazione) {
-            const scadenza = Anno;
+            const scadenza = new Date(this.Anno.getTime());
             scadenza.setFullYear(scadenza.getFullYear() + 1);
 
-            if (scadenza > new Date()) {
+            if (scadenza < new Date()) {
                 this.Stato = Stato.SCADUTO;
             }
             else {
