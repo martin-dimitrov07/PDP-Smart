@@ -156,7 +156,7 @@ export class StudentiService {
         this.nClassi = cont;
     }
 
-    GetStudenti(classeId: number = 0, searchTerm: any = "", DSA_BES: any = -1, order: any = {}): Observable<any> {
+    GetStudenti(classeId: number = 0, searchTerm: string = "", DSA_BES: number = -1, order: any = {}): Observable<any> {
 
         let filters: any = {};
 

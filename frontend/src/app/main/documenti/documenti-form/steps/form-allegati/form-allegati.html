@@ -4,7 +4,7 @@
         <hr>
         <!-- Area di drop principale -->
         <div class="dropzone-wrapper">
-            <ngx-dropzone (change)="onSelect($event)" class="custom-dropzone px-1 px-sm-3 py-2" [multiple]="true"
+            <ngx-dropzone (change)="OnSelect($event)" class="custom-dropzone px-1 px-sm-3 py-2" [multiple]="true"
                 [maxFileSize]="5000000"
                 [accept]="'image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'">
 
@@ -19,10 +19,10 @@
                 </ngx-dropzone-label>
 
                 <div class="d-flex gap-2 flex-wrap justify-content-center overflow-hidden">
-                    @for (file of allegati; track $index)
+                    @for (file of documentiService.allegati; track $index)
                     {
                     <ngx-dropzone-preview class="px-2" ngProjectAs="ngx-dropzone-preview" [file]="file" [removable]="true"
-                        (removed)="onRemove(file)">
+                        (removed)="OnRemove(file)">
                         <ngx-dropzone-label class="m-0">
                             <!-- ICONE -->
                             @if (file.type.startsWith('image/')) {
@@ -62,7 +62,7 @@
         </button>
 
         <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0 fw-bold">
-            <p class="m-0">Crea Documento</p>
+            <p class="m-0" (click)="CreateDocumento()">Crea Documento</p>
         </button>
     </div>
 </div>

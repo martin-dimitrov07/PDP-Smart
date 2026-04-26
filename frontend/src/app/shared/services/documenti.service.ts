@@ -18,19 +18,21 @@ export class DocumentiService {
 
     studenteSelected: Studente = {} as Studente;
 
-    materieDocente: string[] = [];
-    materiaSelected: string = "";
+    materieDocente: string[] = [];    
     materieSelected: string[] = [];
 
+    materiaSelected: string = "";
     indicatori: any = {};
     categorieInd: string[] = [];
 
-    icfs: Icf[] = [{ "Codice": "1234", "Descrizione": "test" }];
+    icfs: Icf[] = [];
     icfsSelected: Icf[] = [];
 
     anniScolastici: Date[] = [];
     documenti: Documento[] = [];
     nClassi: number = 0;
+
+    allegati: File[] = [];
 
     // indicatori = {
     //     "matematica": 
@@ -163,7 +165,7 @@ export class DocumentiService {
         );
     }
 
-    GetDocumenti(searchTerm: any = "", DSA_BES: any = -1, Tipo_Documento: any = -1, filterAnnoScolastico: any): Observable<any> {
+    GetDocumenti(searchTerm: string = "", DSA_BES: number = -1, Tipo_Documento: number = -1, filterAnnoScolastico: any): Observable<any> {
         let filters: any = {};
 
         filters.Anno = filterAnnoScolastico;
@@ -200,5 +202,15 @@ export class DocumentiService {
 
     GetNumeroDocumenti() {
         this.nClassi = this.documenti.length;
+    }
+    
+    CreateDocumento(){
+        //1. creo documento
+
+        //2. ciclo materie -> per ogni materia ciclo indicatori => aggiungo indicatori
+
+        //3. aggiungo ICFs
+
+        //4. aggiungo allegati
     }
 }

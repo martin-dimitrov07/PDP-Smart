@@ -11,27 +11,27 @@ import { CommonModule } from '@angular/common';
     styleUrl: './form-allegati.css',
 })
 export class FormAllegati {
-    // public readonly documentiService: DocumentiService = inject(DocumentiService);
+    public readonly documentiService: DocumentiService = inject(DocumentiService);
     public readonly stepsService: StepsService = inject(StepsService);
-
-    allegati: File[] = [];
 
     ngOnInit() {
         this.stepsService.step = "allegati";
     }
 
-    onSelect(event: any) {
+    OnSelect(event: any) {
         console.log(event);
         // Aggiunge i nuovi file a quelli esistenti
-        this.allegati.push(...event.addedFiles);
-
-        
+        this.documentiService.allegati.push(...event.addedFiles);
 
         // TODO: mostrare modal di errore (dimensione, formato)
     }
 
-    onRemove(event: any) {
+    OnRemove(event: any) {
         // Rimuove il file dall'array
-        this.allegati.splice(this.allegati.indexOf(event), 1);
+        this.documentiService.allegati.splice(this.documentiService.allegati.indexOf(event), 1);
+    }
+
+    CreateDocumento(){
+        this.documentiService.CreateDocumento();
     }
 }
