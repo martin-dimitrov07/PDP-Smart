@@ -13,22 +13,13 @@
             Anno
         </button>
         <ul class="dropdown-menu">
-            <!-- @for (anno of studentiService.anniScolastici; track $index) {
-            <li><a class="dropdown-item cursor-pointer" (click)="SetFilterAnnoScolastico(anno)">
+            @for (anno of documentiService.anniScolastici; track $index) {
+            <li><a class="dropdown-item cursor-pointer">
                     {{anno.getFullYear().toString()}}/{{(anno.getFullYear() +
                     1).toString()}}
                 </a>
             </li>
-            } -->
-
-            <li><a class="dropdown-item cursor-pointer">
-                    2025/2026
-                </a>
-            </li>
-            <li><a class="dropdown-item cursor-pointer">
-                    2024/2025
-                </a>
-            </li>
+            }
         </ul>
     </div>
 </div>
@@ -52,7 +43,7 @@
 
         <div class="icon-box p-2 p-sm-3 shadow" style="width: auto !important;">
             <p class="m-0 fw-bold fs-4">
-                10 documenti
+                {{documentiService.nClassi}} documenti
             </p>
         </div>
 

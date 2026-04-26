@@ -24,20 +24,69 @@ async function CreateDocumento(req: any, res: any) {
     }
 }
 
-async function GetCountDocumenti(req: any, res: any) {
+async function GetAnniScolasticiDocumenti(req: any, res: any) {
     try {
-        const filters = req["parsedQuery"]?.filters || {};
+        const docenteEmail = req["parsedQuery"]["docenteEmail"] || null;
 
-        const countDocumenti = await prisma.documento.count({
-            where: filters
-        });
+        const query: any = {
+            distinct: ['Anno'], // Prende anni univoci
+            orderBy: {
+                Anno: 'desc'
+            },
+            select: {
+                Anno: true
+            },
+            where: {}
+        };
 
-        res.send({ countDocumenti });
+        if (docenteEmail) {
+            query.where = {
+                Studente: {
+                    Classi_Studente: {
+                        some: {
+                            Classe: {
+                                Insegnamenti: {
+                                    some: {
+                                        Docente_Email: docenteEmail
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+        }
 
+        const documenti = await prisma.documento.findMany(query);
+        const anniVettore = documenti.map(d => d.Anno);
+
+        res.status(200).send(anniVettore);
     } catch (err) {
         console.error("Errore:", err);
-        res.status(500).send("Errore nel conteggio dei documenti");
+        res.status(500).send("Errore nel recupero degli anni scolastici");
     }
 }
 
-export { CreateDocumento, GetCountDocumenti };
+async function GetDocumenti(req: any, res: any) {
+    try {
+        const filters: any = req["parsedQuery"].filters || {};
+
+        const documenti = await prisma.documento.findMany({
+            where: filters,
+            orderBy: {
+                Studente_Email : "asc",
+            }
+        });
+
+        res.send(documenti);
+    }
+    catch (err) {
+        console.error("Errore esecuzione richiesta documenti:", err);
+        res.status(500).send({
+            error: "Errore nella esecuzione della richiesta dei documenti",
+            details: err
+        });
+    }
+}
+
+export { CreateDocumento, GetAnniScolasticiDocumenti, GetDocumenti };
