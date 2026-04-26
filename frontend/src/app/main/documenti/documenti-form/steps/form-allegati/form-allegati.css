@@ -1,0 +1,47 @@
+.custom-dropzone {
+    height: auto !important;
+    background: var(--light-grey);
+    border: 2px dashed rgb(from var(--blue-color) r g b / 0.5);
+    border-radius: 15px;
+    transition: all 0.3s ease-in-out !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* hover e quando un file viene trascinato sopra (Drag Over) */
+.custom-dropzone:hover,
+.custom-dropzone.ngx-dt-hovered {
+    border-color: var(--blue-color);
+    background: rgb(from var(--light-blue-color) r g b / 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgb(from var(--blue-color) r g b / 0.15);
+}
+
+.custom-dropzone:hover .dropzone-content {
+    transform: scale(1.05);
+}
+
+.bi::before {
+    transition: 0.2s;
+}
+
+.custom-dropzone:hover .bi::before {
+    transform: scale(1.2) rotate(5deg);
+}
+
+ngx-dropzone-image-preview {
+    width: 230px !important;
+}
+
+@media (max-width: 540px) {
+    ngx-dropzone-image-preview {
+        width: 250px !important;
+    }
+}
+
+@media (max-width: 350px) {
+    ngx-dropzone-image-preview {
+        width: 100% !important;
+    }
+}

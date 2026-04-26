@@ -15,8 +15,8 @@
     gap: 1rem;
     padding: 15px 20px;
     margin: 10px 0;
-    border: 2px solid transparent;
-    background-color: var(--light-grey-color) !important;
+    border: 2px dashed rgb(from var(--blue-color) r g b / 0.5);
+    background-color: var(--light-grey) !important;
     border-radius: 10px;
 }
 
@@ -27,11 +27,12 @@
 }
 
 :host ::ng-deep .btn-add:hover {
-    border: 2px dashed var(--dark-blue-color) !important;
+    border-color: var(--blue-color);
 }
 
 :host ::ng-deep .btn-add:hover .text-add{
     font-weight: 900;
+    transform: scale(1.05);
 }
 
 :host ::ng-deep .btn-add:hover .bi{
