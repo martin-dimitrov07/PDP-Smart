@@ -34,7 +34,7 @@
     border-radius: 10px;
 
     display: flex;
-    align-items: center; 
+    align-items: center;
 }
 
 .badge-dsa {
@@ -54,9 +54,9 @@
 
 /* Action btn */
 .action-btn {
-    width: 30px;
-    height: 30px;
-    padding: 0 10px;
+    width: 32px;
+    aspect-ratio: 1/1;
+    padding: 0;
 }
 
 
@@ -78,4 +78,36 @@
         font-size: 0.55rem;
         padding: 7px 9px;
     }
+
+    .badge {
+        font-size: 0.875rem;
+        padding: 8px 10px;
+        border-radius: 10px;
+
+        display: flex;
+        align-items: center;
+    }
+
+    .btn {
+        margin-top: 4px;
+    }
+}
+
+/* icone view e edit */
+.bi-eye,
+.bi-pencil-square {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+}
+
+/* Bottoni */
+.btn {
+    color: var(--bg-blue-dark-color);
+    border: 1px solid var(--bg-blue-dark-color);
+}
+
+.btn:hover {
+    color: var(--light-color);
+    background-color: var(--bg-blue-dark-color);
 }

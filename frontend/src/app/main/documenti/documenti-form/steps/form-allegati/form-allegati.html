@@ -2,19 +2,61 @@
     <section class="section-form px-3 px-sm-5">
         <h3 class="fs-5">Inserisci gli allegati</h3>
         <hr>
+        <!-- Area di drop principale -->
+        <div class="dropzone-wrapper">
+            <ngx-dropzone (change)="onSelect($event)" class="custom-dropzone px-1 px-sm-3 py-2" [multiple]="true"
+                [maxFileSize]="5000000"
+                [accept]="'image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'">
 
-        <div class="py-2 px-sm-3 d-flex flex-column gap-3">
+                <ngx-dropzone-label class="dropzone-content">
+                    <i class="bi bi-folder-plus secondary-text-color fs-1"></i>
+                    <h3 class="fs-2 secondary-text-color m-0">Trascina i file qui</h3>
+                    <div class="mb-3">
+                        <p class="m-0">oppure</p>
+                        <span class="secondary-text-color text-decoration-underline">sfoglia i tuoi documenti</span>
+                    </div>
+                    <small class="opacity-75">Dimensione massima: 5MB</small>
+                </ngx-dropzone-label>
 
-            <!-- <button class="btn-add d-flex align-items-center justify-content-center" data-bs-toggle="modal"
-                data-bs-target="#aggiuntaMateria">
-                <i class="bi bi-plus-circle fs-5 secondary-text-color"></i>
-                <span class="text-add secondary-text-color">Aggiungi nuovo ICF</span>
-            </button> -->
+                <div class="d-flex gap-2 flex-wrap justify-content-center overflow-hidden">
+                    @for (file of allegati; track $index)
+                    {
+                    <ngx-dropzone-preview class="px-2" ngProjectAs="ngx-dropzone-preview" [file]="file" [removable]="true"
+                        (removed)="onRemove(file)">
+                        <ngx-dropzone-label class="m-0">
+                            <!-- ICONE -->
+                            @if (file.type.startsWith('image/')) {
+                                <i class="bi bi-file-earmark-image text-success fs-1"></i>
+                            }
+                            @else if (file.type === 'application/pdf') {
+                                <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
+                            }
+                            @else if (file.name.endsWith('.docx')) {
+                                <i class="bi bi-filetype-docx text-primary fs-1"></i>
+                            }
+                            @else if (file.name.endsWith('.doc')) {
+                                <i class="bi bi-filetype-doc text-primary fs-1"></i>
+                            }
+                            @else {
+                               <i class="bi bi-file-earmark text-secondary fs-1"></i>
+                            }
+
+                            <div class="file-info">
+                                <span class="file-name text-dark fw-bold text-break">{{ file.name }}</span>
+                                <small class="text-muted d-block">{{ (file.size / 1024).toFixed(1) }} KB</small>
+                            </div>
+                        </ngx-dropzone-label>
+                    </ngx-dropzone-preview>
+                    }
+                </div>
+
+            </ngx-dropzone>
         </div>
     </section>
 
     <div class="d-flex justify-content-between flex-wrap">
-        <button type="button" class="btn btn-secondary d-flex gap-2 align-items-center py-2 pe-3 ps-2" (click)="stepsService.GoStep('ICF')">
+        <button type="button" class="btn btn-secondary d-flex gap-2 align-items-center py-2 pe-3 ps-2"
+            (click)="stepsService.GoStep('ICF')">
             <i class="bi bi-chevron-left"></i>
             <p class="m-0">Indietro</p>
         </button>

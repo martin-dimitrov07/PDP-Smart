@@ -176,7 +176,7 @@ export class DocumentiService {
         }
 
         if (DSA_BES != -1)
-            filters.DSA_BES = DSA_BES;
+            filters.Tipologia = DSA_BES;
 
         if (Tipo_Documento != -1)
             filters.Tipo_Documento = Tipo_Documento;
@@ -184,7 +184,6 @@ export class DocumentiService {
         let params: any = {
             filters: JSON.stringify(filters)
         };
-
 
         return this.dataStorageService.InviaRichiesta("GET", "/documenti", params)!.pipe(
             tap((data: any) => {
@@ -194,6 +193,7 @@ export class DocumentiService {
                     doc.Tipologia,
                     doc.Data_Approvazione ? new Date(doc.Data_Approvazione) : undefined
                 ));
+                console.log(data);
             })
         );
     }

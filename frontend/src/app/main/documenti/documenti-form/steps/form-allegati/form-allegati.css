@@ -1,0 +1,46 @@
+.custom-dropzone {
+    height: auto !important;
+    background: var(--light-grey);
+    border: 2px dashed rgb(from var(--blue-color) r g b / 0.5);
+    border-radius: 15px;
+    transition: all 0.3s ease-in-out !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* hover e quando un file viene trascinato sopra (Drag Over) */
+.custom-dropzone:hover,
+.custom-dropzone.ngx-dt-hovered {
+    border-color: var(--blue-color);
+    background-color: rgb(from var(--light-blue-color) r g b / 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgb(from var(--blue-color) r g b / 0.15);
+}
+
+.custom-dropzone:hover .dropzone-content {
+    transform: scale(1.05);
+}
+
+.bi-folder-plus::before {
+    transition: 0.2s;
+}
+
+.custom-dropzone:hover .bi-folder-plus::before {
+    transform: scale(1.2) rotate(5deg);
+}
+
+ngx-dropzone-preview{
+    background-color: rgb(from var(--blue-color) r g b / 0.05);
+    max-width: 100% !important;
+    min-width: 100% !important;
+}
+
+::ng-deep ngx-dropzone-preview img {
+    display: none !important;
+}
+
+::ng-deep ngx-dropzone-remove-badge {
+    z-index: 10 !important;
+    pointer-events: auto !important; /* Forza la ricezione del clic */
+}

@@ -65,7 +65,9 @@ export class Studenti {
 
         this.timer = setTimeout(() => {
             this.studentiService.GetStudenti(this.classeId, this.searchTerm, this.DSA_BES, this.orderValue).subscribe({
-                next: () => { },
+                next: () => { 
+                    this.nStudenti = this.studentiService.studenti.length;
+                },
                 error: (err: any) => {
                     if (err.status == 404)
                         this.studentiService.studenti = [];
@@ -96,7 +98,9 @@ export class Studenti {
         }
 
         this.studentiService.GetStudenti(this.classeId, this.searchTerm, this.DSA_BES, this.orderValue).subscribe({
-            next: () => { },
+            next: () => {
+                this.nStudenti = this.studentiService.studenti.length;
+            },
             error: (err: any) => {
                 if (err.status == 404)
                     this.studentiService.studenti = [];

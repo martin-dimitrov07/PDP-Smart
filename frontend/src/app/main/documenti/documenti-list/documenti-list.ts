@@ -40,4 +40,52 @@ export class DocumentiList {
             error: (err: any) => this.checkError.checkError(err)
         });
     }
+
+    SetFilterDSA_BES(filter: any) {
+        if (filter == -1) {
+            this.DSA_BES = -1;
+            document.getElementById("badges-dsa")?.classList.remove("active");
+            document.getElementById("badges-bes")?.classList.remove("active");
+            document.getElementById("badges-all")?.classList.add("active");
+        }
+        else if (filter) {
+            this.DSA_BES = "DSA";
+            document.getElementById("badges-dsa")?.classList.add("active");
+            document.getElementById("badges-bes")?.classList.remove("active");
+            document.getElementById("badges-all")?.classList.remove("active");
+        }
+        else {
+            this.DSA_BES = "BES";
+            document.getElementById("badges-dsa")?.classList.remove("active");
+            document.getElementById("badges-bes")?.classList.add("active");
+            document.getElementById("badges-all")?.classList.remove("active");
+        }
+
+        this.documentiService.GetDocumenti(this.searchTerm, this.DSA_BES, this.Tipo_Documento, this.filterAnnoScolastico).subscribe({
+            next: () => {
+                this.documentiService.GetNumeroDocumenti();
+            },
+            error: (err: any) => {
+                if (err.status == 404)
+                    this.documentiService.documenti = [];
+
+                this.checkError.checkError(err)
+            }
+        });
+    }
+
+    SetFilterStato(stato: string) {
+        if (stato == "Tutti") {
+            this.Tipo_Documento = -1;
+        }
+        else if (stato == "Scaduto") {
+            this.Tipo_Documento = "Scaduto";
+        }
+        else if (stato == "In bozza") {
+            this.Tipo_Documento = "In bozza";
+        }
+        else if (stato == "Approvato") {
+            this.Tipo_Documento = "Approvato";
+        }
+    }
 }

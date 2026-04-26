@@ -6,7 +6,7 @@
         <p class="text-secondary">Scegli l'indirizzo scolastico</p>
     </div>
 
-    <div class="row justify-content-center g-4">
+    <div class="row w-100 mx-auto justify-content-center g-4">
         @for (indirizzo of studentiService.indirizzi; track $index) {
             <div class="col-lg-6">
                 <app-indirizzi-card [indirizzo]="indirizzo"></app-indirizzi-card>

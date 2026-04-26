@@ -1,5 +1,5 @@
 .bi {
-    color: var(--bg-blue-dark-color);
+    color: var(--white);
 }
 
 input[type="text"]{
@@ -32,15 +32,15 @@ input[type="text"]:focus {
 }
 
 .container-filters {
-    background-color: var(--bg-blue-color-fade);
+    background-color: var(--bg-blue-color);
 }
 
 /* Titoli sezioni filtri */
-.fw-semibold {
-    color: var(--bg-blue-dark-color);
+.title {
+    color: var(--white);
 }
 
 /* linea destra e sinistra titoli*/
 .text-muted div {
-    border-top: 1px solid var(--bg-blue-dark-color);
+    border-top: 1px solid var(--white);
 }
