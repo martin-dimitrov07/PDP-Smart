@@ -29,7 +29,7 @@ async function GetAnniScolasticiDocumenti(req: any, res: any) {
         const docenteEmail = req["parsedQuery"]["docenteEmail"] || null;
 
         const query: any = {
-            distinct: ['Anno'], // Prende anni univoci
+            distinct: ['Anno'], 
             orderBy: {
                 Anno: 'desc'
             },
@@ -69,12 +69,29 @@ async function GetAnniScolasticiDocumenti(req: any, res: any) {
 
 async function GetDocumenti(req: any, res: any) {
     try {
-        const filters: any = req["parsedQuery"].filters || {};
+        const filters = req["parsedQuery"].filters || {};
+        const docenteEmail = req["parsedQuery"].docenteEmail;
+
+        if (docenteEmail) {
+            filters.Studente = {
+                Classi_Studente: {
+                    some: {
+                        Classe: {
+                            Insegnamenti: {
+                                some: {
+                                    Docente_Email: docenteEmail
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+        }
 
         const documenti = await prisma.documento.findMany({
             where: filters,
             orderBy: {
-                Studente_Email : "asc",
+                Studente_Email: "asc",
             }
         });
 
@@ -88,5 +105,6 @@ async function GetDocumenti(req: any, res: any) {
         });
     }
 }
+
 
 export { CreateDocumento, GetAnniScolasticiDocumenti, GetDocumenti };

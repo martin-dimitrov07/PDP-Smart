@@ -18,7 +18,7 @@ export class DocumentiService {
 
     studenteSelected: Studente = {} as Studente;
 
-    materieDocente: string[] = [];    
+    materieDocente: string[] = [];
     materieSelected: string[] = [];
 
     materiaSelected: string = "";
@@ -187,6 +187,10 @@ export class DocumentiService {
             filters: JSON.stringify(filters)
         };
 
+        if (this.docentiService.docente.Ruolo != 'ADMIN') {
+            params.docenteEmail = this.docentiService.docente.Email;
+        }
+
         return this.dataStorageService.InviaRichiesta("GET", "/documenti", params)!.pipe(
             tap((data: any) => {
                 this.documenti = data.map((doc: any) => new Documento(
@@ -203,8 +207,8 @@ export class DocumentiService {
     GetNumeroDocumenti() {
         this.nClassi = this.documenti.length;
     }
-    
-    CreateDocumento(){
+
+    CreateDocumento() {
         //1. creo documento
 
         //2. ciclo materie -> per ogni materia ciclo indicatori => aggiungo indicatori
