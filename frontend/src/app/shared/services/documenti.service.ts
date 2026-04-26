@@ -3,7 +3,7 @@ import { DocentiService } from './docenti.service';
 import { DataStorageService } from './data-storage.service';
 import { Studente } from '../../models/studente';
 import { Documento } from '../../models/documento';
-import { concatMap, forkJoin, map, mergeMap, of, tap } from 'rxjs';
+import { concatMap, forkJoin, map, mergeMap, Observable, of, tap } from 'rxjs';
 import { Ruolo } from '../../models/docente';
 import { Indicatore } from '../../models/indicatore';
 import { Icf } from '../../models/icf';
@@ -25,8 +25,12 @@ export class DocumentiService {
     indicatori: any = {};
     categorieInd: string[] = [];
 
-    icfs: Icf[] = [{"Codice": "1234", "Descrizione": "test"}];
+    icfs: Icf[] = [{ "Codice": "1234", "Descrizione": "test" }];
     icfsSelected: Icf[] = [];
+
+    anniScolastici: Date[] = [];
+    documenti: Documento[] = [];
+    nClassi: number = 0;
 
     // indicatori = {
     //     "matematica": 
@@ -79,14 +83,6 @@ export class DocumentiService {
         }));
     }
 
-    GetNumeroDocumenti(email: string) {
-        const filters = {
-            Studente_Email: email
-        };
-
-        return this.dataStorageService.InviaRichiesta("GET", "/count-documenti", { filters: JSON.stringify(filters) })!;
-    }
-
     GetIndicatori(categoria: string = "", tipologia: string) {
         let filters: any = {};
 
@@ -94,11 +90,11 @@ export class DocumentiService {
             filters.Categoria = categoria;
         }
 
-        if(tipologia){
+        if (tipologia) {
             filters.Tipologia = { in: [tipologia, "ENTRAMBI"] }
         }
 
-        return this.dataStorageService.InviaRichiesta("GET", "/indicatori", {filters: JSON.stringify(filters)})!.pipe(tap((data: any) => {
+        return this.dataStorageService.InviaRichiesta("GET", "/indicatori", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
             // console.log(data);
             return data.map((ind: Indicatore) => new Indicatore(ind.Id, ind.Tipologia, ind.Categoria, ind.Descrizione));
         }));
@@ -128,7 +124,7 @@ export class DocumentiService {
                     return this.GetIndicatori(cat, tipologia).pipe(
                         map(listaIndicatori => ({ categoria: cat, lista: listaIndicatori }))
                     )
-            });
+                });
                 return forkJoin(richieste);
             }),
             // Formatta i dati per la struttura
@@ -147,9 +143,62 @@ export class DocumentiService {
         );
     }
 
-    GetICFs(){
+    GetICFs() {
         return this.dataStorageService.InviaRichiesta("GET", "/icf")?.pipe(tap((data: any) => {
             this.icfs = data.map((icf: Icf) => new Icf(icf.Codice, icf.Descrizione));
         }))
+    }
+
+    GetAnniScolastici(): Observable<any> {
+        let params: any = {};
+
+        if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
+            params.docenteEmail = this.docentiService.docente.Email;
+        }
+
+        return this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici-documenti", params)!.pipe(
+            tap((data: any) => {
+                this.anniScolastici = Array.from(data).map((item: any) => new Date(item));
+            })
+        );
+    }
+
+    GetDocumenti(searchTerm: any = "", DSA_BES: any = -1, Tipo_Documento: any = -1, filterAnnoScolastico: any): Observable<any> {
+        let filters: any = {};
+
+        filters.Anno = filterAnnoScolastico;
+
+        if (searchTerm) {
+            filters.Studente_Email = {
+                contains: searchTerm,
+                mode: 'insensitive'
+            };
+        }
+
+        if (DSA_BES != -1)
+            filters.DSA_BES = DSA_BES;
+
+        if (Tipo_Documento != -1)
+            filters.Tipo_Documento = Tipo_Documento;
+
+        let params: any = {
+            filters: JSON.stringify(filters)
+        };
+
+
+        return this.dataStorageService.InviaRichiesta("GET", "/documenti", params)!.pipe(
+            tap((data: any) => {
+                this.documenti = data.map((doc: any) => new Documento(
+                    doc.Studente_Email,
+                    new Date(doc.Anno),
+                    doc.Tipologia,
+                    doc.Data_Approvazione ? new Date(doc.Data_Approvazione) : undefined
+                ));
+            })
+        );
+    }
+
+    GetNumeroDocumenti() {
+        this.nClassi = this.documenti.length;
     }
 }

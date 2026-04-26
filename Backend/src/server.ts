@@ -150,7 +150,8 @@ app.get("/api/count-studenti", GestioneStudenti.GetCountStudenti);
 
 //Documenti
 app.post("/api/documento/create", GestioneDocumenti.CreateDocumento);
-app.get("/api/count-documenti", GestioneDocumenti.GetCountDocumenti);
+app.get("/api/anni-scolastici-documenti", GestioneDocumenti.GetAnniScolasticiDocumenti);
+app.get("/api/documenti", GestioneDocumenti.GetDocumenti);
 
 
 //Materie
