@@ -13,7 +13,7 @@ export class StepBar {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     public readonly stepsService: StepsService = inject(StepsService);
 
-    steps = ['studenti', 'materie', 'indicatori', 'ICF', 'allegati'];
+    steps = ['studenti', 'indicatori', 'ICF', 'allegati'];
 
     // Crea una funzione di supporto per verificare lo stato
     isStepActive(stepName: string): boolean {

@@ -25,9 +25,6 @@ export class CategoriaInd {
     }
 
     ngOnInit(){
-        // console.log(this.materiaSelected);
-        // console.log(this.documentiService.indicatori[this.materiaSelected])
-        this.indicatoriCategoria = this.documentiService.indicatori[this.documentiService.materiaSelected][this.categoria];
-        // console.log(this.indicatoriCategoria);
+        // this.indicatoriCategoria = this.documentiService.indicatori[this.documentiService.materiaSelected][this.categoria];
     }
 }

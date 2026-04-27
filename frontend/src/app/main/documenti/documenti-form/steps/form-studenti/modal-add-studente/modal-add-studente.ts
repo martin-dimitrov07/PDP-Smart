@@ -5,6 +5,8 @@ import { EventEmitter } from '@angular/core';
 import { CheckError } from '../../../../../../shared/utilities/check-error';
 import { StudentiService } from '../../../../../../shared/services/studenti.service';
 import { FormsModule } from '@angular/forms';
+import { DocumentiService } from '../../../../../../shared/services/documenti.service';
+import { StepsService } from '../../../../../../shared/services/steps.service';
 
 @Component({
     selector: 'app-modal-add-studente',
@@ -15,8 +17,9 @@ import { FormsModule } from '@angular/forms';
 export class ModalAddStudente {
     allClasses: Classe[] = [];
     studenti: Studente[] = [];
-    classeId: number = 0;
+    // classeId: number = 0;
     studenteEmail: string = '';
+    public readonly documentiService: DocumentiService = inject(DocumentiService);
     public readonly studentiService: StudentiService = inject(StudentiService);
     private readonly checkError: CheckError = inject(CheckError);
 
@@ -56,7 +59,7 @@ export class ModalAddStudente {
                 console.log(data);
                 console.log(this.allClasses);
 
-                this.classeId = this.allClasses[0].Id;
+                this.documentiService.classeSelected = this.allClasses[0];
 
                 this.GetStudentiNoDoc();
             },
@@ -65,8 +68,7 @@ export class ModalAddStudente {
     }
 
     GetStudentiNoDoc() {
-        console.log(this.classeId);
-        this.studentiService.GetStudentiNoDocumento(Number(this.classeId)).subscribe({
+        this.studentiService.GetStudentiNoDocumento(Number(this.documentiService.classeSelected.Id)).subscribe({
             next: (data: any) => {
                 this.studentiService.studentiNoDoc = data.map((studente: Studente) => new Studente(studente.Nome, studente.Cognome, studente.Email, studente.DSA_BES));
                 this.studenteEmail = data[0].Email;

@@ -7,6 +7,7 @@ import { concatMap, forkJoin, map, mergeMap, Observable, of, tap } from 'rxjs';
 import { Ruolo } from '../../models/docente';
 import { Indicatore } from '../../models/indicatore';
 import { Icf } from '../../models/icf';
+import { Classe } from '../../models/classe';
 
 @Injectable({
     providedIn: 'root',
@@ -16,10 +17,11 @@ export class DocumentiService {
     // private readonly router: Router = inject(Router);
     private readonly docentiService: DocentiService = inject(DocentiService);
 
+    classeSelected: Classe = {} as Classe; 
     studenteSelected: Studente = {} as Studente;
 
     materieDocente: string[] = [];
-    materieSelected: string[] = [];
+    materieClasse: string[] = [];
 
     materiaSelected: string = "";
     indicatori: any = {};
@@ -37,7 +39,8 @@ export class DocumentiService {
     // indicatori = {
     //     "matematica": 
     //         {
-    //             "criteri": [ "id1", "id2" ]
+    //             "criteri": [ "id1", "id2" ],
+    //             "categoria": [ "id3", "id4" ]
     //         },
     // }
 
@@ -63,7 +66,7 @@ export class DocumentiService {
         const filters = this.docentiService.docente.Ruolo == Ruolo.DOCENTE ? {
             Insegnamenti: {
                 some: {  // serve per relazioni uno a molti
-                    Docente_Email: this.docentiService.docente.Email
+                    Docente_Email: this.docentiService.docente.Email,
                 }
             }
         } : {};
@@ -80,7 +83,33 @@ export class DocumentiService {
 
         return this.dataStorageService.InviaRichiesta("GET", "/materie", params)!.pipe(tap((data: any) => {
             this.materieDocente = Array.from(data).map((item: any) => item.Nome);
-            console.log(this.materieSelected);
+            console.log(this.materieDocente);
+            console.log(data);
+        }));
+    }
+
+    GetMaterieClasse() {
+        const filters = this.docentiService.docente.Ruolo == Ruolo.DOCENTE ? {
+            Insegnamenti: {
+                some: {  // serve per relazioni uno a molti
+                    Classe_Id: this.classeSelected.Id
+                }
+            }
+        } : {};
+
+        let params = {};
+
+        if (filters) {
+            params = {
+                filters: JSON.stringify(filters)
+            }
+        }
+
+        console.log(this.docentiService.docente);
+
+        return this.dataStorageService.InviaRichiesta("GET", "/materie", params)!.pipe(tap((data: any) => {
+            this.materieClasse = Array.from(data).map((item: any) => item.Nome);
+            console.log(this.materieClasse);
             console.log(data);
         }));
     }
@@ -109,41 +138,41 @@ export class DocumentiService {
         }));
     }
 
-    CaricaIndicatoriPerMateria(materia: string) {
+    // CaricaIndicatoriPerMateria(materia: string) {
 
-        // console.log(this.indicatori[materia])
+    //     // console.log(this.indicatori[materia])
 
-        // restituisce un Observable che emette immediatamente i dati esistenti
-        if (this.indicatori[materia] && Object.keys(this.indicatori[materia]).length > 0) {
-            return of(this.indicatori[materia]);
-        }
+    //     // restituisce un Observable che emette immediatamente i dati esistenti
+    //     if (this.indicatori[materia] && Object.keys(this.indicatori[materia]).length > 0) {
+    //         return of(this.indicatori[materia]);
+    //     }
 
-        return this.GetCategorieIndicatore().pipe(
-            // MergeMap: esegue tutte le chiamate parallelo e aspetta che tutte finiscano per emettere il risultato
-            mergeMap(() => {
-                const richieste = this.categorieInd.map(cat => {
-                    const tipologia = this.studenteSelected.DSA_BES ? "DSA" : "BES";
-                    return this.GetIndicatori(cat, tipologia).pipe(
-                        map(listaIndicatori => ({ categoria: cat, lista: listaIndicatori }))
-                    )
-                });
-                return forkJoin(richieste);
-            }),
-            // Formatta i dati per la struttura
-            map((risultati) => {
-                //array: [{categoria: 'A', lista: [...]}, {categoria: 'B', lista: [...]}]
-                const struttura: any = {};
+    //     return this.GetCategorieIndicatore().pipe(
+    //         // MergeMap: esegue tutte le chiamate parallelo e aspetta che tutte finiscano per emettere il risultato
+    //         mergeMap(() => {
+    //             const richieste = this.categorieInd.map(cat => {
+    //                 const tipologia = this.studenteSelected.DSA_BES ? "DSA" : "BES";
+    //                 return this.GetIndicatori(cat, tipologia).pipe(
+    //                     map(listaIndicatori => ({ categoria: cat, lista: listaIndicatori }))
+    //                 )
+    //             });
+    //             return forkJoin(richieste);
+    //         }),
+    //         // Formatta i dati per la struttura
+    //         map((risultati) => {
+    //             //array: [{categoria: 'A', lista: [...]}, {categoria: 'B', lista: [...]}]
+    //             const struttura: any = {};
 
-                for (const ris of risultati) {
-                    struttura[ris.categoria] = ris.lista.map((ind: Indicatore) => ({ Id: ind.Id, Valore: false, Descrizione: ind.Descrizione }))
-                }
+    //             for (const ris of risultati) {
+    //                 struttura[ris.categoria] = ris.lista.map((ind: Indicatore) => ({ Id: ind.Id, Valore: false, Descrizione: ind.Descrizione }))
+    //             }
 
-                // Assegna alla materia specifica
-                this.indicatori[materia] = struttura;
-                return struttura;
-            })
-        );
-    }
+    //             // Assegna alla materia specifica
+    //             this.indicatori[materia] = struttura;
+    //             return struttura;
+    //         })
+    //     );
+    // }
 
     GetICFs() {
         return this.dataStorageService.InviaRichiesta("GET", "/icf")?.pipe(tap((data: any) => {

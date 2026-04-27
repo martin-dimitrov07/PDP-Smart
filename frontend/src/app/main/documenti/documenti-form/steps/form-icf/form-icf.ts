@@ -30,14 +30,4 @@ export class FormICF {
     RemoveICF(codice: string){
         this.documentiService.icfsSelected.splice(this.documentiService.icfsSelected.findIndex(icf => icf.Codice == codice), 1);
     }
-    
-    SetPrevPage(){
-        if(this.documentiService.materieSelected.length > 0){
-            this.prevPage = "indicatori";
-        }
-        else
-            this.prevPage = "materie";
-
-        this.stepsService.GoStep(this.prevPage);
-    }
 }

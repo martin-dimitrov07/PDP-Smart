@@ -24,32 +24,34 @@ export class FormIndicatori {
 
     ngOnInit() {
         this.stepsService.step = "indicatori";
-        
-        if (this.documentiService.materieSelected.length > 0) {
-            this.documentiService.materiaSelected = this.documentiService.materieSelected[0];
 
-            for (const materia of this.documentiService.materieSelected) {
-                this.SetIndicatori(materia);
-            }
-        }
-        else {
-            this.stepsService.GoStep("ICF");
-        }
-    }
-
-    SetIndicatori(materia: string) {
-        this.datiCaricati = false;
-        // Forziamo Angular a capire che c'è stato un cambiamento
-        this.cdr.detectChanges();
-
-        this.documentiService.CaricaIndicatoriPerMateria(materia).subscribe({
+        this.documentiService.GetMaterieClasse().subscribe({
             next: (data) => {
-                console.log(data);
+                this.documentiService.GetCategorieIndicatore().subscribe({
+                    next: (data) => {
+                        this.datiCaricati = false;
+                        // Forziamo Angular a capire che c'è stato un cambiamento
+                        this.cdr.detectChanges();
 
-                this.datiCaricati = true;
-                this.cdr.detectChanges();
+                        this.InitializeIndicatori();
+
+                        this.datiCaricati = true;
+                        this.cdr.detectChanges();
+                    },
+                    error: (err) => this.checkError.checkError(err)
+                });
             },
             error: (err) => this.checkError.checkError(err)
-        });
+        })
+    }
+
+    InitializeIndicatori() {
+        for (let materia of this.documentiService.materieClasse) {
+            this.documentiService.indicatori[materia] = {};
+
+            for (let categoria of this.documentiService.categorieInd) {
+                this.documentiService.indicatori[materia][categoria] = [];
+            }
+        }
     }
 }

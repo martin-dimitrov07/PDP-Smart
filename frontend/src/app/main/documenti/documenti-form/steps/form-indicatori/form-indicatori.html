@@ -6,21 +6,14 @@
         <hr>
 
         <div class="px-sm-2 d-flex flex-column gap-3">
-            <div class="d-flex gap-2 ms-auto">
-                <label for="materiaSelected" class="form-label m-0 align-content-center">Materia:</label>
-                <select class="form-select" id="materiaSelected" name="materiaSelected" [(ngModel)]="documentiService.materiaSelected" (change)="SetIndicatori(documentiService.materiaSelected)">
-                    @if(documentiService.materieSelected && documentiService.materieSelected.length > 0) {
-                        @for (nomeMateria of documentiService.materieSelected; track $index) {
-                        <option [value]="nomeMateria">{{nomeMateria}}</option>
-                        }
-                    }
-                </select>
-            </div>
-            <ng-container *ngIf="datiCaricati">
+            @if(datiCaricati)
+            {
+            <ng-container>
                 @for (categoria of documentiService.categorieInd; track $index) {
                     <app-categoria-ind [categoria]="categoria"></app-categoria-ind>
                 }
             </ng-container>
+            }
         </div>
     </section>
 
