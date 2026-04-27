@@ -1,8 +1,10 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, input, Input } from '@angular/core';
 import { DocumentiService } from '../../../../../../shared/services/documenti.service';
 import { CheckError } from '../../../../../../shared/utilities/check-error';
 import { IndicatoreInput } from './indicatore-input/indicatore-input';
 import { Indicatore } from '../../../../../../models/indicatore';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-categoria-ind',
@@ -12,9 +14,11 @@ import { Indicatore } from '../../../../../../models/indicatore';
 })
 export class CategoriaInd {
     private _categoria!: string;
-    public indicatoriCategoria: any[] = []; 
+    public indicatoriCategoria: Indicatore[] = []; 
     public readonly documentiService: DocumentiService = inject(DocumentiService);
-    // private readonly checkError: CheckError = inject(CheckError);
+    private readonly checkError: CheckError = inject(CheckError);
+
+    @Input() index!: number;
 
     @Input() set categoria(valore: string) {
         this._categoria = valore;
@@ -25,6 +29,13 @@ export class CategoriaInd {
     }
 
     ngOnInit(){
-        // this.indicatoriCategoria = this.documentiService.indicatori[this.documentiService.materiaSelected][this.categoria];
+        const tipologia = this.documentiService.studenteSelected.DSA_BES ? "DSA" : "BES";
+
+        this.documentiService.GetIndicatori(this.categoria, tipologia).subscribe({
+                next: (data: Indicatore[]) => {
+                    this.indicatoriCategoria = data;
+                },
+                error: (err) => this.checkError.checkError(err)
+        })
     }
 }

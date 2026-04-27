@@ -10,12 +10,30 @@
     }
 </ul> -->
 
-  <button class="btn btn-primary active fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#contenuto">
-    Mostra / Nascondi
-  </button>
+<button class="btn btn-primary fw-bold border-0 d-flex w-100 justify-content-between px-2 px-sm-4"
+    [class.collapsed]="index!=0" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#contenuto-'+index">
+    <p class="m-0">{{categoria.replace('_', ' ')}}</p>
+    <i class="bi bi-caret-down-fill"></i>
+</button>
 
-<div class="collapse mt-3" id="contenuto">
-    <div class="card card-body">
-        Questo è il contenuto che si apre e si chiude.
+<div class="collapse" [id]="'contenuto-'+index" [class.show]="index==0">
+    <div class="table-responsive">
+        <table class="table table-striped m-0">
+            <thead class="sticky-top">
+                <tr>
+                    <th class="text-center align-middle">Discipline</th>
+                    @for (materia of documentiService.materieClasse; track $index)
+                    {
+                    <th class="text-center align-middle">{{materia}}</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (ind of indicatoriCategoria; track $index)
+                {
+                <tr app-indicatore-input [indicatore]="ind" [categoria]="categoria"></tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>

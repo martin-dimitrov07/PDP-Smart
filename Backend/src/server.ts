@@ -155,8 +155,7 @@ app.get("/api/documenti", GestioneDocumenti.GetDocumenti);
 
 
 //Materie
-app.get("/api/materie", GestioneMaterie.GetMaterieDocente);
-
+app.get("/api/materie", GestioneMaterie.GetMaterie);
 //Indicatori
 app.get("/api/indicatori", GestioneIndicatori.GetIndicatori);
 

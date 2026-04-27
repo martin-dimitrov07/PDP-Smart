@@ -17,13 +17,13 @@ export class DocumentiService {
     // private readonly router: Router = inject(Router);
     private readonly docentiService: DocentiService = inject(DocentiService);
 
-    classeSelected: Classe = {} as Classe; 
+    classeSelected: Classe = {} as Classe;
     studenteSelected: Studente = {} as Studente;
 
     materieDocente: string[] = [];
     materieClasse: string[] = [];
 
-    materiaSelected: string = "";
+    // materiaSelected: string = "";
     indicatori: any = {};
     categorieInd: string[] = [];
 
@@ -79,7 +79,7 @@ export class DocumentiService {
             }
         }
 
-        console.log(this.docentiService.docente);
+        // console.log(this.docentiService.docente);
 
         return this.dataStorageService.InviaRichiesta("GET", "/materie", params)!.pipe(tap((data: any) => {
             this.materieDocente = Array.from(data).map((item: any) => item.Nome);
@@ -89,13 +89,14 @@ export class DocumentiService {
     }
 
     GetMaterieClasse() {
-        const filters = this.docentiService.docente.Ruolo == Ruolo.DOCENTE ? {
+        console.log(this.classeSelected);
+        const filters = {
             Insegnamenti: {
                 some: {  // serve per relazioni uno a molti
-                    Classe_Id: this.classeSelected.Id
+                    Classe_Id: this.classeSelected.Id,
                 }
             }
-        } : {};
+        };
 
         let params = {};
 
@@ -105,7 +106,7 @@ export class DocumentiService {
             }
         }
 
-        console.log(this.docentiService.docente);
+        // console.log(this.docentiService.docente);
 
         return this.dataStorageService.InviaRichiesta("GET", "/materie", params)!.pipe(tap((data: any) => {
             this.materieClasse = Array.from(data).map((item: any) => item.Nome);

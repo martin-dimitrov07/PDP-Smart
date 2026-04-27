@@ -1,6 +1,6 @@
 import { prisma } from "../server.ts";
 
-async function GetMaterieDocente(req: any, res: any) {
+async function GetMaterie(req: any, res: any) {
     try {
         const filters: any = req["parsedQuery"].filters || {};
 
@@ -17,4 +17,4 @@ async function GetMaterieDocente(req: any, res: any) {
     }
 }
 
-export { GetMaterieDocente };
+export { GetMaterie };

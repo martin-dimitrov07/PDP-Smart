@@ -1,19 +1,22 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, ElementRef, inject, Input, ViewChild } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { DocumentiService } from '../../../../../../../shared/services/documenti.service';
+import * as bootstrap from 'bootstrap';
+
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 
 @Component({
-    selector: 'app-indicatore-input',
+    selector: 'tr[app-indicatore-input]',
     imports: [FormsModule],
     templateUrl: './indicatore-input.html',
     styleUrl: './indicatore-input.css',
 })
 export class IndicatoreInput {
-    private readonly documentiService: DocumentiService = inject(DocumentiService);
+    public readonly documentiService: DocumentiService = inject(DocumentiService);
     private _indicatore!: any;
     @Input() categoria!: string;
 
-    isChecked: boolean = false;
 
     @Input() set indicatore(valore: any) {
         this._indicatore = valore;
@@ -24,21 +27,27 @@ export class IndicatoreInput {
         return this._indicatore;
     }
 
-    SetValue() {
-        const listaInd = this.documentiService.indicatori[this.documentiService.materiaSelected][this.categoria];
+    IsItemSelected(materia: string): boolean {
+        const listaInd = this.documentiService.indicatori[materia]?.[this.categoria];
 
-        const ind = listaInd.find((i: any) => i.Id === this.indicatore.Id);
-
-        if (ind) {
-            ind.Valore = !ind.Valore;
-        }
-
-        // console.log(listaInd);
+        return listaInd
+            ? listaInd.some((item: any) => item.Id === this.indicatore.Id) //some: restituisce true se almeno un elemento dell'array soddisfa la condizione specificata nella funzione di callback, altrimenti restituisce false.
+            : false;
     }
 
-    ngOnInit(){
-        this.isChecked = this.documentiService.indicatori[this.documentiService.materiaSelected][this.categoria].find((i: any) => i.Id === this.indicatore.Id).Valore
+    SetValue(materia: string) {
+        const listaInd = this.documentiService.indicatori[materia][this.categoria];
 
-        // console.log(this.documentiService.indicatori[this.documentiService.materiaSelected][this.categoria]);
+        const index = listaInd.findIndex((item: any) => item.Id === this.indicatore.Id);
+
+        if (index === -1) {
+            listaInd.push({ Id: this.indicatore.Id, nota: "" });
+        }
+        else {
+            listaInd.splice(index, 1);
+        }
+
+        console.log(listaInd);
+        console.log(this.documentiService.indicatori);
     }
 }

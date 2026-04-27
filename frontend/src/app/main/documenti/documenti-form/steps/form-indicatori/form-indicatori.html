@@ -1,7 +1,7 @@
 <div class="container-lg pt-2 pb-4">
     <section class="section-form px-3 px-sm-4">
         <h3 class="fs-5">Assegna gli indicatori</h3>
-        <p class="small mt-1">Seleziona le misure applicabili per ogni disciplina. Ogni spunta sarà riportata nel
+        <p class="small mt-1">Seleziona le misure applicabili per ogni voce. Ogni spunta sarà riportata nel
             documento finale</p>
         <hr>
 
@@ -9,8 +9,8 @@
             @if(datiCaricati)
             {
             <ng-container>
-                @for (categoria of documentiService.categorieInd; track $index) {
-                    <app-categoria-ind [categoria]="categoria"></app-categoria-ind>
+                @for (categoria of documentiService.categorieInd; track categoria; let i = $index) {
+                    <app-categoria-ind [categoria]="categoria" [index]="i"></app-categoria-ind>
                 }
             </ng-container>
             }
@@ -18,7 +18,7 @@
     </section>
 
     <div class="d-flex justify-content-between flex-wrap">
-        <button type="button" class="btn btn-secondary d-flex gap-2 align-items-center py-2 pe-3 ps-2" (click)="stepsService.GoStep('materie')">
+        <button type="button" class="btn btn-secondary d-flex gap-2 align-items-center py-2 pe-3 ps-2" (click)="stepsService.GoStep('studenti')">
             <i class="bi bi-chevron-left"></i>
             <p class="m-0">Indietro</p>
         </button>

@@ -1,3 +1,53 @@
-.active{
+.btn {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.collapse {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.btn:not(.collapsed) .bi {
+    transform: rotate(180deg);
+}
+
+.btn.collapsed .bi {
+    transform: rotate(0);
+}
+
+.table-responsive {
+    max-height: 550px;
+    overscroll-behavior: contain; /* per evitare che lo scroll della tabella scrolli anche la pagina */
+    border-bottom: 2px solid var(--blue-color);
+    /* per Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: var(--blue-color) transparent;
+}
+
+/* Scrollbar generale (Chrome, Edge, Safari) */
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
     background-color: var(--blue-color);
+    border-radius: 10px;
+    transition: background-color 0.2s;
+}
+
+.table {
+    border-bottom: 1px solid var(--blue-color);
+}
+
+thead th {
+    background-color: var(--blue-color);
+    color: var(--light-color);
+    border: 0 !important;
+    padding: 0.5rem 1.15rem;
 }

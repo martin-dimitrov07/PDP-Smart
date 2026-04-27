@@ -33,7 +33,12 @@ export class FormIndicatori {
                         // Forziamo Angular a capire che c'è stato un cambiamento
                         this.cdr.detectChanges();
 
-                        this.InitializeIndicatori();
+                        console.log(this.documentiService.indicatori.object);
+
+                        if(Object.keys(this.documentiService.indicatori).length == 0)
+                        {
+                            this.InitializeIndicatori();
+                        }
 
                         this.datiCaricati = true;
                         this.cdr.detectChanges();
