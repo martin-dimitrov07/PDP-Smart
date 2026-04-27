@@ -11,7 +11,8 @@
 
         @if(IsItemSelected(materia))
         {
-            <i class="bi bi-pen fs-5"></i>
+            <i class="bi bi-pen fs-6 d-flex align-items-center" data-bs-toggle="modal"
+                data-bs-target="#aggiuntaNota" (click)="SetModalNota(materia)"></i>
         }
     </div>
 </td>

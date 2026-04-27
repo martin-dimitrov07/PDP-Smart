@@ -31,7 +31,7 @@
             <tbody>
                 @for (ind of indicatoriCategoria; track $index)
                 {
-                <tr app-indicatore-input [indicatore]="ind" [categoria]="categoria"></tr>
+                <tr app-indicatore-input [indicatore]="ind" [categoria]="categoria" (modalNotaEvent)="SetModalNota($event)"></tr>
                 }
             </tbody>
         </table>

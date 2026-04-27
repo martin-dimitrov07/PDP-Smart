@@ -1,14 +1,11 @@
-import { Component, ElementRef, inject, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { DocumentiService } from '../../../../../../../shared/services/documenti.service';
-import * as bootstrap from 'bootstrap';
-
-import { isPlatformBrowser } from '@angular/common';
-import { PLATFORM_ID } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'tr[app-indicatore-input]',
-    imports: [FormsModule],
+    imports: [FormsModule, CommonModule],
     templateUrl: './indicatore-input.html',
     styleUrl: './indicatore-input.css',
 })
@@ -17,6 +14,9 @@ export class IndicatoreInput {
     private _indicatore!: any;
     @Input() categoria!: string;
 
+    materiaSelected: string = "";
+
+    @Output() modalNotaEvent = new EventEmitter<{ indicatore: any, materia: string, nota: string }>();
 
     @Input() set indicatore(valore: any) {
         this._indicatore = valore;
@@ -47,7 +47,38 @@ export class IndicatoreInput {
             listaInd.splice(index, 1);
         }
 
-        console.log(listaInd);
-        console.log(this.documentiService.indicatori);
+        // console.log(listaInd);
+        // console.log(this.documentiService.indicatori);
     }
+
+    SetModalNota(materia: string) 
+    {
+        console.log("Materia selezionata: ", materia, " categoria: ", this.categoria, " indicatore: ", this.indicatore);
+
+        const listaInd = this.documentiService.indicatori[materia][this.categoria];
+
+        const index = listaInd.findIndex((item: any) => item.Id === this.indicatore.Id);
+
+        if (index !== -1) {
+            const nota = listaInd[index].nota;
+            this.modalNotaEvent.emit({ indicatore: this.indicatore, materia: materia, nota: nota });
+        }
+        else{
+            this.modalNotaEvent.emit({ indicatore: this.indicatore, materia: materia, nota: "" });
+        }
+    }
+
+    // SetNota(nota: string, materia: string) {
+    //     console.log("Nota ricevuta: ", nota, " per materia: ", materia, " categoria: ", this.categoria, " indicatore: ", this.indicatore);
+
+    //     const listaInd = this.documentiService.indicatori[materia][this.categoria];
+
+    //     const index = listaInd.findIndex((item: any) => item.Id === this.indicatore.Id);
+
+    //     if (index !== -1) {
+    //         listaInd[index].nota = nota;
+    //     }
+
+    //     console.log(this.documentiService.indicatori);
+    // }
 }

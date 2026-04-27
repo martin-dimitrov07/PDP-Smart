@@ -10,7 +10,7 @@
             {
             <ng-container>
                 @for (categoria of documentiService.categorieInd; track categoria; let i = $index) {
-                    <app-categoria-ind [categoria]="categoria" [index]="i"></app-categoria-ind>
+                    <app-categoria-ind [categoria]="categoria" [index]="i" (modalNotaEvent)="SetModalNota($event)"></app-categoria-ind>
                 }
             </ng-container>
             }
@@ -29,3 +29,5 @@
         </button>
     </div>
 </div>
+
+<app-modal-add-nota [nota]="eventoNota.nota" (notaEvent)="SetNota($event)" class="p-0"></app-modal-add-nota>

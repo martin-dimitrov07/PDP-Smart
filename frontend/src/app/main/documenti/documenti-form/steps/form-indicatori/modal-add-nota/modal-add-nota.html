@@ -1,0 +1,18 @@
+    <div class="modal fade" id="aggiuntaNota" tabindex="-1"
+        aria-labelledby="aggiuntaStudenteLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title fs-5" id="aggiuntaStudenteLabel">Aggiungi nuova nota</h3>
+                </div>
+                <div class="modal-body">
+                    <label for="classeSelected" class="form-label">Nota</label>
+                    <textarea class="form-control" id="notaInput" rows="3" [(ngModel)]="nota" placeholder="Scrivi qui la tua nota..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="button" class="btn btn-primary" (click)="SaveNota()" data-bs-dismiss="modal">Salva aggiunta</button>
+                </div>
+            </div>
+        </div>
+    </div>
