@@ -25,7 +25,7 @@ model Docente {
     Cognome String @db.VarChar(50)
     Ruolo   Ruolo  @default(DOCENTE)
 
-    Insegnamenti Insegnamento[]
+    Insegnamenti       Insegnamento[]
     ClassiCoordinatore Classe[]
 }
 
@@ -43,21 +43,6 @@ model Classe {
 
     @@unique([Classe, Sezione, Indirizzo, Anno_Scolastico], name: "UniqueClass")
 }
-
-// model Documento {
-//     Studente_Email    String        @db.VarChar(255)
-//     Anno              DateTime      @default(now())
-//     Stato             Stato
-//     Tipologia         Tipologia_Doc
-//     Data_Approvazione DateTime?
-
-//     Materie_Documento Materia_Documento[]
-//     Documento_ICFs    Documento_ICF[]
-//     Studente          Studente            @relation(fields: [Studente_Email], references: [Email])
-//     Allegati          Allegato[] //può essere vuoto
-
-//     @@id([Studente_Email, Anno], name: "Id")
-// }
 
 model Studente {
     Email   String  @id @db.VarChar(255)
@@ -87,10 +72,10 @@ model Documento {
     Tipologia         Tipologia_Doc
     Data_Approvazione DateTime?
 
-    Materie_Documento Materia_Documento[]
-    Documento_ICFs    Documento_ICF[]
-    Studente          Studente            @relation(fields: [Studente_Email], references: [Email])
-    Allegati          Allegato[] //può essere vuoto
+    Materia_Documenti_Indicatori Materia_Documento_Indicatore[]
+    Documento_ICFs               Documento_ICF[]
+    Studente                     Studente                       @relation(fields: [Studente_Email], references: [Email])
+    Allegati                     Allegato[] //può essere vuoto
 
     @@id([Studente_Email, Anno], name: "Id")
 }
@@ -98,9 +83,8 @@ model Documento {
 model Materia {
     Nome String @id @db.VarChar(50)
 
-    Insegnamenti       Insegnamento[]
-    Materie_Indicatore Materia_Indicatore[]
-    Materie_Documento  Materia_Documento[]
+    Insegnamenti                 Insegnamento[]
+    Materia_Documenti_Indicatori Materia_Documento_Indicatore[]
 }
 
 enum Tipologia_Ind {
@@ -122,7 +106,7 @@ model Indicatore {
     Categoria   Categoria
     Descrizione String
 
-    Materia_Indicatori Materia_Indicatore[]
+    Materia_Documenti_Indicatori Materia_Documento_Indicatore[]
 }
 
 model Allegato {
@@ -166,26 +150,20 @@ model Classe_Studente {
     @@id([Studente_Email, Classe_Id], name: "Id")
 }
 
-model Materia_Indicatore {
-    Materia_Nome  String
-    Indicatore_Id Int
-    Valore        Boolean
+model Materia_Documento_Indicatore {
+    Id                       Int      @id @default(autoincrement())
+    Materia_Nome             String  
+    Indicatore_Id            Int
+    Documento_Anno           DateTime
+    Documento_Studente_Email String  
+
+    Nota   String?
 
     Materia    Materia    @relation(fields: [Materia_Nome], references: [Nome])
     Indicatore Indicatore @relation(fields: [Indicatore_Id], references: [Id])
+    Documento  Documento  @relation(fields: [Documento_Studente_Email, Documento_Anno], references: [Studente_Email, Anno])
 
-    @@id([Materia_Nome, Indicatore_Id], name: "Id")
-}
-
-model Materia_Documento {
-    Materia_Nome             String
-    Documento_Anno           DateTime
-    Documento_Studente_Email String
-
-    Materia   Materia   @relation(fields: [Materia_Nome], references: [Nome])
-    Documento Documento @relation(fields: [Documento_Studente_Email, Documento_Anno], references: [Studente_Email, Anno])
-
-    @@id([Materia_Nome, Documento_Anno, Documento_Studente_Email], name: "Id")
+    @@unique([Materia_Nome, Indicatore_Id, Documento_Studente_Email, Documento_Anno])
 }
 
 model Documento_ICF {

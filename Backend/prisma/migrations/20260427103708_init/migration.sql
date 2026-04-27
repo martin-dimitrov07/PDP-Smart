@@ -110,21 +110,15 @@ CREATE TABLE "Classe_Studente" (
 );
 
 -- CreateTable
-CREATE TABLE "Materia_Indicatore" (
+CREATE TABLE "Materia_Documento_Indicatore" (
+    "Id" SERIAL NOT NULL,
     "Materia_Nome" TEXT NOT NULL,
     "Indicatore_Id" INTEGER NOT NULL,
-    "Valore" BOOLEAN NOT NULL,
-
-    CONSTRAINT "Materia_Indicatore_pkey" PRIMARY KEY ("Materia_Nome","Indicatore_Id")
-);
-
--- CreateTable
-CREATE TABLE "Materia_Documento" (
-    "Materia_Nome" TEXT NOT NULL,
     "Documento_Anno" TIMESTAMP(3) NOT NULL,
     "Documento_Studente_Email" TEXT NOT NULL,
+    "Nota" TEXT,
 
-    CONSTRAINT "Materia_Documento_pkey" PRIMARY KEY ("Materia_Nome","Documento_Anno","Documento_Studente_Email")
+    CONSTRAINT "Materia_Documento_Indicatore_pkey" PRIMARY KEY ("Id")
 );
 
 -- CreateTable
@@ -138,6 +132,9 @@ CREATE TABLE "Documento_ICF" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Classe_Classe_Sezione_Indirizzo_Anno_Scolastico_key" ON "Classe"("Classe", "Sezione", "Indirizzo", "Anno_Scolastico");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Materia_Documento_Indicatore_Materia_Nome_Indicatore_Id_Doc_key" ON "Materia_Documento_Indicatore"("Materia_Nome", "Indicatore_Id", "Documento_Studente_Email", "Documento_Anno");
 
 -- AddForeignKey
 ALTER TABLE "Classe" ADD CONSTRAINT "Classe_Coordinatore_Email_fkey" FOREIGN KEY ("Coordinatore_Email") REFERENCES "Docente"("Email") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -164,16 +161,13 @@ ALTER TABLE "Classe_Studente" ADD CONSTRAINT "Classe_Studente_Classe_Id_fkey" FO
 ALTER TABLE "Classe_Studente" ADD CONSTRAINT "Classe_Studente_Studente_Email_fkey" FOREIGN KEY ("Studente_Email") REFERENCES "Studente"("Email") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Materia_Indicatore" ADD CONSTRAINT "Materia_Indicatore_Materia_Nome_fkey" FOREIGN KEY ("Materia_Nome") REFERENCES "Materia"("Nome") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Materia_Documento_Indicatore" ADD CONSTRAINT "Materia_Documento_Indicatore_Materia_Nome_fkey" FOREIGN KEY ("Materia_Nome") REFERENCES "Materia"("Nome") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Materia_Indicatore" ADD CONSTRAINT "Materia_Indicatore_Indicatore_Id_fkey" FOREIGN KEY ("Indicatore_Id") REFERENCES "Indicatore"("Id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Materia_Documento_Indicatore" ADD CONSTRAINT "Materia_Documento_Indicatore_Indicatore_Id_fkey" FOREIGN KEY ("Indicatore_Id") REFERENCES "Indicatore"("Id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Materia_Documento" ADD CONSTRAINT "Materia_Documento_Materia_Nome_fkey" FOREIGN KEY ("Materia_Nome") REFERENCES "Materia"("Nome") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Materia_Documento" ADD CONSTRAINT "Materia_Documento_Documento_Studente_Email_Documento_Anno_fkey" FOREIGN KEY ("Documento_Studente_Email", "Documento_Anno") REFERENCES "Documento"("Studente_Email", "Anno") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Materia_Documento_Indicatore" ADD CONSTRAINT "Materia_Documento_Indicatore_Documento_Studente_Email_Docu_fkey" FOREIGN KEY ("Documento_Studente_Email", "Documento_Anno") REFERENCES "Documento"("Studente_Email", "Anno") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Documento_ICF" ADD CONSTRAINT "Documento_ICF_ICF_Codice_fkey" FOREIGN KEY ("ICF_Codice") REFERENCES "ICF"("Codice") ON DELETE RESTRICT ON UPDATE CASCADE;

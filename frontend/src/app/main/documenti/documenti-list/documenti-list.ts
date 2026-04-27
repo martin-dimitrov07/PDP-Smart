@@ -98,11 +98,8 @@ export class DocumentiList {
             }
         }
 
-        // Se l'array è vuoto manda -1, altrimenti manda l'oggetto per Prisma
         this.Stato_Documento = this.filterStato.in.length == 0 ? -1 : this.filterStato;
-        console.log("Dati inviati:", this.Stato_Documento);
 
-        // Chiamata al servizio
         this.documentiService.GetDocumenti(this.searchTerm, this.DSA_BES, this.Stato_Documento, this.filterAnnoScolastico).subscribe({
             next: (data: any) => {
                 this.documentiService.GetNumeroDocumenti();
@@ -111,7 +108,6 @@ export class DocumentiList {
         });
     }
 
-    // Funzione di supporto per recuperare l'ID corretto del bottone
     private getButtonId(stato: string): string {
         switch (stato) {
             case 'SCADUTO': return 'tipoDoc-scaduto';
