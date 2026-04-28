@@ -8,12 +8,12 @@ export class Documento {
     constructor(
         Studente_Email: string,
         Anno: Date,
-        Tipologia: boolean,
+        Tipologia: string,
         Data_Approvazione: Date | undefined = undefined
     ) {
         this.Studente_Email = Studente_Email;
         this.Anno = Documento.SetAnnoCorrect(Anno);
-        this.Tipologia = Tipologia ? Tipo.DSA : Tipo.BES;
+        this.Tipologia = Tipologia == 'DSA' ? Tipo.DSA : Tipo.BES;
         this.Data_Approvazione = Data_Approvazione;
 
         if (Data_Approvazione) {

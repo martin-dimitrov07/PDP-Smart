@@ -217,7 +217,7 @@ export class DocumentiService {
             filters: JSON.stringify(filters)
         };
 
-        if (this.docentiService.docente.Ruolo != 'ADMIN') {
+        if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
             params.docenteEmail = this.docentiService.docente.Email;
         }
 
