@@ -27,6 +27,8 @@ export class DocumentiService {
     indicatori: any = {};
     categorieInd: string[] = [];
 
+    indicatoreSelected: any = {};
+
     icfs: Icf[] = [];
     icfsSelected: Icf[] = [];
 

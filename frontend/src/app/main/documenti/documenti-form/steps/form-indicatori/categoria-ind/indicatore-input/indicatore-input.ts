@@ -14,10 +14,6 @@ export class IndicatoreInput {
     private _indicatore!: any;
     @Input() categoria!: string;
 
-    materiaSelected: string = "";
-
-    @Output() modalNotaEvent = new EventEmitter<{ indicatore: any, materia: string, nota: string }>();
-
     @Input() set indicatore(valore: any) {
         this._indicatore = valore;
         // console.log(this._indicatore);
@@ -51,34 +47,10 @@ export class IndicatoreInput {
         // console.log(this.documentiService.indicatori);
     }
 
-    SetModalNota(materia: string) 
-    {
-        console.log("Materia selezionata: ", materia, " categoria: ", this.categoria, " indicatore: ", this.indicatore);
-
-        const listaInd = this.documentiService.indicatori[materia][this.categoria];
-
-        const index = listaInd.findIndex((item: any) => item.Id === this.indicatore.Id);
-
-        if (index !== -1) {
-            const nota = listaInd[index].nota;
-            this.modalNotaEvent.emit({ indicatore: this.indicatore, materia: materia, nota: nota });
-        }
-        else{
-            this.modalNotaEvent.emit({ indicatore: this.indicatore, materia: materia, nota: "" });
-        }
+    SetNota(materia: string) {
+        this.documentiService.indicatoreSelected = this.documentiService.indicatori[materia]?.[this.categoria]?.find((item: any) => item.Id === this.indicatore.Id) || {};
+    
+        console.log(this.documentiService.indicatori);
+        console.log(this.documentiService.indicatoreSelected);
     }
-
-    // SetNota(nota: string, materia: string) {
-    //     console.log("Nota ricevuta: ", nota, " per materia: ", materia, " categoria: ", this.categoria, " indicatore: ", this.indicatore);
-
-    //     const listaInd = this.documentiService.indicatori[materia][this.categoria];
-
-    //     const index = listaInd.findIndex((item: any) => item.Id === this.indicatore.Id);
-
-    //     if (index !== -1) {
-    //         listaInd[index].nota = nota;
-    //     }
-
-    //     console.log(this.documentiService.indicatori);
-    // }
 }

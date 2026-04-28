@@ -15,9 +15,7 @@ export class CategoriaInd {
     public indicatoriCategoria: Indicatore[] = [];
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     private readonly checkError: CheckError = inject(CheckError);
-
-    @Output() modalNotaEvent = new EventEmitter<{ indicatore: any, materia: string, nota: string, categoria: string }>();
-
+    
     @Input() index!: number;
 
     @Input() set categoria(valore: string) {
@@ -37,11 +35,5 @@ export class CategoriaInd {
             },
             error: (err) => this.checkError.checkError(err)
         })
-    }
-
-    SetModalNota(evento: { indicatore: any, materia: string, nota: string }) {
-        console.log("Materia selezionata: ", evento.materia, " nota: ", evento.nota, " indicatore: ", evento.indicatore);
-
-        this.modalNotaEvent.emit({ indicatore: evento.indicatore, materia: evento.materia, nota: evento.nota, categoria: this.categoria });
     }
 }

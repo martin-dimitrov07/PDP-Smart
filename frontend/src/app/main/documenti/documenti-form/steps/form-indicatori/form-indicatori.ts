@@ -21,8 +21,6 @@ export class FormIndicatori {
 
     datiCaricati: boolean = false;
 
-    eventoNota: any;
-
     private readonly cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
     ngOnInit() {
@@ -61,26 +59,5 @@ export class FormIndicatori {
                 this.documentiService.indicatori[materia][categoria] = [];
             }
         }
-    }
-
-    SetModalNota(evento: { indicatore: any, materia: string, nota: string, categoria: string }) 
-    {
-        console.log("Nota ricevuta: ", evento.nota, " per materia: ", evento.materia, " categoria: ", evento.categoria, " indicatore: ", evento.indicatore);
-
-        this.eventoNota = evento;
-    }
-
-    SetNota(nota: string) {
-        console.log("Nota ricevuta: ", nota, " per materia: ", this.eventoNota.materia, " categoria: ", this.eventoNota.categoria, " indicatore: ", this.eventoNota.indicatore);
-
-        const listaInd = this.documentiService.indicatori[this.eventoNota.materia][this.eventoNota.categoria];
-
-        const index = listaInd.findIndex((item: any) => item.Id === this.eventoNota.indicatore.Id);
-
-        if (index !== -1) {
-            listaInd[index].nota = nota;
-        }
-
-        console.log(this.documentiService.indicatori);
     }
 }

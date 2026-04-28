@@ -1,5 +1,5 @@
     <div class="modal fade" id="aggiuntaNota" tabindex="-1"
-        aria-labelledby="aggiuntaStudenteLabel" aria-hidden="true">
+        aria-labelledby="aggiuntaStudenteLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -7,11 +7,11 @@
                 </div>
                 <div class="modal-body">
                     <label for="classeSelected" class="form-label">Nota</label>
-                    <textarea class="form-control" id="notaInput" rows="3" [(ngModel)]="nota" placeholder="Scrivi qui la tua nota..."></textarea>
+                    <textarea class="form-control" id="notaInput" rows="3" [(ngModel)]="documentiService.indicatoreSelected.nota" placeholder="Scrivi qui la tua nota..."></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Annulla</button>
-                    <button type="button" class="btn btn-primary" (click)="SaveNota()" data-bs-dismiss="modal">Salva aggiunta</button>
+                    <button type="button" class="btn btn-outline-primary" (click)="ResetNota()" data-bs-dismiss="modal">Annulla nota</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Salva nota</button>
                 </div>
             </div>
         </div>

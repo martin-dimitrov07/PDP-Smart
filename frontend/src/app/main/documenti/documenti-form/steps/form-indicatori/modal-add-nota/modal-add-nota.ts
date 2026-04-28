@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DocumentiService } from '../../../../../../shared/services/documenti.service';
 
 @Component({
     selector: 'app-modal-add-nota',
@@ -8,15 +9,9 @@ import { FormsModule } from '@angular/forms';
     styleUrl: './modal-add-nota.css',
 })
 export class ModalAddNota {
-    @Input() nota: string = "";
+    public readonly documentiService: DocumentiService = inject(DocumentiService);
 
-    @Output() notaEvent = new EventEmitter<string>();
-
-    ngOnInit(){
-        console.log("Nota ricevuta: ", this.nota);
-    }
-
-    SaveNota() {
-        this.notaEvent.emit(this.nota);
+    ResetNota() {
+        this.documentiService.indicatoreSelected.nota = "";
     }
 }
