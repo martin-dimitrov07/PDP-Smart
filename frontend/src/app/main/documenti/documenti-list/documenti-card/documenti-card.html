@@ -17,25 +17,25 @@
                     {{documento.Anno.getFullYear().toString()}}/{{(documento.Anno.getFullYear() + 1).toString()}}
                 </span>
                 
-                @if(documento.Tipologia == 'DSA') {
-                    <span class="badge badge-dsa">DSA</span>
-                } @else {
-                    <span class="badge badge-bes">BES</span>
-                }
+                    @if(documento.Tipologia == TipoEnum.DSA) {
+                        <span class="badge badge-dsa">DSA</span>
+                    } @else {
+                        <span class="badge badge-bes">BES</span>
+                    }
 
-                @if(documento.Stato == "IN_BOZZA") {
-                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">
-                        In Bozza
-                    </span>
-                } @else if(documento.Stato == "SCADUTO") {
-                    <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">
-                        Scaduto
-                    </span>
-                }@else if(documento.Stato == "VALIDATO") {
-                    <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">
-                        Validato
-                    </span>
-                }
+                    @if(documento.Stato == StatoEnum.IN_BOZZA) {
+                        <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">
+                            In Bozza
+                        </span>
+                    } @else if(documento.Stato == StatoEnum.SCADUTO) {
+                        <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">
+                            Scaduto
+                        </span>
+                    }@else if(documento.Stato == StatoEnum.VALIDATO) {
+                        <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">
+                            Validato
+                        </span>
+                    }
 
                 <div class="d-flex d-sm-none gap-1">
                     <button type="button"

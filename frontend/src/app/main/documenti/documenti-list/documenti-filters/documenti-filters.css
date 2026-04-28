@@ -20,13 +20,13 @@ input[type="text"]:focus {
 }
 
 .badges-filter:hover {
-    border-color: var(--color);
+    border-color: var(--light-grey);
     color: var(--light-grey);
     background-color: var(--bg-blue-dark-color);
 }
 
 .badges-filter.active {
-    border-color: var(--color);
+    border-color: var(--bg-blue-dark-color);
     color: var(--light-grey);
     background-color: var(--bg-blue-dark-color);
 }
