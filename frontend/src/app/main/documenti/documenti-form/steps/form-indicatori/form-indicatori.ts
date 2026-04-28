@@ -36,9 +36,8 @@ export class FormIndicatori {
 
                         // console.log(this.documentiService.indicatori.object);
 
-                        if(Object.keys(this.documentiService.indicatori).length == 0)
-                        {
-                            this.InitializeIndicatori();
+                        if (Object.keys(this.documentiService.indicatori).length == 0) {
+                            this.documentiService.InitializeIndicatori();
                         }
 
                         this.datiCaricati = true;
@@ -49,15 +48,10 @@ export class FormIndicatori {
             },
             error: (err) => this.checkError.checkError(err)
         })
-    }
 
-    InitializeIndicatori() {
-        for (let materia of this.documentiService.materieClasse) {
-            this.documentiService.indicatori[materia] = {};
-
-            for (let categoria of this.documentiService.categorieInd) {
-                this.documentiService.indicatori[materia][categoria] = [];
-            }
-        }
+        this.documentiService.GetMaterieDocente().subscribe({
+            next: (data) => { console.log(data); },
+            error: (err) => this.checkError.checkError(err)
+        })
     }
 }

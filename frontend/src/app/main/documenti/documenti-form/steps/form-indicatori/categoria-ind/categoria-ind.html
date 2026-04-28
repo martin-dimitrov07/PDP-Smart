@@ -24,7 +24,7 @@
                     <th class="text-center align-middle">Discipline</th>
                     @for (materia of documentiService.materieClasse; track $index)
                     {
-                    <th class="text-center align-middle">{{materia}}</th>
+                    <th class="text-center align-middle" [class.text-decoration-underline]="documentiService.materieDocente.includes(materia)">{{materia}}</th>
                     }
                 </tr>
             </thead>

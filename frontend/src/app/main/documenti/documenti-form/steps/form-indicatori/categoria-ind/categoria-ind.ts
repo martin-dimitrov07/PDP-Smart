@@ -35,5 +35,7 @@ export class CategoriaInd {
             },
             error: (err) => this.checkError.checkError(err)
         })
+
+        // console.log(this.documentiService.materieDocente)
     }
 }

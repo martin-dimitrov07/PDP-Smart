@@ -23,6 +23,7 @@ export class FormStudenti {
 
     SaveStudente(studente: Studente) {
         this.documentiService.studenteSelected = studente;
+        this.documentiService.InitializeIndicatori();
     }
 
     RemoveStudente() {

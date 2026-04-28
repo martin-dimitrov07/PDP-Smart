@@ -3,16 +3,16 @@
 </td>
 @for (materia of documentiService.materieClasse; track $index)
 {
-<td class="p-0 text-center align-middle">
+<td class="p-0 text-center align-middle" [class.opacity-50]="!documentiService.materieDocente.includes(materia)">
     <div class="d-flex justify-content-center gap-1">
         <input type="checkbox" class="form-check-input" [checked]="IsItemSelected(materia)"
             [id]="'ind-' + indicatore.Id + '-' + materia.replace(' ', '-')"
-            (input)="SetValue(materia)">
+            (input)="SetValue(materia)" [disabled]="!documentiService.materieDocente.includes(materia)">
 
         @if(IsItemSelected(materia))
         {
             <i class="bi bi-pen fs-6 d-flex align-items-center" data-bs-toggle="modal"
-                data-bs-target="#aggiuntaNota" (click)="SetNota(materia)"></i>
+                data-bs-target="#aggiuntaNota" (click)="documentiService.materieDocente.includes(materia) ? SetNota(materia) : null"></i>
         }
     </div>
 </td>

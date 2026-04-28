@@ -69,6 +69,7 @@ export class DocumentiService {
             Insegnamenti: {
                 some: {  // serve per relazioni uno a molti
                     Docente_Email: this.docentiService.docente.Email,
+                    Classe_Id: this.classeSelected.Id
                 }
             }
         } : {};
@@ -139,6 +140,16 @@ export class DocumentiService {
             console.log(data);
             this.categorieInd = [...new Set<string>(data.map((ind: Indicatore) => ind.Categoria))];
         }));
+    }
+
+    InitializeIndicatori() {
+        for (let materia of this.materieClasse) {
+            this.indicatori[materia] = {};
+
+            for (let categoria of this.categorieInd) {
+                this.indicatori[materia][categoria] = [];
+            }
+        }
     }
 
     // CaricaIndicatoriPerMateria(materia: string) {
