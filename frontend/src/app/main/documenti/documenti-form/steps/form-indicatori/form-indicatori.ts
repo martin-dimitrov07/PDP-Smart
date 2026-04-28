@@ -50,7 +50,7 @@ export class FormIndicatori {
         })
 
         this.documentiService.GetMaterieDocente().subscribe({
-            next: (data) => { console.log(data); },
+            next: (data) => {  },
             error: (err) => this.checkError.checkError(err)
         })
     }

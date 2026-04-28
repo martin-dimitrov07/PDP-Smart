@@ -24,7 +24,7 @@ export class IndicatoreInput {
     }
 
     ngOnInit() {
-        console.log(this.documentiService.materieDocente);
+        // console.log(this.documentiService.materieDocente);
 
         const setMaterieDocente = new Set(this.documentiService.materieDocente);
 
@@ -64,7 +64,7 @@ export class IndicatoreInput {
     SetNota(materia: string) {
         this.documentiService.indicatoreSelected = this.documentiService.indicatori[materia]?.[this.categoria]?.find((item: any) => item.Id === this.indicatore.Id) || {};
 
-        console.log(this.documentiService.indicatori);
-        console.log(this.documentiService.indicatoreSelected);
+        // console.log(this.documentiService.indicatori);
+        // console.log(this.documentiService.indicatoreSelected);
     }
 }

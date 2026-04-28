@@ -37,6 +37,7 @@ export class DocumentiService {
     nClassi: number = 0;
 
     allegati: File[] = [];
+    errorAllegati: string = "fanculo";
 
     // indicatori = {
     //     "matematica": 
