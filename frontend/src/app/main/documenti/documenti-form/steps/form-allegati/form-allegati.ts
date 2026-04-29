@@ -4,6 +4,7 @@ import { StepsService } from '../../../../../shared/services/steps.service';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CommonModule } from '@angular/common';
 import { ModalError } from './modal-error/modal-error';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-form-allegati',
@@ -14,6 +15,8 @@ import { ModalError } from './modal-error/modal-error';
 export class FormAllegati {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     public readonly stepsService: StepsService = inject(StepsService);
+
+    private readonly router: Router = inject(Router);
 
     @ViewChild('btnTrigger') btnTrigger!: ElementRef;
 
@@ -53,6 +56,18 @@ export class FormAllegati {
     }
 
     CreateDocumento(){
-        this.documentiService.CreateDocumento();
+        this.documentiService.CreateDocumento().subscribe({
+            next: (response) => {
+                console.log("Documento creato con successo:", response);
+                this.router.navigate(['documenti']);
+
+                //mostrare toast messaggio successo
+            },
+            error: (error) => {
+                console.error("Errore durante la creazione del documento:", error);
+                
+                //mostrare toast messaggio errore
+            }
+        });
     }
 }

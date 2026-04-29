@@ -51,7 +51,7 @@ export class IndicatoreInput {
         const index = listaInd.findIndex((item: any) => item.Id === this.indicatore.Id);
 
         if (index === -1) {
-            listaInd.push({ Id: this.indicatore.Id, nota: "" });
+            listaInd.push({ Id: this.indicatore.Id, Nota: "" });
         }
         else {
             listaInd.splice(index, 1);

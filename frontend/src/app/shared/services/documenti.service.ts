@@ -2,12 +2,13 @@ import { inject, Injectable } from '@angular/core';
 import { DocentiService } from './docenti.service';
 import { DataStorageService } from './data-storage.service';
 import { Studente } from '../../models/studente';
-import { Documento } from '../../models/documento';
+import { Documento, Tipo } from '../../models/documento';
 import { concatMap, forkJoin, map, mergeMap, Observable, of, tap } from 'rxjs';
 import { Ruolo } from '../../models/docente';
-import { Indicatore } from '../../models/indicatore';
+import { Indicatore, Tipologia } from '../../models/indicatore';
 import { Icf } from '../../models/icf';
 import { Classe } from '../../models/classe';
+import { json } from 'stream/consumers';
 
 @Injectable({
     providedIn: 'root',
@@ -37,13 +38,13 @@ export class DocumentiService {
     nClassi: number = 0;
 
     allegati: File[] = [];
-    errorAllegati: string = "fanculo";
+    errorAllegati: string = "";
 
     // indicatori = {
     //     "matematica": 
     //         {
-    //             "criteri": [ "id1", "id2" ],
-    //             "categoria": [ "id3", "id4" ]
+    //             "criteri": [ { id: "Id", Nota: "Nota" }, ... ],
+    //             "categoria": []
     //         },
     // }
 
@@ -239,8 +240,8 @@ export class DocumentiService {
             tap((data: any) => {
                 this.documenti = data.map((doc: any) => new Documento(
                     doc.Studente_Email,
-                    new Date(doc.Anno),
                     doc.Tipologia,
+                    new Date(doc.Anno),
                     doc.Data_Approvazione ? new Date(doc.Data_Approvazione) : undefined
                 ));
                 console.log(data);
@@ -253,6 +254,23 @@ export class DocumentiService {
     }
 
     CreateDocumento() {
+        const documento = new Documento(this.studenteSelected.Email, this.studenteSelected.DSA_BES ? Tipo.DSA : Tipo.BES);
+
+        const formData = new FormData();
+
+        const payload = {
+            "Documento": documento,
+            "Indicatori": this.indicatori,
+            "ICFs": this.icfs
+        }
+
+        formData.append('data', JSON.stringify(payload));
+        for (const file of this.allegati) {
+            formData.append('allegati', file);
+        }
+
+        return this.dataStorageService.InviaRichiesta("POST", "/documento/create", formData)!;
+
         //1. creo documento
 
         //2. ciclo materie -> per ogni materia ciclo indicatori => aggiungo indicatori

@@ -16,8 +16,8 @@ export class DocumentiCard {
         //appena arriva il dato dal padre, lo trasformiamo in un'istanza di Classe
         this._documento = new Documento(
             valore.Studente_Email,
-            valore.Anno,
             valore.Tipologia,
+            valore.Anno,
             valore.Data_Approvazione
         );
     }
