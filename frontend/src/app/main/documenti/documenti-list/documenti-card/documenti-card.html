@@ -14,7 +14,7 @@
 
             <div class="d-flex gap-1 align-items-strech flex-wrap">
                 <span class="badge badge-anno">
-                    {{documento.Anno.getFullYear().toString()}}/{{(documento.Anno.getFullYear() + 1).toString()}}
+                    {{documento.Anno!.getFullYear().toString()}}/{{(documento.Anno!.getFullYear() + 1).toString()}}
                 </span>
                 
                     @if(documento.Tipologia == TipoEnum.DSA) {

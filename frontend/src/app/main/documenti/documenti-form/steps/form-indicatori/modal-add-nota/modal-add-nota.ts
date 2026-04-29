@@ -12,6 +12,6 @@ export class ModalAddNota {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
 
     ResetNota() {
-        this.documentiService.indicatoreSelected.nota = "";
+        this.documentiService.indicatoreSelected.Nota = "";
     }
 }

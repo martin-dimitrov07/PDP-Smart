@@ -261,7 +261,7 @@ export class DocumentiService {
         const payload = {
             "Documento": documento,
             "Indicatori": this.indicatori,
-            "ICFs": this.icfs
+            "ICFs": this.icfsSelected
         }
 
         formData.append('data', JSON.stringify(payload));
@@ -270,13 +270,5 @@ export class DocumentiService {
         }
 
         return this.dataStorageService.InviaRichiesta("POST", "/documento/create", formData)!;
-
-        //1. creo documento
-
-        //2. ciclo materie -> per ogni materia ciclo indicatori => aggiungo indicatori
-
-        //3. aggiungo ICFs
-
-        //4. aggiungo allegati
     }
 }

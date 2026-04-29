@@ -1,13 +1,12 @@
-import { writeFile } from "fs/promises";
+import { writeFile, mkdir } from "fs/promises";
 import { prisma } from "../server.ts";
 
 async function CreatePDP(req: any, res: any) {
     try {
-        const documento = req.body.data.Documento;
-        const indicatori = req.body.data.Indicatori;
-        const ICFs = req.body.data.ICFs;
+        const documento = JSON.parse(req.body.data).Documento;
+        const indicatori = JSON.parse(req.body.data).Indicatori;
+        const ICFs = JSON.parse(req.body.data).ICFs;
         const allegati = Array.isArray(req.files.allegati) ? req.files.allegati : [req.files.allegati];
-
 
         // tx è un'istanza di PrismaClient che rappresenta la transazione in corso
         await prisma.$transaction(async (tx) => {
@@ -21,50 +20,36 @@ async function CreatePDP(req: any, res: any) {
             if (allegati && allegati.length > 0) {
                 await CreateAllegati(tx, allegati, newDoc.Studente_Email, newDoc.Anno);
             }
+        }, {
+            maxWait: 5000, // tempo massimo di attesa per l'acquisizione di una connessione
+            timeout: 15000000 // imposta un timeout di 10 secondi per l'intera transazione
         });
 
-
-        // const dataAnno = new Date(Anno);
-
-        // // Inizio Transazione
-        // const result = await prisma.$transaction(async (tx) => {
-
-        //     // 4. Inserimento Allegati
-        //     if (Allegati && Allegati.length > 0) {
-        //         const allegatiData = Allegati.map(a => ({
-        //             Nome: a.Nome,
-        //             Percorso: a.Percorso,
-        //             Documento_Studente_Email: Studente_Email,
-        //             Documento_Anno: dataAnno
-        //         }));
-
-        //         await tx.allegato.createMany({
-        //             data: allegatiData
-        //         });
-        //     }
-
-        //     return nuovoDocumento;
-        // });
-
-        // res.status(201).json({
-        //     message: "Documento e correlati creati con successo",
-        //     data: result
-        // });
+        res.status(200).send({ message: "Documento creato con successo" });
 
     } catch (err: any) {
         console.error("Errore nella transazione:", err);
-        res.status(500).json({
+        res.status(500).send({
             error: "Errore durante la creazione del documento",
-            details: err.message
+            details: err
         });
     }
 }
 
 async function CreateDocumento(db: any, documento: any) {
-    documento.Anno = new Date();
+    documento.Anno = SetAnnoCorrect(new Date());
     return await db.documento.create({
         data: documento
     });
+}
+
+function SetAnnoCorrect(data: Date): Date {
+    let annoData = data.getFullYear();
+    // Se siamo prima di Settembre (mese 8), l'anno accademico è il precedente
+    if (data.getMonth() < 8) {
+        annoData -= 1;
+    }
+    return new Date(Date.UTC(annoData, 8, 1));
 }
 
 async function CreateIndicatori(db: any, indicatori: any, studenteEmail: string, anno: Date) {
@@ -103,20 +88,21 @@ async function CreateAllegati(db: any, allegati: any, studenteEmail: string, ann
     for (const allegato of allegati) {
         const record = {
             Nome: allegato.name,
-            Percorso: `${process.env.ALLEGATI_PATH}/${studenteEmail}/${anno}`,
+            Percorso: `${process.env.ALLEGATI_PATH}/${studenteEmail}/${anno.getFullYear().toString()}`,
             Documento_Studente_Email: studenteEmail,
             Documento_Anno: anno
         };
         const newAllegato = await db.allegato.create({
             data: record
         });
-        
+
         await SaveAllegato(newAllegato, allegato.data);
     }
 }
 
 async function SaveAllegato(allegato: any, binaryData: any) {
-    const filePath = `${allegato.Percorso}/${allegato.Nome}_${allegato.Id}`;
+    const filePath = `${allegato.Percorso}/${allegato.Id}_${allegato.Nome}`;
+    await mkdir(allegato.Percorso, { recursive: true });
     await writeFile(filePath, binaryData);
 }
 
