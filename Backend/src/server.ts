@@ -8,6 +8,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import fileupload from "express-fileupload";
 
 // routes
 import * as Login from "./routes/login.ts";
@@ -84,10 +85,17 @@ app.use(function (req, res, next) //se si omette => come risorsa "/"
 app.use(express.json({ "limit": "5mb" })); //i parametri post sono restituiti in req.body
 //i parametri get invece sono restituiti come json in req.query
 
-//middleware 4: parsing dei parametri GET
+//middleware 4: gestione dei parametri post di tipo form-data (es. da form html)
+app.use(fileupload({
+    // imposta un limite di dimensione per ogni file caricato di (es. 5MB)
+    "limits": { "fileSize": (5 * 1024 * 1024) },
+    "abortOnLimit": true, //interrompe l'upload se viene superato il limite e risponde con 413 Payload Too Large"
+}));
+
+//middleware 5: parsing dei parametri GET
 app.use("/", queryStringParser);
 
-//middleware 5: log dei parametri
+//middleware 6: log dei parametri
 app.use((req: any, res, next) => {
     if (req.body && Object.keys(req.body).length > 0)
         console.log("   Parametri body: " + JSON.stringify(req.body));
@@ -98,7 +106,7 @@ app.use((req: any, res, next) => {
     next();
 });
 
-//middleware 6: Vincoli CORS (controlli lato server che consentono di accettare richieste anche da fuori dal dominio -> cioè diverso dal server da cui arrivano le pagine)
+//middleware 7: Vincoli CORS (controlli lato server che consentono di accettare richieste anche da fuori dal dominio -> cioè diverso dal server da cui arrivano le pagine)
 const corsOptions = {
     origin: function (origin: any, callback: any) {
         return callback(null, true);
@@ -107,7 +115,7 @@ const corsOptions = {
 };
 app.use("/", cors(corsOptions));
 
-//middleware 7: Parsing dei cookies (serve per usare req.cookies)
+//middleware 8: Parsing dei cookies (serve per usare req.cookies)
 app.use(cookieParser());
 
 // Gestione Login
@@ -149,7 +157,7 @@ app.get("/api/count-studenti", GestioneStudenti.GetCountStudenti);
 
 
 //Documenti
-app.post("/api/documento/create", GestioneDocumenti.CreateDocumento);
+app.post("/api/documento/create", GestioneDocumenti.CreatePDP);
 app.get("/api/anni-scolastici-documenti", GestioneDocumenti.GetAnniScolasticiDocumenti);
 app.get("/api/documenti", GestioneDocumenti.GetDocumenti);
 
