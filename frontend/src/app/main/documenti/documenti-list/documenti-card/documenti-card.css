@@ -1,4 +1,8 @@
 /* Card Principale */
+.btn-card {
+    cursor: default;
+}
+
 .documento-card {
     transition: 0.3s ease;
     cursor: pointer;
@@ -7,6 +11,10 @@
 .documento-card:hover {
     background-color: var(--light-grey);
     transform: translateY(-2px);
+}
+
+.documento-card:hover .icon-box {
+    background-color: var(--light-color);
 }
 
 /* Icon Box */
@@ -21,10 +29,6 @@
     justify-content: center;
     font-size: 1.5rem;
     transition: 0.2s;
-}
-
-.documento-card:hover .icon-box {
-    background-color: var(--light-color);
 }
 
 /* Badge Personalizzati */
@@ -59,10 +63,9 @@
     padding: 0;
 }
 
-
 /* Responsive */
 @media (max-width: 430px) {
-    .documento-card {
+    .card-btn {
         gap: .5rem !important;
         padding: 1.25rem .75rem !important;
     }
@@ -75,27 +78,15 @@
     }
 
     .badge {
-        font-size: 0.55rem;
+        font-size: 0.65rem;
         padding: 7px 9px;
     }
 
-    .badge {
-        font-size: 0.875rem;
-        padding: 8px 10px;
-        border-radius: 10px;
-
-        display: flex;
-        align-items: center;
-    }
-
-    .btn {
-        margin-top: 4px;
-    }
 }
 
 /* icone view e edit */
 .bi-eye,
-.bi-pencil-square {
+.bi-trash {
     display: flex;
     align-items: center;
     font-size: 18px;
@@ -110,4 +101,9 @@
 .btn:hover {
     color: var(--light-color);
     background-color: var(--bg-blue-dark-color);
+}
+
+.delete-btn:hover {
+    color: var(--light-color);
+    background-color: #FF0000;
 }

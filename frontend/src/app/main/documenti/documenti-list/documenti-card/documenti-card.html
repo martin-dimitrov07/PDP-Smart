@@ -1,5 +1,6 @@
 <button
-    class="documento-card justify-content-between d-flex align-items-center gap-3 gap-sm-4 gap-lg-3 gap-xl-4 py-4 px-3 w-100 border-0 rounded-4 position-relative h-100">
+    class="btn-card justify-content-between d-flex align-items-center gap-3 gap-sm-4 gap-lg-3 gap-xl-4 py-4 px-3 w-100 border-0 rounded-4 position-relative h-100"
+    [ngClass]="{'documento-card': documento.Stato != StatoEnum.IN_BOZZA}">
 
     <div class="d-flex gap-3 align-items-center">
         <div class="icon-box p-3 shadow border-0">
@@ -16,50 +17,55 @@
                 <span class="badge badge-anno">
                     {{documento.Anno!.getFullYear().toString()}}/{{(documento.Anno!.getFullYear() + 1).toString()}}
                 </span>
-                
-                    @if(documento.Tipologia == TipoEnum.DSA) {
-                        <span class="badge badge-dsa">DSA</span>
-                    } @else {
-                        <span class="badge badge-bes">BES</span>
-                    }
 
-                    @if(documento.Stato == StatoEnum.IN_BOZZA) {
-                        <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">
-                            In Bozza
-                        </span>
-                    } @else if(documento.Stato == StatoEnum.SCADUTO) {
-                        <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">
-                            Scaduto
-                        </span>
-                    }@else if(documento.Stato == StatoEnum.VALIDATO) {
-                        <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">
-                            Validato
-                        </span>
-                    }
+                @if(documento.Tipologia == TipoEnum.DSA) {
+                <span class="badge badge-dsa">DSA</span>
+                } @else {
+                <span class="badge badge-bes">BES</span>
+                }
 
-                <div class="d-flex d-sm-none gap-1">
+                @if(documento.Stato == StatoEnum.IN_BOZZA) {
+                <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">
+                    In Bozza
+                </span>
+                } @else if(documento.Stato == StatoEnum.SCADUTO) {
+                <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">
+                    Scaduto
+                </span>
+                }@else if(documento.Stato == StatoEnum.VALIDATO) {
+                <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">
+                    Validato
+                </span>
+                }
+
+                <div class="d-flex d-sm-none gap-1" >
                     <button type="button"
                         class="btn btn-sm d-flex justify-content-center align-items-center action-btn">
                         <i class="bi bi-eye"></i>
                     </button>
 
+                    @if (docenteService.docente.Ruolo != RuoloEnum.DOCENTE) {
                     <button type="button"
-                        class="btn btn-sm d-flex justify-content-center align-items-center action-btn">
-                        <i class="bi bi-pencil-square"></i>
+                        class="btn btn-sm d-flex justify-content-center align-items-center action-btn delete-btn">
+                        <i class="bi bi-trash"></i>
                     </button>
+                    }
                 </div>
             </div>
         </div>
     </div>
+
 
     <div class="d-none d-sm-flex flex-column gap-2">
         <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn">
             <i class="bi bi-eye"></i>
         </button>
 
-        <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn">
-            <i class="bi bi-pencil-square"></i>
+        @if (docenteService.docente.Ruolo != RuoloEnum.DOCENTE) {
+        <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn delete-btn">
+            <i class="bi bi-trash"></i>
         </button>
+        }
     </div>
 
 </button>

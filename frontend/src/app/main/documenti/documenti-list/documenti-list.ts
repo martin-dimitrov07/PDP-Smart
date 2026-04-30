@@ -29,7 +29,7 @@ export class DocumentiList {
     ngOnInit() {
         this.documentiService.GetAnniScolastici().subscribe({
             next: (data: any) => {
-                if (isPlatformBrowser(this.platformId)) {
+                if (isPlatformBrowser(this.platformId) && this.documentiService.anniScolastici.length > 0) {
                     document.querySelector("#annoDropdown")!.textContent = this.documentiService.anniScolastici[0].getFullYear().toString() + "/" + (this.documentiService.anniScolastici[0].getFullYear() + 1).toString();
                 }
                 this.filterAnnoScolastico = this.documentiService.anniScolastici[0];

@@ -150,6 +150,7 @@ DECLARE
     v_class RECORD;
     v_stud RECORD;
     v_mat RECORD;
+    v_ins_mat RECORD; -- Variabile per il loop degli insegnamenti
     v_ind_id INT;
     v_num_stud INT;
     v_offset INT := 0;
@@ -161,6 +162,7 @@ BEGIN
     FOR v_class IN SELECT "Id", "Coordinatore_Email", "Anno_Scolastico" FROM "Classe" ORDER BY "Id" LOOP
         v_num_stud := floor(random() * 21);
         
+        -- Popolamento Studenti per la classe
         FOR v_stud IN (SELECT "Email", "DSA_BES" FROM "Studente" ORDER BY "Email" LIMIT v_num_stud OFFSET v_offset) LOOP
             -- Relazione base
             INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (v_class."Id", v_stud."Email");
@@ -176,12 +178,10 @@ BEGIN
                 END IF;
 
                 -- 2. DETERMINAZIONE STATO E DATA APPROVAZIONE
-                -- Se l'anno scolastico è passato (es. 2024 rispetto al 2026), lo mettiamo spesso come 'Scaduto'
                 IF (EXTRACT(YEAR FROM v_class."Anno_Scolastico") < v_anno_corrente - 1) THEN
                     v_stato_scelto := 'Scaduto';
-                    v_data_app := v_class."Anno_Scolastico" + interval '1 month'; -- Approvato nel passato e poi scaduto
+                    v_data_app := v_class."Anno_Scolastico" + interval '1 month';
                 ELSE
-                    -- Per anni recenti o futuri, alterniamo tra Validato e In Bozza
                     IF (floor(random()*10)::int % 2 = 0) THEN
                         v_stato_scelto := 'Validato';
                         v_data_app := NOW();
@@ -191,7 +191,7 @@ BEGIN
                     END IF;
                 END IF;
 
-                -- 3. INSERIMENTO DOCUMENTO (Con Cast degli Enum)
+                -- 3. INSERIMENTO DOCUMENTO
                 INSERT INTO "Documento" ("Studente_Email", "Anno", "Stato", "Tipologia", "Data_Approvazione")
                 VALUES (
                     v_stud."Email", 
@@ -201,7 +201,7 @@ BEGIN
                     v_data_app
                 );
 
-                -- 4. ICF (Documento_ICF)
+                -- 4. ICF
                 INSERT INTO "Documento_ICF" ("ICF_Codice", "Documento_Anno", "Documento_Studente_Email")
                 VALUES ('d160', v_class."Anno_Scolastico", v_stud."Email"), 
                        ('d175', v_class."Anno_Scolastico", v_stud."Email");
@@ -212,7 +212,6 @@ BEGIN
 
                 -- 6. MATERIA_DOCUMENTO_INDICATORE
                 FOR v_mat IN (SELECT "Nome" FROM "Materia" ORDER BY random() LIMIT 3) LOOP
-                    -- Scegliamo un indicatore coerente con la tipologia del documento o 'Entrambi'
                     v_ind_id := (SELECT "Id" FROM "Indicatore" 
                                  WHERE "Tipologia" IN (v_tipo_scelto::"Tipologia_Ind", 'Entrambi') 
                                  ORDER BY random() LIMIT 1);
@@ -229,8 +228,15 @@ BEGIN
         
         v_offset := v_offset + v_num_stud;
 
-        -- Insegnamenti standard
-        INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome")
-        VALUES (v_class."Coordinatore_Email", v_class."Id", 'Sistemi e Reti');
+        -- ==========================================================
+        -- MODIFICA: INSEGNAMENTI MULTI-MATERIA
+        -- ==========================================================
+        -- Per ogni classe, inseriamo 3 insegnamenti di materie diverse
+        -- scelte casualmente dal database
+        FOR v_ins_mat IN (SELECT "Nome" FROM "Materia" ORDER BY random() LIMIT 3) LOOP
+            INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome")
+            VALUES (v_class."Coordinatore_Email", v_class."Id", v_ins_mat."Nome");
+        END LOOP;
+
     END LOOP;
 END $$;
