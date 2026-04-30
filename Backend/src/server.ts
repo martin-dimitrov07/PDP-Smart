@@ -83,7 +83,7 @@ app.use(function (req, res, next) //se si omette => come risorsa "/"
 
 //middleware 3: gestione dei parametri post
 app.use(express.json({ "limit": "5mb" })); //i parametri post sono restituiti in req.body
-//i parametri get invece sono restituiti come json in req.query
+//i parametri get invece sono restituiti come json in req["parsedQuery"] grazie al middleware queryStringParser
 
 //middleware 4: gestione dei parametri post di tipo form-data (es. da form html)
 app.use(fileupload({
@@ -168,6 +168,10 @@ app.get("/api/count-studenti", GestioneStudenti.GetCountStudenti);
 app.post("/api/documento/create", GestioneDocumenti.CreatePDP);
 app.get("/api/anni-scolastici-documenti", GestioneDocumenti.GetAnniScolasticiDocumenti);
 app.get("/api/documenti", GestioneDocumenti.GetDocumenti);
+
+app.patch("/api/documento/updateIndicatori", GestioneDocumenti.UpdateIndicatoriDocumento);
+app.patch("/api/documento/updateICFs", GestioneDocumenti.UpdateICFsDocumento);
+app.patch("/api/documento/updateAllegati", GestioneDocumenti.UpdateAllegatiDocumento);
 
 
 //Materie

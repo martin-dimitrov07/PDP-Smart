@@ -1,12 +1,172 @@
 import { writeFile, mkdir } from "fs/promises";
 import { prisma } from "../server.ts";
 
+async function UpdateAllegatiDocumento(req: any, res: any) {
+    try {
+        // allegati = [
+        //     {Nome: "allegato1.pdf",  "Value": true/false},
+        //     ...
+        // ]
+        const allegati = req.files && req.files.allegati ? (Array.isArray(req.files.allegati) ? req.files.allegati : [req.files.allegati]) : [];
+        const documento = req.body.documento;
+
+        for (const allegato of allegati) {
+            if (allegato.Value == true) {
+                // Creare record
+                const newAllegato = await prisma.allegato.create({
+                    data: {
+                        Nome: allegato.name,
+                        Percorso: `${process.env.ALLEGATI_PATH}/${documento.Studente_Email}/${documento.Anno.getFullYear().toString()}`,
+                        Documento_Studente_Email: documento.Studente_Email,
+                        Documento_Anno: new Date(documento.Anno)
+                    }
+                });
+                await SaveAllegato(newAllegato, allegato.data);
+            }
+            else if (allegato.Value == false) {
+                // Eliminare il record
+                await prisma.allegato.deleteMany({
+                    where: {
+                        Nome: allegato.name,
+                        Documento_Studente_Email: documento.Studente_Email,
+                        Documento_Anno: new Date(documento.Anno)    
+                    }
+                });
+            }
+        }
+
+        res.status(200).send({ message: "Allegati aggiornati con successo" });
+    }
+    catch (err) {
+        console.error("Errore nell'aggiornamento degli allegati del documento:", err);
+        res.status(500).send({
+            error: "Errore durante l'aggiornamento degli allegati del documento",
+            details: err
+        });
+    }
+}
+
+async function UpdateICFsDocumento(req: any, res: any) {
+    try {
+        //         ICF_Codice               String
+        // Documento_Anno           DateTime
+        // Documento_Studente_Email String
+        // ICFs = {
+        //     "ICF1": {
+        //         "Codice": "ICF1"
+        //         "value": true/false è true se è da aggiungere senno se è false da eliminare
+        //     },
+        // }
+
+        const ICFs = req.body.ICFs;
+        const documento = req.body.documento;
+
+        for (const ICFKey in ICFs) {
+            const ICF = ICFs[ICFKey];
+            if (ICF.value == true) {
+                // Creare record 
+                await prisma.documento_ICF.create({
+                    data: {
+                        ICF_Codice: ICF.Codice,
+                        Documento_Anno: new Date(documento.Anno),
+                        Documento_Studente_Email: documento.Studente_Email
+                    }
+                });
+            }
+            else if (ICF.value == false) {
+                // Eliminare il record
+                await prisma.documento_ICF.delete({
+                    where: {
+                        Id: {
+                            ICF_Codice: ICF.Codice,
+                            Documento_Anno: new Date(documento.Anno),
+                            Documento_Studente_Email: documento.Studente_Email
+                        }
+                    }
+                });
+            }
+        }
+
+        res.status(200).send({ message: "ICFs aggiornati con successo" });
+    }
+    catch (err) {
+        console.error("Errore nell'aggiornamento degli ICFs del documento:", err);
+        res.status(500).send({
+            error: "Errore durante l'aggiornamento degli ICFs del documento",
+            details: err
+        });
+    }
+}
+
+async function UpdateIndicatoriDocumento(req: any, res: any) {
+    try {
+        const indicatori = req.body.indicatori;
+        const documento = req.body.documento;
+
+        //     "matematica": 
+        //         {
+        //             "criteri": [ { id: "Id", Nota: "Nota", Value: true/false è true se è da aggiungere senno se è false da eliminare }, ... ],
+        //             "categoria": []
+        //         },
+
+        // Aggiorna o crea i record in Materia_Documento_Indicatore
+        // Fa la ricerca sull'indicatore e se non esiste uno con quel documento e indicatore, lo crea, altrimenti lo aggiorna
+        for (const materia in indicatori) {
+            for (const categoria in indicatori[materia]) {
+                for (const indicatore of indicatori[materia][categoria]) {
+                    if (indicatore.Value == true) {
+                        // Creare o fare update del record
+                        await prisma.materia_Documento_Indicatore.upsert({
+                            where: {
+                                Materia_Nome_Indicatore_Id_Documento_Studente_Email_Documento_Anno: {
+                                    Materia_Nome: materia,
+                                    Indicatore_Id: indicatore.Id,
+                                    Documento_Anno: new Date(documento.Anno),
+                                    Documento_Studente_Email: documento.Studente_Email
+                                }
+                            },
+                            update: {
+                                Nota: indicatore.Nota || null
+                            },
+                            create: {
+                                Materia_Nome: materia,
+                                Indicatore_Id: indicatore.Id,
+                                Documento_Anno: new Date(documento.Anno),
+                                Documento_Studente_Email: documento.Studente_Email,
+                                Nota: indicatore.Nota || null
+                            }
+                        });
+                    } else if (indicatore.Value === false) {
+                        // Eliminare il record
+                        await prisma.materia_Documento_Indicatore.deleteMany({
+                            where: {
+                                Materia_Nome: materia,
+                                Indicatore_Id: indicatore.Id,
+                                Documento_Anno: new Date(documento.Anno),
+                                Documento_Studente_Email: documento.Studente_Email
+                            }
+                        });
+                    }
+                }
+            }
+        }
+
+        res.status(200).send({ message: "Indicatori aggiornati con successo" });
+    } catch (err) {
+        console.error("Errore nell'aggiornamento degli indicatori del documento:", err);
+        res.status(500).send({
+            error: "Errore durante l'aggiornamento degli indicatori del documento",
+            details: err
+        });
+    }
+}
+
 async function CreatePDP(req: any, res: any) {
     try {
         const documento = JSON.parse(req.body.data).Documento;
         const indicatori = JSON.parse(req.body.data).Indicatori;
         const ICFs = JSON.parse(req.body.data).ICFs;
-        const allegati = Array.isArray(req.files.allegati) ? req.files.allegati : [req.files.allegati];
+        const allegati = req.files && req.files.allegati ? (Array.isArray(req.files.allegati) ? req.files.allegati : [req.files.allegati]) : [];
 
         // tx è un'istanza di PrismaClient che rappresenta la transazione in corso
         await prisma.$transaction(async (tx) => {
@@ -22,7 +182,7 @@ async function CreatePDP(req: any, res: any) {
             }
         }, {
             maxWait: 5000, // tempo massimo di attesa per l'acquisizione di una connessione
-            timeout: 15000000 // imposta un timeout di 10 secondi per l'intera transazione
+            timeout: 10000 // imposta un timeout di 10 secondi per l'intera transazione
         });
 
         res.status(200).send({ message: "Documento creato con successo" });
@@ -189,4 +349,4 @@ async function GetDocumenti(req: any, res: any) {
 }
 
 
-export { CreatePDP, GetAnniScolasticiDocumenti, GetDocumenti };
+export { CreatePDP, GetAnniScolasticiDocumenti, GetDocumenti, UpdateIndicatoriDocumento, UpdateICFsDocumento, UpdateAllegatiDocumento };

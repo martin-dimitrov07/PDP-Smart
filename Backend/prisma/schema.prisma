@@ -151,7 +151,7 @@ model Classe_Studente {
 }
 
 model Materia_Documento_Indicatore {
-    Id                       Int      @id @default(autoincrement())
+    I                       Int      @id @default(autoincrement())
     Materia_Nome             String  
     Indicatore_Id            Int
     Documento_Anno           DateTime
