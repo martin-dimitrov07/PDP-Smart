@@ -108,10 +108,18 @@ app.use((req: any, res, next) => {
 
 //middleware 7: Vincoli CORS (controlli lato server che consentono di accettare richieste anche da fuori dal dominio -> cioè diverso dal server da cui arrivano le pagine)
 const corsOptions = {
-    origin: function (origin: any, callback: any) {
-        return callback(null, true);
+    origin: (origin: any, callback: any) => {
+        if(!origin || !process.env.WHITELIST)
+            return callback(null, true);  //per test (poi da rimuovere) consente tutte le origini se non è definita la whitelist
+
+        const whiteList: string[] = process.env.WHITELIST.split(",").map(item => item.trim());
+
+        if(whiteList.includes(origin))
+            callback(null, true);
+        else
+            callback(new Error("The CORS policy does not allow access from this origin"), false);
     },
-    credentials: true
+    credentials: true, //consente di accettare richieste con cookie (es. per login)
 };
 app.use("/", cors(corsOptions));
 
@@ -174,8 +182,8 @@ app.get("/api/icf", GestioneICF.GetIcf);
 app.use(function (req, res) {
     if (req.originalUrl.startsWith("/api/"))
         res.status(404).send("Risorsa non trovata");
-    else if (req.accepts("html")) // se la richiesta è per una pagina html
-        res.status(404).send("<h1>Pagina non trovata</h1>");
+    // else if (req.accepts("html")) // se la richiesta è per una pagina html
+    //     res.sendStatus(404);
     else
         res.sendStatus(404);
     // res.status(404).send(); equivalente
