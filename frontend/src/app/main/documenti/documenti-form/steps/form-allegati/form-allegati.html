@@ -21,7 +21,7 @@
                 <div class="d-flex gap-2 flex-wrap justify-content-center overflow-hidden">
                     @for (file of documentiService.allegati; track $index)
                     {
-                    <ngx-dropzone-preview class="px-2" ngProjectAs="ngx-dropzone-preview" [file]="file" [removable]="true"
+                    <ngx-dropzone-preview class="px-2 px-sm-3" ngProjectAs="ngx-dropzone-preview" [file]="file" [removable]="true"
                         (removed)="OnRemove(file)">
                         <ngx-dropzone-label class="m-0">
                             <!-- ICONE -->

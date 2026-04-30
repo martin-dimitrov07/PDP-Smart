@@ -48,25 +48,9 @@ export class DocumentiService {
     //         },
     // }
 
-    //#region 
-    // CreateDocumenti() {
-    //     const richieste = this.studentiSelected.map((studente: Studente) => {
-    //         let documento = new Documento(
-    //             studente.Email,
-    //             new Date(),
-    //             studente.DSA_BES
-    //         )
-
-    //         console.log(documento);
-
-    //         return this.dataStorageService.InviaRichiesta("POST", "/documento/create", documento);
-    //     });
-
-    //     return forkJoin(richieste);
-    // }
-    //#endregion
-
     GetMaterieDocente() {
+        this.materieDocente = [];
+
         const filters = this.docentiService.docente.Ruolo == Ruolo.DOCENTE ? {
             Insegnamenti: {
                 some: {  // serve per relazioni uno a molti
@@ -94,6 +78,8 @@ export class DocumentiService {
     }
 
     GetMaterieClasse() {
+        this.materieClasse = [];
+
         console.log(this.classeSelected);
         const filters = {
             Insegnamenti: {
@@ -154,49 +140,17 @@ export class DocumentiService {
         }
     }
 
-    // CaricaIndicatoriPerMateria(materia: string) {
-
-    //     // console.log(this.indicatori[materia])
-
-    //     // restituisce un Observable che emette immediatamente i dati esistenti
-    //     if (this.indicatori[materia] && Object.keys(this.indicatori[materia]).length > 0) {
-    //         return of(this.indicatori[materia]);
-    //     }
-
-    //     return this.GetCategorieIndicatore().pipe(
-    //         // MergeMap: esegue tutte le chiamate parallelo e aspetta che tutte finiscano per emettere il risultato
-    //         mergeMap(() => {
-    //             const richieste = this.categorieInd.map(cat => {
-    //                 const tipologia = this.studenteSelected.DSA_BES ? "DSA" : "BES";
-    //                 return this.GetIndicatori(cat, tipologia).pipe(
-    //                     map(listaIndicatori => ({ categoria: cat, lista: listaIndicatori }))
-    //                 )
-    //             });
-    //             return forkJoin(richieste);
-    //         }),
-    //         // Formatta i dati per la struttura
-    //         map((risultati) => {
-    //             //array: [{categoria: 'A', lista: [...]}, {categoria: 'B', lista: [...]}]
-    //             const struttura: any = {};
-
-    //             for (const ris of risultati) {
-    //                 struttura[ris.categoria] = ris.lista.map((ind: Indicatore) => ({ Id: ind.Id, Valore: false, Descrizione: ind.Descrizione }))
-    //             }
-
-    //             // Assegna alla materia specifica
-    //             this.indicatori[materia] = struttura;
-    //             return struttura;
-    //         })
-    //     );
-    // }
-
     GetICFs() {
+        this.icfs = [];
+
         return this.dataStorageService.InviaRichiesta("GET", "/icf")?.pipe(tap((data: any) => {
             this.icfs = data.map((icf: Icf) => new Icf(icf.Codice, icf.Descrizione));
         }))
     }
 
     GetAnniScolastici(): Observable<any> {
+        this.anniScolastici = [];
+
         let params: any = {};
 
         if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
@@ -270,5 +224,18 @@ export class DocumentiService {
         }
 
         return this.dataStorageService.InviaRichiesta("POST", "/documento/create", formData)!;
+    }
+
+    ResetCreateDocumento() {
+        this.classeSelected = {} as Classe;
+        this.studenteSelected = {} as Studente;
+        this.materieDocente = [];
+        this.materieClasse = [];
+        this.indicatori = {};
+        this.categorieInd = [];
+        this.icfs = [];
+        this.icfsSelected = [];
+        this.allegati = [];
+        this.errorAllegati = "";
     }
 }

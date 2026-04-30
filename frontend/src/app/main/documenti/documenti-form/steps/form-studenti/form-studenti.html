@@ -48,5 +48,7 @@
 
 
     <!-- MODAL AGGIUNTA STUDENTE -->
-    <app-modal-add-studente (studenteEvent)="SaveStudente($event)"></app-modal-add-studente>
+    @if(resetSignal) {
+        <app-modal-add-studente (studenteEvent)="SaveStudente($event)"></app-modal-add-studente>
+    }
 </div>

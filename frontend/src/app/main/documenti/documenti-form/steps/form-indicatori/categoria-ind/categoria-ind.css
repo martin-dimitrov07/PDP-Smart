@@ -18,7 +18,8 @@
 
 .table-responsive {
     max-height: 550px;
-    overscroll-behavior: contain; /* per evitare che lo scroll della tabella scrolli anche la pagina */
+    overscroll-behavior: contain;
+    /* per evitare che lo scroll della tabella scrolli anche la pagina */
     border-bottom: 2px solid var(--blue-color);
     /* per Firefox */
     scrollbar-width: thin;
@@ -49,5 +50,9 @@ thead th {
     background-color: var(--blue-color);
     color: var(--light-color);
     border: 0 !important;
-    padding: 0.5rem 1.15rem;
+    padding: 0.5rem 1.15em;
+}
+
+thead th:last-child {
+    padding: 0.5rem 1.60rem;
 }

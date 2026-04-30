@@ -59,6 +59,7 @@ export class FormAllegati {
         this.documentiService.CreateDocumento().subscribe({
             next: (response) => {
                 console.log("Documento creato con successo:", response);
+                this.documentiService.ResetCreateDocumento();
                 this.router.navigate(['documenti']);
 
                 //mostrare toast messaggio successo

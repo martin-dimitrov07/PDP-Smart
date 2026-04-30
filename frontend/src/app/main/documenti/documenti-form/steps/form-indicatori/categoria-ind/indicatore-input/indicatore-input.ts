@@ -37,6 +37,17 @@ export class IndicatoreInput {
         });
     }
 
+    HasNota(materia: string): boolean {
+        const listaInd = this.documentiService.indicatori[materia]?.[this.categoria];
+        const item = listaInd?.find((item: any) => item.Id === this.indicatore.Id);
+
+        // Controllo esplicito: l'item esiste AND la nota non è undefined/null AND non è una stringa vuota
+        if (item && item.Nota && item.Nota.trim() !== "") {
+            return true;
+        }
+        return false;
+    }
+
     IsItemSelected(materia: string): boolean {
         const listaInd = this.documentiService.indicatori[materia]?.[this.categoria];
 
@@ -46,6 +57,7 @@ export class IndicatoreInput {
     }
 
     SetValue(materia: string) {
+        console.log(this.documentiService.indicatori);
         const listaInd = this.documentiService.indicatori[materia][this.categoria];
 
         const index = listaInd.findIndex((item: any) => item.Id === this.indicatore.Id);

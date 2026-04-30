@@ -41,22 +41,22 @@ input:checked{
     height: 25px;
 }
 
-.bi-pen {
+.bi-pen, .bi-pen-fill {
   display: inline-block;
   cursor: pointer;
 }
 
-.bi-pen::before{
+.bi-pen::before, .bi-pen-fill::before {
     transform: rotate(-13deg);
 }
 
 /* Hover → va avanti */
-.bi-pen:hover {
+.bi-pen:hover, .bi-pen-fill:hover {
   animation: scrivi 0.4s ease forwards;
 }
 
 /* Quando NON è hover → torna indietro */
-.bi-pen:not(:hover) {
+.bi-pen:not(:hover), .bi-pen-fill:not(:hover) {
   animation: scriviBack 0.4s ease forwards;
 }
 

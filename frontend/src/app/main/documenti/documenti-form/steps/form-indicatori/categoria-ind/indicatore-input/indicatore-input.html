@@ -11,7 +11,8 @@
 
         @if(IsItemSelected(materia))
         {
-            <i class="bi bi-pen fs-6 d-flex align-items-center" data-bs-toggle="modal"
+            <i class="bi fs-6 d-flex align-items-center" data-bs-toggle="modal"
+                [class.bi-pen]="!HasNota(materia)" [class.bi-pen-fill]="HasNota(materia)"
                 data-bs-target="#aggiuntaNota" (click)="documentiService.materieDocente.includes(materia) ? SetNota(materia) : null"></i>
         }
     </div>

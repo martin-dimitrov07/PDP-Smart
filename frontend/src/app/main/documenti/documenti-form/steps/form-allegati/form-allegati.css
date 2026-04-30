@@ -32,8 +32,7 @@
 
 ngx-dropzone-preview{
     background-color: rgb(from var(--blue-color) r g b / 0.05);
-    max-width: 100% !important;
-    min-width: 100% !important;
+    max-width: 500px !important;
 }
 
 ::ng-deep ngx-dropzone-preview img {
