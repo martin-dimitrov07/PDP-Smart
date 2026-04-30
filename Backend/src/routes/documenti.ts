@@ -16,7 +16,7 @@ async function UpdateAllegatiDocumento(req: any, res: any) {
                 const newAllegato = await prisma.allegato.create({
                     data: {
                         Nome: allegato.name,
-                        Percorso: `${process.env.ALLEGATI_PATH}/${documento.Studente_Email}/${documento.Anno.getFullYear().toString()}`,
+                        Percorso: `${process.env.ALLEGATI_PATH}/${documento.Studente_Email}/${(new Date(documento.Anno)).getFullYear().toString()}`,
                         Documento_Studente_Email: documento.Studente_Email,
                         Documento_Anno: new Date(documento.Anno)
                     }
@@ -29,7 +29,7 @@ async function UpdateAllegatiDocumento(req: any, res: any) {
                     where: {
                         Nome: allegato.name,
                         Documento_Studente_Email: documento.Studente_Email,
-                        Documento_Anno: new Date(documento.Anno)    
+                        Documento_Anno: new Date(documento.Anno)
                     }
                 });
             }
@@ -64,9 +64,17 @@ async function UpdateICFsDocumento(req: any, res: any) {
         for (const ICFKey in ICFs) {
             const ICF = ICFs[ICFKey];
             if (ICF.value == true) {
-                // Creare record 
-                await prisma.documento_ICF.create({
-                    data: {
+                // Creare record se non esiste già, altrimenti non fare nulla
+                await prisma.documento_ICF.upsert({
+                    where: {
+                        Id: { 
+                            ICF_Codice: ICF.Codice,
+                            Documento_Anno: new Date(documento.Anno),
+                            Documento_Studente_Email: documento.Studente_Email
+                        }
+                    },
+                    update: {},
+                    create: {
                         ICF_Codice: ICF.Codice,
                         Documento_Anno: new Date(documento.Anno),
                         Documento_Studente_Email: documento.Studente_Email
@@ -75,13 +83,11 @@ async function UpdateICFsDocumento(req: any, res: any) {
             }
             else if (ICF.value == false) {
                 // Eliminare il record
-                await prisma.documento_ICF.delete({
+                await prisma.documento_ICF.deleteMany({
                     where: {
-                        Id: {
-                            ICF_Codice: ICF.Codice,
-                            Documento_Anno: new Date(documento.Anno),
-                            Documento_Studente_Email: documento.Studente_Email
-                        }
+                        ICF_Codice: ICF.Codice,
+                        Documento_Anno: new Date(documento.Anno),
+                        Documento_Studente_Email: documento.Studente_Email
                     }
                 });
             }
