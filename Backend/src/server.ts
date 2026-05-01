@@ -168,10 +168,10 @@ app.get("/api/count-studenti", GestioneStudenti.GetCountStudenti);
 app.post("/api/documento/create", GestioneDocumenti.CreatePDP);
 app.get("/api/anni-scolastici-documenti", GestioneDocumenti.GetAnniScolasticiDocumenti);
 app.get("/api/documenti", GestioneDocumenti.GetDocumenti);
-
 app.patch("/api/documento/updateIndicatori", GestioneDocumenti.UpdateIndicatoriDocumento);
 app.patch("/api/documento/updateICFs", GestioneDocumenti.UpdateICFsDocumento);
 app.patch("/api/documento/updateAllegati", GestioneDocumenti.UpdateAllegatiDocumento);
+app.delete("/api/documento/delete/", GestioneDocumenti.DeletePDP);
 
 
 //Materie
