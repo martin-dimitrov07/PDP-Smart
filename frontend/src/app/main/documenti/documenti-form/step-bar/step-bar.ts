@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { DocumentiService } from '../../../../shared/services/documenti.service';
 import { StepsService } from '../../../../shared/services/steps.service';
+import { DocentiService } from '../../../../shared/services/docenti.service';
+import { Ruolo } from '../../../../models/docente';
 
 @Component({
     selector: 'app-step-bar',
@@ -12,6 +13,9 @@ import { StepsService } from '../../../../shared/services/steps.service';
 export class StepBar {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     public readonly stepsService: StepsService = inject(StepsService);
+
+    public readonly docentiService: DocentiService = inject(DocentiService);
+    Ruolo: typeof Ruolo = Ruolo;
 
     steps = ['studenti', 'indicatori', 'ICF', 'allegati'];
 

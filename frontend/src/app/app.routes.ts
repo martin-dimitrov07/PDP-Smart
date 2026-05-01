@@ -12,6 +12,7 @@ import { FormStudenti } from './main/documenti/documenti-form/steps/form-student
 import { FormIndicatori } from './main/documenti/documenti-form/steps/form-indicatori/form-indicatori';
 import { FormICF } from './main/documenti/documenti-form/steps/form-icf/form-icf';
 import { FormAllegati } from './main/documenti/documenti-form/steps/form-allegati/form-allegati';
+import { ruoloDocenteGuard } from './shared/utilities/ruolo-docente.guard';
 
 const formSteps: Routes = [
     { path: "", redirectTo: "studenti", pathMatch: "full" },
@@ -22,62 +23,73 @@ const formSteps: Routes = [
 ];
 
 export const routes: Routes = [
-    {
-        path: "",
-        redirectTo: "indirizzi",
-        pathMatch: "full"
-    },
+    // 1. ROTTA PUBBLICA
     {
         path: "login",
         component: Login
     },
+
+    // 2. ROTTE PROTETTE
     {
-        path: "indirizzi",
+        path: "",
+        // canActivate: [ruoloDocenteGuard],
+        // canActivateChild: [ruoloDocenteGuard],
         resolve: { docente: docenteResolver },
         children: [
             {
                 path: "",
-                component: Indirizzi
+                redirectTo: "indirizzi",
+                pathMatch: "full"
             },
             {
-                path: ":indirizzo/classi",
+                path: "indirizzi",
                 children: [
                     {
                         path: "",
-                        component: Classi
+                        component: Indirizzi
                     },
                     {
-                        path: ":idClasse/studenti",
-                        component: Studenti
+                        path: ":indirizzo/classi",
+                        children: [
+                            {
+                                path: "",
+                                component: Classi
+                            },
+                            {
+                                path: ":idClasse/studenti",
+                                component: Studenti
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                path: "documenti",
+                children: [
+                    {
+                        path: "",
+                        component: Documenti
+                    },
+                    {
+                        path: "lista",
+                        component: DocumentiList
+                    },
+                    {
+                        path: "crea",
+                        component: DocumentiForm,
+                        children: formSteps
+                    },
+                    {
+                        path: "edit/:id",
+                        component: DocumentiForm,
+                        children: formSteps
                     }
                 ]
             }
         ]
     },
-    {
-        path: "documenti",
-        resolve: { docente: docenteResolver },
-        children: [
-            {
-                path: "",
-                component: Documenti
-            },
-            {
-                path: "lista",
-                component: DocumentiList
-            },
-            {
-                path: "crea",
-                component: DocumentiForm,
-                children: formSteps
-            },
-            {
-                path: "edit/:id",
-                component: DocumentiForm,
-                children: formSteps
-            }
-        ]
-    },
+
+    // 3. FALLBACK (404)
     {
         path: "**",
         component: NotFoundComponent,

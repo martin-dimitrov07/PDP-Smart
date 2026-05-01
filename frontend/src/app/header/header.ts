@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { DocentiService } from '../shared/services/docenti.service';
 import { LoginService } from '../shared/services/login.service';
+import { Ruolo } from '../models/docente';
 
 @Component({
     selector: 'app-header',
@@ -16,7 +17,7 @@ export class Header {
 
     userImgPath: string | undefined = undefined;
 
-    ngOnInit(){
+    ngOnInit() {
         setTimeout(() => {
             this.userImgPath = this.docentiService.docente.FotoUrl;
         }, 300)
@@ -32,5 +33,11 @@ export class Header {
                 this.router.navigate(["login"]);
             }
         })
+    }
+
+    get routesDocumento(): string[]{
+        return this.docentiService.docente.Ruolo === Ruolo.DOCENTE
+            ? ['/documenti', 'lista']
+            : ['/documenti'];
     }
 }

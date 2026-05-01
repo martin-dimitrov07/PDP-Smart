@@ -23,7 +23,7 @@
             <p class="m-0">Indietro</p>
         </button>
 
-        <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 ps-3 pe-2 border-0" (click)="stepsService.GoStep('ICF')">
+        <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 ps-3 pe-2 border-0" (click)="docentiService.docente.Ruolo == Ruolo.ADMIN ? stepsService.GoStep('ICF') : stepsService.GoStep('allegati')">
             <p class="m-0">Avanti</p>
             <i class="bi bi-chevron-right"></i>
         </button>

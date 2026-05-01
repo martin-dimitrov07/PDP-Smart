@@ -1,12 +1,13 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { DocumentiService } from '../../../../../shared/services/documenti.service';
-import { Router } from '@angular/router';
 import { CheckError } from '../../../../../shared/utilities/check-error';
 import { FormsModule } from '@angular/forms';
 import { CategoriaInd } from './categoria-ind/categoria-ind';
 import { CommonModule, } from "@angular/common";
 import { StepsService } from '../../../../../shared/services/steps.service';
 import { ModalAddNota } from './modal-add-nota/modal-add-nota';
+import { DocentiService } from '../../../../../shared/services/docenti.service';
+import { Ruolo } from '../../../../../models/docente';
 
 @Component({
     selector: 'app-form-indicatori',
@@ -18,6 +19,9 @@ export class FormIndicatori {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     public readonly stepsService: StepsService = inject(StepsService);
     private readonly checkError: CheckError = inject(CheckError);
+
+    public readonly docentiService: DocentiService = inject(DocentiService);
+    Ruolo: typeof Ruolo = Ruolo;
 
     datiCaricati: boolean = false;
 

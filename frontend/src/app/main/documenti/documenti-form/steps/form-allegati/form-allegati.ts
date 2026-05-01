@@ -5,6 +5,8 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CommonModule } from '@angular/common';
 import { ModalError } from './modal-error/modal-error';
 import { Router } from '@angular/router';
+import { Ruolo } from '../../../../../models/docente';
+import { DocentiService } from '../../../../../shared/services/docenti.service';
 
 @Component({
     selector: 'app-form-allegati',
@@ -15,6 +17,9 @@ import { Router } from '@angular/router';
 export class FormAllegati {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     public readonly stepsService: StepsService = inject(StepsService);
+
+    public readonly docentiService: DocentiService = inject(DocentiService);
+    Ruolo: typeof Ruolo = Ruolo;
 
     private readonly router: Router = inject(Router);
 

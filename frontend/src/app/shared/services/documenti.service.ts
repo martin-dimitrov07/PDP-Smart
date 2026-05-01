@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { DocentiService } from './docenti.service';
 import { DataStorageService } from './data-storage.service';
 import { Studente } from '../../models/studente';
@@ -34,6 +34,7 @@ export class DocumentiService {
     icfsSelected: Icf[] = [];
 
     anniScolastici: Date[] = [];
+    // annoSelected = signal<string>("Anno");
     documenti: Documento[] = [];
     nClassi: number = 0;
 
