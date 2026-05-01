@@ -12,10 +12,18 @@ import { FormStudenti } from './main/documenti/forms/form-studenti/form-studenti
 import { FormIndicatori } from './main/documenti/forms/form-indicatori/form-indicatori';
 import { FormICF } from './main/documenti/forms/form-icf/form-icf';
 import { FormAllegati } from './main/documenti/forms/form-allegati/form-allegati';
+import { DocumentiEdit } from './main/documenti/documenti-edit/documenti-edit';
 
-const formSteps: Routes = [
+const formStepsCreate: Routes = [
     { path: "", redirectTo: "studenti", pathMatch: "full" },
     { path: "studenti", component: FormStudenti },
+    { path: "indicatori", component: FormIndicatori },
+    { path: "ICF", component: FormICF },
+    { path: "allegati", component: FormAllegati }
+];
+
+const formStepsEdit: Routes = [
+    { path: "", component: DocumentiEdit },
     { path: "indicatori", component: FormIndicatori },
     { path: "ICF", component: FormICF },
     { path: "allegati", component: FormAllegati }
@@ -69,12 +77,13 @@ export const routes: Routes = [
             {
                 path: "crea",
                 component: DocumentiCreate,
-                children: formSteps
+                children: formStepsCreate
             },
             {
-                path: "edit/:id",
-                component: DocumentiCreate, //da cambiare
-                children: formSteps
+                // path: "edit/:studenteEmail/:annoScolastico",
+                path: "modifica",
+                component: DocumentiEdit,
+                children: formStepsEdit
             }
         ]
     },

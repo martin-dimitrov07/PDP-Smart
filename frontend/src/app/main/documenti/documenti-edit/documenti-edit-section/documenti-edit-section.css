@@ -1,0 +1,28 @@
+.section{
+    border: 3px solid color-mix(in srgb, var(--dark-blue-color), transparent 80%);
+}
+
+.section:hover{
+    background-color: var(--dark-blue-color);
+    cursor: pointer;
+    color: var(--light-color) !important;
+    box-shadow: 0 0 15px var(--dark-blue-color);
+}
+
+.section:hover .text-dark-color{
+    color: var(--light-color) !important;
+}
+
+.badge{
+    width: 73px !important;
+    background-color: color-mix(in srgb, var(--dark-blue-color), transparent 80%);
+}
+
+.section:hover .badge{
+    background-color: var(--light-color) !important;
+}
+
+.bi{
+    font-size: 2.5rem;
+    color: var(--dark-blue-color);
+}

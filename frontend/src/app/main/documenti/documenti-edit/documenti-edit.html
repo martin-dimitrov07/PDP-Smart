@@ -1,0 +1,15 @@
+<div class="container-lg">
+    <app-documenti-edit-header [studenteEmail]="studenteEmail" [annoScolastico]="annoScolastico"></app-documenti-edit-header>
+
+    <div class="row justify-content-center align-items-stretch g-4 mx-0 pb-5 px-0 px-sm-5 px-md-3">
+        <div class="col-md-6 col-lg-4 px-3">
+            <app-documenti-edit-section class="h-100 d-block" [title]="'Indicatori'" [icon]="'bi-clipboard-data-fill'" [description]="'Misuratori e criteri di valutazione del percorso didattico'" [route]="'indicatori'"></app-documenti-edit-section>
+        </div>
+        <div class="col-md-6 col-lg-4 px-3">
+            <app-documenti-edit-section class="h-100 d-block" [title]="'ICF'" [icon]="'bi-diagram-2-fill'" [description]="'Classificazione internazionale del funzionamento e della disabilità'" [route]="'ICF'"></app-documenti-edit-section>
+        </div>
+        <div class="col-md-6 col-lg-4 px-3">
+            <app-documenti-edit-section class="h-100 d-block" [title]="'Allegati'" [icon]="'bi-paperclip'" [description]="'Documenti e materiali di supporto'" [route]="'allegati'"></app-documenti-edit-section>
+        </div>
+    </div>
+</div>

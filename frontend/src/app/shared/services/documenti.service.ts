@@ -1,14 +1,13 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DocentiService } from './docenti.service';
 import { DataStorageService } from './data-storage.service';
 import { Studente } from '../../models/studente';
 import { Documento, Tipo } from '../../models/documento';
-import { concatMap, forkJoin, map, mergeMap, Observable, of, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Ruolo } from '../../models/docente';
-import { Indicatore, Tipologia } from '../../models/indicatore';
+import { Indicatore } from '../../models/indicatore';
 import { Icf } from '../../models/icf';
 import { Classe } from '../../models/classe';
-import { json } from 'stream/consumers';
 
 @Injectable({
     providedIn: 'root',
@@ -33,13 +32,14 @@ export class DocumentiService {
     icfs: Icf[] = [];
     icfsSelected: Icf[] = [];
 
+    allegati: File[] = [];
+    errorAllegati: string = "";
+
     anniScolastici: Date[] = [];
     // annoSelected = signal<string>("Anno");
     documenti: Documento[] = [];
     nClassi: number = 0;
-
-    allegati: File[] = [];
-    errorAllegati: string = "";
+    documentoSelected: Documento = {} as Documento;
 
     // indicatori = {
     //     "matematica": 
