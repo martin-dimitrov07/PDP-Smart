@@ -1,8 +1,8 @@
 import { Component, inject, input, Input, Output, EventEmitter } from '@angular/core';
-import { DocumentiService } from '../../../../../../shared/services/documenti.service';
-import { CheckError } from '../../../../../../shared/utilities/check-error';
 import { IndicatoreInput } from './indicatore-input/indicatore-input';
-import { Indicatore } from '../../../../../../models/indicatore';
+import { Indicatore } from '../../../../../models/indicatore';
+import { DocumentiService } from '../../../../../shared/services/documenti.service';
+import { CheckError } from '../../../../../shared/utilities/check-error';
 
 @Component({
     selector: 'app-categoria-ind',

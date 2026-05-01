@@ -1,12 +1,11 @@
-import { Component, inject, Input, Output } from '@angular/core';
-import { Studente } from '../../../../../../models/studente';
-import { Classe } from '../../../../../../models/classe';
-import { EventEmitter } from '@angular/core';
-import { CheckError } from '../../../../../../shared/utilities/check-error';
-import { StudentiService } from '../../../../../../shared/services/studenti.service';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DocumentiService } from '../../../../../../shared/services/documenti.service';
-import { StepsService } from '../../../../../../shared/services/steps.service';
+import { Classe } from '../../../../../models/classe';
+import { Studente } from '../../../../../models/studente';
+import { DocumentiService } from '../../../../../shared/services/documenti.service';
+import { StudentiService } from '../../../../../shared/services/studenti.service';
+import { CheckError } from '../../../../../shared/utilities/check-error';
+
 
 @Component({
     selector: 'app-modal-add-studente',

@@ -2,10 +2,11 @@ import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { DocumentiService } from '../../../../shared/services/documenti.service';
 import { DocentiService } from '../../../../shared/services/docenti.service';
 import { Docente, Ruolo } from '../../../../models/docente';
+import { RouterLink } from "@angular/router";
 
 @Component({
     selector: 'app-documenti-header',
-    imports: [],
+    imports: [RouterLink],
     templateUrl: './documenti-header.html',
     styleUrl: './documenti-header.css',
 })

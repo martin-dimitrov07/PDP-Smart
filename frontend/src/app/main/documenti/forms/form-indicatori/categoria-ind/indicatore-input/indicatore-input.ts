@@ -1,7 +1,7 @@
 import { Component, ElementRef, inject, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 import { FormsModule } from "@angular/forms";
-import { DocumentiService } from '../../../../../../../shared/services/documenti.service';
 import { CommonModule } from '@angular/common';
+import { DocumentiService } from '../../../../../../shared/services/documenti.service';
 
 @Component({
     selector: 'tr[app-indicatore-input]',

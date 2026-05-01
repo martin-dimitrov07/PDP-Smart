@@ -1,8 +1,8 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
-import { DocumentiService } from '../../../../../../shared/services/documenti.service';
-import { Icf } from '../../../../../../models/icf';
+import { DocumentiService } from '../../../../../shared/services/documenti.service';
+import { CheckError } from '../../../../../shared/utilities/check-error';
 import { FormsModule } from '@angular/forms';
-import { CheckError } from '../../../../../../shared/utilities/check-error';
+import { Icf } from '../../../../../models/icf';
 
 @Component({
   selector: 'app-modal-add-icf',

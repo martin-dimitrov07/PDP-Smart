@@ -1,12 +1,13 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { DocumentiService } from '../../../../../shared/services/documenti.service';
-import { StepsService } from '../../../../../shared/services/steps.service';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CommonModule } from '@angular/common';
 import { ModalError } from './modal-error/modal-error';
 import { Router } from '@angular/router';
-import { Ruolo } from '../../../../../models/docente';
-import { DocentiService } from '../../../../../shared/services/docenti.service';
+import { DocumentiService } from '../../../../shared/services/documenti.service';
+import { StepsService } from '../../../../shared/services/steps.service';
+import { Ruolo } from '../../../../models/docente';
+import { DocentiService } from '../../../../shared/services/docenti.service';
+
 
 @Component({
     selector: 'app-form-allegati',

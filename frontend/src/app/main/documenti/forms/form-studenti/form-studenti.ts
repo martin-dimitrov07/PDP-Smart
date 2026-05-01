@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
-import { Studente } from '../../../../../models/studente';
 import { ModalAddStudente } from './modal-add-studente/modal-add-studente';
-import { DocumentiService } from '../../../../../shared/services/documenti.service';
-import { StepsService } from '../../../../../shared/services/steps.service';
-import { CheckError } from '../../../../../shared/utilities/check-error';
+import { DocumentiService } from '../../../../shared/services/documenti.service';
+import { CheckError } from '../../../../shared/utilities/check-error';
+import { StepsService } from '../../../../shared/services/steps.service';
+import { Studente } from '../../../../models/studente';
 
 @Component({
     selector: 'app-form-studenti',

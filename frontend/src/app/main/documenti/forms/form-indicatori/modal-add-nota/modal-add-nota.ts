@@ -1,6 +1,6 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DocumentiService } from '../../../../../../shared/services/documenti.service';
+import { DocumentiService } from '../../../../../shared/services/documenti.service';
 
 @Component({
     selector: 'app-modal-add-nota',

@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, Inject, Input, PLATFORM_ID, ViewChild } from '@angular/core';
-import { DocumentiService } from '../../../../../../shared/services/documenti.service';
+import { DocumentiService } from '../../../../../shared/services/documenti.service';
 
 @Component({
     selector: 'app-modal-error',
