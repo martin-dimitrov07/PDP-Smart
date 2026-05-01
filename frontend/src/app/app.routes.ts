@@ -12,84 +12,83 @@ import { FormStudenti } from './main/documenti/documenti-form/steps/form-student
 import { FormIndicatori } from './main/documenti/documenti-form/steps/form-indicatori/form-indicatori';
 import { FormICF } from './main/documenti/documenti-form/steps/form-icf/form-icf';
 import { FormAllegati } from './main/documenti/documenti-form/steps/form-allegati/form-allegati';
+import { Ruolo } from './models/docente';
 import { ruoloDocenteGuard } from './shared/utilities/ruolo-docente.guard';
 
 const formSteps: Routes = [
     { path: "", redirectTo: "studenti", pathMatch: "full" },
     { path: "studenti", component: FormStudenti },
     { path: "indicatori", component: FormIndicatori },
-    { path: "ICF", component: FormICF },
+    {
+        path: "ICF",
+        component: FormICF,
+        canActivate: [ruoloDocenteGuard],
+        data: { roles: [Ruolo.ADMIN] }
+    },
     { path: "allegati", component: FormAllegati }
 ];
 
 export const routes: Routes = [
-    // 1. ROTTA PUBBLICA
+    {
+        path: "",
+        redirectTo: "indirizzi",
+        pathMatch: "full"
+    },
     {
         path: "login",
         component: Login
     },
-
-    // 2. ROTTE PROTETTE
     {
-        path: "",
-        // canActivate: [ruoloDocenteGuard],
-        // canActivateChild: [ruoloDocenteGuard],
+        path: "indirizzi",
         resolve: { docente: docenteResolver },
         children: [
             {
                 path: "",
-                redirectTo: "indirizzi",
-                pathMatch: "full"
+                component: Indirizzi
             },
             {
-                path: "indirizzi",
+                path: ":indirizzo/classi",
                 children: [
                     {
                         path: "",
-                        component: Indirizzi
+                        component: Classi
                     },
                     {
-                        path: ":indirizzo/classi",
-                        children: [
-                            {
-                                path: "",
-                                component: Classi
-                            },
-                            {
-                                path: ":idClasse/studenti",
-                                component: Studenti
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                path: "documenti",
-                children: [
-                    {
-                        path: "",
-                        component: Documenti
-                    },
-                    {
-                        path: "lista",
-                        component: DocumentiList
-                    },
-                    {
-                        path: "crea",
-                        component: DocumentiForm,
-                        children: formSteps
-                    },
-                    {
-                        path: "edit/:id",
-                        component: DocumentiForm,
-                        children: formSteps
+                        path: ":idClasse/studenti",
+                        component: Studenti
                     }
                 ]
             }
         ]
     },
-
-    // 3. FALLBACK (404)
+    {
+        path: "documenti",
+        resolve: { docente: docenteResolver },
+        children: [
+            {
+                path: "",
+                component: Documenti,
+                canActivate: [ruoloDocenteGuard],
+                data: { roles: [Ruolo.COORDINATORE, Ruolo.ADMIN] }
+            },
+            {
+                path: "lista",
+                component: DocumentiList
+            },
+            {
+                path: "crea",
+                component: DocumentiForm,
+                children: formSteps,
+                canActivate: [ruoloDocenteGuard],
+                data: { roles: [Ruolo.COORDINATORE, Ruolo.ADMIN] }
+            },
+            {
+                path: "edit/:id",
+                component: DocumentiForm,
+                children: formSteps
+            }
+        ]
+    },
     {
         path: "**",
         component: NotFoundComponent,
