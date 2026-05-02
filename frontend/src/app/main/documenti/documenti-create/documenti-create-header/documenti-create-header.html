@@ -8,8 +8,7 @@
     </nav>
 
     @if(studentiService.anniScolastici && studentiService.anniScolastici.length > 0) {
-    <h2 class="my-0 px-2 px-sm-3 fs-4">{{studentiService.anniScolastici[0].getFullYear().toString() +
-        "/" + (studentiService.anniScolastici[0].getFullYear() + 1).toString()}}</h2>
+    <h2 class="my-0 px-2 px-sm-3 fs-4">{{CurrentYear}}</h2>
     }
 </div>
 
