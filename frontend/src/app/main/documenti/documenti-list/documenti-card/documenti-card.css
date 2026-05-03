@@ -85,7 +85,7 @@
 }
 
 /* icone view e edit */
-.bi-eye,
+.bi-pencil-square,
 .bi-trash {
     display: flex;
     align-items: center;
