@@ -23,10 +23,17 @@ export class FormICF {
     prevPage: string = "";
 
     ngOnInit() {
-        if (this.docentiService.docente.Ruolo != Ruolo.ADMIN)
-            this.router.navigate(["404"]);
-        else
-            this.stepsService.step = "ICF";
+        this.docentiService.GetDocente().subscribe(isLoaded => {
+            if (isLoaded) {
+                const ruolo = this.docentiService.docente.Ruolo;
+
+                if (ruolo != Ruolo.ADMIN) {
+                    this.router.navigate(["404"]);
+                } else {
+                    this.stepsService.step = "ICF";
+                }
+            }
+        });
     }
 
     SaveICF(icf: Icf) {

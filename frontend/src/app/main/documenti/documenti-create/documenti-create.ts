@@ -26,16 +26,21 @@ export class DocumentiCreate {
     }
 
     ngOnInit() {
-        if (this.docentiService.docente.Ruolo != Ruolo.ADMIN && this.docentiService.docente.Ruolo != Ruolo.COORDINATORE)
-            this.router.navigate(["404"]);
-        else {
-            this.router.navigate(["documenti", "crea"]);
+        // Invece di leggere la variabile secca, interroga il service
+        this.docentiService.GetDocente().subscribe(isLoaded => {
+            if (isLoaded) {
+                const ruolo = this.docentiService.docente.Ruolo;
 
-            this.studentiService.GetAnniScolastici().subscribe({
-                next: (data: any) => {
-                },
-                error: (err: any) => this.checkError.checkError(err)
-            });
-        }
+                if (ruolo != Ruolo.ADMIN && ruolo != Ruolo.COORDINATORE) {
+                    this.router.navigate(["404"]);
+                } else {
+                    this.studentiService.GetAnniScolastici().subscribe({
+                        next: (data: any) => {
+                        },
+                        error: (err: any) => this.checkError.checkError(err)
+                    });
+                }
+            }
+        });
     }
 }
