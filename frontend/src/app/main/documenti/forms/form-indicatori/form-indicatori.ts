@@ -8,6 +8,7 @@ import { StepsService } from '../../../../shared/services/steps.service';
 import { CheckError } from '../../../../shared/utilities/check-error';
 import { DocentiService } from '../../../../shared/services/docenti.service';
 import { Ruolo } from '../../../../models/docente';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-form-indicatori',
@@ -26,6 +27,8 @@ export class FormIndicatori {
     datiCaricati: boolean = false;
 
     private readonly cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+
+    public readonly activatedRouter: ActivatedRoute = inject(ActivatedRoute);
 
     ngOnInit() {
         this.stepsService.step = "indicatori";

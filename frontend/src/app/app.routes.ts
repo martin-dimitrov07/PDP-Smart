@@ -16,17 +16,17 @@ import { DocumentiEdit } from './main/documenti/documenti-edit/documenti-edit';
 
 const formStepsCreate: Routes = [
     { path: "", redirectTo: "studenti", pathMatch: "full" },
-    { path: "studenti", component: FormStudenti },
-    { path: "indicatori", component: FormIndicatori },
-    { path: "ICF", component: FormICF },
-    { path: "allegati", component: FormAllegati }
+    { path: "studenti", component: FormStudenti, data: { root: "crea" } },
+    { path: "indicatori", component: FormIndicatori, data: { root: "crea" } },
+    { path: "ICF", component: FormICF, data: { root: "crea" } },
+    { path: "allegati", component: FormAllegati, data: { root: "crea" } }
 ];
 
 const formStepsEdit: Routes = [
     { path: "", component: DocumentiEdit },
-    { path: "indicatori", component: FormIndicatori },
-    { path: "ICF", component: FormICF },
-    { path: "allegati", component: FormAllegati }
+    { path: "indicatori", component: FormIndicatori, data: { root: "modifica" } },
+    { path: "ICF", component: FormICF, data: { root: "modifica" } },
+    { path: "allegati", component: FormAllegati, data: { root: "modifica" } }
 ];
 
 export const routes: Routes = [
@@ -82,7 +82,6 @@ export const routes: Routes = [
             {
                 // path: "edit/:studenteEmail/:annoScolastico",
                 path: "modifica",
-                component: DocumentiEdit,
                 children: formStepsEdit
             }
         ]

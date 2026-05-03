@@ -1,5 +1,8 @@
 <div class="container-lg pt-2 pb-4">
     <section class="section-form px-3 px-sm-4">
+        <!-- <div class="d-flex mb-2">
+            <i class="bi bi-arrow-left"></i>
+        </div> -->
         <h3 class="fs-5">Assegna gli indicatori</h3>
         <p class="small mt-1">Seleziona le misure applicabili per ogni voce. Ogni spunta sarà riportata nel
             documento finale</p>
@@ -10,24 +13,29 @@
             {
             <ng-container>
                 @for (categoria of documentiService.categorieInd; track categoria; let i = $index) {
-                    <app-categoria-ind [categoria]="categoria" [index]="i"></app-categoria-ind>
+                <app-categoria-ind [categoria]="categoria" [index]="i"></app-categoria-ind>
                 }
             </ng-container>
             }
         </div>
     </section>
 
+    @if(activatedRouter.snapshot.data['root'] == "crea")
+    {
     <div class="d-flex justify-content-between flex-wrap">
-        <button type="button" class="btn btn-secondary d-flex gap-2 align-items-center py-2 pe-3 ps-2" (click)="stepsService.GoStep('studenti')">
+        <button type="button" class="btn btn-secondary d-flex gap-2 align-items-center py-2 pe-3 ps-2"
+            (click)="stepsService.GoStep('studenti')">
             <i class="bi bi-chevron-left"></i>
             <p class="m-0">Indietro</p>
         </button>
 
-        <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 ps-3 pe-2 border-0" (click)="docentiService.docente.Ruolo == Ruolo.ADMIN ? stepsService.GoStep('ICF') : stepsService.GoStep('allegati')">
+        <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 ps-3 pe-2 border-0"
+            (click)="docentiService.docente.Ruolo == Ruolo.ADMIN ? stepsService.GoStep('ICF') : stepsService.GoStep('allegati')">
             <p class="m-0">Avanti</p>
             <i class="bi bi-chevron-right"></i>
         </button>
     </div>
+    }
 </div>
 
 <app-modal-add-nota></app-modal-add-nota>
