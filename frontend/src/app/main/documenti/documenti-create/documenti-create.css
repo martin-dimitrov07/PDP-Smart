@@ -8,7 +8,7 @@
     background-color: var(--light-grey);
 }
 
-/* modal add */
+/* btn add 
 
 :host ::ng-deep .btn-add, .btn-add:focus {
     width: 100%;
@@ -37,5 +37,5 @@
 
 :host ::ng-deep .btn-add:hover .bi{
     transform: scale(1.2);
-}
+} */
 

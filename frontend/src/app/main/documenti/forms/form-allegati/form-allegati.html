@@ -1,6 +1,20 @@
 <div class="container-lg pt-2 pb-4">
     <section class="section-form px-3 px-sm-5">
-        <h3 class="fs-5">Inserisci gli allegati</h3>
+        @if(activatedRoute.snapshot.data['root'] == "modifica")
+        {
+        <app-documenti-edit-breadcrumb [currentRoute]="'allegati'"></app-documenti-edit-breadcrumb>
+        }
+        <h3 [class.fs-5]="activatedRoute.snapshot.data['root'] == 'crea'"
+            [class.fs-3]="activatedRoute.snapshot.data['root'] == 'modifica'">
+            @if(activatedRoute.snapshot.data['root'] == 'crea')
+            {
+            Inserisci gli allegati
+            }
+            @else
+            {
+            Allegati inseriti
+            }
+        </h3>
         <hr>
         <!-- Area di drop principale -->
         <div class="dropzone-wrapper">
@@ -21,24 +35,24 @@
                 <div class="d-flex gap-2 flex-wrap justify-content-center overflow-hidden">
                     @for (file of documentiService.allegati; track $index)
                     {
-                    <ngx-dropzone-preview class="px-2 px-sm-3" ngProjectAs="ngx-dropzone-preview" [file]="file" [removable]="true"
-                        (removed)="OnRemove(file)">
+                    <ngx-dropzone-preview class="px-2 px-sm-3" ngProjectAs="ngx-dropzone-preview" [file]="file"
+                        [removable]="true" (removed)="OnRemove(file)">
                         <ngx-dropzone-label class="m-0">
                             <!-- ICONE -->
                             @if (file.type.startsWith('image/')) {
-                                <i class="bi bi-file-earmark-image text-success fs-1"></i>
+                            <i class="bi bi-file-earmark-image text-success fs-1"></i>
                             }
                             @else if (file.type === 'application/pdf') {
-                                <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
+                            <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
                             }
                             @else if (file.name.endsWith('.docx')) {
-                                <i class="bi bi-filetype-docx text-primary fs-1"></i>
+                            <i class="bi bi-filetype-docx text-primary fs-1"></i>
                             }
                             @else if (file.name.endsWith('.doc')) {
-                                <i class="bi bi-filetype-doc text-primary fs-1"></i>
+                            <i class="bi bi-filetype-doc text-primary fs-1"></i>
                             }
                             @else {
-                               <i class="bi bi-file-earmark text-secondary fs-1"></i>
+                            <i class="bi bi-file-earmark text-secondary fs-1"></i>
                             }
 
                             <div class="file-info">
@@ -54,6 +68,8 @@
         </div>
     </section>
 
+    @if(activatedRoute.snapshot.data['root'] == "crea")
+    {
     <div class="d-flex justify-content-between flex-wrap">
         <button type="button" class="btn btn-secondary d-flex gap-2 align-items-center py-2 pe-3 ps-2"
             (click)="docentiService.docente.Ruolo == Ruolo.ADMIN ? stepsService.GoStep('ICF') : stepsService.GoStep('indicatori')">
@@ -65,13 +81,10 @@
             <p class="m-0" (click)="CreateDocumento()">Crea Documento</p>
         </button>
     </div>
+    }
 </div>
 
-<button type="button" 
-        class="btn btn-primary d-none" 
-        data-bs-toggle="modal" 
-        data-bs-target="#errorAllegati" 
-        #btnTrigger>
+<button type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#errorAllegati" #btnTrigger>
 </button>
 
 <app-modal-error></app-modal-error>

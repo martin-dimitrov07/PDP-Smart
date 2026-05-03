@@ -7,17 +7,20 @@ import { DocumentiService } from '../../../../shared/services/documenti.service'
 import { StepsService } from '../../../../shared/services/steps.service';
 import { Ruolo } from '../../../../models/docente';
 import { DocentiService } from '../../../../shared/services/docenti.service';
+import { ActivatedRoute } from '@angular/router';
+import { DocumentiEditBreadcrumb } from '../../documenti-edit/documenti-edit-breadcrumb/documenti-edit-breadcrumb';
 
 
 @Component({
     selector: 'app-form-allegati',
-    imports: [NgxDropzoneModule, CommonModule, ModalError],
+    imports: [NgxDropzoneModule, CommonModule, ModalError, DocumentiEditBreadcrumb],
     templateUrl: './form-allegati.html',
     styleUrl: './form-allegati.css',
 })
 export class FormAllegati {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     public readonly stepsService: StepsService = inject(StepsService);
+    public activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
     public readonly docentiService: DocentiService = inject(DocentiService);
     Ruolo: typeof Ruolo = Ruolo;

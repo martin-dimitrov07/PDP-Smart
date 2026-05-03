@@ -9,10 +9,11 @@ import { CheckError } from '../../../../shared/utilities/check-error';
 import { DocentiService } from '../../../../shared/services/docenti.service';
 import { Ruolo } from '../../../../models/docente';
 import { ActivatedRoute } from '@angular/router';
+import { DocumentiEditBreadcrumb } from '../../documenti-edit/documenti-edit-breadcrumb/documenti-edit-breadcrumb';
 
 @Component({
     selector: 'app-form-indicatori',
-    imports: [FormsModule, CategoriaInd, CommonModule, ModalAddNota],
+    imports: [FormsModule, CategoriaInd, CommonModule, ModalAddNota, DocumentiEditBreadcrumb],
     templateUrl: './form-indicatori.html',
     styleUrl: './form-indicatori.css',
 })
@@ -28,7 +29,7 @@ export class FormIndicatori {
 
     private readonly cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
-    public readonly activatedRouter: ActivatedRoute = inject(ActivatedRoute);
+    public readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
     ngOnInit() {
         this.stepsService.step = "indicatori";
@@ -45,6 +46,9 @@ export class FormIndicatori {
 
                         if (Object.keys(this.documentiService.indicatori).length == 0) {
                             this.documentiService.InitializeIndicatori();
+                            if(this.activatedRoute.snapshot.data['root'] == "modifica"){
+                                //TODO
+                            }
                         }
 
                         this.datiCaricati = true;
