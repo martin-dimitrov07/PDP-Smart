@@ -1,0 +1,5 @@
+h1 strong{
+    font-size: clamp(1rem, 4vw, 1.8rem) !important;
+    /* text-break su bootstrap */
+    word-break: break-word;
+}

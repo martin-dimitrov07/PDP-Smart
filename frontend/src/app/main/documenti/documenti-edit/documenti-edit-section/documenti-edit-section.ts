@@ -1,5 +1,5 @@
 import { Component, inject, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-documenti-edit-section',
@@ -13,9 +13,11 @@ export class DocumentiEditSection {
     @Input() description: string = "";
     @Input() route: string = "";
 
-    private router: Router = inject(Router);
+    private readonly router: Router = inject(Router);
+    private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
     navigateToRoute(){
-        this.router.navigate(["documenti", "modifica", this.route]);
+
+        this.router.navigate([this.route], { relativeTo: this.activatedRoute });
     }
 }

@@ -18,7 +18,7 @@ export class DocentiService {
             map((data: any) => {
                 console.log(data);
                 this.docente = new Docente(data.docente.Nome, data.docente.Cognome, data.docente.Email, data.docente.Ruolo, data.fotoUrl);
-                console.log("Docente caricato:", this.docente);
+                // console.log("Docente caricato:", this.docente);
                 return true; // Questo valore verrà emesso dall'Observable
             }),
             catchError((err) => {

@@ -39,7 +39,7 @@
                 }
 
                 <div class="d-flex d-sm-none gap-1">
-                    <button type="button"
+                    <button type="button" (click)="GoEdit()"
                         class="btn btn-sm d-flex justify-content-center align-items-center action-btn">
                         <i class="bi bi-pencil-square"></i>
                     </button>
@@ -57,7 +57,7 @@
 
 
     <div class="d-none d-sm-flex flex-column gap-2">
-        <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn">
+        <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn" (click)="GoEdit()">
             <i class="bi bi-pencil-square"></i>
         </button>
 

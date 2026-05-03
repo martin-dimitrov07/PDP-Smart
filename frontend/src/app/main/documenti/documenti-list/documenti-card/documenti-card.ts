@@ -3,6 +3,7 @@ import { Documento, Tipo, Stato } from '../../../../models/documento';
 import { NgClass } from '@angular/common';
 import { DocentiService } from '../../../../shared/services/docenti.service';
 import { Ruolo } from '../../../../models/docente';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-documenti-card',
@@ -13,6 +14,7 @@ import { Ruolo } from '../../../../models/docente';
 export class DocumentiCard {
     public readonly docenteService: DocentiService = inject(DocentiService);
     private _documento!: Documento;
+    private readonly router: Router = inject(Router);
 
     // Enum per template
     public readonly StatoEnum = Stato;
@@ -31,5 +33,10 @@ export class DocumentiCard {
 
     get documento(): Documento {
         return this._documento;
+    }
+
+    GoEdit() {
+        // console.log("Navigazione a modifica documento:", this.documento);
+        this.router.navigate(["/documenti/modifica", this.documento.Studente_Email, this.documento.Anno?.getFullYear() + "/" + (this.documento.Anno!.getFullYear() + 1)]);
     }
 }

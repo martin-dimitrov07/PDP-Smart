@@ -2,7 +2,7 @@
     <section class="section-form px-3 px-sm-4">
         @if(activatedRoute.snapshot.data['root'] == "modifica")
         {
-        <app-documenti-edit-breadcrumb [currentRoute]="'indicatori'"></app-documenti-edit-breadcrumb>
+        <app-documenti-edit-breadcrumb [currentRoute]="'indicatori'" [studenteEmail]="activatedRoute.snapshot.paramMap.get('studenteEmail')!" [annoScolastico]="activatedRoute.snapshot.paramMap.get('annoScolastico')!"></app-documenti-edit-breadcrumb>
         }
 
         <h3 [class.fs-5]="activatedRoute.snapshot.data['root'] == 'crea'"

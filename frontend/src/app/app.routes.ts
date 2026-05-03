@@ -13,6 +13,7 @@ import { FormIndicatori } from './main/documenti/forms/form-indicatori/form-indi
 import { FormICF } from './main/documenti/forms/form-icf/form-icf';
 import { FormAllegati } from './main/documenti/forms/form-allegati/form-allegati';
 import { DocumentiEdit } from './main/documenti/documenti-edit/documenti-edit';
+import { documentoResolver } from './shared/utilities/documento-resolver';
 
 const formStepsCreate: Routes = [
     { path: "", redirectTo: "studenti", pathMatch: "full" },
@@ -23,10 +24,10 @@ const formStepsCreate: Routes = [
 ];
 
 const formStepsEdit: Routes = [
-    { path: "", component: DocumentiEdit },
-    { path: "indicatori", component: FormIndicatori, data: { root: "modifica" } },
-    { path: "ICF", component: FormICF, data: { root: "modifica" } },
-    { path: "allegati", component: FormAllegati, data: { root: "modifica" } }
+    { path: "", component: DocumentiEdit, resolve: { documento: documentoResolver } },
+    { path: "indicatori", component: FormIndicatori, data: { root: "modifica" }, resolve: { documento: documentoResolver } },
+    { path: "ICF", component: FormICF, data: { root: "modifica" }, resolve: { documento: documentoResolver } },
+    { path: "allegati", component: FormAllegati, data: { root: "modifica" }, resolve: { documento: documentoResolver } }
 ];
 
 export const routes: Routes = [
@@ -80,8 +81,7 @@ export const routes: Routes = [
                 children: formStepsCreate
             },
             {
-                // path: "edit/:studenteEmail/:annoScolastico",
-                path: "modifica",
+                path: "modifica/:studenteEmail/:annoScolastico",
                 children: formStepsEdit
             }
         ]

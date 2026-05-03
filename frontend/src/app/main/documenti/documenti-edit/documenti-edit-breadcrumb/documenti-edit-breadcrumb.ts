@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-documenti-edit-breadcrumb',
@@ -8,4 +9,12 @@ import { Component, Input } from '@angular/core';
 })
 export class DocumentiEditBreadcrumb {
     @Input() currentRoute: string = "";
+    @Input() studenteEmail: string = "";
+    @Input() annoScolastico: string = "";
+
+    private readonly router: Router = inject(Router);
+
+    GoBack() {
+        return "/documenti/modifica/" + this.studenteEmail + "/" +  encodeURIComponent(this.annoScolastico);
+    }
 }

@@ -8,6 +8,7 @@ import { Ruolo } from '../../models/docente';
 import { Indicatore } from '../../models/indicatore';
 import { Icf } from '../../models/icf';
 import { Classe } from '../../models/classe';
+import { CheckError } from '../utilities/check-error';
 
 @Injectable({
     providedIn: 'root',
@@ -16,6 +17,7 @@ export class DocumentiService {
     private readonly dataStorageService = inject(DataStorageService);
     // private readonly router: Router = inject(Router);
     private readonly docentiService: DocentiService = inject(DocentiService);
+    private readonly checkError: CheckError = inject(CheckError);
 
     classeSelected: Classe = {} as Classe;
     studenteSelected: Studente = {} as Studente;
@@ -39,7 +41,6 @@ export class DocumentiService {
     // annoSelected = signal<string>("Anno");
     documenti: Documento[] = [];
     nClassi: number = 0;
-    documentoSelected: Documento = {} as Documento;
 
     // indicatori = {
     //     "matematica": 
@@ -48,6 +49,13 @@ export class DocumentiService {
     //             "categoria": []
     //         },
     // }
+
+    //edit
+
+    documentoSelected: Documento = {} as Documento;
+
+    indicatoriDoc: Indicatore[] = [];
+
 
     GetMaterieDocente() {
         this.materieDocente = [];
@@ -73,8 +81,8 @@ export class DocumentiService {
 
         return this.dataStorageService.InviaRichiesta("GET", "/materie", params)!.pipe(tap((data: any) => {
             this.materieDocente = Array.from(data).map((item: any) => item.Nome);
-            console.log(this.materieDocente);
-            console.log(data);
+            // console.log(this.materieDocente);
+            // console.log(data);
         }));
     }
 
@@ -103,7 +111,7 @@ export class DocumentiService {
         return this.dataStorageService.InviaRichiesta("GET", "/materie", params)!.pipe(tap((data: any) => {
             this.materieClasse = Array.from(data).map((item: any) => item.Nome);
             console.log(this.materieClasse);
-            console.log(data);
+            // console.log(data);
         }));
     }
 
@@ -124,9 +132,27 @@ export class DocumentiService {
         }));
     }
 
+    GetIndicatoriDocumento() {
+        if (!this.documentoSelected) return;
+
+        const filters = {
+            Materia_Documenti_Indicatori: {
+                some: {
+                    Documento_Studente_Email: this.documentoSelected.Studente_Email,
+                    Documento_Anno: this.documentoSelected.Anno
+                }
+            }
+        }
+
+        return this.dataStorageService.InviaRichiesta("GET", "/indicatori", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
+            this.indicatoriDoc = data.map((ind: Indicatore) => new Indicatore(ind.Id, ind.Tipologia, ind.Categoria, ind.Descrizione, ind.Nota));
+            console.log(this.indicatoriDoc);
+        }));
+    }
+
     GetCategorieIndicatore() {
         return this.dataStorageService.InviaRichiesta("GET", "/indicatori")!.pipe(tap((data: any) => {
-            console.log(data);
+            // console.log(data);
             this.categorieInd = [...new Set<string>(data.map((ind: Indicatore) => ind.Categoria))];
         }));
     }
@@ -139,6 +165,22 @@ export class DocumentiService {
                 this.indicatori[materia][categoria] = [];
             }
         }
+    }
+
+    SetIndicatori() {
+        //da aggiustare
+        this.GetIndicatoriDocumento()?.subscribe({
+            next: () => {
+                for (let indicatore of this.indicatoriDoc) {
+                    for (let materia of this.materieClasse) {
+                        if (this.indicatori[materia] && this.indicatori[materia][indicatore.Categoria]) {
+                            this.indicatori[materia][indicatore.Categoria].push({ Id: indicatore.Id, Nota: indicatore.Nota });
+                        }
+                    }
+                }
+            },
+            error: (err) => this.checkError.checkError(err)
+        })
     }
 
     GetICFs() {
@@ -199,7 +241,31 @@ export class DocumentiService {
                     new Date(doc.Anno),
                     doc.Data_Approvazione ? new Date(doc.Data_Approvazione) : undefined
                 ));
-                console.log(data);
+                // console.log(data);
+            })
+        );
+    }
+
+    GetDocumentoById(studenteEmail: string, anno: Date): Observable<any> {
+        const filters = {
+            Studente_Email: studenteEmail,
+            Anno: anno
+        };
+
+        return this.dataStorageService.InviaRichiesta("GET", "/documenti", { filters: JSON.stringify(filters) })!.pipe(
+            tap((data: any) => {
+
+                // console.log(data);
+
+                this.documentoSelected = new Documento(
+                    data[0].Studente_Email,
+                    data[0].Tipologia,
+                    new Date(data[0].Anno),
+                    data[0].Data_Approvazione ? new Date(data[0].Data_Approvazione) : undefined
+                );
+
+                // console.log(this.documentoSelected);
+
             })
         );
     }

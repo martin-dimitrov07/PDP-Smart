@@ -3,17 +3,20 @@ export class Indicatore {
     Tipologia: Tipologia;
     Categoria: Categoria;
     Descrizione: string;
+    Nota?: string;
 
     constructor(
         Id: number,
         Tipologia: Tipologia,
         Categoria: Categoria,
-        Descrizione: string
+        Descrizione: string,
+        Nota: string = ""
     ) {
         this.Id = Id;
         this.Tipologia = Tipologia;
         this.Categoria = Categoria;
         this.Descrizione = Descrizione;
+        this.Nota = Nota;
     }
 }
 

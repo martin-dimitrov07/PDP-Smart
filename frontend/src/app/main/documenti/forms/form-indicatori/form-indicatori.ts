@@ -10,6 +10,10 @@ import { DocentiService } from '../../../../shared/services/docenti.service';
 import { Ruolo } from '../../../../models/docente';
 import { ActivatedRoute } from '@angular/router';
 import { DocumentiEditBreadcrumb } from '../../documenti-edit/documenti-edit-breadcrumb/documenti-edit-breadcrumb';
+import { StudentiService } from '../../../../shared/services/studenti.service';
+import { Classe } from '../../../../models/classe';
+import { Documento } from '../../../../models/documento';
+import { subscribe } from 'diagnostics_channel';
 
 @Component({
     selector: 'app-form-indicatori',
@@ -19,6 +23,7 @@ import { DocumentiEditBreadcrumb } from '../../documenti-edit/documenti-edit-bre
 })
 export class FormIndicatori {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
+    private readonly studentiService: StudentiService = inject(StudentiService);
     public readonly stepsService: StepsService = inject(StepsService);
     private readonly checkError: CheckError = inject(CheckError);
 
@@ -34,34 +39,78 @@ export class FormIndicatori {
     ngOnInit() {
         this.stepsService.step = "indicatori";
 
-        this.documentiService.GetMaterieClasse().subscribe({
-            next: (data) => {
-                this.documentiService.GetCategorieIndicatore().subscribe({
-                    next: (data) => {
-                        this.datiCaricati = false;
-                        // Forziamo Angular a capire che c'è stato un cambiamento
-                        this.cdr.detectChanges();
+        if (this.activatedRoute.snapshot.data['root'] == "modifica") {
 
-                        // console.log(this.documentiService.indicatori.object);
+            const annoScolastico = new Date(this.activatedRoute.snapshot.paramMap.get('annoScolastico')!.split("/")[0] + "-09-01");
 
-                        if (Object.keys(this.documentiService.indicatori).length == 0) {
-                            this.documentiService.InitializeIndicatori();
-                            if(this.activatedRoute.snapshot.data['root'] == "modifica"){
-                                //TODO
+            this.studentiService.GetClasseStudente(this.activatedRoute.snapshot.paramMap.get('studenteEmail')!, annoScolastico).subscribe({
+                next: (classe: Classe) => {
+                    this.documentiService.classeSelected = new Classe(
+                        classe.Id,
+                        classe.Classe,
+                        classe.Sezione,
+                        classe.Indirizzo,
+                        new Date(classe.Anno_Scolastico)
+                    );
+
+                    this.documentiService.GetMaterieClasse().subscribe({
+                        next: (data) => {
+                            this.documentiService.GetCategorieIndicatore().subscribe({
+                                next: (data) => {
+                                    this.datiCaricati = false;
+                                    // Forziamo Angular a capire che c'è stato un cambiamento
+                                    this.cdr.detectChanges();
+
+                                    // console.log(this.documentiService.indicatori.object);
+
+                                    if (Object.keys(this.documentiService.indicatori).length == 0) {
+                                        this.documentiService.InitializeIndicatori();
+                                        
+                                        this.documentiService.SetIndicatori();
+                                    }
+
+                                    console.log(this.documentiService.indicatori);
+
+                                    this.datiCaricati = true;
+                                    this.cdr.detectChanges();
+                                },
+                                error: (err) => this.checkError.checkError(err)
+                            });
+                        },
+                        error: (err) => this.checkError.checkError(err)
+                    })
+                }
+            });
+        }
+        else{
+            this.documentiService.GetMaterieClasse().subscribe({
+                next: (data) => {
+                    this.documentiService.GetCategorieIndicatore().subscribe({
+                        next: (data) => {
+                            this.datiCaricati = false;
+                            // Forziamo Angular a capire che c'è stato un cambiamento
+                            this.cdr.detectChanges();
+
+                            // console.log(this.documentiService.indicatori.object);
+
+                            if (Object.keys(this.documentiService.indicatori).length == 0) {
+                                this.documentiService.InitializeIndicatori();
                             }
-                        }
 
-                        this.datiCaricati = true;
-                        this.cdr.detectChanges();
-                    },
-                    error: (err) => this.checkError.checkError(err)
-                });
-            },
-            error: (err) => this.checkError.checkError(err)
-        })
+                            // console.log(this.documentiService.indicatori);
+
+                            this.datiCaricati = true;
+                            this.cdr.detectChanges();
+                        },
+                        error: (err) => this.checkError.checkError(err)
+                    });
+                },
+                error: (err) => this.checkError.checkError(err)
+            })
+        }
 
         this.documentiService.GetMaterieDocente().subscribe({
-            next: (data) => {  },
+            next: (data) => { },
             error: (err) => this.checkError.checkError(err)
         })
     }
