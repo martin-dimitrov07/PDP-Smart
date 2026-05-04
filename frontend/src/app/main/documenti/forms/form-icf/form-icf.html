@@ -2,7 +2,7 @@
     <section class="section-form px-3 px-sm-5">
         @if(activatedRoute.snapshot.data['root'] == "modifica")
         {
-        <app-documenti-edit-breadcrumb [currentRoute]="'ICF'" [studenteEmail]="activatedRoute.snapshot.paramMap.get('studenteEmail')!" [annoScolastico]="activatedRoute.snapshot.paramMap.get('annoScolastico')!"></app-documenti-edit-breadcrumb>
+        <app-documenti-edit-breadcrumb [currentRoute]="'ICF'"></app-documenti-edit-breadcrumb>
         }
         <h3 [class.fs-5]="activatedRoute.snapshot.data['root'] == 'crea'"
             [class.fs-3]="activatedRoute.snapshot.data['root'] == 'modifica'">
@@ -17,26 +17,25 @@
         </h3>
         <hr>
 
-
         <div class="py-2 px-sm-3 d-flex flex-column gap-3">
             <div class="d-flex g-2 gap-3 flex-wrap">
                 @if(documentiService.icfsSelected && documentiService.icfsSelected.length > 0)
                 {
-                    @for (icf of documentiService.icfsSelected; track $index) {
-                    <div class="card" style="max-width: 350px !important;"
-                        [class.bg-card-edit]="activatedRoute.snapshot.data['root'] == 'modifica'">
-                        <div class="card-body d-flex gap-3 align-items-center justify-content-between">
-                            <div class="d-flex flex-column gap-2">
-                                <h5 class="card-title m-0">{{icf.Codice.toUpperCase()}}</h5>
-                                <p class="m-0">{{icf.Descrizione}}</p>
-                            </div>
-                            @if(docentiService.docente.Ruolo == Ruolo.ADMIN)
-                            {
-                            <i class="bi bi-x-lg text-danger" style="cursor: pointer;" (click)="RemoveICF(icf.Codice)"></i>
-                            }
+                @for (icf of documentiService.icfsSelected; track $index) {
+                <div class="card" style="max-width: 350px !important;"
+                    [class.bg-card-edit]="activatedRoute.snapshot.data['root'] == 'modifica'">
+                    <div class="card-body d-flex gap-3 align-items-center justify-content-between">
+                        <div class="d-flex flex-column gap-2">
+                            <h5 class="card-title m-0">{{icf.Codice.toUpperCase()}}</h5>
+                            <p class="m-0">{{icf.Descrizione}}</p>
                         </div>
+                        @if(docentiService.docente.Ruolo == Ruolo.ADMIN)
+                        {
+                        <i class="bi bi-x-lg text-danger" style="cursor: pointer;" (click)="RemoveICF(icf.Codice)"></i>
+                        }
                     </div>
-                    }
+                </div>
+                }
                 }
             </div>
 
@@ -47,6 +46,15 @@
                 <i class="bi bi-plus-circle fs-5 secondary-text-color"></i>
                 <span class="text-add secondary-text-color">Aggiungi nuovo ICF</span>
             </button>
+            }
+
+            @if(activatedRoute.snapshot.data['root'] == "modifica" && docentiService.docente.Ruolo == Ruolo.ADMIN){
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0"
+                    (click)="Edit()">
+                    <p class="m-0">Salva e modifica</p>
+                </button>
+            </div>
             }
         </div>
     </section>

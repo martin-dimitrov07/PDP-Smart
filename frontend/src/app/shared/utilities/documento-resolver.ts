@@ -5,5 +5,5 @@ import { inject } from '@angular/core';
 export const documentoResolver: ResolveFn<boolean> = (route, state) => {
     const documentiService: DocumentiService = inject(DocumentiService);
 
-    return documentiService.GetDocumentoById(route.paramMap.get('studenteEmail')!, new Date(route.paramMap.get('annoScolastico')!.split("/")[0] + "-09-01"));
+    return documentiService.GetDocumentoById(route.paramMap.get('studenteEmail')!.replaceAll('_', '.'), new Date(route.paramMap.get('annoScolastico')!.split("-")[0] + "-09-01"));
 };

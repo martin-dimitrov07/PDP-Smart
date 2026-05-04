@@ -37,6 +37,6 @@ export class DocumentiCard {
 
     GoEdit() {
         // console.log("Navigazione a modifica documento:", this.documento);
-        this.router.navigate(["/documenti/modifica", this.documento.Studente_Email, this.documento.Anno?.getFullYear() + "/" + (this.documento.Anno!.getFullYear() + 1)]);
+        this.router.navigate(["/documenti/modifica", this.documento.Studente_Email.replaceAll('.', '_'), this.documento.Anno?.getFullYear() + "-" + (this.documento.Anno!.getFullYear() + 1)]);
     }
 }

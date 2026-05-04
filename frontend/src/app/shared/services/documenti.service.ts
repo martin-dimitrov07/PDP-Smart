@@ -55,6 +55,7 @@ export class DocumentiService {
     documentoSelected: Documento = {} as Documento;
 
     indicatoriDoc: Indicatore[] = [];
+    icfsEdit: any[] = [];
 
 
     GetMaterieDocente() {
@@ -189,6 +190,35 @@ export class DocumentiService {
         return this.dataStorageService.InviaRichiesta("GET", "/icf")?.pipe(tap((data: any) => {
             this.icfs = data.map((icf: Icf) => new Icf(icf.Codice, icf.Descrizione));
         }))
+    }
+
+    GetICFSDocumento() {
+        if (!this.documentoSelected) return;
+
+        const filters = {
+            Documenti_ICF: {
+                some: {
+                    Documento_Studente_Email: this.documentoSelected.Studente_Email,
+                    Documento_Anno: this.documentoSelected.Anno
+                }
+            }
+        }
+
+        return this.dataStorageService.InviaRichiesta("GET", "/icf", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
+            this.icfsSelected = data.map((icf: Icf) => new Icf(icf.Codice, icf.Descrizione));
+            console.log(this.icfsSelected);
+        }));
+    }
+
+    UpdateICFsDocumento() {
+        if (!this.documentoSelected) return;
+
+        const payload = {
+            documento: this.documentoSelected,
+            icfs: this.icfsEdit
+        }
+
+        return this.dataStorageService.InviaRichiesta("PATCH", "/documento/update-icfs", payload)!;
     }
 
     GetAnniScolastici(): Observable<any> {

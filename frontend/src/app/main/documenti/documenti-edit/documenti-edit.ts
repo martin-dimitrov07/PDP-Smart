@@ -15,8 +15,8 @@ export class DocumentiEdit {
     private readonly activatedRouter: ActivatedRoute = inject(ActivatedRoute);
 
     ngOnInit(){
-        this.annoScolastico = this.activatedRouter.snapshot.paramMap.get("annoScolastico")!;
-        this.studenteEmail = this.activatedRouter.snapshot.paramMap.get("studenteEmail")!;
+        this.annoScolastico = this.activatedRouter.snapshot.paramMap.get("annoScolastico")!.replace("-", "/");
+        this.studenteEmail = this.activatedRouter.snapshot.paramMap.get("studenteEmail")!.replaceAll('_', '.');
     }
 
 }

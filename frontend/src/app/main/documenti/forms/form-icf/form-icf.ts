@@ -21,18 +21,29 @@ export class FormICF {
     public readonly stepsService: StepsService = inject(StepsService);
     public readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
+    root: string = "";
+
     Ruolo: typeof Ruolo = Ruolo;
 
     prevPage: string = "";
 
     ngOnInit() {
-        const root = this.activatedRoute.snapshot.data["root"];
+        this.root = this.activatedRoute.snapshot.data["root"];
+
+        if (this.root == "modifica") {
+            this.documentiService.GetICFSDocumento()?.subscribe({
+                next: (data: any) => {
+                    console.log(this.documentiService.icfsSelected);
+                },
+                error: (err: any) => console.log(err)
+            });
+        }
 
         this.docentiService.GetDocente().subscribe(isLoaded => {
             if (isLoaded) {
                 const ruolo = this.docentiService.docente.Ruolo;
 
-                if (ruolo != Ruolo.ADMIN && root == "crea") {
+                if (ruolo != Ruolo.ADMIN && this.root == "crea") {
                     this.router.navigate(["404"]);
                 } else {
                     this.stepsService.step = "ICF";
@@ -44,10 +55,41 @@ export class FormICF {
     SaveICF(icf: Icf) {
         if (this.documentiService.icfsSelected.findIndex((icfArray: Icf) => icfArray.Codice == icf.Codice) == -1) {
             this.documentiService.icfsSelected.push(new Icf(icf.Codice, icf.Descrizione));
+            if (this.root == "modifica") {
+                const indexICFEdit = this.documentiService.icfsEdit.findIndex((icfEdit: any) => icfEdit.Icf.Codice == icf.Codice);
+                if (indexICFEdit != -1) {
+                    this.documentiService.icfsEdit[indexICFEdit].Value = true;
+                } else {
+                    this.documentiService.icfsEdit.push({ Icf: new Icf(icf.Codice, icf.Descrizione), Value: true });
+                }
+            }
         }
+        console.log(this.documentiService.icfsEdit);
     }
 
     RemoveICF(codice: string) {
         this.documentiService.icfsSelected.splice(this.documentiService.icfsSelected.findIndex(icf => icf.Codice == codice), 1);
+        if (this.root == "modifica") {
+            const indexICFEdit = this.documentiService.icfsEdit.findIndex((icfEdit: any) => icfEdit.Icf.Codice == codice);
+            if (indexICFEdit != -1) {
+                this.documentiService.icfsEdit.splice(indexICFEdit, 1);
+            } else {
+                this.documentiService.icfsEdit.push({ Icf: new Icf(codice), Value: false });
+            }
+        }
+        console.log(this.documentiService.icfsEdit);
+    }
+
+    Edit(){
+        if(this.documentiService.icfsEdit.length > 0){
+            this.documentiService.UpdateICFsDocumento()?.subscribe({
+                next: (data: any) => {
+                    console.log("ICF modificati con successo");
+                },
+                error: (err: any) => console.log(err)
+            });
+        }
+
+        this.router.navigate(["../"], { relativeTo: this.activatedRoute });
     }
 }

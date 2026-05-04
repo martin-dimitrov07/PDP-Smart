@@ -174,15 +174,15 @@ app.delete("/api/documento/delete/", GestioneDocumenti.DeletePDP);
 app.get("/api/materie", GestioneMaterie.GetMaterie);
 
 //Indicatori
-app.patch("/api/documento/updateIndicatori", GestioneIndicatori.UpdateIndicatoriDocumento);
+app.patch("/api/documento/update-indicatori", GestioneIndicatori.UpdateIndicatoriDocumento);
 app.get("/api/indicatori", GestioneIndicatori.GetIndicatori);
 
 //ICF
 app.get("/api/icf", GestioneICF.GetIcf);
-app.patch("/api/documento/updateICFs", GestioneICF.UpdateICFsDocumento);
+app.patch("/api/documento/update-icfs", GestioneICF.UpdateICFsDocumento);
 
 //Allegati
-app.patch("/api/documento/updateAllegati", GestioneAllegati.UpdateAllegatiDocumento);
+app.patch("/api/documento/update-allegati", GestioneAllegati.UpdateAllegatiDocumento);
 
 //F. default root e gestione errori
 app.use(function (req, res) {

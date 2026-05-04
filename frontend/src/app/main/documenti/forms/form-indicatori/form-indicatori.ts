@@ -12,8 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DocumentiEditBreadcrumb } from '../../documenti-edit/documenti-edit-breadcrumb/documenti-edit-breadcrumb';
 import { StudentiService } from '../../../../shared/services/studenti.service';
 import { Classe } from '../../../../models/classe';
-import { Documento } from '../../../../models/documento';
-import { subscribe } from 'diagnostics_channel';
+
 
 @Component({
     selector: 'app-form-indicatori',
@@ -41,9 +40,9 @@ export class FormIndicatori {
 
         if (this.activatedRoute.snapshot.data['root'] == "modifica") {
 
-            const annoScolastico = new Date(this.activatedRoute.snapshot.paramMap.get('annoScolastico')!.split("/")[0] + "-09-01");
+            const annoScolastico = new Date(this.activatedRoute.snapshot.paramMap.get('annoScolastico')!.split("-")[0] + "-09-01");
 
-            this.studentiService.GetClasseStudente(this.activatedRoute.snapshot.paramMap.get('studenteEmail')!, annoScolastico).subscribe({
+            this.studentiService.GetClasseStudente(this.activatedRoute.snapshot.paramMap.get('studenteEmail')!.replaceAll('_', '.'), annoScolastico).subscribe({
                 next: (classe: Classe) => {
                     this.documentiService.classeSelected = new Classe(
                         classe.Id,

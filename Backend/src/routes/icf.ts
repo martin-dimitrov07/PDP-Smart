@@ -52,16 +52,16 @@ async function UpdateICFsDocumento(req: any, res: any) {
         // ICFs = {
         //     "ICF1": {
         //         "Codice": "ICF1"
-        //         "value": true/false è true se è da aggiungere senno se è false da eliminare
+        //         "Value": true/false è true se è da aggiungere senno se è false da eliminare
         //     },
         // }
 
-        const ICFs = req.body.ICFs;
+        const ICFs = req.body.icfs;
         const documento = req.body.documento;
 
         for (const ICFKey in ICFs) {
             const ICF = ICFs[ICFKey];
-            if (ICF.value == true) {
+            if (ICF.Value == true) {
                 // Creare record se non esiste già, altrimenti non fare nulla
                 await prisma.documento_ICF.upsert({
                     where: {
@@ -79,7 +79,7 @@ async function UpdateICFsDocumento(req: any, res: any) {
                     }
                 });
             }
-            else if (ICF.value == false) {
+            else if (ICF.Value == false) {
                 // Eliminare il record
                 await prisma.documento_ICF.delete({
                     where: {

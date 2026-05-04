@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { StudentiService } from '../../../shared/services/studenti.service';
 import { CheckError } from '../../../shared/utilities/check-error';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { StepBar } from './step-bar/step-bar';
 import { Router } from '@angular/router';
 import { DocentiService } from '../../../shared/services/docenti.service';
@@ -19,13 +19,11 @@ export class DocumentiCreate {
     private readonly docentiService: DocentiService = inject(DocentiService);
     private readonly checkError: CheckError = inject(CheckError);
     private readonly router: Router = inject(Router);
-    public avanzamento: String = "studenti";
-
-    Avanzamento(tappa: String) {
-        this.avanzamento = tappa;
-    }
+    private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
     ngOnInit() {
+        this.router.navigate(['studenti'], { relativeTo: this.activatedRoute });
+
         // Invece di leggere la variabile secca, interroga il service
         this.docentiService.GetDocente().subscribe(isLoaded => {
             if (isLoaded) {

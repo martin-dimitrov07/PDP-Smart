@@ -24,10 +24,10 @@ const formStepsCreate: Routes = [
 ];
 
 const formStepsEdit: Routes = [
-    { path: "", component: DocumentiEdit, resolve: { documento: documentoResolver } },
-    { path: "indicatori", component: FormIndicatori, data: { root: "modifica" }, resolve: { documento: documentoResolver } },
-    { path: "ICF", component: FormICF, data: { root: "modifica" }, resolve: { documento: documentoResolver } },
-    { path: "allegati", component: FormAllegati, data: { root: "modifica" }, resolve: { documento: documentoResolver } }
+    { path: "", component: DocumentiEdit },
+    { path: "indicatori", component: FormIndicatori, data: { root: "modifica" }},
+    { path: "ICF", component: FormICF, data: { root: "modifica" } },
+    { path: "allegati", component: FormAllegati, data: { root: "modifica" } }
 ];
 
 export const routes: Routes = [
