@@ -1,5 +1,7 @@
-import { writeFile, mkdir, unlink } from "fs/promises";
 import { prisma } from "../server.ts";
+import * as GestioneIndicatori from "./indicatori.ts";
+import * as GestioneICF from "./icf.ts";
+import * as GestioneAllegati from "./allegati.ts";
 
 async function DeletePDP(req: any, res: any) {
     try {
@@ -10,13 +12,13 @@ async function DeletePDP(req: any, res: any) {
 
         await prisma.$transaction(async (tx) => {
             if (allegati && allegati.length > 0) {
-                await DeleteAllegati(tx, allegati);
+                await GestioneAllegati.DeleteAllegati(tx, allegati);
             }
             if (ICFs && ICFs.length > 0) {
-                await DeleteICFs(tx, ICFs, documento.Studente_Email, new Date(documento.Anno));
+                await GestioneICF.DeleteICFs(tx, ICFs, documento.Studente_Email, new Date(documento.Anno));
             }
             if (indicatori && Object.keys(indicatori).length > 0) {
-                await DeleteIndicatori(tx, indicatori, documento.Studente_Email, new Date(documento.Anno));
+                await GestioneIndicatori.DeleteIndicatori(tx, indicatori, documento.Studente_Email, new Date(documento.Anno));
             }
             await DeleteDocumento(tx, documento);
         }, {
@@ -35,252 +37,13 @@ async function DeletePDP(req: any, res: any) {
     }
 }
 
-async function DeleteDocumento(tx: any, documento: any) {
-    await tx.documento.delete({
+async function DeleteDocumento(db: any, documento: any) {
+    await db.documento.delete({
         where: {
             Studente_Email: documento.Studente_Email,
             Anno: new Date(documento.Anno)
         }
     });
-}
-
-async function DeleteIndicatori(tx: any, indicatori: any, studenteEmail: string, anno: Date) {
-    for (const materia in indicatori) {
-        for (const categoria in indicatori[materia]) {
-            for (const indicatore of indicatori[materia][categoria]) {
-                await tx.materia_Documento_Indicatore.delete({
-                    where: {
-                        Materia_Nome_Indicatore_Id_Documento_Studente_Email_Documento_Anno: {
-                            Materia_Nome: materia,
-                            Indicatore_Id: indicatore.Id,
-                            Documento_Anno: anno,
-                            Documento_Studente_Email: studenteEmail
-                        }
-                    }
-                });
-            }
-        }
-    }
-}
-
-async function DeleteICFs(tx: any, ICFs: any, studenteEmail: string, anno: Date) {
-    for (const icf of ICFs) {
-        await tx.documento_ICF.delete({
-            where: {
-                Id: {
-                    ICF_Codice: icf.Codice,
-                    Documento_Anno: anno,
-                    Documento_Studente_Email: studenteEmail
-                }
-            }
-        });
-    }
-}
-
-async function DeleteAllegati(tx: any, allegati: any) {
-    for (const allegato of allegati) {
-        const allegatoDB = await tx.allegato.findMany({
-            where: {
-                Documento_Studente_Email: allegato.documento.Studente_Email,
-                Documento_Anno: new Date(allegato.documento.Anno),
-                Nome: allegato.name
-            }
-        });
-        const allegatoDeleted = await tx.allegato.delete({
-            where: {
-                Id: allegatoDB.length > 0 ? allegatoDB[0]!.Id : -1
-            }
-        });
-        await DeleteAllegato(allegatoDeleted);
-    }
-}
-
-async function UpdateAllegatiDocumento(req: any, res: any) {
-    try {
-        // allegati = [
-        //     {Nome: "allegato1.pdf",  "Value": true/false},
-        //     ...
-        // ]
-        const allegati = req.files && req.files.allegati ? (Array.isArray(req.files.allegati) ? req.files.allegati : [req.files.allegati]) : [];
-        const documento = req.body.documento;
-
-        for (const allegato of allegati) {
-
-            const allegatoDB = await prisma.allegato.findMany({
-                where: {
-                    Documento_Studente_Email: documento.Studente_Email,
-                    Documento_Anno: new Date(documento.Anno),
-                    Nome: allegato.name
-                }
-            });
-
-            if (allegato.Value == true) {
-                // Creare record se non esiste già, altrimenti non fare nulla
-                const newAllegato = await prisma.allegato.upsert({
-                    where: {
-                        Id: allegatoDB.length > 0 ? allegatoDB[0]!.Id : -1 // se esiste già prendo l'id del primo record trovato, altrimenti metto un id che sicuramente non esiste
-                    },
-                    update: {},
-                    create: {
-                        Nome: allegato.name,
-                        Percorso: `${process.env.ALLEGATI_PATH}/${documento.Studente_Email}/${new Date(documento.Anno).getFullYear().toString()}`,
-                        Documento_Studente_Email: documento.Studente_Email,
-                        Documento_Anno: new Date(documento.Anno)
-                    }
-                });
-                await SaveAllegato(newAllegato, allegato.data);
-            }
-            else if (allegato.Value == false) {
-                // Eliminare il record
-                const allegatoDeleted = await prisma.allegato.delete({
-                    where: {
-                        Id: allegatoDB.length > 0 ? allegatoDB[0]!.Id : -1
-                    }
-                });
-                // Eliminare il file dal filesystem
-                await DeleteAllegato(allegatoDeleted);
-            }
-        }
-
-        res.status(200).send({ message: "Allegati aggiornati con successo" });
-    }
-    catch (err) {
-        console.error("Errore nell'aggiornamento degli allegati del documento:", err);
-        res.status(500).send({
-            error: "Errore durante l'aggiornamento degli allegati del documento",
-            details: err
-        });
-    }
-}
-
-async function DeleteAllegato(allegato: any) {
-    const filePath = `${allegato.Percorso}/${allegato.Id}_${allegato.Nome}`;
-    await unlink(filePath);
-}
-
-async function UpdateICFsDocumento(req: any, res: any) {
-    try {
-        //         ICF_Codice               String
-        // Documento_Anno           DateTime
-        // Documento_Studente_Email String
-        // ICFs = {
-        //     "ICF1": {
-        //         "Codice": "ICF1"
-        //         "value": true/false è true se è da aggiungere senno se è false da eliminare
-        //     },
-        // }
-
-        const ICFs = req.body.ICFs;
-        const documento = req.body.documento;
-
-        for (const ICFKey in ICFs) {
-            const ICF = ICFs[ICFKey];
-            if (ICF.value == true) {
-                // Creare record se non esiste già, altrimenti non fare nulla
-                await prisma.documento_ICF.upsert({
-                    where: {
-                        Id: {
-                            ICF_Codice: ICF.Codice,
-                            Documento_Anno: new Date(documento.Anno),
-                            Documento_Studente_Email: documento.Studente_Email
-                        }
-                    },
-                    update: {},
-                    create: {
-                        ICF_Codice: ICF.Codice,
-                        Documento_Anno: new Date(documento.Anno),
-                        Documento_Studente_Email: documento.Studente_Email
-                    }
-                });
-            }
-            else if (ICF.value == false) {
-                // Eliminare il record
-                await prisma.documento_ICF.delete({
-                    where: {
-                        Id: {
-                            ICF_Codice: ICF.Codice,
-                            Documento_Anno: new Date(documento.Anno),
-                            Documento_Studente_Email: documento.Studente_Email
-                        }
-                    }
-                });
-            }
-        }
-
-        res.status(200).send({ message: "ICFs aggiornati con successo" });
-    }
-    catch (err) {
-        console.error("Errore nell'aggiornamento degli ICFs del documento:", err);
-        res.status(500).send({
-            error: "Errore durante l'aggiornamento degli ICFs del documento",
-            details: err
-        });
-    }
-}
-
-async function UpdateIndicatoriDocumento(req: any, res: any) {
-    try {
-        const indicatori = req.body.indicatori;
-        const documento = req.body.documento;
-
-        //     "matematica": 
-        //         {
-        //             "criteri": [ { id: "Id", Nota: "Nota", Value: true/false è true se è da aggiungere senno se è false da eliminare }, ... ],
-        //             "categoria": []
-        //         },
-
-        // Aggiorna o crea i record in Materia_Documento_Indicatore
-        // Fa la ricerca sull'indicatore e se non esiste uno con quel documento e indicatore, lo crea, altrimenti lo aggiorna
-        for (const materia in indicatori) {
-            for (const categoria in indicatori[materia]) {
-                for (const indicatore of indicatori[materia][categoria]) {
-                    if (indicatore.Value == true) {
-                        // Creare o fare update del record
-                        await prisma.materia_Documento_Indicatore.upsert({
-                            where: {
-                                Materia_Nome_Indicatore_Id_Documento_Studente_Email_Documento_Anno: {
-                                    Materia_Nome: materia,
-                                    Indicatore_Id: indicatore.Id,
-                                    Documento_Anno: new Date(documento.Anno),
-                                    Documento_Studente_Email: documento.Studente_Email
-                                }
-                            },
-                            update: {
-                                Nota: indicatore.Nota || null
-                            },
-                            create: {
-                                Materia_Nome: materia,
-                                Indicatore_Id: indicatore.Id,
-                                Documento_Anno: new Date(documento.Anno),
-                                Documento_Studente_Email: documento.Studente_Email,
-                                Nota: indicatore.Nota || null
-                            }
-                        });
-                    } else if (indicatore.Value === false) {
-                        // Eliminare il record
-                        await prisma.materia_Documento_Indicatore.delete({
-                            where: {
-                                Materia_Nome_Indicatore_Id_Documento_Studente_Email_Documento_Anno: {
-                                    Materia_Nome: materia,
-                                    Indicatore_Id: indicatore.Id,
-                                    Documento_Anno: new Date(documento.Anno),
-                                    Documento_Studente_Email: documento.Studente_Email
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-        }
-
-        res.status(200).send({ message: "Indicatori aggiornati con successo" });
-    } catch (err) {
-        console.error("Errore nell'aggiornamento degli indicatori del documento:", err);
-        res.status(500).send({
-            error: "Errore durante l'aggiornamento degli indicatori del documento",
-            details: err
-        });
-    }
 }
 
 async function CreatePDP(req: any, res: any) {
@@ -294,13 +57,13 @@ async function CreatePDP(req: any, res: any) {
         await prisma.$transaction(async (tx) => {
             const newDoc = await CreateDocumento(tx, documento);
             if (indicatori && Object.keys(indicatori).length > 0) {
-                await CreateIndicatori(tx, indicatori, newDoc.Studente_Email, newDoc.Anno);
+                await GestioneIndicatori.CreateIndicatori(tx, indicatori, newDoc.Studente_Email, newDoc.Anno);
             }
             if (ICFs && ICFs.length > 0) {
-                await CreateICFs(tx, ICFs, newDoc.Studente_Email, newDoc.Anno);
+                await GestioneICF.CreateICFs(tx, ICFs, newDoc.Studente_Email, newDoc.Anno);
             }
             if (allegati && allegati.length > 0) {
-                await CreateAllegati(tx, allegati, newDoc.Studente_Email, newDoc.Anno);
+                await GestioneAllegati.CreateAllegati(tx, allegati, newDoc.Studente_Email, newDoc.Anno);
             }
         }, {
             maxWait: 5000, // tempo massimo di attesa per l'acquisizione di una connessione
@@ -332,60 +95,6 @@ function SetAnnoCorrect(data: Date): Date {
         annoData -= 1;
     }
     return new Date(Date.UTC(annoData, 8, 1));
-}
-
-async function CreateIndicatori(db: any, indicatori: any, studenteEmail: string, anno: Date) {
-    for (const materia in indicatori) {
-        for (const categoria in indicatori[materia]) {
-            for (const indicatore of indicatori[materia][categoria]) {
-                const record = {
-                    Materia_Nome: materia,
-                    Indicatore_Id: indicatore.Id,
-                    Documento_Anno: anno,
-                    Documento_Studente_Email: studenteEmail,
-                    Nota: indicatore.Nota || null
-                }
-                await db.materia_Documento_Indicatore.create({
-                    data: record
-                });
-            }
-        }
-    }
-}
-
-async function CreateICFs(db: any, ICFs: any, studenteEmail: string, anno: Date) {
-    for (const icf of ICFs) {
-        const record = {
-            ICF_Codice: icf.Codice,
-            Documento_Studente_Email: studenteEmail,
-            Documento_Anno: anno
-        };
-        await db.documento_ICF.create({
-            data: record
-        });
-    }
-}
-
-async function CreateAllegati(db: any, allegati: any, studenteEmail: string, anno: Date) {
-    for (const allegato of allegati) {
-        const record = {
-            Nome: allegato.name,
-            Percorso: `${process.env.ALLEGATI_PATH}/${studenteEmail}/${anno.getFullYear().toString()}`,
-            Documento_Studente_Email: studenteEmail,
-            Documento_Anno: anno
-        };
-        const newAllegato = await db.allegato.create({
-            data: record
-        });
-
-        await SaveAllegato(newAllegato, allegato.data);
-    }
-}
-
-async function SaveAllegato(allegato: any, binaryData: any) {
-    const filePath = `${allegato.Percorso}/${allegato.Id}_${allegato.Nome}`;
-    await mkdir(allegato.Percorso, { recursive: true });
-    await writeFile(filePath, binaryData);
 }
 
 async function GetAnniScolasticiDocumenti(req: any, res: any) {
@@ -470,5 +179,4 @@ async function GetDocumenti(req: any, res: any) {
     }
 }
 
-
-export { CreatePDP, GetAnniScolasticiDocumenti, GetDocumenti, UpdateIndicatoriDocumento, UpdateICFsDocumento, UpdateAllegatiDocumento, DeletePDP };
+export { CreatePDP, GetAnniScolasticiDocumenti, GetDocumenti, DeletePDP };

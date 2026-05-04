@@ -17,6 +17,7 @@ import * as GestioneDocumenti from "./routes/documenti.ts";
 import * as GestioneMaterie from "./routes/materie.ts";
 import * as GestioneIndicatori from "./routes/indicatori.ts";
 import * as GestioneICF from "./routes/icf.ts";
+import * as GestioneAllegati from "./routes/allegati.ts";
 
 import { PrismaClient } from "../prisma/generated/client/index.js";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -163,24 +164,25 @@ app.get("/api/studente/:email", GestioneStudenti.GetStudenteByEmail);
 app.get("/api/anni-scolastici", GestioneStudenti.GetAnniScolastici);
 app.get("/api/count-studenti", GestioneStudenti.GetCountStudenti);
 
-
 //Documenti
 app.post("/api/documento/create", GestioneDocumenti.CreatePDP);
 app.get("/api/anni-scolastici-documenti", GestioneDocumenti.GetAnniScolasticiDocumenti);
 app.get("/api/documenti", GestioneDocumenti.GetDocumenti);
-app.patch("/api/documento/updateIndicatori", GestioneDocumenti.UpdateIndicatoriDocumento);
-app.patch("/api/documento/updateICFs", GestioneDocumenti.UpdateICFsDocumento);
-app.patch("/api/documento/updateAllegati", GestioneDocumenti.UpdateAllegatiDocumento);
 app.delete("/api/documento/delete/", GestioneDocumenti.DeletePDP);
-
 
 //Materie
 app.get("/api/materie", GestioneMaterie.GetMaterie);
+
 //Indicatori
+app.patch("/api/documento/updateIndicatori", GestioneIndicatori.UpdateIndicatoriDocumento);
 app.get("/api/indicatori", GestioneIndicatori.GetIndicatori);
 
 //ICF
 app.get("/api/icf", GestioneICF.GetIcf);
+app.patch("/api/documento/updateICFs", GestioneICF.UpdateICFsDocumento);
+
+//Allegati
+app.patch("/api/documento/updateAllegati", GestioneAllegati.UpdateAllegatiDocumento);
 
 //F. default root e gestione errori
 app.use(function (req, res) {
