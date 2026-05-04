@@ -4,7 +4,7 @@
         {
         <app-documenti-edit-breadcrumb [currentRoute]="'allegati'"></app-documenti-edit-breadcrumb>
         }
-        <h3 [class.fs-5]="activatedRoute.snapshot.data['root'] == 'crea'"
+        <h3 class="mt-4 mt-sm-0" [class.fs-5]="activatedRoute.snapshot.data['root'] == 'crea'"
             [class.fs-3]="activatedRoute.snapshot.data['root'] == 'modifica'">
             @if(activatedRoute.snapshot.data['root'] == 'crea')
             {
@@ -15,6 +15,60 @@
             Allegati inseriti
             }
         </h3>
+        <hr>
+
+        @if(activatedRoute.snapshot.data['root'] == 'modifica')
+        {
+        <div class="mb-4">
+            <h4 class="text-secondary mb-3 fs-5">Documenti già presenti</h4>
+            <div class="d-flex gap-3 flex-wrap">
+                @for (file of documentiService.allegatiDoc; track $index) {
+
+                <div
+                    class="allegato position-relative rounded d-flex flex-column align-items-center justify-content-center p-3 shadow-sm">
+
+                    @if(docentiService.docente.Ruolo != Ruolo.DOCENTE) {
+                    <button type="button"
+                        class="btn btn-sm btn-delete position-absolute rounded-circle d-flex align-items-center justify-content-center"
+                        (click)="$event.stopPropagation();">
+                        <i class="bi bi-x-circle-fill fs-5"></i>
+                    </button>
+                    }
+
+                    @if (file.type.startsWith('image/')) {
+                    <i class="bi bi-file-earmark-image text-success fs-1"></i>
+                    }
+                    @else if (file.type === 'application/pdf') {
+                    <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
+                    }
+                    @else if (file.name.endsWith('.docx')) {
+                    <i class="bi bi-filetype-docx text-primary fs-1"></i>
+                    }
+                    @else if (file.name.endsWith('.doc')) {
+                    <i class="bi bi-filetype-doc text-primary fs-1"></i>
+                    }
+                    @else {
+                    <i class="bi bi-file-earmark text-secondary fs-1"></i>
+                    }
+
+                    <div class="file-info text-center mt-2 w-100 overflow-hidden">
+                        <span class="file-name text-dark fw-bold text-break d-block" [title]="file.name">
+                            {{ file.name }}
+                        </span>
+                        <small class="text-muted d-block">{{ (file.size / 1024).toFixed(1) }} KB</small>
+                    </div>
+                </div>
+
+                }
+                @empty {
+                <p class="text-muted fst-italic">Nessun allegato presente.</p>
+                }
+            </div>
+        </div>
+        }
+
+        @if(docentiService.docente.Ruolo != Ruolo.DOCENTE)
+        {
         <hr>
         <!-- Area di drop principale -->
         <div class="dropzone-wrapper">
@@ -66,6 +120,16 @@
 
             </ngx-dropzone>
         </div>
+        }
+
+        @if(activatedRoute.snapshot.data['root'] == "modifica" && docentiService.docente.Ruolo != Ruolo.DOCENTE){
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0 mt-3"
+                (click)="Edit()">
+                <p class="m-0">Salva e modifica</p>
+            </button>
+        </div>
+        }
     </section>
 
     @if(activatedRoute.snapshot.data['root'] == "crea")

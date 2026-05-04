@@ -31,6 +31,8 @@ export class FormAllegati {
 
     ngOnInit() {
         this.stepsService.step = "allegati";
+        // console.log(this.documentiService.documentoSelected)
+        // console.log("Allegati Doc: ", this.documentiService.allegatiDoc);
     }
 
     OnSelect(event: any) {
@@ -79,5 +81,9 @@ export class FormAllegati {
                 //mostrare toast messaggio errore
             }
         });
+    }
+
+    Edit(){
+        
     }
 }

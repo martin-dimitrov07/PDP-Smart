@@ -3,7 +3,7 @@ import { DocentiService } from './docenti.service';
 import { DataStorageService } from './data-storage.service';
 import { Studente } from '../../models/studente';
 import { Documento, Tipo } from '../../models/documento';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { Ruolo } from '../../models/docente';
 import { Indicatore } from '../../models/indicatore';
 import { Icf } from '../../models/icf';
@@ -56,6 +56,9 @@ export class DocumentiService {
 
     indicatoriDoc: Indicatore[] = [];
     icfsEdit: any[] = [];
+    //per test
+    // allegatiDoc: File[] = [];
+    allegatiDoc: File[] = [new File([""], "testtesttesttesttest.pdf", { type: "application/pdf" })];
 
 
     GetMaterieDocente() {
@@ -237,6 +240,19 @@ export class DocumentiService {
         );
     }
 
+    GetAllegatiDocumento() {
+        if (!this.documentoSelected) return;
+
+        const filters = {
+            Documento_Studente_Email: this.documentoSelected.Studente_Email,
+            Documento_Anno: this.documentoSelected.Anno
+        };
+
+        return this.dataStorageService.InviaRichiesta("GET", "/allegati", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
+            this.allegatiDoc = data;
+        }));
+    }
+
     GetDocumenti(searchTerm: string = "", DSA_BES: any = -1, Stato_Documento: any = -1, filterAnnoScolastico: Date): Observable<any> {
         let filters: any = {};
 
@@ -295,7 +311,11 @@ export class DocumentiService {
                 );
 
                 // console.log(this.documentoSelected);
-
+                return true;
+            }),
+            catchError((err) => {
+                this.checkError.checkError(err);
+                return of(false)
             })
         );
     }

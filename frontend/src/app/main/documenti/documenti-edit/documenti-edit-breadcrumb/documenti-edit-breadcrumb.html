@@ -1,8 +1,8 @@
 <nav aria-label="breadcrumb" class="px-2 my-2 my-sm-3">
     <ol class="breadcrumb m-0">
-        <li class="breadcrumb-item"><a href="/documenti/lista"
+        <li class="breadcrumb-item"><a [routerLink]="['/documenti', 'lista']"
                 class="text-decoration-none third-text-color opacity-75">Documenti</a></li>
-        <li class="breadcrumb-item"><a [href]="GoBack()"
+        <li class="breadcrumb-item"><a [routerLink]="GoBack()"
                 class="text-decoration-none third-text-color opacity-75">Modifica Documento</a></li>
         <li class="breadcrumb-item secondary-text-color fw-bold" aria-current="page">{{currentRoute}}</li>
     </ol>

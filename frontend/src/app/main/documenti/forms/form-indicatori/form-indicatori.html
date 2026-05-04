@@ -5,7 +5,7 @@
         <app-documenti-edit-breadcrumb [currentRoute]="'indicatori'"></app-documenti-edit-breadcrumb>
         }
 
-        <h3 [class.fs-5]="activatedRoute.snapshot.data['root'] == 'crea'"
+        <h3 class="mt-4 mt-sm-0" [class.fs-5]="activatedRoute.snapshot.data['root'] == 'crea'"
             [class.fs-3]="activatedRoute.snapshot.data['root'] == 'modifica'">
             @if(activatedRoute.snapshot.data['root'] == 'crea')
             {

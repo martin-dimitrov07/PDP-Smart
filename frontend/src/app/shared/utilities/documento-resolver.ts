@@ -1,6 +1,7 @@
 import { ResolveFn } from '@angular/router';
 import { DocumentiService } from '../services/documenti.service';
 import { inject } from '@angular/core';
+import { Documento } from '../../models/documento';
 
 export const documentoResolver: ResolveFn<boolean> = (route, state) => {
     const documentiService: DocumentiService = inject(DocumentiService);

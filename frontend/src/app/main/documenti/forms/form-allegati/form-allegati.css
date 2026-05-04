@@ -30,16 +30,48 @@
     transform: scale(1.2) rotate(5deg);
 }
 
-ngx-dropzone-preview{
-    background-color: rgb(from var(--blue-color) r g b / 0.05);
+ngx-dropzone-preview, .allegato{
+    background-color: var(--light-grey);
     max-width: 500px !important;
+    cursor: pointer;
 }
 
-::ng-deep ngx-dropzone-preview img {
+.allegato:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgb(from var(--blue-color) r g b / 0.15);
+}
+
+::ng-deep ngx-dropzone-preview img, .allegato img {
     display: none !important;
 }
 
-::ng-deep ngx-dropzone-remove-badge {
+::ng-deep ngx-dropzone-remove-badge, .allegato .remove-btn {
     z-index: 10 !important;
     pointer-events: auto !important; /* Forza la ricezione del clic */
 }
+
+.btn-delete{
+    top: 3px;
+    right: 3px;
+    z-index: 10;
+    padding: 0 !important;
+}
+
+.btn-delete, .btn-delete .bi{
+    width: 25px !important;
+    height: 25px !important;
+    color: var(--grey-color);
+}
+
+.btn-delete .bi{
+    opacity: 0;
+}
+
+.allegato:hover .btn-delete .bi{
+    opacity: 0.5;
+}
+
+.allegato:hover .btn-delete .bi:hover{
+    opacity: 0.7;
+}
+
