@@ -1,5 +1,6 @@
-import { writeFile, mkdir, unlink } from "fs/promises";
+import { writeFile, mkdir, unlink, readdir, readFile, access } from "fs/promises";
 import { prisma } from "../server.ts";
+import { extname, join } from "path";
 
 async function CreateAllegati(db: any, allegati: any, studenteEmail: string, anno: Date) {
     for (const allegato of allegati) {
@@ -104,4 +105,60 @@ async function UpdateAllegatiDocumento(req: any, res: any) {
     }
 }
 
-export { CreateAllegati, SaveAllegato, DeleteAllegato, UpdateAllegatiDocumento, DeleteAllegati };
+async function GetAllegati(req: any, res: any) {
+    try {
+        const filters = req["parsedQuery"] || {};
+        const Studente_Mail = filters.Studente_Mail;
+        const Anno = filters.Anno ? new Date(filters.Anno).getFullYear().toString() : null;
+
+        // 1. Verifichiamo i parametri 
+        if (!Studente_Mail || !Anno) {
+            return res.status(400).send({ error: "Mancano utente o anno nella richiesta" });
+        }
+
+        const cartellaTarget = join(`${process.env.ALLEGATI_PATH}`, Studente_Mail, Anno);
+
+        // 2. Controlliamo se la cartella esiste in modo asincrono
+        try {
+            await access(cartellaTarget);
+        } catch {
+            // Se access fallisce, la cartella non esiste o non abbiamo i permessi
+            return res.status(404).send({ message: "Nessun allegato trovato per questo utente e anno", files: [] });
+        }
+
+        // 3. Leggiamo i nomi dei file 
+        const nomiFiles = await readdir(cartellaTarget);
+
+        // 4. Leggiamo e convertiamo tutti i file IN PARALLELO per la massima velocità
+        const promesseFiles = nomiFiles.map(async (nomeFile) => {
+            const percorsoCompleto = join(cartellaTarget, nomeFile);
+            
+            const fileBuffer = await readFile(percorsoCompleto);
+            
+            const estensione = extname(nomeFile).toLowerCase();
+            let mimeType = 'application/octet-stream';
+            
+            if (estensione == '.pdf') mimeType = 'application/pdf';
+            else if (estensione == '.jpg' || estensione == '.jpeg') mimeType = 'image/jpeg';
+            else if (estensione == '.png') mimeType = 'image/png';
+            else if (estensione == '.doc') mimeType = 'application/msword';
+            else if (estensione == '.docx') mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+            return {
+                nome: nomeFile,
+                tipo: mimeType,
+                datiBase64: fileBuffer.toString('base64') 
+            };
+        });
+
+        const arrayDiFiles = await Promise.all(promesseFiles);
+
+        res.status(200).json({ files: arrayDiFiles });
+
+    } catch (err) {
+        console.error("Errore nel recupero degli allegati:", err);
+        res.status(500).send({ error: "Errore durante il recupero degli allegati" });
+    }
+}
+
+export { CreateAllegati, SaveAllegato, DeleteAllegato, UpdateAllegatiDocumento, DeleteAllegati, GetAllegati };

@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Ruolo" AS ENUM ('Docente', 'Admin', 'Coordinatore');
+CREATE TYPE "Ruolo" AS ENUM ('Docente', 'Admin');
 
 -- CreateEnum
 CREATE TYPE "Stato" AS ENUM ('In bozza', 'Validato', 'Scaduto');

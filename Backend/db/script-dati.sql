@@ -100,11 +100,11 @@ INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES
 INSERT INTO "Docente" ("Email", "Nome", "Cognome", "Ruolo") VALUES
 ('l.martino.3175@vallauri.edu', 'Luca', 'Martino', 'Admin'),
 ('m.dimitrov.3065@vallauri.edu', 'Mikhail', 'Dimitrov', 'Admin'),
-('f.valsecchi.4421@vallauri.edu', 'Francesco Maria', 'Valsecchi', 'Coordinatore'),
-('g.mastroianni.9928@vallauri.edu', 'Giulia Maddalena', 'Mastroianni', 'Coordinatore'),
-('a.sangiovanni.1123@vallauri.edu', 'Antonio Alberto', 'Sangiovanni', 'Coordinatore'),
-('s.bevilacqua.5564@vallauri.edu', 'Silvia Annamaria', 'Bevilacqua', 'Coordinatore'),
-('m.franceschini.7782@vallauri.edu', 'Marco Alessandro', 'Franceschini', 'Coordinatore'),
+('f.valsecchi.4421@vallauri.edu', 'Francesco Maria', 'Valsecchi', 'Docente'),
+('g.mastroianni.9928@vallauri.edu', 'Giulia Maddalena', 'Mastroianni', 'Docente'),
+('a.sangiovanni.1123@vallauri.edu', 'Antonio Alberto', 'Sangiovanni', 'Docente'),
+('s.bevilacqua.5564@vallauri.edu', 'Silvia Annamaria', 'Bevilacqua', 'Docente'),
+('m.franceschini.7782@vallauri.edu', 'Marco Alessandro', 'Franceschini', 'Docente'),
 ('e.castelnuovo.3341@vallauri.edu', 'Elena Sofia', 'Castelnuovo', 'Docente'),
 ('p.montezemolo.2210@vallauri.edu', 'Paolo Giovanni', 'Montezemolo', 'Docente'),
 ('r.quattrociocche.8890@vallauri.edu', 'Roberta Beatrice', 'Quattrociocche', 'Docente');
@@ -125,7 +125,7 @@ DECLARE
     coord_emails TEXT[];
 BEGIN
     -- Popolamento Classi
-    SELECT array_agg("Email") INTO coord_emails FROM "Docente" WHERE "Ruolo" IN ('Coordinatore', 'Admin');
+    SELECT array_agg("Email") INTO coord_emails FROM "Docente" WHERE "Ruolo" IN ('Docente', 'Admin');
     FOR i IN 1..30 LOOP
         INSERT INTO "Classe" ("Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email")
         VALUES (((i-1)%5)+1, CHR(65+(i-1)%5), ind_list[((i-1)%7)+1], anni_list[((i-1)%3)+1], coord_emails[((i-1)%7)+1]);

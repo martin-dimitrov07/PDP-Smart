@@ -183,6 +183,7 @@ app.patch("/api/documento/update-icfs", GestioneICF.UpdateICFsDocumento);
 
 //Allegati
 app.patch("/api/documento/update-allegati", GestioneAllegati.UpdateAllegatiDocumento);
+app.get("/api/allegati", GestioneAllegati.GetAllegati);
 
 //F. default root e gestione errori
 app.use(function (req, res) {
