@@ -66,14 +66,14 @@ async function UpdateICFsDocumento(req: any, res: any) {
                 await prisma.documento_ICF.upsert({
                     where: {
                         Id: {
-                            ICF_Codice: ICF.Codice,
+                            ICF_Codice: ICF.Icf.Codice,
                             Documento_Anno: new Date(documento.Anno),
                             Documento_Studente_Email: documento.Studente_Email
                         }
                     },
                     update: {},
                     create: {
-                        ICF_Codice: ICF.Codice,
+                        ICF_Codice: ICF.Icf.Codice,
                         Documento_Anno: new Date(documento.Anno),
                         Documento_Studente_Email: documento.Studente_Email
                     }
@@ -84,7 +84,7 @@ async function UpdateICFsDocumento(req: any, res: any) {
                 await prisma.documento_ICF.delete({
                     where: {
                         Id: {
-                            ICF_Codice: ICF.Codice,
+                            ICF_Codice: ICF.Icf.Codice,
                             Documento_Anno: new Date(documento.Anno),
                             Documento_Studente_Email: documento.Studente_Email
                         }
