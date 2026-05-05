@@ -53,8 +53,25 @@ async function UpdateAllegatiDocumento(req: any, res: any) {
         //     {Nome: "allegato1.pdf",  "Value": true/false},
         //     ...
         // ]
-        const allegati = req.files && req.files.allegati ? (Array.isArray(req.files.allegati) ? req.files.allegati : [req.files.allegati]) : [];
-        const documento = req.body.documento;
+
+        // UpdateAllegatiDocumento() {
+        //     if (!this.documentoSelected) return;
+
+        //     const formData: FormData = new FormData();
+
+        //     formData.append('documento', JSON.stringify(this.documentoSelected));
+
+        //     for (const file of this.allegatiEdit) {
+        //         if (file.Value)
+        //             formData.append('allegatiAdd', file.Allegato.File);
+        //         else
+        //             formData.append('allegatiDelete', JSON.stringify(file.Allegato));
+        //     }
+
+        //     return this.dataStorageService.InviaRichiesta("PATCH", "/documento/update-allegati", formData)!;
+        // }
+        const documento = JSON.parse(req.body.documento)
+        const allegati = req.body.allegati;
 
         for (const allegato of allegati) {
 
@@ -111,33 +128,28 @@ async function GetAllegati(req: any, res: any) {
         const Studente_Mail = filters.Studente_Mail;
         const Anno = filters.Anno ? new Date(filters.Anno).getFullYear().toString() : null;
 
-        // 1. Verifichiamo i parametri 
         if (!Studente_Mail || !Anno) {
             return res.status(400).send({ error: "Mancano utente o anno nella richiesta" });
         }
 
         const cartellaTarget = join(`${process.env.ALLEGATI_PATH}`, Studente_Mail, Anno);
 
-        // 2. Controlliamo se la cartella esiste in modo asincrono
         try {
             await access(cartellaTarget);
         } catch {
-            // Se access fallisce, la cartella non esiste o non abbiamo i permessi
-            return res.status(404).send({ message: "Nessun allegato trovato per questo utente e anno", files: [] });
+            return res.status(200).send({ files: [] }); 
         }
 
-        // 3. Leggiamo i nomi dei file 
         const nomiFiles = await readdir(cartellaTarget);
 
-        // 4. Leggiamo e convertiamo tutti i file IN PARALLELO per la massima velocità
-        const promesseFiles = nomiFiles.map(async (nomeFile) => {
+        const promisesFiles = nomiFiles.map(async (nomeFile) => {
             const percorsoCompleto = join(cartellaTarget, nomeFile);
-            
+
             const fileBuffer = await readFile(percorsoCompleto);
-            
+
             const estensione = extname(nomeFile).toLowerCase();
             let mimeType = 'application/octet-stream';
-            
+
             if (estensione == '.pdf') mimeType = 'application/pdf';
             else if (estensione == '.jpg' || estensione == '.jpeg') mimeType = 'image/jpeg';
             else if (estensione == '.png') mimeType = 'image/png';
@@ -145,15 +157,16 @@ async function GetAllegati(req: any, res: any) {
             else if (estensione == '.docx') mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
             return {
-                nome: nomeFile,
-                tipo: mimeType,
-                datiBase64: fileBuffer.toString('base64') 
+                Id: nomeFile.split("_")[0],
+                Nome: nomeFile.split("_")[1],
+                Tipo: mimeType,
+                FileBase64: fileBuffer.toString('base64')
             };
         });
 
-        const arrayDiFiles = await Promise.all(promesseFiles);
+        const arrayFiles = await Promise.all(promisesFiles);
 
-        res.status(200).json({ files: arrayDiFiles });
+        res.status(200).send({ files: arrayFiles });
 
     } catch (err) {
         console.error("Errore nel recupero degli allegati:", err);
