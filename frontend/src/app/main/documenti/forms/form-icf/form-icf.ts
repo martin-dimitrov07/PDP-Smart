@@ -33,6 +33,7 @@ export class FormICF {
         this.root = this.activatedRoute.snapshot.data["root"];
 
         if (this.root == "modifica") {
+            this.documentiService.icfsEdit = [];
             this.documentiService.GetICFSDocumento()?.subscribe({
                 next: (data: any) => {
                     console.log(this.documentiService.icfsSelected);
@@ -40,6 +41,7 @@ export class FormICF {
                 error: (err: any) => console.log(err)
             });
         }
+        this.documentiService.icfsSelected = [];
 
         this.docentiService.GetDocente().subscribe(isLoaded => {
             if (isLoaded) {

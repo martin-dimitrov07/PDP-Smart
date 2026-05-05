@@ -356,7 +356,7 @@ export class DocumentiService {
             if (file.Value)
                 formData.append('allegatiAdd', file.Allegato.File);
             else
-                formData.append('allegatiDelete', JSON.stringify(file.Allegato));
+                formData.append('allegatiDelete', file.Allegato.Id);
         }
 
         return this.dataStorageService.InviaRichiesta("PATCH", "/documento/update-allegati", formData)!;

@@ -24,21 +24,16 @@ async function SaveAllegato(allegato: any, binaryData: any) {
     await writeFile(filePath, binaryData);
 }
 
-async function DeleteAllegati(db: any, allegati: any[]) {
-    for (const allegato of allegati) {
-        const allegatoDB = await db.allegato.findMany({
-            where: {
-                Documento_Studente_Email: allegato.documento.Studente_Email,
-                Documento_Anno: new Date(allegato.documento.Anno),
-                Nome: allegato.name
-            }
-        });
+async function DeleteAllegati(db: any, allegatiId: string[]) {
+    for (const allegatoId of allegatiId) {
         const allegatoDeleted = await db.allegato.delete({
             where: {
-                Id: allegatoDB.length > 0 ? allegatoDB[0]!.Id : -1
+                Id: parseInt(allegatoId)
             }
         });
-        await DeleteAllegato(allegatoDeleted);
+        if (allegatoDeleted) {
+            await DeleteAllegato(allegatoDeleted);
+        }
     }
 }
 
@@ -50,8 +45,8 @@ async function DeleteAllegato(allegato: any) {
 async function UpdateAllegatiDocumento(req: any, res: any) {
     try {
         const documento = JSON.parse(req.body.documento)
-        const allegatiAdd = req.files && req.files.allegatiAdd ? [req.files.allegatiAdd] : [];
-        const allegatiDelete = req.body.allegatiDelete ? JSON.parse(req.body.allegatiDelete) : [];
+        const allegatiAdd = req.files && req.files.allegatiAdd ? (Array.isArray(req.files.allegatiAdd) ? req.files.allegatiAdd : [req.files.allegatiAdd]) : [];
+        const allegatiDelete = req.body.allegatiDelete ? Array.isArray(req.body.allegatiDelete) ? req.body.allegatiDelete : [req.body.allegatiDelete] : [];
 
         if (allegatiAdd.length > 0) {
             await CreateAllegati(prisma, allegatiAdd, documento.Studente_Email, new Date(documento.Anno));
@@ -74,15 +69,15 @@ async function UpdateAllegatiDocumento(req: any, res: any) {
 
 async function GetAllegati(req: any, res: any) {
     try {
-        const filters = req["parsedQuery"] || {};
-        const Studente_Mail = filters.Studente_Mail;
-        const Anno = filters.Anno ? new Date(filters.Anno).getFullYear().toString() : null;
+        const filters = req["parsedQuery"].filters || {};
+        const studente_Email = filters["Documento_Studente_Email"];
+        const anno = filters["Documento_Anno"] ? new Date(filters["Documento_Anno"]).getFullYear().toString() : null;
 
-        if (!Studente_Mail || !Anno) {
+        if (!studente_Email || !anno) {
             return res.status(400).send({ error: "Mancano utente o anno nella richiesta" });
         }
 
-        const cartellaTarget = join(`${process.env.ALLEGATI_PATH}`, Studente_Mail, Anno);
+        const cartellaTarget = join(`${process.env.ALLEGATI_PATH}`, studente_Email, anno);
 
         try {
             await access(cartellaTarget);
@@ -108,7 +103,7 @@ async function GetAllegati(req: any, res: any) {
 
             return {
                 Id: nomeFile.split("_")[0],
-                Nome: nomeFile.split("_")[1],
+                Nome: nomeFile.split("_").map((parte, index) => index == 0 ? null : parte).join("_").replace("_", ""),
                 Tipo: mimeType,
                 FileBase64: fileBuffer.toString('base64')
             };

@@ -36,7 +36,9 @@ export class FormAllegati {
         this.stepsService.step = "allegati";
         // console.log(this.documentiService.documentoSelected)
         // console.log("Allegati Doc: ", this.documentiService.allegatiDoc);
-        if(this.activatedRoute.snapshot.data['root'] === 'modifica') {
+        if(this.activatedRoute.snapshot.data['root'] == 'modifica') {
+            this.documentiService.allegatiEdit = [];
+            this.documentiService.allegatiDoc = [];
             this.documentiService.GetAllegatiDocumento()?.subscribe({
                 next: (data: any) => {
                     console.log("Allegati del documento:", this.documentiService.allegatiDoc);
@@ -44,6 +46,7 @@ export class FormAllegati {
                 error: (err: any) => this.checkError.checkError(err)
             });
         }
+        this.documentiService.allegati = [];
     }
 
     OnSelect(event: any) {
