@@ -10,6 +10,7 @@ import { DocentiService } from '../../../../shared/services/docenti.service';
 import { ActivatedRoute } from '@angular/router';
 import { DocumentiEditBreadcrumb } from '../../documenti-edit/documenti-edit-breadcrumb/documenti-edit-breadcrumb';
 import { CheckError } from '../../../../shared/utilities/check-error';
+import { Allegato } from '../../../../models/allegato';
 
 
 @Component({
@@ -35,12 +36,20 @@ export class FormAllegati {
         this.stepsService.step = "allegati";
         // console.log(this.documentiService.documentoSelected)
         // console.log("Allegati Doc: ", this.documentiService.allegatiDoc);
+        if(this.activatedRoute.snapshot.data['root'] === 'modifica') {
+            this.documentiService.GetAllegatiDocumento()?.subscribe({
+                next: (data: any) => {
+                    console.log("Allegati del documento:", this.documentiService.allegatiDoc);
+                },
+                error: (err: any) => this.checkError.checkError(err)
+            });
+        }
     }
 
     OnSelect(event: any) {
         console.log(event);
         // Aggiunge i nuovi file a quelli esistenti
-        this.documentiService.allegati.push(...event.addedFiles);
+        this.documentiService.allegati.push(...event.addedFiles.map((file: File) => new Allegato(0, file)));
 
         if(event.rejectedFiles.length > 0) 
         {
@@ -63,9 +72,9 @@ export class FormAllegati {
         }
     }
 
-    OnRemove(event: any) {
+    RemoveNewAllegato(allegato: Allegato) {
         // Rimuove il file dall'array
-        this.documentiService.allegati.splice(this.documentiService.allegati.indexOf(event), 1);
+        this.documentiService.allegati.splice(this.documentiService.allegati.findIndex((f) => f === allegato), 1);
     }
 
     CreateDocumento(){
@@ -102,8 +111,9 @@ export class FormAllegati {
         this.router.navigate(["../"], { relativeTo: this.activatedRoute });
     }
 
-    RemoveAllegato(indexAllegato: number) {
+    RemoveAllegato(allegato: Allegato) {
+        const indexAllegato = this.documentiService.allegatiDoc.indexOf(allegato);
         this.documentiService.allegatiDoc.splice(indexAllegato, 1);
-        this.documentiService.allegatiEdit.push({ Allegato: this.documentiService.allegatiDoc[indexAllegato], Value: false });
+        this.documentiService.allegatiEdit.push({ Allegato: allegato, Value: false });
     }
 }

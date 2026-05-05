@@ -9,6 +9,8 @@ import { Indicatore } from '../../models/indicatore';
 import { Icf } from '../../models/icf';
 import { Classe } from '../../models/classe';
 import { CheckError } from '../utilities/check-error';
+import { Allegato } from '../../models/allegato';
+import { fileManager } from '../utilities/file-manager';
 
 @Injectable({
     providedIn: 'root',
@@ -34,7 +36,7 @@ export class DocumentiService {
     icfs: Icf[] = [];
     icfsSelected: Icf[] = [];
 
-    allegati: File[] = [];
+    allegati: Allegato[] = [];
     errorAllegati: string = "";
 
     anniScolastici: Date[] = [];
@@ -57,8 +59,7 @@ export class DocumentiService {
     indicatoriDoc: Indicatore[] = [];
     icfsEdit: any[] = [];
     //per test
-    // allegatiDoc: File[] = [];
-    allegatiDoc: File[] = [new File([""], "testtesttesttesttest.pdf", { type: "application/pdf" })];
+    allegatiDoc: Allegato[] = [];
     allegatiEdit: any[] = [];
 
 
@@ -241,19 +242,6 @@ export class DocumentiService {
         );
     }
 
-    GetAllegatiDocumento() {
-        if (!this.documentoSelected) return;
-
-        const filters = {
-            Documento_Studente_Email: this.documentoSelected.Studente_Email,
-            Documento_Anno: this.documentoSelected.Anno
-        };
-
-        return this.dataStorageService.InviaRichiesta("GET", "/allegati", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
-            this.allegatiDoc = data;
-        }));
-    }
-
     GetDocumenti(searchTerm: string = "", DSA_BES: any = -1, Stato_Documento: any = -1, filterAnnoScolastico: Date): Observable<any> {
         let filters: any = {};
 
@@ -338,10 +326,23 @@ export class DocumentiService {
 
         formData.append('data', JSON.stringify(payload));
         for (const file of this.allegati) {
-            formData.append('allegati', file);
+            formData.append('allegati', file.File);
         }
 
         return this.dataStorageService.InviaRichiesta("POST", "/documento/create", formData)!;
+    }
+
+    GetAllegatiDocumento(){
+        if (!this.documentoSelected) return;
+
+        const filters = {
+            Documento_Studente_Email: this.documentoSelected.Studente_Email,
+            Documento_Anno: this.documentoSelected.Anno
+        };
+
+        return this.dataStorageService.InviaRichiesta("GET", "/allegati", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
+            this.allegatiDoc = data.files.map((allegato: any) => new Allegato(allegato.Id, fileManager.convertBase64ToFile(allegato.FileBase64, allegato.Nome, allegato.Tipo)));
+        }))!;
     }
 
     UpdateAllegatiDocumento() {
@@ -353,19 +354,12 @@ export class DocumentiService {
 
         for (const file of this.allegatiEdit) {
             if (file.Value)
-                formData.append('allegatiAdd', file);
+                formData.append('allegatiAdd', file.Allegato.File);
             else
-                formData.append('allegatiDelete', { Nome: (file.Allegato as File).name });
-
+                formData.append('allegatiDelete', JSON.stringify(file.Allegato));
         }
 
-
-        const payload = {
-            documento: this.documentoSelected,
-            icfs: this.icfsEdit
-        }
-
-        return this.dataStorageService.InviaRichiesta("PATCH", "/documento/update-icfs", payload)!;
+        return this.dataStorageService.InviaRichiesta("PATCH", "/documento/update-allegati", formData)!;
     }
 
     ResetCreateDocumento() {

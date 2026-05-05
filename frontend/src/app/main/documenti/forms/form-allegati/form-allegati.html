@@ -22,7 +22,7 @@
         <div class="mb-4">
             <h4 class="text-secondary mb-3 fs-5">Documenti già presenti</h4>
             <div class="d-flex gap-3 flex-wrap">
-                @for (file of documentiService.allegatiDoc; track $index) {
+                @for (allegato of documentiService.allegatiDoc; track $index) {
 
                 <div
                     class="allegato position-relative rounded d-flex flex-column align-items-center justify-content-center p-3 shadow-sm">
@@ -30,21 +30,21 @@
                     @if(docentiService.docente.Ruolo != Ruolo.DOCENTE) {
                     <button type="button"
                         class="btn btn-sm btn-delete position-absolute rounded-circle d-flex align-items-center justify-content-center"
-                        (click)="$event.stopPropagation(); RemoveAllegato($index)">
+                        (click)="$event.stopPropagation(); RemoveAllegato(allegato)">
                         <i class="bi bi-x-circle-fill fs-5"></i>
                     </button>
                     }
 
-                    @if (file.type.startsWith('image/')) {
+                    @if (allegato.File.type.startsWith('image/')) {
                     <i class="bi bi-file-earmark-image text-success fs-1"></i>
                     }
-                    @else if (file.type === 'application/pdf') {
+                    @else if (allegato.File.type === 'application/pdf') {
                     <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
                     }
-                    @else if (file.name.endsWith('.docx')) {
+                    @else if (allegato.File.name.endsWith('.docx')) {
                     <i class="bi bi-filetype-docx text-primary fs-1"></i>
                     }
-                    @else if (file.name.endsWith('.doc')) {
+                    @else if (allegato.File.name.endsWith('.doc')) {
                     <i class="bi bi-filetype-doc text-primary fs-1"></i>
                     }
                     @else {
@@ -52,10 +52,10 @@
                     }
 
                     <div class="file-info text-center mt-2 w-100 overflow-hidden">
-                        <span class="file-name text-dark fw-bold text-break d-block" [title]="file.name">
-                            {{ file.name }}
+                        <span class="file-name text-dark fw-bold text-break d-block" [title]="allegato.File.name">
+                            {{ allegato.File.name }}
                         </span>
-                        <small class="text-muted d-block">{{ (file.size / 1024).toFixed(1) }} KB</small>
+                        <small class="text-muted d-block">{{ (allegato.File.size / 1024).toFixed(1) }} KB</small>
                     </div>
                 </div>
 
@@ -89,20 +89,20 @@
                 <div class="d-flex gap-2 flex-wrap justify-content-center overflow-hidden">
                     @for (file of documentiService.allegati; track $index)
                     {
-                    <ngx-dropzone-preview class="px-2 px-sm-3" ngProjectAs="ngx-dropzone-preview" [file]="file"
-                        [removable]="true" (removed)="OnRemove(file)">
+                    <ngx-dropzone-preview class="px-2 px-sm-3" ngProjectAs="ngx-dropzone-preview" [file]="file.File"
+                        [removable]="true" (removed)="RemoveNewAllegato(file)">
                         <ngx-dropzone-label class="m-0">
                             <!-- ICONE -->
-                            @if (file.type.startsWith('image/')) {
+                            @if (file.File.type.startsWith('image/')) {
                             <i class="bi bi-file-earmark-image text-success fs-1"></i>
                             }
-                            @else if (file.type === 'application/pdf') {
+                            @else if (file.File.type === 'application/pdf') {
                             <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
                             }
-                            @else if (file.name.endsWith('.docx')) {
+                            @else if (file.File.name.endsWith('.docx')) {
                             <i class="bi bi-filetype-docx text-primary fs-1"></i>
                             }
-                            @else if (file.name.endsWith('.doc')) {
+                            @else if (file.File.name.endsWith('.doc')) {
                             <i class="bi bi-filetype-doc text-primary fs-1"></i>
                             }
                             @else {
@@ -110,8 +110,8 @@
                             }
 
                             <div class="file-info">
-                                <span class="file-name text-dark fw-bold text-break">{{ file.name }}</span>
-                                <small class="text-muted d-block">{{ (file.size / 1024).toFixed(1) }} KB</small>
+                                <span class="file-name text-dark fw-bold text-break">{{ file.File.name }}</span>
+                                <small class="text-muted d-block">{{ (file.File.size / 1024).toFixed(1) }} KB</small>
                             </div>
                         </ngx-dropzone-label>
                     </ngx-dropzone-preview>
