@@ -59,6 +59,7 @@ export class DocumentiService {
     //per test
     // allegatiDoc: File[] = [];
     allegatiDoc: File[] = [new File([""], "testtesttesttesttest.pdf", { type: "application/pdf" })];
+    allegatiEdit: any[] = [];
 
 
     GetMaterieDocente() {
@@ -341,6 +342,30 @@ export class DocumentiService {
         }
 
         return this.dataStorageService.InviaRichiesta("POST", "/documento/create", formData)!;
+    }
+
+    UpdateAllegatiDocumento() {
+        if (!this.documentoSelected) return;
+
+        const formData: FormData = new FormData();
+
+        formData.append('documento', JSON.stringify(this.documentoSelected));
+
+        for (const file of this.allegatiEdit) {
+            if (file.Value)
+                formData.append('allegatiAdd', file);
+            else
+                formData.append('allegatiDelete', { Nome: (file.Allegato as File).name });
+
+        }
+
+
+        const payload = {
+            documento: this.documentoSelected,
+            icfs: this.icfsEdit
+        }
+
+        return this.dataStorageService.InviaRichiesta("PATCH", "/documento/update-icfs", payload)!;
     }
 
     ResetCreateDocumento() {

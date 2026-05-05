@@ -30,7 +30,7 @@
                     @if(docentiService.docente.Ruolo != Ruolo.DOCENTE) {
                     <button type="button"
                         class="btn btn-sm btn-delete position-absolute rounded-circle d-flex align-items-center justify-content-center"
-                        (click)="$event.stopPropagation();">
+                        (click)="$event.stopPropagation(); RemoveAllegato($index)">
                         <i class="bi bi-x-circle-fill fs-5"></i>
                     </button>
                     }

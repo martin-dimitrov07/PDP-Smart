@@ -9,6 +9,7 @@ import { Ruolo } from '../../../../models/docente';
 import { DocentiService } from '../../../../shared/services/docenti.service';
 import { ActivatedRoute } from '@angular/router';
 import { DocumentiEditBreadcrumb } from '../../documenti-edit/documenti-edit-breadcrumb/documenti-edit-breadcrumb';
+import { CheckError } from '../../../../shared/utilities/check-error';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class FormAllegati {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     public readonly stepsService: StepsService = inject(StepsService);
     public activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+    private readonly checkError: CheckError = inject(CheckError);
 
     public readonly docentiService: DocentiService = inject(DocentiService);
     Ruolo: typeof Ruolo = Ruolo;
@@ -84,6 +86,24 @@ export class FormAllegati {
     }
 
     Edit(){
-        
+        for (const allegato of this.documentiService.allegati) {
+            this.documentiService.allegatiEdit.push({ Allegato: allegato, Value: true });
+        }
+
+        if(this.documentiService.allegatiEdit.length > 0){
+            this.documentiService.UpdateAllegatiDocumento()?.subscribe({
+                next: (data: any) => {
+                    console.log("Allegati modificati con successo");
+                },
+                error: (err: any) => this.checkError.checkError(err)
+            });
+        }
+
+        this.router.navigate(["../"], { relativeTo: this.activatedRoute });
+    }
+
+    RemoveAllegato(indexAllegato: number) {
+        this.documentiService.allegatiDoc.splice(indexAllegato, 1);
+        this.documentiService.allegatiEdit.push({ Allegato: this.documentiService.allegatiDoc[indexAllegato], Value: false });
     }
 }

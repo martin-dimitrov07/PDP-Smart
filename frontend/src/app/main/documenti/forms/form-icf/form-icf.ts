@@ -7,6 +7,7 @@ import { Ruolo } from '../../../../models/docente';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DocentiService } from '../../../../shared/services/docenti.service';
 import { DocumentiEditBreadcrumb } from '../../documenti-edit/documenti-edit-breadcrumb/documenti-edit-breadcrumb';
+import { CheckError } from '../../../../shared/utilities/check-error';
 
 @Component({
     selector: 'app-form-icf',
@@ -20,6 +21,7 @@ export class FormICF {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     public readonly stepsService: StepsService = inject(StepsService);
     public readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+    private readonly checkError: CheckError = inject(CheckError);
 
     root: string = "";
 
@@ -86,7 +88,7 @@ export class FormICF {
                 next: (data: any) => {
                     console.log("ICF modificati con successo");
                 },
-                error: (err: any) => console.log(err)
+                error: (err: any) => this.checkError.checkError(err)
             });
         }
 
