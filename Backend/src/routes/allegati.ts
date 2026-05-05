@@ -2,7 +2,7 @@ import { writeFile, mkdir, unlink, readdir, readFile, access } from "fs/promises
 import { prisma } from "../server.ts";
 import { extname, join } from "path";
 
-async function CreateAllegati(db: any, allegati: any, studenteEmail: string, anno: Date) {
+async function CreateAllegati(db: any, allegati: any[], studenteEmail: string, anno: Date) {
     for (const allegato of allegati) {
         const record = {
             Nome: allegato.name,
@@ -24,7 +24,7 @@ async function SaveAllegato(allegato: any, binaryData: any) {
     await writeFile(filePath, binaryData);
 }
 
-async function DeleteAllegati(db: any, allegati: any) {
+async function DeleteAllegati(db: any, allegati: any[]) {
     for (const allegato of allegati) {
         const allegatoDB = await db.allegato.findMany({
             where: {
@@ -49,66 +49,16 @@ async function DeleteAllegato(allegato: any) {
 
 async function UpdateAllegatiDocumento(req: any, res: any) {
     try {
-        // allegati = [
-        //     {Nome: "allegato1.pdf",  "Value": true/false},
-        //     ...
-        // ]
-
-        // UpdateAllegatiDocumento() {
-        //     if (!this.documentoSelected) return;
-
-        //     const formData: FormData = new FormData();
-
-        //     formData.append('documento', JSON.stringify(this.documentoSelected));
-
-        //     for (const file of this.allegatiEdit) {
-        //         if (file.Value)
-        //             formData.append('allegatiAdd', file.Allegato.File);
-        //         else
-        //             formData.append('allegatiDelete', JSON.stringify(file.Allegato));
-        //     }
-
-        //     return this.dataStorageService.InviaRichiesta("PATCH", "/documento/update-allegati", formData)!;
-        // }
         const documento = JSON.parse(req.body.documento)
-        const allegati = req.body.allegati;
+        const allegatiAdd = req.files && req.files.allegatiAdd ? [req.files.allegatiAdd] : [];
+        const allegatiDelete = req.body.allegatiDelete ? JSON.parse(req.body.allegatiDelete) : [];
 
-        for (const allegato of allegati) {
+        if (allegatiAdd.length > 0) {
+            await CreateAllegati(prisma, allegatiAdd, documento.Studente_Email, new Date(documento.Anno));
+        }
 
-            const allegatoDB = await prisma.allegato.findMany({
-                where: {
-                    Documento_Studente_Email: documento.Studente_Email,
-                    Documento_Anno: new Date(documento.Anno),
-                    Nome: allegato.name
-                }
-            });
-
-            if (allegato.Value == true) {
-                // Creare record se non esiste già, altrimenti non fare nulla
-                const newAllegato = await prisma.allegato.upsert({
-                    where: {
-                        Id: allegatoDB.length > 0 ? allegatoDB[0]!.Id : -1 // se esiste già prendo l'id del primo record trovato, altrimenti metto un id che sicuramente non esiste
-                    },
-                    update: {},
-                    create: {
-                        Nome: allegato.name,
-                        Percorso: `${process.env.ALLEGATI_PATH}/${documento.Studente_Email}/${new Date(documento.Anno).getFullYear().toString()}`,
-                        Documento_Studente_Email: documento.Studente_Email,
-                        Documento_Anno: new Date(documento.Anno)
-                    }
-                });
-                await SaveAllegato(newAllegato, allegato.data);
-            }
-            else if (allegato.Value == false) {
-                // Eliminare il record
-                const allegatoDeleted = await prisma.allegato.delete({
-                    where: {
-                        Id: allegatoDB.length > 0 ? allegatoDB[0]!.Id : -1
-                    }
-                });
-                // Eliminare il file dal filesystem
-                await DeleteAllegato(allegatoDeleted);
-            }
+        if (allegatiDelete.length > 0) {
+            await DeleteAllegati(prisma, allegatiDelete);
         }
 
         res.status(200).send({ message: "Allegati aggiornati con successo" });
@@ -137,7 +87,7 @@ async function GetAllegati(req: any, res: any) {
         try {
             await access(cartellaTarget);
         } catch {
-            return res.status(200).send({ files: [] }); 
+            return res.status(200).send({ files: [] });
         }
 
         const nomiFiles = await readdir(cartellaTarget);

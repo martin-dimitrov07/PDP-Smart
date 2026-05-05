@@ -51,7 +51,7 @@ async function CreatePDP(req: any, res: any) {
         const documento = JSON.parse(req.body.data).Documento;
         const indicatori = JSON.parse(req.body.data).Indicatori;
         const ICFs = JSON.parse(req.body.data).ICFs;
-        const allegati = req.files && req.files.allegati ? (Array.isArray(req.files.allegati) ? req.files.allegati : [req.files.allegati]) : [];
+        const allegati = req.files && req.files.allegati ? [req.files.allegati] : [];
 
         // tx è un'istanza di PrismaClient che rappresenta la transazione in corso
         await prisma.$transaction(async (tx) => {
