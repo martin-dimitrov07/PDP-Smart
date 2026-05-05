@@ -65,53 +65,45 @@ async function UpdateIndicatoriDocumento(req: any, res: any) {
         const indicatori = req.body.indicatori;
         const documento = req.body.documento;
 
-        //     "matematica": 
-        //         {
-        //             "criteri": [ { id: "Id", Nota: "Nota", Value: true/false è true se è da aggiungere senno se è false da eliminare }, ... ],
-        //             "categoria": []
-        //         },
+        //              [{ id: "Id", Nota: "Nota", "Materia": "Materia", "Value": true/false è true se è da aggiungere senno se è false da eliminare }, ... ],
 
         // Aggiorna o crea i record in Materia_Documento_Indicatore
         // Fa la ricerca sull'indicatore e se non esiste uno con quel documento e indicatore, lo crea, altrimenti lo aggiorna
-        for (const materia in indicatori) {
-            for (const categoria in indicatori[materia]) {
-                for (const indicatore of indicatori[materia][categoria]) {
-                    if (indicatore.Value == true) {
-                        // Creare o fare update del record
-                        await prisma.materia_Documento_Indicatore.upsert({
-                            where: {
-                                Materia_Nome_Indicatore_Id_Documento_Studente_Email_Documento_Anno: {
-                                    Materia_Nome: materia,
-                                    Indicatore_Id: indicatore.Id,
-                                    Documento_Anno: new Date(documento.Anno),
-                                    Documento_Studente_Email: documento.Studente_Email
-                                }
-                            },
-                            update: {
-                                Nota: indicatore.Nota || null
-                            },
-                            create: {
-                                Materia_Nome: materia,
-                                Indicatore_Id: indicatore.Id,
-                                Documento_Anno: new Date(documento.Anno),
-                                Documento_Studente_Email: documento.Studente_Email,
-                                Nota: indicatore.Nota || null
-                            }
-                        });
-                    } else if (indicatore.Value === false) {
-                        // Eliminare il record
-                        await prisma.materia_Documento_Indicatore.delete({
-                            where: {
-                                Materia_Nome_Indicatore_Id_Documento_Studente_Email_Documento_Anno: {
-                                    Materia_Nome: materia,
-                                    Indicatore_Id: indicatore.Id,
-                                    Documento_Anno: new Date(documento.Anno),
-                                    Documento_Studente_Email: documento.Studente_Email
-                                }
-                            }
-                        });
+        for (const indicatore of indicatori) {
+            if (indicatore.Value == true) {
+                // Creare o fare update del record
+                await prisma.materia_Documento_Indicatore.upsert({
+                    where: {
+                        Materia_Nome_Indicatore_Id_Documento_Studente_Email_Documento_Anno: {
+                            Materia_Nome: indicatore.Materia,
+                            Indicatore_Id: indicatore.Id,
+                            Documento_Anno: new Date(documento.Anno),
+                            Documento_Studente_Email: documento.Studente_Email
+                        }
+                    },
+                    update: {
+                        Nota: indicatore.Nota || null
+                    },
+                    create: {
+                        Materia_Nome: indicatore.Materia,
+                        Indicatore_Id: indicatore.Id,
+                        Documento_Anno: new Date(documento.Anno),
+                        Documento_Studente_Email: documento.Studente_Email,
+                        Nota: indicatore.Nota || null
                     }
-                }
+                });
+            } else if (indicatore.Value == false) {
+                // Eliminare il record
+                await prisma.materia_Documento_Indicatore.delete({
+                    where: {
+                        Materia_Nome_Indicatore_Id_Documento_Studente_Email_Documento_Anno: {
+                            Materia_Nome: indicatore.Materia,
+                            Indicatore_Id: indicatore.Id,
+                            Documento_Anno: new Date(documento.Anno),
+                            Documento_Studente_Email: documento.Studente_Email
+                        }
+                    }
+                });
             }
         }
 
