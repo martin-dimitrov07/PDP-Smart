@@ -20,7 +20,7 @@ async function GetIndicatoriByDocumento(req: any, res: any) {
     try {
         const filters = req["parsedQuery"]?.filters || {};
 
-        if (!filters.Studente_Email || !filters.Documento_Anno) {
+        if (!filters.Documento_Studente_Email || !filters.Documento_Anno) {
             res.status(400).send("Email dello studente e anno del documento sono richiesti");
             return;
         }

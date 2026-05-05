@@ -2,6 +2,7 @@ import { Component, ElementRef, inject, Input, Output, ViewChild, EventEmitter }
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
 import { DocumentiService } from '../../../../../../shared/services/documenti.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'tr[app-indicatore-input]',
@@ -10,6 +11,7 @@ import { DocumentiService } from '../../../../../../shared/services/documenti.se
     styleUrl: './indicatore-input.css',
 })
 export class IndicatoreInput {
+    private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     private _indicatore!: any;
     @Input() categoria!: string;
@@ -56,7 +58,7 @@ export class IndicatoreInput {
             : false;
     }
 
-    SetValue(materia: string) {
+    SetValue(materia: string, input: any) {
         console.log(this.documentiService.indicatori);
         const listaInd = this.documentiService.indicatori[materia][this.categoria];
 
@@ -69,12 +71,27 @@ export class IndicatoreInput {
             listaInd.splice(index, 1);
         }
 
-        // console.log(listaInd);
-        // console.log(this.documentiService.indicatori);
+        if (this.activatedRoute.snapshot.data['root'] == "modifica") {
+            const indexEdit = this.documentiService.indicatoriEdit.findIndex((item: any) => item.Id === this.indicatore.Id && item.Materia === materia);
+            if (indexEdit !== -1) {
+                this.documentiService.indicatoriEdit[indexEdit].Value = !input.value;
+            }
+            else {
+                if (input.value) {
+                    this.documentiService.indicatoriEdit.push({ Id: this.indicatore.Id, Materia: materia, Nota: "", Value: true });
+                }
+                else {
+                    this.documentiService.indicatoriEdit.push({ Id: this.indicatore.Id, Materia: materia, Nota: "", Value: false });
+                }
+            }
+        }
     }
 
     SetNota(materia: string) {
         this.documentiService.indicatoreSelected = this.documentiService.indicatori[materia]?.[this.categoria]?.find((item: any) => item.Id === this.indicatore.Id) || {};
+        if (this.activatedRoute.snapshot.data['root'] == "modifica") {
+            this.documentiService.indicatoreSelectedEdit = this.documentiService.indicatoriEdit.find((item: any) => item.Id === this.indicatore.Id && item.Materia === materia) || {};
+        }
 
         // console.log(this.documentiService.indicatori);
         // console.log(this.documentiService.indicatoreSelected);

@@ -23,7 +23,8 @@
             }
             @else
             {
-            Visualizza le misure applicate per ogni voce. Per effettuare modifiche occore aggiungere o rimuovere la spunta sull'indicatore desiderato
+            Visualizza le misure applicate per ogni voce. Per effettuare modifiche occore aggiungere o rimuovere la
+            spunta sull'indicatore desiderato
             }
         </p>
         <hr>
@@ -36,6 +37,15 @@
                 <app-categoria-ind [categoria]="categoria" [index]="i"></app-categoria-ind>
                 }
             </ng-container>
+            }
+
+            @if(activatedRoute.snapshot.data['root'] == "modifica"){
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0"
+                    (click)="Edit()">
+                    <p class="m-0">Salva e modifica</p>
+                </button>
+            </div>
             }
         </div>
     </section>

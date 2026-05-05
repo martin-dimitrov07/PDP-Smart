@@ -113,4 +113,9 @@ export class FormIndicatori {
             error: (err) => this.checkError.checkError(err)
         })
     }
+
+    Edit(){
+        console.log(this.documentiService.indicatoriEdit);
+        //TODO: finire modifica indicatori
+    }
 }

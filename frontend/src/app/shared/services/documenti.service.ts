@@ -56,9 +56,12 @@ export class DocumentiService {
 
     documentoSelected: Documento = {} as Documento;
 
-    indicatoriDoc: Indicatore[] = [];
+    indicatoriDoc: any[] = [];
+    indicatoriEdit: any[] = [];
+    indicatoreSelectedEdit: any = {};
+
     icfsEdit: any[] = [];
-    //per test
+
     allegatiDoc: Allegato[] = [];
     allegatiEdit: any[] = [];
 
@@ -142,17 +145,13 @@ export class DocumentiService {
         if (!this.documentoSelected) return;
 
         const filters = {
-            Materia_Documenti_Indicatori: {
-                some: {
-                    Documento_Studente_Email: this.documentoSelected.Studente_Email,
-                    Documento_Anno: this.documentoSelected.Anno
-                }
-            }
+            Documento_Studente_Email: this.documentoSelected.Studente_Email,
+            Documento_Anno: this.documentoSelected.Anno
         }
 
-        return this.dataStorageService.InviaRichiesta("GET", "/indicatori", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
-            this.indicatoriDoc = data.map((ind: Indicatore) => new Indicatore(ind.Id, ind.Tipologia, ind.Categoria, ind.Descrizione, ind.Nota));
-            console.log(this.indicatoriDoc);
+        return this.dataStorageService.InviaRichiesta("GET", "/indicatori-documento", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
+            this.indicatoriDoc = data;
+            // console.log(this.indicatoriDoc);
         }));
     }
 
@@ -174,14 +173,11 @@ export class DocumentiService {
     }
 
     SetIndicatori() {
-        //da aggiustare
         this.GetIndicatoriDocumento()?.subscribe({
             next: () => {
                 for (let indicatore of this.indicatoriDoc) {
-                    for (let materia of this.materieClasse) {
-                        if (this.indicatori[materia] && this.indicatori[materia][indicatore.Categoria]) {
-                            this.indicatori[materia][indicatore.Categoria].push({ Id: indicatore.Id, Nota: indicatore.Nota });
-                        }
+                    if (this.indicatori[indicatore.Materia]) {
+                        this.indicatori[indicatore.Materia][indicatore.Categoria].push({ Id: indicatore.Id, Nota: indicatore.Nota });
                     }
                 }
             },
@@ -192,7 +188,7 @@ export class DocumentiService {
     GetICFs() {
         this.icfs = [];
 
-        return this.dataStorageService.InviaRichiesta("GET", "/icf")?.pipe(tap((data: any) => {
+        return this.dataStorageService.InviaRichiesta("GET", "/icfs")?.pipe(tap((data: any) => {
             this.icfs = data.map((icf: Icf) => new Icf(icf.Codice, icf.Descrizione));
         }))
     }
@@ -209,7 +205,7 @@ export class DocumentiService {
             }
         }
 
-        return this.dataStorageService.InviaRichiesta("GET", "/icf", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
+        return this.dataStorageService.InviaRichiesta("GET", "/icfs", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
             this.icfsSelected = data.map((icf: Icf) => new Icf(icf.Codice, icf.Descrizione));
             console.log(this.icfsSelected);
         }));
@@ -223,7 +219,7 @@ export class DocumentiService {
             icfs: this.icfsEdit
         }
 
-        return this.dataStorageService.InviaRichiesta("PATCH", "/documento/update-icfs", payload)!;
+        return this.dataStorageService.InviaRichiesta("PATCH", "/icfs/update", payload)!;
     }
 
     GetAnniScolastici(): Observable<any> {
@@ -341,7 +337,7 @@ export class DocumentiService {
         };
 
         return this.dataStorageService.InviaRichiesta("GET", "/allegati", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
-            this.allegatiDoc = data.files.map((allegato: any) => new Allegato(allegato.Id, fileManager.convertBase64ToFile(allegato.FileBase64, allegato.Nome, allegato.Tipo)));
+            this.allegatiDoc = data.map((allegato: any) => new Allegato(allegato.Id, fileManager.convertBase64ToFile(allegato.FileBase64, allegato.Nome, allegato.Tipo)));
         }))!;
     }
 
@@ -359,7 +355,7 @@ export class DocumentiService {
                 formData.append('allegatiDelete', file.Allegato.Id);
         }
 
-        return this.dataStorageService.InviaRichiesta("PATCH", "/documento/update-allegati", formData)!;
+        return this.dataStorageService.InviaRichiesta("PATCH", "/allegati/update", formData)!;
     }
 
     ResetCreateDocumento() {

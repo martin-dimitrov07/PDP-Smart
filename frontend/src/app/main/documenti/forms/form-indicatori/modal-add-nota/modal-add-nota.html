@@ -10,8 +10,11 @@
                     <textarea class="form-control" id="notaInput" rows="3" [(ngModel)]="documentiService.indicatoreSelected.Nota" placeholder="Scrivi qui la tua nota..."></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" (click)="ResetNota()" data-bs-dismiss="modal">Annulla nota</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Salva nota</button>
+                    <!-- <button type="button" class="btn btn-outline-primary" (click)="ResetNota()">Cancella nota</button> -->
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                    (click)="EditNota()">
+                        Salva nota
+                    </button>
                 </div>
             </div>
         </div>

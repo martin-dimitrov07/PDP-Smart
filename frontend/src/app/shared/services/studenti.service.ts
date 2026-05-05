@@ -259,7 +259,7 @@ GetStudentiNoDocumento(classeId: number): Observable < any > {
     }
 }
 
-return this.dataStorageService.InviaRichiesta("GET", "/studenti/no-doc", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
+return this.dataStorageService.InviaRichiesta("GET", "/studenti-no-doc", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
     this.studentiNoDoc = data.map((studente: Studente) => new Studente(studente.Nome, studente.Cognome, studente.Email, studente.DSA_BES));
 }));
     }

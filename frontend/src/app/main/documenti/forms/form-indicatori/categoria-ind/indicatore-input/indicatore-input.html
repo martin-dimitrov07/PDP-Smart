@@ -7,7 +7,7 @@
     <div class="d-flex justify-content-center gap-1">
         <input type="checkbox" class="form-check-input" [checked]="IsItemSelected(materia)"
             [id]="'ind-' + indicatore.Id + '-' + materia.replace(' ', '-')"
-            (input)="SetValue(materia)" [disabled]="!documentiService.materieDocente.includes(materia)">
+            (input)="SetValue(materia, $event)" [disabled]="!documentiService.materieDocente.includes(materia)">
 
         @if(IsItemSelected(materia))
         {
