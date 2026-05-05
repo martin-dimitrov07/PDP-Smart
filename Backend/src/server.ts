@@ -159,7 +159,7 @@ app.get("/api/indirizzi", GestioneStudenti.GetIndirizzi);
 app.get("/api/classi", GestioneStudenti.GetClassi);
 app.get("/api/classe/:id", GestioneStudenti.GetClasseById);
 app.get("/api/studenti", GestioneStudenti.GetStudenti);
-app.get("/api/studenti/no-doc", GestioneStudenti.GetStudentiNoDoc);
+app.get("/api/studenti-no-doc", GestioneStudenti.GetStudentiNoDoc);
 app.get("/api/studente/:email", GestioneStudenti.GetStudenteByEmail);
 app.get("/api/anni-scolastici", GestioneStudenti.GetAnniScolastici);
 app.get("/api/count-studenti", GestioneStudenti.GetCountStudenti);
@@ -174,16 +174,17 @@ app.delete("/api/documento/delete/", GestioneDocumenti.DeletePDP);
 app.get("/api/materie", GestioneMaterie.GetMaterie);
 
 //Indicatori
-app.patch("/api/documento/update-indicatori", GestioneIndicatori.UpdateIndicatoriDocumento);
+app.patch("/api/indicatori/update", GestioneIndicatori.UpdateIndicatoriDocumento);
 app.get("/api/indicatori", GestioneIndicatori.GetIndicatori);
+app.get("/api/indicatori-documento", GestioneIndicatori.GetIndicatoriByDocumento);
 
 //ICF
-app.get("/api/icf", GestioneICF.GetIcf);
-app.patch("/api/documento/update-icfs", GestioneICF.UpdateICFsDocumento);
+app.get("/api/icfs", GestioneICF.GetIcfs);
+app.patch("/api/icfs/update", GestioneICF.UpdateICFsDocumento);
 
 //Allegati
-app.patch("/api/documento/update-allegati", GestioneAllegati.UpdateAllegatiDocumento);
 app.get("/api/allegati", GestioneAllegati.GetAllegati);
+app.patch("/api/allegati/update", GestioneAllegati.UpdateAllegatiDocumento);
 
 //F. default root e gestione errori
 app.use(function (req, res) {

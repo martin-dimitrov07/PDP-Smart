@@ -16,6 +16,50 @@ async function GetIndicatori(req: any, res: any) {
     }
 }
 
+async function GetIndicatoriByDocumento(req: any, res: any) {
+    try {
+        const filters = req["parsedQuery"]?.filters || {};
+
+        if (!filters.Studente_Email || !filters.Documento_Anno) {
+            res.status(400).send("Email dello studente e anno del documento sono richiesti");
+            return;
+        }
+
+        // tutti i record che hanno quel studente_Email e documento_Anno
+        // restituire id nota e materia e categoria
+        // restituire un array
+        const data = await prisma.materia_Documento_Indicatore.findMany({
+            where: filters,
+            select: {
+                Materia_Nome: true,
+                Indicatore_Id: true,
+                Nota: true,
+                Indicatore: {
+                    select: {
+                        Categoria: true
+                    }
+                }
+            }
+        });
+
+        const indicatori = data.map(item => ({
+            Materia: item.Materia_Nome,
+            Id: item.Indicatore_Id,
+            Nota: item.Nota,
+            Categoria: item.Indicatore.Categoria
+        }));
+
+        res.send(indicatori);
+    }
+    catch (err) {
+        console.error("Errore nel recupero degli indicatori del documento:", err);
+        res.status(500).send({
+            error: "Errore durante il recupero degli indicatori del documento",
+            details: err
+        });
+    }
+}
+
 async function UpdateIndicatoriDocumento(req: any, res: any) {
     try {
         const indicatori = req.body.indicatori;
@@ -119,4 +163,4 @@ async function CreateIndicatori(db: any, indicatori: any, studenteEmail: string,
     }
 }
 
-export { GetIndicatori as GetIndicatori, UpdateIndicatoriDocumento, DeleteIndicatori, CreateIndicatori };
+export { GetIndicatori, UpdateIndicatoriDocumento, DeleteIndicatori, CreateIndicatori, GetIndicatoriByDocumento };

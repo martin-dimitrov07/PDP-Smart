@@ -1,6 +1,6 @@
 import { prisma } from "../server.ts";
 
-async function GetIcf(req: any, res: any) {
+async function GetIcfs(req: any, res: any) {
     try {
         const filters: any = req["parsedQuery"].filters || {};
 
@@ -104,4 +104,4 @@ async function UpdateICFsDocumento(req: any, res: any) {
     }
 }
 
-export { GetIcf, DeleteICFs, CreateICFs, UpdateICFsDocumento };
+export { GetIcfs , DeleteICFs, CreateICFs, UpdateICFsDocumento };

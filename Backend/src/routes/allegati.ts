@@ -111,7 +111,7 @@ async function GetAllegati(req: any, res: any) {
 
         const arrayFiles = await Promise.all(promisesFiles);
 
-        res.status(200).send({ files: arrayFiles });
+        res.status(200).send(arrayFiles);
 
     } catch (err) {
         console.error("Errore nel recupero degli allegati:", err);
