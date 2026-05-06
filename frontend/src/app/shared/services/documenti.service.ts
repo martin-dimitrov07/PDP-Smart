@@ -163,6 +163,8 @@ export class DocumentiService {
     }
 
     InitializeIndicatori() {
+        this.indicatori = {};
+
         for (let materia of this.materieClasse) {
             this.indicatori[materia] = {};
 
@@ -183,6 +185,17 @@ export class DocumentiService {
             },
             error: (err) => this.checkError.checkError(err)
         })
+    }
+
+    UpdateIndicatoriDocumento(){
+        if (!this.documentoSelected) return;
+
+        const payload = {
+            documento: this.documentoSelected,
+            indicatori: this.indicatoriEdit
+        }
+
+        return this.dataStorageService.InviaRichiesta("PATCH", "/indicatori/update", payload)!;
     }
 
     GetICFs() {

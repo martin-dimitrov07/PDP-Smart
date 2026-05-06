@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DocumentiEditBreadcrumb } from '../../documenti-edit/documenti-edit-breadcrumb/documenti-edit-breadcrumb';
 import { StudentiService } from '../../../../shared/services/studenti.service';
 import { Classe } from '../../../../models/classe';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class FormIndicatori {
     private readonly studentiService: StudentiService = inject(StudentiService);
     public readonly stepsService: StepsService = inject(StepsService);
     private readonly checkError: CheckError = inject(CheckError);
+    private readonly router: Router = inject(Router);
 
     public readonly docentiService: DocentiService = inject(DocentiService);
     Ruolo: typeof Ruolo = Ruolo;
@@ -62,11 +64,8 @@ export class FormIndicatori {
 
                                     // console.log(this.documentiService.indicatori.object);
 
-                                    if (Object.keys(this.documentiService.indicatori).length == 0) {
-                                        this.documentiService.InitializeIndicatori();
-                                        
-                                        this.documentiService.SetIndicatori();
-                                    }
+                                    this.documentiService.InitializeIndicatori();
+                                    this.documentiService.SetIndicatori();
 
                                     console.log(this.documentiService.indicatori);
 
@@ -81,7 +80,7 @@ export class FormIndicatori {
                 }
             });
         }
-        else{
+        else {
             this.documentiService.GetMaterieClasse().subscribe({
                 next: (data) => {
                     this.documentiService.GetCategorieIndicatore().subscribe({
@@ -114,8 +113,17 @@ export class FormIndicatori {
         })
     }
 
-    Edit(){
-        console.log(this.documentiService.indicatoriEdit);
-        //TODO: finire modifica indicatori
+    Edit() {
+        // console.log(this.documentiService.indicatoriEdit);
+        if (this.documentiService.indicatoriEdit.length > 0) {
+            this.documentiService.UpdateIndicatoriDocumento()?.subscribe({
+                next: (data: any) => {
+                    console.log("Indicatori modificati con successo");
+                },
+                error: (err: any) => this.checkError.checkError(err)
+            });
+        }
+
+        this.router.navigate(["../"], { relativeTo: this.activatedRoute });
     }
 }

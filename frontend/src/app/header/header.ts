@@ -20,7 +20,7 @@ export class Header {
     ngOnInit() {
         setTimeout(() => {
             this.userImgPath = this.docentiService.docente.FotoUrl;
-        }, 300)
+        }, 500)
     }
 
     logout() {

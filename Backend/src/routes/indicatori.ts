@@ -94,14 +94,13 @@ async function UpdateIndicatoriDocumento(req: any, res: any) {
                 });
             } else if (indicatore.Value == false) {
                 // Eliminare il record
-                await prisma.materia_Documento_Indicatore.delete({
-                    where: {
-                        Materia_Nome_Indicatore_Id_Documento_Studente_Email_Documento_Anno: {
-                            Materia_Nome: indicatore.Materia,
-                            Indicatore_Id: indicatore.Id,
-                            Documento_Anno: new Date(documento.Anno),
-                            Documento_Studente_Email: documento.Studente_Email
-                        }
+                // deleteMany non lancia errori se il record non esiste!
+                await prisma.materia_Documento_Indicatore.deleteMany({
+                    where: {                        
+                        Materia_Nome: indicatore.Materia,
+                        Indicatore_Id: indicatore.Id,
+                        Documento_Anno: new Date(documento.Anno),
+                        Documento_Studente_Email: documento.Studente_Email
                     }
                 });
             }

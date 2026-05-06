@@ -74,16 +74,10 @@ export class IndicatoreInput {
         if (this.activatedRoute.snapshot.data['root'] == "modifica") {
             const indexEdit = this.documentiService.indicatoriEdit.findIndex((item: any) => item.Id === this.indicatore.Id && item.Materia === materia);
             if (indexEdit !== -1) {
-                this.documentiService.indicatoriEdit[indexEdit].Value = !input.value;
+                this.documentiService.indicatoriEdit[indexEdit].Value = input.target.checked;
             }
-            else {
-                if (input.value) {
-                    this.documentiService.indicatoriEdit.push({ Id: this.indicatore.Id, Materia: materia, Nota: "", Value: true });
-                }
-                else {
-                    this.documentiService.indicatoriEdit.push({ Id: this.indicatore.Id, Materia: materia, Nota: "", Value: false });
-                }
-            }
+            else
+                this.documentiService.indicatoriEdit.push({ Id: this.indicatore.Id, Materia: materia, Nota: "", Value: input.target.checked });
         }
     }
 
