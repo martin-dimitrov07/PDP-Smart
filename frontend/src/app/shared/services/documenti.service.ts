@@ -58,7 +58,7 @@ export class DocumentiService {
 
     indicatoriDoc: any[] = [];
     indicatoriEdit: any[] = [];
-    indicatoreSelectedEdit: any = {};
+    // indicatoreSelectedEdit: any = {};
 
     icfsEdit: any[] = [];
 
@@ -75,8 +75,8 @@ export class DocumentiService {
                     Docente_Email: this.docentiService.docente.Email,
                     Classe_Id: this.classeSelected.Id
                 }
-            }
-        } : {};
+            },
+        } : { };
 
         let params = {};
 
@@ -105,7 +105,7 @@ export class DocumentiService {
                     Classe_Id: this.classeSelected.Id,
                 }
             }
-        };
+    };
 
         let params = {};
 

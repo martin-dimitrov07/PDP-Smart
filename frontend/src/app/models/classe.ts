@@ -1,9 +1,11 @@
+import { Documento } from "./documento";
+
 export class Classe {
     Id: number;
     Classe: number;
     Sezione: string;
     Indirizzo: string;
-    Anno_Scolastico: number;
+    Anno_Scolastico: Date;
     nStudenti?: number;
 
     constructor(
@@ -22,7 +24,7 @@ export class Classe {
             ? new Date(anno_Scolastico)
             : anno_Scolastico;
 
-        this.Anno_Scolastico = date.getFullYear();
+        this.Anno_Scolastico = Documento.SetAnnoCorrect(new Date(date));
     }
 
     GetSigla(): string {

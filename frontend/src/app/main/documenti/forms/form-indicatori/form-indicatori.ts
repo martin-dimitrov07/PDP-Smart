@@ -41,6 +41,7 @@ export class FormIndicatori {
         this.stepsService.step = "indicatori";
 
         if (this.activatedRoute.snapshot.data['root'] == "modifica") {
+            this.documentiService.indicatoriEdit = [];
 
             const annoScolastico = new Date(this.activatedRoute.snapshot.paramMap.get('annoScolastico')!.split("-")[0] + "-09-01");
 

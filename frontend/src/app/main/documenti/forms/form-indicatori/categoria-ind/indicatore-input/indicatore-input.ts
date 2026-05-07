@@ -83,9 +83,10 @@ export class IndicatoreInput {
 
     SetNota(materia: string) {
         this.documentiService.indicatoreSelected = this.documentiService.indicatori[materia]?.[this.categoria]?.find((item: any) => item.Id === this.indicatore.Id) || {};
-        if (this.activatedRoute.snapshot.data['root'] == "modifica") {
-            this.documentiService.indicatoreSelectedEdit = this.documentiService.indicatoriEdit.find((item: any) => item.Id === this.indicatore.Id && item.Materia === materia) || {};
-        }
+        this.documentiService.indicatoreSelected.Materia = materia;
+        // if (this.activatedRoute.snapshot.data['root'] == "modifica") {
+        //     this.documentiService.indicatoreSelectedEdit = this.documentiService.indicatoriEdit.find((item: any) => item.Id === this.indicatore.Id && item.Materia === materia) || {};
+        // }
 
         // console.log(this.documentiService.indicatori);
         // console.log(this.documentiService.indicatoreSelected);

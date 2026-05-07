@@ -19,15 +19,15 @@ export class ModalAddNota {
 
     EditNota(){
         if(this.activatedRoute.snapshot.data['root'] == "modifica") {
-            const indexEdit = this.documentiService.indicatoriEdit.findIndex((item: any) => item.Id === this.documentiService.indicatoreSelectedEdit.Id && item.Materia === this.documentiService.indicatoreSelectedEdit.Materia);
+            const indexEdit = this.documentiService.indicatoriEdit.findIndex((item: any) => item.Id === this.documentiService.indicatoreSelected.Id && item.Materia === this.documentiService.indicatoreSelected.Materia);
             if (indexEdit !== -1) {
                 this.documentiService.indicatoriEdit[indexEdit].Nota = this.documentiService.indicatoreSelected.Nota;
             }
             else
             {
                 this.documentiService.indicatoriEdit.push({
-                    Id: this.documentiService.indicatoreSelectedEdit.Id,
-                    Materia: this.documentiService.indicatoreSelectedEdit.Materia,
+                    Id: this.documentiService.indicatoreSelected.Id,
+                    Materia: this.documentiService.indicatoreSelected.Materia,
                     Nota: this.documentiService.indicatoreSelected.Nota,
                     Value: true
                 });

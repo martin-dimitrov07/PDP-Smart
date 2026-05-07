@@ -5,6 +5,7 @@ import { Studente } from '../../../../../models/studente';
 import { DocumentiService } from '../../../../../shared/services/documenti.service';
 import { StudentiService } from '../../../../../shared/services/studenti.service';
 import { CheckError } from '../../../../../shared/utilities/check-error';
+import { Documento } from '../../../../../models/documento';
 
 
 @Component({
@@ -25,26 +26,26 @@ export class ModalAddStudente {
     @Output() studenteEvent = new EventEmitter<Studente>();
 
     ngOnInit() {
-        if (!this.studentiService.anniScolastici || this.studentiService.anniScolastici.length < 1)
-            this.GetAnniScolastici();
-        else
+        // if (!this.studentiService.anniScolastici || this.studentiService.anniScolastici.length < 1)
+        //     this.GetAnniScolastici();
+        // else
             this.GetClassiNoEmpty();
     }
 
-    GetAnniScolastici() {
-        this.studentiService.GetAnniScolastici().subscribe({
-            next: (data: any) => {
-                console.log(this.studentiService.anniScolastici);
-                this.GetClassiNoEmpty();
+    // GetAnniScolastici() {
+    //     this.studentiService.GetAnniScolastici().subscribe({
+    //         next: (data: any) => {
+    //             console.log(this.studentiService.anniScolastici);
+    //             this.GetClassiNoEmpty();
 
-            },
-            error: (err: any) => this.checkError.checkError(err)
-        });
-    }
+    //         },
+    //         error: (err: any) => this.checkError.checkError(err)
+    //     });
+    // }
 
     GetClassiNoEmpty() {
         this.studentiService.indirizzoSelected = "";
-        this.studentiService.GetClassiNoEmpty({}, this.studentiService.anniScolastici[0]).subscribe({
+        this.studentiService.GetClassiNoEmpty({}, Documento.SetAnnoCorrect(new Date())).subscribe({
             next: (data: any) => {
                 console.log(data);
                 for (const key in data) {
