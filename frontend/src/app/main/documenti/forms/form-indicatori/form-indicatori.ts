@@ -46,13 +46,7 @@ export class FormIndicatori {
 
             this.studentiService.GetClasseStudente(this.activatedRoute.snapshot.paramMap.get('studenteEmail')!.replaceAll('_', '.'), annoScolastico).subscribe({
                 next: (classe: Classe) => {
-                    this.documentiService.classeSelected = new Classe(
-                        classe.Id,
-                        classe.Classe,
-                        classe.Sezione,
-                        classe.Indirizzo,
-                        new Date(classe.Anno_Scolastico)
-                    );
+                    this.documentiService.classeSelected = classe;
 
                     this.documentiService.GetMaterieClasse().subscribe({
                         next: (data) => {
