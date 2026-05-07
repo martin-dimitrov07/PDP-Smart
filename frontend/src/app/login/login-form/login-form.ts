@@ -15,8 +15,6 @@ declare const google: any;
     imports: [NgClass],
 })
 export class LoginForm {
-    @Input() isDark: boolean = false;
-
     isLoading: boolean = true;
 
     private readonly loginService = inject(LoginService);
@@ -36,13 +34,13 @@ export class LoginForm {
         }
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes['isDark'] && !changes['isDark'].firstChange) {
-            if (typeof google != 'undefined') {
-                this.renderGoogleButton();
-            }
-        }
-    }
+    // ngOnChanges(changes: SimpleChanges) {
+    //     if (changes['isDark'] && !changes['isDark'].firstChange) {
+    //         if (typeof google != 'undefined') {
+    //             this.renderGoogleButton();
+    //         }
+    //     }
+    // }
 
     private setupAndRender() {
         if (!LoginForm.googleInitialized) {
@@ -66,7 +64,7 @@ export class LoginForm {
             google.accounts.id.renderButton(
                 btn,
                 {
-                    "theme": this.isDark ? "filled_black" : "outline",
+                    "theme": "outline",
                     "size": "large",
                     "type": "standard",
                     "text": "continue_with",

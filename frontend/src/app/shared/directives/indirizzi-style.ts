@@ -9,13 +9,13 @@ export class IndirizziStyle {
     @Input('appIndirizziStyle') indirizzo!: string;
 
     private readonly config: any = {
-        'INF': { main: '--inf-color', hover: '--inf-color-hover', dark: '--inf-color-hover-dark' },
-        'ELT': { main: '--elt-color', hover: '--elt-color-hover', dark: '--elt-color-hover-dark' },
-        'MEC': { main: '--mec-color', hover: '--mec-color-hover', dark: '--mec-color-hover-dark' },
-        'AFM': { main: '--afm-color', hover: '--afm-color-hover', dark: '--afm-color-hover-dark' },
-        'LIC': { main: '--lic-color', hover: '--lic-color-hover', dark: '--lic-color-hover-dark' },
-        'TUR': { main: '--tur-color', hover: '--tur-color-hover', dark: '--tur-color-hover-dark' },
-        'ENE': { main: '--ene-color', hover: '--ene-color-hover', dark: '--ene-color-hover-dark' }
+        'INF': { main: '--inf-color', hover: '--inf-color-hover' },
+        'ELT': { main: '--elt-color', hover: '--elt-color-hover' },
+        'MEC': { main: '--mec-color', hover: '--mec-color-hover' },
+        'AFM': { main: '--afm-color', hover: '--afm-color-hover' },
+        'LIC': { main: '--lic-color', hover: '--lic-color-hover' },
+        'TUR': { main: '--tur-color', hover: '--tur-color-hover' },
+        'ENE': { main: '--ene-color', hover: '--ene-color-hover' }
     };
 
     // applica immediatamente alla variabile --color il risultato del metodo color() 

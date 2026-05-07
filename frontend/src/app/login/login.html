@@ -54,28 +54,12 @@
     </section>
     <section
         class="position-relative d-none d-md-flex col-6 bg-light col-lg-5 p-4 p-lg-5 d-flex justify-content-center align-items-center">
-        <app-login-form [isDark]="isDark"></app-login-form>
-        <button class="btn-theme position-absolute rounded-circle ratio-1x1" (click)="ChangeTheme()">
-            @if(isDark){
-            <i #icon class="bi bi-sun-fill d-flex align-items-center justify-content-center"></i>
-            }
-            @else {
-            <i #icon class="bi bi-moon-fill d-flex align-items-center justify-content-center"></i>
-            }
-        </button>
+        <app-login-form></app-login-form>
     </section>
 
     <section
         class="d-flex d-md-none bg-blue col-12 p-4 p-sm-5 d-flex justify-content-center flex-column align-items-center">
         <div class="sfuma-lg rounded-circle opacity-25"></div>
-        <app-login-form class="position-relative z-2" [isDark]="isDark"></app-login-form>
-        <button class="btn-theme ms-auto mt-2 rounded-circle ratio-1x1" (click)="ChangeTheme()">
-            @if(isDark){
-            <i #icon class="bi bi-sun-fill d-flex align-items-center justify-content-center"></i>
-            }
-            @else {
-            <i #icon class="bi bi-moon-fill d-flex align-items-center justify-content-center"></i>
-            }
-        </button>
+        <app-login-form class="position-relative z-2"></app-login-form>
     </section>
 </div>

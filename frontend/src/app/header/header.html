@@ -30,8 +30,6 @@
                         <span class="nav-link text-white">Prof. {{docentiService.docente.Cognome}}</span>
                     </a>
                     <ul class="dropdown-menu border-secondary">
-                        <li><button class="dropdown-item"><i class="bi bi-moon-stars me-2"></i>Dark Mode</button></li>
-                        <li><hr class="dropdown-divider"></li>
                         <li (click)="logout()"><button class="dropdown-item text-danger"><i class="bi bi-box-arrow-right me-2"></i>Logout</button></li>
                     </ul>
                 </div>
@@ -50,8 +48,6 @@
                     <span class="prof-name nav-link text-white">Prof. {{docentiService.docente.Cognome}}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-secondary w-100">
-                    <li><button class="dropdown-item py-2"><i class="bi bi-moon-stars me-2"></i>Dark Mode</button></li>
-                    <li><hr class="dropdown-divider"></li>
                     <li (click)="logout()"><button class="dropdown-item py-2 text-danger"><i class="bi bi-box-arrow-right me-2"></i>Logout</button></li>
                 </ul>
             </div>

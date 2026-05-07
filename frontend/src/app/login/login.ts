@@ -9,22 +9,4 @@ import { LoginForm } from './login-form/login-form';
   styleUrl: './login.css',
 })
 export class Login {
-
-    isDark: boolean = false;
-    @ViewChild("icon") themeIcon: any;
-
-    ChangeTheme(){
-        this.isDark = !this.isDark;
-        document.body.classList.toggle("dark-mode");
-
-        const icon = this.themeIcon.nativeElement;
-
-        if(this.isDark){
-            icon.classList.remove("bi-moon-fill");
-            icon.classList.add("bi-sun-fill");
-        } else {
-            icon.classList.remove("bi-sun-fill");
-            icon.classList.add("bi-moon-fill");
-        }
-    }
 }

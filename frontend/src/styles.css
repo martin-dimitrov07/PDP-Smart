@@ -59,7 +59,7 @@
     /* #endregion */
 }
 
-.dark-mode {
+/* .dark-mode {
     --bg-blue-dark-color: #0c1c36;
     --bg-blue-color: #233f74;
 
@@ -77,7 +77,7 @@
 
     --dark-shadow-color: #333333dd;
 
-    /* #region DSA, BES, Anno */
+    /* #region DSA, BES, Anno 
 
     --bg-DSA: #EDDCD2;
     --bg-BES: #D8E2DC;
@@ -86,8 +86,8 @@
     --color-BES: #617165;
     --color-Anno: var(--bg-blue-dark-color);
 
-    /* #endregion */
-}
+    #endregion
+} */
 
 @font-face {
     font-family: 'Geist';
@@ -186,7 +186,7 @@ h6 {
     filter: drop-shadow(0 0 20px var(--bg-blue-color));
 }
 
-.btn-theme {
+/* .btn-theme {
     width: 50px;
     height: 50px;
     bottom: 30px;
@@ -217,7 +217,7 @@ h6 {
 
 .btn-theme .bi::before {
     transform: scale(1.5);
-}
+} */
 
 .btn-primary,
 .btn-outline-primary {
