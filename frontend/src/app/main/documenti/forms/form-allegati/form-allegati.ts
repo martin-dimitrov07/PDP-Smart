@@ -36,7 +36,7 @@ export class FormAllegati {
         this.stepsService.step = "allegati";
         // console.log(this.documentiService.documentoSelected)
         // console.log("Allegati Doc: ", this.documentiService.allegatiDoc);
-        if(this.activatedRoute.snapshot.data['root'] == 'modifica') {
+        if (this.activatedRoute.snapshot.data['root'] == 'modifica') {
             this.documentiService.allegatiEdit = [];
             this.documentiService.allegatiDoc = [];
             this.documentiService.GetAllegatiDocumento()?.subscribe({
@@ -54,9 +54,8 @@ export class FormAllegati {
         // Aggiunge i nuovi file a quelli esistenti
         this.documentiService.allegati.push(...event.addedFiles.map((file: File) => new Allegato(0, file)));
 
-        if(event.rejectedFiles.length > 0) 
-        {
-            switch(event.rejectedFiles[0].reason) {
+        if (event.rejectedFiles.length > 0) {
+            switch (event.rejectedFiles[0].reason) {
                 case "type":
                     this.documentiService.errorAllegati = "Il file " + event.rejectedFiles[0].name + " non è in un formato supportato (immagini o PDF o documenti Word).";
                     break;
@@ -80,7 +79,7 @@ export class FormAllegati {
         this.documentiService.allegati.splice(this.documentiService.allegati.findIndex((f) => f === allegato), 1);
     }
 
-    CreateDocumento(){
+    CreateDocumento() {
         this.documentiService.CreateDocumento().subscribe({
             next: (response) => {
                 console.log("Documento creato con successo:", response);
@@ -91,18 +90,18 @@ export class FormAllegati {
             },
             error: (error) => {
                 console.error("Errore durante la creazione del documento:", error);
-                
+
                 //mostrare toast messaggio errore
             }
         });
     }
 
-    Edit(){
+    Edit() {
         for (const allegato of this.documentiService.allegati) {
             this.documentiService.allegatiEdit.push({ Allegato: allegato, Value: true });
         }
 
-        if(this.documentiService.allegatiEdit.length > 0){
+        if (this.documentiService.allegatiEdit.length > 0) {
             this.documentiService.UpdateAllegatiDocumento()?.subscribe({
                 next: (data: any) => {
                     console.log("Allegati modificati con successo");
@@ -118,5 +117,16 @@ export class FormAllegati {
         const indexAllegato = this.documentiService.allegatiDoc.indexOf(allegato);
         this.documentiService.allegatiDoc.splice(indexAllegato, 1);
         this.documentiService.allegatiEdit.push({ Allegato: allegato, Value: false });
+    }
+
+    ShowAllegato(allegato: Allegato) {
+        const fileUrl = URL.createObjectURL(allegato.File);
+
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.download = allegato.File.name;
+        link.click();
+        //Pulizia: rimuove l'URL creato per liberare memoria
+        window.URL.revokeObjectURL(fileUrl);
     }
 }

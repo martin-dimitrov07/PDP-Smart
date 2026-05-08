@@ -116,7 +116,7 @@ INSERT INTO "Docente" ("Email", "Nome", "Cognome", "Ruolo") VALUES
 DO $$
 DECLARE
     ind_list TEXT[] := ARRAY['INF', 'ELT', 'MEC', 'AFM', 'LIC', 'TUR', 'ENE'];
-    anni_list TIMESTAMP[] := ARRAY['2024-09-01', '2025-09-01', '2026-09-01'];
+    anni_list TIMESTAMP[] := ARRAY['2024-09-01', '2025-09-01', '2023-09-01'];
     nomi TEXT[] := ARRAY['Gianmarco', 'Pierfrancesco', 'Alessandro', 'Massimiliano', 'Leonardo', 'Francesco Maria', 'Riccardo', 'Edoardo', 'Filippo', 'Christian', 'Mariagiulia', 'Beatrice Sofia', 'Elisabetta', 'Francesca', 'Valentina', 'Margherita', 'Annamaria', 'Alessandra'];
     cognomi TEXT[] := ARRAY['Mastroianni', 'Bevilacqua', 'Franceschini', 'Quattrociocche', 'Castelnuovo', 'Montezemolo', 'Pasqualantonio', 'Tagliaferri', 'Scaramuzzino', 'Dell''Acqua', 'Santamaria', 'Pietrangeli', 'Valsecchi', 'Innocenti', 'Ghirardelli'];
     v_nome TEXT;

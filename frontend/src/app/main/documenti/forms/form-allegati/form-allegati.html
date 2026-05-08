@@ -24,7 +24,7 @@
             <div class="d-flex gap-3 flex-wrap">
                 @for (allegato of documentiService.allegatiDoc; track $index) {
 
-                <div
+                <div (click)="ShowAllegato(allegato)"
                     class="allegato position-relative rounded d-flex flex-column align-items-center justify-content-center p-3 shadow-sm">
 
                     @if(docentiService.docente.Ruolo != Ruolo.DOCENTE) {
