@@ -8,6 +8,7 @@ import { DocentiService } from '../../../shared/services/docenti.service';
 import { Docente, Ruolo } from '../../../models/docente';
 import { DocumentiCreateHeader } from './documenti-create-header/documenti-create-header';
 import e from 'express';
+import { Documento } from '../../../models/documento';
 
 @Component({
     selector: 'app-documenti-create',
@@ -35,7 +36,7 @@ export class DocumentiCreate {
                 } 
                 
                 if (ruolo == Ruolo.COORDINATORE) {
-                    this.studentiService.GetClassiNoDocEmptyCoordinatore(new Date()).subscribe({
+                    this.studentiService.GetClassiNoDocEmptyCoordinatore(Documento.SetAnnoCorrect(new Date())).subscribe({
                         next: (data: any) => {
                             const hasStudents = Object.values(data).some((arr: any) => arr && arr.length > 0);
 

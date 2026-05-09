@@ -50,6 +50,7 @@ INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES
 ('Entrambi', 'Strumenti compensativi', 'uso di mappe concettuali (realizzate sotto la guida dell’insegnante)'),
 ('Entrambi', 'Strumenti compensativi', 'uso di schemi riassuntivi (realizzati sotto la guida dell’insegnante)'),
 ('Entrambi', 'Strumenti compensativi', 'uso di tablet/smartphone (solo se previsto dalla certificazione)');
+('Entrambi', 'Strumenti compensativi', 'altro...');
 
 -- MISURE DISPENSATIVE
 INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES 
@@ -65,6 +66,8 @@ INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES
 ('Entrambi', 'Misure dispensative', 'riduzione per selezione dei contenuti di studio'),
 ('Entrambi', 'Misure dispensative', 'dispensa dall’utilizzo di tempi standard'),
 ('Entrambi', 'Misure dispensative', 'dispensa da un eccessivo carico di compiti con riadattamento e riduzione delle pagine da studiare, senza modificare gli obiettivi formativi');
+('Entrambi', 'Misure dispensative', 'altro...');
+
 
 -- MODALITÀ DI VERIFICA
 INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES 
@@ -82,6 +85,8 @@ INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES
 ('Entrambi', 'Modalità di verifica', 'utilizzo di prove strutturate negli scritti'),
 ('Entrambi', 'Modalità di verifica', 'modalità di presentazione delle verifiche (cartacea – al PC – con software specifici – altro ...)'),
 ('Entrambi', 'Modalità di verifica', 'uso di mediatori didattici durante le interrogazioni (mappe – schemi – immagini concordati/e con l’insegnante)');
+('Entrambi', 'Modalità di verifica', 'altro...');
+
 
 -- CRITERI DI VALUTAZIONE
 INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES 
@@ -92,6 +97,8 @@ INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES
 ('Entrambi', 'Criteri di valutazione', 'si adotta una valutazione che apprezzi le conoscenze rispetto alle competenze'),
 ('Entrambi', 'Criteri di valutazione', 'si adotta una valutazione che eviti di privilegiare il nozionismo e un approccio esclusivamente mnemonico'),
 ('BES', 'Criteri di valutazione', 'si adotta una valutazione calibrata sugli obiettivi didattici e di contenuto eventualmente riformulati (vedi infra)');
+('Entrambi', 'Criteri di valutazione', 'altro...');
+
 
 -- ==========================================================
 -- PERSONALE DOCENTE
