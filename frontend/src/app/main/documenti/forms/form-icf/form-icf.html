@@ -48,7 +48,7 @@
             </button>
             }
 
-            @if(activatedRoute.snapshot.data['root'] == "modifica" && docentiService.docente.Ruolo == Ruolo.ADMIN){
+            @if(activatedRoute.snapshot.data['root'] == "modifica" && docentiService.docente.Ruolo == Ruolo.ADMIN && documentiService.documentoSelected.Stato != StatoDocumento.SCADUTO){
             <div class="d-flex justify-content-end">
                 <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0"
                     (click)="Edit()">

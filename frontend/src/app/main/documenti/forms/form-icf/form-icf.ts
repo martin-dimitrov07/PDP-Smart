@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DocentiService } from '../../../../shared/services/docenti.service';
 import { DocumentiEditBreadcrumb } from '../../documenti-edit/documenti-edit-breadcrumb/documenti-edit-breadcrumb';
 import { CheckError } from '../../../../shared/utilities/check-error';
+import { Stato } from '../../../../models/documento';
 
 @Component({
     selector: 'app-form-icf',
@@ -26,6 +27,7 @@ export class FormICF {
     root: string = "";
 
     Ruolo: typeof Ruolo = Ruolo;
+    StatoDocumento: typeof Stato = Stato;
 
     prevPage: string = "";
 

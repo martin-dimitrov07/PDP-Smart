@@ -9,22 +9,26 @@
             [class.fs-3]="activatedRoute.snapshot.data['root'] == 'modifica'">
             @if(activatedRoute.snapshot.data['root'] == 'crea')
             {
-            Assegna gli indicatori
+                Assegna gli indicatori
             }
             @else
             {
-            Indicatori assegnati
+                Indicatori assegnati
             }
         </h3>
         <p class="small mt-1">
             @if(activatedRoute.snapshot.data['root'] == 'crea')
             {
-            Seleziona le misure applicabili per ogni voce. Ogni spunta sarà riportata nel documento finale
+                Seleziona le misure applicabili per ogni voce. Ogni spunta sarà riportata nel documento finale
             }
             @else
             {
-            Visualizza le misure applicate per ogni voce. Per effettuare modifiche occore aggiungere o rimuovere la
-            spunta sull'indicatore desiderato
+                Visualizza le misure applicate per ogni voce. 
+                @if(documentiService.documentoSelected.Stato != StatoDocumento.SCADUTO)
+                {
+                Per effettuare modifiche occore aggiungere o rimuovere la
+                spunta sull'indicatore desiderato
+                }
             }
         </p>
         <hr>
@@ -39,7 +43,7 @@
             </ng-container>
             }
 
-            @if(activatedRoute.snapshot.data['root'] == "modifica"){
+            @if(activatedRoute.snapshot.data['root'] == "modifica" && documentiService.documentoSelected.Stato != StatoDocumento.SCADUTO){
             <div class="d-flex justify-content-end">
                 <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0"
                     (click)="Edit()">

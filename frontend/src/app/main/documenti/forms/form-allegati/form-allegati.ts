@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DocumentiEditBreadcrumb } from '../../documenti-edit/documenti-edit-breadcrumb/documenti-edit-breadcrumb';
 import { CheckError } from '../../../../shared/utilities/check-error';
 import { Allegato } from '../../../../models/allegato';
+import { Stato } from '../../../../models/documento';
 
 
 @Component({
@@ -27,6 +28,8 @@ export class FormAllegati {
 
     public readonly docentiService: DocentiService = inject(DocentiService);
     Ruolo: typeof Ruolo = Ruolo;
+    StatoDocumento: typeof Stato = Stato;
+
 
     private readonly router: Router = inject(Router);
 

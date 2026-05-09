@@ -13,6 +13,7 @@ import { DocumentiEditBreadcrumb } from '../../documenti-edit/documenti-edit-bre
 import { StudentiService } from '../../../../shared/services/studenti.service';
 import { Classe } from '../../../../models/classe';
 import { Router } from '@angular/router';
+import { Stato } from '../../../../models/documento';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class FormIndicatori {
 
     public readonly docentiService: DocentiService = inject(DocentiService);
     Ruolo: typeof Ruolo = Ruolo;
+    StatoDocumento: typeof Stato = Stato;
 
     datiCaricati: boolean = false;
 
