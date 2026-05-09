@@ -29,23 +29,23 @@ export class ModalAddStudente {
         // if (!this.studentiService.anniScolastici || this.studentiService.anniScolastici.length < 1)
         //     this.GetAnniScolastici();
         // else
-            this.GetClassiNoEmpty();
+            this.GetClassiNoDocEmpty();
     }
 
     // GetAnniScolastici() {
     //     this.studentiService.GetAnniScolastici().subscribe({
     //         next: (data: any) => {
     //             console.log(this.studentiService.anniScolastici);
-    //             this.GetClassiNoEmpty();
+    //             this.GetClassiNoDocEmpty();
 
     //         },
     //         error: (err: any) => this.checkError.checkError(err)
     //     });
     // }
 
-    GetClassiNoEmpty() {
+    GetClassiNoDocEmpty() {
         this.studentiService.indirizzoSelected = "";
-        this.studentiService.GetClassiNoEmpty({}, Documento.SetAnnoCorrect(new Date())).subscribe({
+        this.studentiService.GetClassiNoDocEmpty({}, Documento.SetAnnoCorrect(new Date())).subscribe({
             next: (data: any) => {
                 console.log(data);
                 for (const key in data) {

@@ -24,7 +24,6 @@ export class DocumentiCreate {
     ngOnInit() {
         this.router.navigate(['studenti'], { relativeTo: this.activatedRoute });
 
-        // Invece di leggere la variabile secca, interroga il service
         this.docentiService.GetDocente().subscribe(isLoaded => {
             if (isLoaded) {
                 const ruolo = this.docentiService.docente.Ruolo;

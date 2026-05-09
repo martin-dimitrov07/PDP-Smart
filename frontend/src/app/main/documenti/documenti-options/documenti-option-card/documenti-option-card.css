@@ -5,29 +5,29 @@
     border-radius: 16px !important;
     overflow: hidden;
     transition: .2s ease-out;
+}
+
+.option-card:not(.disabled):hover,
+.option-card:not(.disabled):focus {
+    background-color: var(--blue-color-hover) !important;
     cursor: pointer;
 }
 
-.option-card:hover,
-.option-card:focus {
-background-color: var(--blue-color-hover) !important;
-}
-
 /* testi */
-.option-card:hover,
-.option-card:focus {
+.option-card:not(.disabled):hover,
+.option-card:not(.disabled):focus {
     transform: translateY(-2px);
 }
 
-.option-card .sigla, 
+.option-card .sigla,
 .option-card .description {
     color: var(--blue-color);
 }
 
-.option-card:hover .sigla, 
-.option-card:focus .sigla, 
-.option-card:hover .description, 
-.option-card:focus .description {
+.option-card:not(.disabled):hover .sigla,
+.option-card:not(.disabled):focus .sigla,
+.option-card:not(.disabled):hover .description,
+.option-card:not(.disabled):focus .description {
     transform: scale(1.03);
 }
 
@@ -41,8 +41,8 @@ background-color: var(--blue-color-hover) !important;
     font-size: 7rem;
 }
 
-.option-card:hover .bg-icon,
-.option-card:focus .bg-icon {
+.option-card:not(.disabled):hover .bg-icon,
+.option-card:not(.disabled):focus .bg-icon {
     opacity: .25;
     transform: scale(1.06);
 }
@@ -59,7 +59,7 @@ background-color: var(--blue-color-hover) !important;
     transition: .2s;
 }
 
-.option-card:hover .arrow-btn,
-.option-card:focus .arrow-btn {
+.option-card:not(.disabled):hover .arrow-btn,
+.option-card:not(.disabled):focus .arrow-btn {
     transform: translateX(5px);
 }

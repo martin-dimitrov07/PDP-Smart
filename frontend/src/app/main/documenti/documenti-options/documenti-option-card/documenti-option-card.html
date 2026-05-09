@@ -1,4 +1,6 @@
-<a [routerLink]="option.route"
+<a [routerLink]="option.disabled ? null : option.route" [class.disabled]="option.disabled"
+    [class.opacity-50]="option.disabled"
+    [title]="option.disabled ? 'Questa funzione non è disponibile per il ruolo che si ha in questo momento' : ''"
     class="col-md-6 option-card position-relative z-1 d-flex align-items-center gap-3 gap-sm-4 ps-4 ps-xl-5 pe-3 w-100 bg-white border shadow-sm text-decoration-none">
     <div class="flex-grow-1">
         <h2 class="sigla text-start fs-3 lh-1">{{ option.title }}</h2>

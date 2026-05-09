@@ -18,6 +18,7 @@ import * as GestioneMaterie from "./routes/materie.ts";
 import * as GestioneIndicatori from "./routes/indicatori.ts";
 import * as GestioneICF from "./routes/icf.ts";
 import * as GestioneAllegati from "./routes/allegati.ts";
+import * as GestioneDocenti from "./routes/docenti.ts";
 
 import { PrismaClient } from "../prisma/generated/client/index.js";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -169,6 +170,9 @@ app.post("/api/documento/create", GestioneDocumenti.CreatePDP);
 app.get("/api/anni-scolastici-documenti", GestioneDocumenti.GetAnniScolasticiDocumenti);
 app.get("/api/documenti", GestioneDocumenti.GetDocumenti);
 app.delete("/api/documento/delete/", GestioneDocumenti.DeletePDP);
+
+//Docenti
+app.get("/api/is-coordinatore", GestioneDocenti.IsCoordinatore);
 
 //Materie
 app.get("/api/materie", GestioneMaterie.GetMaterie);

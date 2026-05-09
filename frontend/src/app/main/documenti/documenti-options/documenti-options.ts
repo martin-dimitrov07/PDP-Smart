@@ -3,6 +3,9 @@ import { DocumentiOptionCard } from './documenti-option-card/documenti-option-ca
 import { DocentiService } from '../../../shared/services/docenti.service';
 import { Ruolo } from '../../../models/docente';
 import { Router } from '@angular/router';
+import { StudentiService } from '../../../shared/services/studenti.service';
+import { Documento } from '../../../models/documento';
+import e from 'express';
 @Component({
     selector: 'app-documenti-options',
     imports: [DocumentiOptionCard],
@@ -12,8 +15,24 @@ import { Router } from '@angular/router';
 export class DocumentiOptions {
     private readonly docentiService: DocentiService = inject(DocentiService);
     private readonly router: Router = inject(Router);
+    public isClassiEnabled: boolean = false;
+    private readonly studentiService: StudentiService = inject(StudentiService);
 
     ngOnInit() {
+        this.studentiService.GetClassiNoDocEmptyCoordinatore(Documento.SetAnnoCorrect(new Date())).subscribe({
+            next: (data: any) => {
+                console.log(data);
+                const hasStudents = Object.values(data).some((arr: any) => arr && arr.length > 0);
+
+                if (hasStudents) {
+                    this.isClassiEnabled = true;
+                } else {
+                    this.isClassiEnabled = false;
+                }
+            },
+            error: (err: any) => console.log(err)
+        });
+
         this.docentiService.GetDocente().subscribe(isLoaded => {
             if (isLoaded) {
                 const ruolo = this.docentiService.docente.Ruolo;

@@ -12,7 +12,8 @@
                 title: 'Lista',
                 description: 'Visualizza e gestisci i tuoi documenti',
                 icon: 'bi bi-file-earmark-text',
-                route: '/documenti/lista'
+                route: '/documenti/lista',
+                disabled: false
             }"></app-documenti-option-card>
 
         </div>
@@ -21,7 +22,8 @@
                 title: 'Crea documento',
                 description: 'Crea un nuovo documento',
                 icon: 'bi bi-file-earmark-plus',
-                route: '/documenti/crea'
+                route: '/documenti/crea',
+                disabled: !isClassiEnabled
             }"></app-documenti-option-card>
         </div>
     </div>

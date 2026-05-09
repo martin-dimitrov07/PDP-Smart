@@ -36,7 +36,7 @@ export class Header {
     }
 
     get routesDocumento(): string[]{
-        return this.docentiService.docente.Ruolo === Ruolo.DOCENTE
+        return this.docentiService.docente.Ruolo == Ruolo.DOCENTE
             ? ['/documenti', 'lista']
             : ['/documenti'];
     }
