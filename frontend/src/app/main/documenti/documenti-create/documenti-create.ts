@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { DocentiService } from '../../../shared/services/docenti.service';
 import { Docente, Ruolo } from '../../../models/docente';
 import { DocumentiCreateHeader } from './documenti-create-header/documenti-create-header';
+import e from 'express';
 
 @Component({
     selector: 'app-documenti-create',
@@ -30,10 +31,28 @@ export class DocumentiCreate {
 
                 if (ruolo != Ruolo.ADMIN && ruolo != Ruolo.COORDINATORE) {
                     this.router.navigate(["404"]);
-                } else {
-                    this.studentiService.GetAnniScolastici().subscribe({
+                    return;
+                } 
+                
+                if (ruolo == Ruolo.COORDINATORE) {
+                    this.studentiService.GetClassiNoDocEmptyCoordinatore(new Date()).subscribe({
                         next: (data: any) => {
+                            const hasStudents = Object.values(data).some((arr: any) => arr && arr.length > 0);
+
+                            if (!hasStudents) {
+                                this.router.navigate(["404"]);
+                                return;
+                            }
+
+                            this.studentiService.GetAnniScolastici().subscribe({
+                                error: (err: any) => this.checkError.checkError(err)
+                            });
                         },
+                        error: (err: any) => this.checkError.checkError(err)
+                    });
+                }
+                else {
+                    this.studentiService.GetAnniScolastici().subscribe({
                         error: (err: any) => this.checkError.checkError(err)
                     });
                 }

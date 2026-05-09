@@ -84,7 +84,7 @@ export class StudentiService {
 
     GetClassiNoDocEmpty(filterClassi: any, filterAnnoScolastico: any) {
         this.indirizzoSelected = "";
-        if(this.docentiService.docente.Ruolo == Ruolo.COORDINATORE) {
+        if (this.docentiService.docente.Ruolo == Ruolo.COORDINATORE) {
             return this.GetClassiNoDocEmptyCoordinatore(filterAnnoScolastico);
         }
         return this.GetClassi(filterClassi, filterAnnoScolastico).pipe(

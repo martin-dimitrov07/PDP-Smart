@@ -76,7 +76,7 @@ export class DocumentiService {
                     Classe_Id: this.classeSelected.Id
                 }
             },
-        } : { };
+        } : {};
 
         let params = {};
 
@@ -105,7 +105,7 @@ export class DocumentiService {
                     Classe_Id: this.classeSelected.Id,
                 }
             }
-    };
+        };
 
         let params = {};
 
@@ -187,7 +187,7 @@ export class DocumentiService {
         })
     }
 
-    UpdateIndicatoriDocumento(){
+    UpdateIndicatoriDocumento() {
         if (!this.documentoSelected) return;
 
         const payload = {
@@ -341,7 +341,7 @@ export class DocumentiService {
         return this.dataStorageService.InviaRichiesta("POST", "/documento/create", formData)!;
     }
 
-    GetAllegatiDocumento(){
+    GetAllegatiDocumento() {
         if (!this.documentoSelected) return;
 
         const filters = {
