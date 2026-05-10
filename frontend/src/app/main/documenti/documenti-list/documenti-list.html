@@ -10,7 +10,7 @@
             @for (documenti of documentiService.documenti; track $index)
             {
                 <div class="col-12 col-lg-6 px-0 px-sm-2">
-                    <app-documenti-card [documento]="documenti"></app-documenti-card>
+                    <app-documenti-card [documento]="documenti" [classiCoordinateIds]="classiCoordinateIds"></app-documenti-card>
                 </div>
             }
         }

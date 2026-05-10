@@ -7,6 +7,7 @@ import { DocentiService } from './docenti.service';
 import { firstValueFrom, forkJoin, map, Observable, switchMap, tap } from 'rxjs';
 import { DocumentiService } from './documenti.service';
 import { CheckError } from '../utilities/check-error';
+import { Documento } from '../../models/documento';
 
 @Injectable({
     providedIn: 'root',
@@ -50,6 +51,29 @@ export class StudentiService {
             this.indirizzi = Array.from(data).map((item: any) => item.Indirizzo);
             console.log(this.indirizzi);
         }));
+    }
+
+    GetClasseByDocumento(documento: Documento) {
+        const filters = {
+            Classi_Studente: {
+                some: {
+                    Studente_Email: documento.Studente_Email
+                }
+            },
+            Anno_Scolastico: documento.Anno
+        };
+
+        const params = {
+            filters: JSON.stringify(filters)
+        };
+
+        return this.dataStorageService.InviaRichiesta("GET", "/classi", params)!.pipe(
+            map((res: any) => {
+                const liste = Object.values(res);
+                const classeTrovata: any = liste.find((v: any) => Array.isArray(v) && v.length > 0);
+                return classeTrovata ? classeTrovata[0] : null;
+            })
+        );
     }
 
     GetClassi(filterClassi: any, filterAnnoScolastico: any): Observable<any> {

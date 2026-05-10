@@ -66,6 +66,28 @@ export class DocumentiService {
     allegatiDoc: Allegato[] = [];
     allegatiEdit: any[] = [];
 
+    DeleteDocumento(documento: Documento) {
+        // app.delete("/api/documento/delete/", GestioneDocumenti.DeletePDP);
+        // const documento = JSON.parse(req.body.data).Documento;
+        // const indicatori = JSON.parse(req.body.data).Indicatori;
+        // const ICFs = JSON.parse(req.body.data).ICFs;
+        // const allegati = req.files && req.files.allegati ? (Array.isArray(req.files.allegati) ? req.files.allegati : [req.files.allegati]) : [];
+
+        this.documentoSelected = documento;
+        this.GetIndicatoriDocumento();
+        this.GetICFSDocumento();
+        this.GetAllegatiDocumento();
+        this.documentoSelected = {} as Documento;
+
+        const params = {
+            documento: JSON.stringify(documento),
+            indicatori: JSON.stringify(this.indicatoriDoc),
+            icfs: JSON.stringify(this.icfsSelected),
+            allegati: JSON.stringify(this.allegatiDoc.map(allegato => ({ Id: allegato.Id })))
+        }
+
+        // return this.dataStorageService.InviaRichiesta("DELETE", "/documento/delete", params )!
+    }
 
     GetMaterieDocente() {
         this.materieDocente = [];

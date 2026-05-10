@@ -44,7 +44,7 @@
                         <i class="bi bi-pencil-square"></i>
                     </button>
 
-                    @if (docenteService.docente.Ruolo != RuoloEnum.DOCENTE) {
+                    @if (canDelete | async) {
                     <button type="button"
                         class="btn btn-sm d-flex justify-content-center align-items-center action-btn delete-btn">
                         <i class="bi bi-trash"></i>
@@ -57,12 +57,14 @@
 
 
     <div class="d-none d-sm-flex flex-column gap-2">
-        <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn" (click)="GoEdit()">
+        <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn"
+            (click)="GoEdit()">
             <i class="bi bi-pencil-square"></i>
         </button>
 
-        @if (docenteService.docente.Ruolo != RuoloEnum.DOCENTE) {
-        <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn delete-btn">
+        @if (canDelete | async) {
+        <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn delete-btn"
+            (click)="DeleteDocument()">
             <i class="bi bi-trash"></i>
         </button>
         }

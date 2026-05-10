@@ -5,6 +5,7 @@ import { DocumentiFilters } from "./documenti-filters/documenti-filters";
 import { CheckError } from '../../../shared/utilities/check-error';
 import { isPlatformBrowser } from '@angular/common';
 import { DocumentiService } from '../../../shared/services/documenti.service';
+import { DocentiService } from '../../../shared/services/docenti.service';
 
 @Component({
     selector: 'app-documenti-list',
@@ -14,6 +15,7 @@ import { DocumentiService } from '../../../shared/services/documenti.service';
 })
 export class DocumentiList {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
+    private readonly docentiService: DocentiService = inject(DocentiService);
     private readonly checkError: CheckError = inject(CheckError);
 
     private platformId = inject(PLATFORM_ID);
@@ -25,8 +27,15 @@ export class DocumentiList {
 
     private filterStato: any = { in: [] };
     private timer: any;
+    classiCoordinateIds: number[] = [];
 
     ngOnInit() {
+        this.documentiService.GetClassiCoordinatore(this.docentiService.docente.Email).subscribe({
+            next: (res) => {
+                this.classiCoordinateIds = Object.values(res).flat().map((c: any) => c.Id);
+            },
+            error: (err) => this.checkError.checkError(err)
+        });
         this.documentiService.GetAnniScolastici().subscribe({
             next: (data: any) => {
                 if (isPlatformBrowser(this.platformId) && this.documentiService.anniScolastici.length > 0) {
