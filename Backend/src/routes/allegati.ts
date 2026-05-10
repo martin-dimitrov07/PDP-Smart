@@ -3,6 +3,7 @@ import { prisma } from "../server.ts";
 import { extname, join } from "path";
 
 async function CreateAllegati(db: any, allegati: any[], studenteEmail: string, anno: Date) {
+    const allegatiCreati = [];
     for (const allegato of allegati) {
         const record = {
             Nome: allegato.name,
@@ -14,8 +15,12 @@ async function CreateAllegati(db: any, allegati: any[], studenteEmail: string, a
             data: record
         });
 
-        await SaveAllegato(newAllegato, allegato.data);
+        allegatiCreati.push({
+            record: newAllegato,
+            data: allegato.data
+        });
     }
+    return allegatiCreati;
 }
 
 async function SaveAllegato(allegato: any, binaryData: any) {
@@ -25,6 +30,7 @@ async function SaveAllegato(allegato: any, binaryData: any) {
 }
 
 async function DeleteAllegati(db: any, allegatiId: string[]) {
+    const allegatiEliminati = [];
     for (const allegatoId of allegatiId) {
         const allegatoDeleted = await db.allegato.delete({
             where: {
@@ -32,14 +38,19 @@ async function DeleteAllegati(db: any, allegatiId: string[]) {
             }
         });
         if (allegatoDeleted) {
-            await DeleteAllegato(allegatoDeleted);
+            allegatiEliminati.push(allegatoDeleted);
         }
     }
+    return allegatiEliminati;
 }
 
 async function DeleteAllegato(allegato: any) {
     const filePath = `${allegato.Percorso}/${allegato.Id}_${allegato.Nome}`;
-    await unlink(filePath);
+    try {
+        await unlink(filePath);
+    } catch (err) {
+        console.warn(`File non trovato o già eliminato: ${filePath}`);
+    }
 }
 
 async function UpdateAllegatiDocumento(req: any, res: any) {
@@ -48,12 +59,32 @@ async function UpdateAllegatiDocumento(req: any, res: any) {
         const allegatiAdd = req.files && req.files.allegatiAdd ? (Array.isArray(req.files.allegatiAdd) ? req.files.allegatiAdd : [req.files.allegatiAdd]) : [];
         const allegatiDelete = req.body.allegatiDelete ? Array.isArray(req.body.allegatiDelete) ? req.body.allegatiDelete : [req.body.allegatiDelete] : [];
 
-        if (allegatiAdd.length > 0) {
-            await CreateAllegati(prisma, allegatiAdd, documento.Studente_Email, new Date(documento.Anno));
+        let filesDelete: any[] = [];
+        let saveAllegati: any[] = [];
+
+        await prisma.$transaction(async (tx) => {
+            if (allegatiAdd.length > 0) {
+                saveAllegati = await CreateAllegati(tx, allegatiAdd, documento.Studente_Email, new Date(documento.Anno));
+            }
+
+            if (allegatiDelete.length > 0) {
+                filesDelete = await DeleteAllegati(tx, allegatiDelete);
+            }
+        }, {
+            maxWait: 5000,
+            timeout: 10000
+        });
+
+        if (saveAllegati.length > 0) {
+            const savePromises = saveAllegati.map(item => 
+                SaveAllegato(item.record, item.data)
+            );
+            await Promise.all(savePromises);
         }
 
-        if (allegatiDelete.length > 0) {
-            await DeleteAllegati(prisma, allegatiDelete);
+        if (filesDelete.length > 0) {
+            const cleanupPromises = filesDelete.map(file => DeleteAllegato(file));
+            await Promise.all(cleanupPromises);
         }
 
         res.status(200).send({ message: "Allegati aggiornati con successo" });

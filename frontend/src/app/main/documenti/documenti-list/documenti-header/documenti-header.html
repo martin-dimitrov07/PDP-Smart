@@ -46,7 +46,12 @@
 
         <div class="icon-box p-2 p-sm-3 shadow" style="width: auto !important;">
             <p class="m-0 fw-bold fs-4">
-                {{documentiService.nClassi}} documenti
+                @if (documentiService.nDocumenti == 1) {
+                {{documentiService.nDocumenti}} documento
+                }
+                @else {
+                {{documentiService.nDocumenti}} documenti
+                }
             </p>
         </div>
 

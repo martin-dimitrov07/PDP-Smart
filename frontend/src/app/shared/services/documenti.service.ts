@@ -43,7 +43,7 @@ export class DocumentiService {
     anniScolastici: Date[] = [];
     // annoSelected = signal<string>("Anno");
     documenti: Documento[] = [];
-    nClassi: number = 0;
+    nDocumenti: number = 0;
 
 
     // indicatori = {
@@ -65,8 +65,8 @@ export class DocumentiService {
 
     allegatiDoc: Allegato[] = [];
     allegatiEdit: any[] = [];
-    
-    canEditNota : boolean = false;
+
+    canEditNota: boolean = false;
 
 
     DeleteDocumento(documento: Documento) {
@@ -89,9 +89,16 @@ export class DocumentiService {
                 this.dataStorageService.InviaRichiesta("DELETE", "/documento/delete", payload)!
                     .subscribe({
                         next: (res) => {
-                            this.documenti = this.documenti.filter(d =>
-                                !(d.Studente_Email == documento.Studente_Email && d.Anno == documento.Anno)
-                            );
+                            console.log("documento eliminato con successo");
+                            this.documenti = this.documenti.filter(d => {
+                                if (!d.Anno || !documento.Anno) return true;
+
+                                const dataLista = new Date(d.Anno).getTime();
+                                const dataDaEliminare = new Date(documento.Anno).getTime();
+
+                                return !(d.Studente_Email === documento.Studente_Email && dataLista === dataDaEliminare);
+                            });
+                            this.GetNumeroDocumenti();
                         },
                         error: (err) => this.checkError.checkError(err)
                     });
@@ -391,7 +398,7 @@ export class DocumentiService {
     }
 
     GetNumeroDocumenti() {
-        this.nClassi = this.documenti.length;
+        this.nDocumenti = this.documenti.length;
     }
 
     CreateDocumento() {

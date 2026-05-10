@@ -10,6 +10,8 @@ async function DeletePDP(req: any, res: any) {
         const ICFs = JSON.parse(req.query.ICFs);
         const allegati = JSON.parse(req.query.AllegatiIds);
 
+        let allegatiDelete: any[] = [];
+
         await prisma.$transaction(async (tx) => {
             if (ICFs && ICFs.length > 0) {
                 await GestioneICF.DeleteICFs(tx, ICFs, documento.Studente_Email, new Date(documento.Anno));
@@ -18,13 +20,21 @@ async function DeletePDP(req: any, res: any) {
                 await GestioneIndicatori.DeleteIndicatori(tx, indicatori, documento.Studente_Email, new Date(documento.Anno));
             }
             if (allegati && allegati.length > 0) {
-                await GestioneAllegati.DeleteAllegati(tx, allegati);
+                allegatiDelete = await GestioneAllegati.DeleteAllegati(tx, allegati);
             }
             await DeleteDocumento(tx, documento);
         }, {
             maxWait: 5000, // tempo massimo di attesa per l'acquisizione di una connessione
-            timeout: 1000000 // imposta un timeout di 10 secondi per l'intera transazione
+            timeout: 10000 // imposta un timeout di 10 secondi per l'intera transazione
         });
+
+        if (allegatiDelete.length > 0) {
+            const deletePromises = allegatiDelete.map(allegato =>
+                GestioneAllegati.DeleteAllegato(allegato)
+            );
+
+            await Promise.all(deletePromises);
+        }
 
         res.status(200).send({ message: "Documento eliminato con successo" });
     }
@@ -55,6 +65,8 @@ async function CreatePDP(req: any, res: any) {
         const ICFs = JSON.parse(req.body.data).ICFs;
         const allegati = req.files && req.files.allegati ? (Array.isArray(req.files.allegati) ? req.files.allegati : [req.files.allegati]) : [];
 
+        let saveAllegati: any[] = [];
+
         // tx è un'istanza di PrismaClient che rappresenta la transazione in corso
         await prisma.$transaction(async (tx) => {
             const newDoc = await CreateDocumento(tx, documento);
@@ -65,12 +77,19 @@ async function CreatePDP(req: any, res: any) {
                 await GestioneICF.CreateICFs(tx, ICFs, newDoc.Studente_Email, newDoc.Anno);
             }
             if (allegati && allegati.length > 0) {
-                await GestioneAllegati.CreateAllegati(tx, allegati, newDoc.Studente_Email, newDoc.Anno);
+                saveAllegati = await GestioneAllegati.CreateAllegati(tx, allegati, newDoc.Studente_Email, newDoc.Anno);
             }
         }, {
             maxWait: 5000, // tempo massimo di attesa per l'acquisizione di una connessione
             timeout: 10000 // imposta un timeout di 10 secondi per l'intera transazione
         });
+
+        if (saveAllegati.length > 0) {
+            const savePromises = saveAllegati.map(item => 
+                GestioneAllegati.SaveAllegato(item.record, item.data)
+            );
+            await Promise.all(savePromises);
+        }
 
         res.status(200).send({ message: "Documento creato con successo" });
 
