@@ -81,9 +81,10 @@ export class IndicatoreInput {
         }
     }
 
-    SetNota(materia: string) {
+    SetNota(materia: string, canEdit: boolean) {
         this.documentiService.indicatoreSelected = this.documentiService.indicatori[materia]?.[this.categoria]?.find((item: any) => item.Id === this.indicatore.Id) || {};
         this.documentiService.indicatoreSelected.Materia = materia;
+        this.documentiService.canEditNota = canEdit;
         // if (this.activatedRoute.snapshot.data['root'] == "modifica") {
         //     this.documentiService.indicatoreSelectedEdit = this.documentiService.indicatoriEdit.find((item: any) => item.Id === this.indicatore.Id && item.Materia === materia) || {};
         // }

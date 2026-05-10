@@ -5,25 +5,25 @@ import * as GestioneAllegati from "./allegati.ts";
 
 async function DeletePDP(req: any, res: any) {
     try {
-        const documento = JSON.parse(req.body.data).Documento;
-        const indicatori = JSON.parse(req.body.data).Indicatori;
-        const ICFs = JSON.parse(req.body.data).ICFs;
-        const allegati = req.files && req.files.allegati ? (Array.isArray(req.files.allegati) ? req.files.allegati : [req.files.allegati]) : [];
+        const documento = JSON.parse(req.query.Documento);
+        const indicatori = JSON.parse(req.query.Indicatori);
+        const ICFs = JSON.parse(req.query.ICFs);
+        const allegati = JSON.parse(req.query.AllegatiIds);
 
         await prisma.$transaction(async (tx) => {
-            if (allegati && allegati.length > 0) {
-                await GestioneAllegati.DeleteAllegati(tx, allegati);
-            }
             if (ICFs && ICFs.length > 0) {
                 await GestioneICF.DeleteICFs(tx, ICFs, documento.Studente_Email, new Date(documento.Anno));
             }
             if (indicatori && Object.keys(indicatori).length > 0) {
                 await GestioneIndicatori.DeleteIndicatori(tx, indicatori, documento.Studente_Email, new Date(documento.Anno));
             }
+            if (allegati && allegati.length > 0) {
+                await GestioneAllegati.DeleteAllegati(tx, allegati);
+            }
             await DeleteDocumento(tx, documento);
         }, {
             maxWait: 5000, // tempo massimo di attesa per l'acquisizione di una connessione
-            timeout: 10000 // imposta un timeout di 10 secondi per l'intera transazione
+            timeout: 1000000 // imposta un timeout di 10 secondi per l'intera transazione
         });
 
         res.status(200).send({ message: "Documento eliminato con successo" });
@@ -40,8 +40,10 @@ async function DeletePDP(req: any, res: any) {
 async function DeleteDocumento(db: any, documento: any) {
     await db.documento.delete({
         where: {
-            Studente_Email: documento.Studente_Email,
-            Anno: new Date(documento.Anno)
+            Id: {
+                Studente_Email: documento.Studente_Email,
+                Anno: new Date(documento.Anno)
+            }
         }
     });
 }

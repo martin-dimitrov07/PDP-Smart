@@ -3,7 +3,7 @@
 </td>
 @for (materia of documentiService.materieClasse; track $index)
 {
-<td class="p-0 text-center align-middle" [class.opacity-50]="!documentiService.materieDocente.includes(materia)">
+<td class="p-0 text-center align-middle" >
     <div class="d-flex justify-content-center gap-1">
         <input type="checkbox" class="form-check-input" [checked]="IsItemSelected(materia)"
             [id]="'ind-' + indicatore.Id + '-' + materia.replace(' ', '-')"
@@ -13,7 +13,7 @@
         {
             <i class="bi fs-6 d-flex align-items-center" data-bs-toggle="modal"
                 [class.bi-pen]="!HasNota(materia)" [class.bi-pen-fill]="HasNota(materia)"
-                data-bs-target="#aggiuntaNota" (click)="documentiService.materieDocente.includes(materia) ? SetNota(materia) : null"></i>
+                data-bs-target="#aggiuntaNota" (click)="documentiService.materieDocente.includes(materia) ? SetNota(materia, true) : SetNota(materia, false)"></i>
         }
     </div>
 </td>

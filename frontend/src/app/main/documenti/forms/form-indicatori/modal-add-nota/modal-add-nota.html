@@ -3,20 +3,32 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title fs-5" id="aggiuntaStudenteLabel">Aggiungi nuova nota</h3>
+                    <h3 class="modal-title fs-5" id="aggiuntaStudenteLabel">
+                        @if(activatedRoute.snapshot.data['root'] == "modifica") {
+                            @if(documentiService.canEditNota) {
+                                Modifica nota
+                            } @else {
+                                Visualizza nota
+                            }
+                        } @else {
+                            Aggiungi nuova nota
+                        }
+                    </h3>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <label for="notaInput" class="form-label">Nota</label>
-                    <textarea class="form-control" id="notaInput" rows="3" [(ngModel)]="documentiService.indicatoreSelected.Nota" placeholder="Scrivi qui la tua nota..."></textarea>
+                    <textarea class="form-control" [readonly]="!documentiService.canEditNota" id="notaInput" rows="3" [(ngModel)]="documentiService.indicatoreSelected.Nota" placeholder="Scrivi qui la tua nota..."></textarea>
                 </div>
-                <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-outline-primary" (click)="ResetNota()">Cancella nota</button> -->
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                    (click)="EditNota()">
-                        Salva nota
-                    </button>
-                </div>
+                @if (documentiService.canEditNota) {
+                    <div class="modal-footer" >
+                        <!-- <button type="button" class="btn btn-outline-primary" (click)="ResetNota()">Cancella nota</button> -->
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                        (click)="EditNota()">
+                            Salva nota
+                        </button>
+                    </div>
+                }
             </div>
         </div>
     </div>

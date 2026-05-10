@@ -3,7 +3,7 @@ import { DocentiService } from './docenti.service';
 import { DataStorageService } from './data-storage.service';
 import { Studente } from '../../models/studente';
 import { Documento, Tipo } from '../../models/documento';
-import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Ruolo } from '../../models/docente';
 import { Indicatore } from '../../models/indicatore';
 import { Icf } from '../../models/icf';
@@ -45,6 +45,7 @@ export class DocumentiService {
     documenti: Documento[] = [];
     nClassi: number = 0;
 
+
     // indicatori = {
     //     "matematica": 
     //         {
@@ -59,34 +60,43 @@ export class DocumentiService {
 
     indicatoriDoc: any[] = [];
     indicatoriEdit: any[] = [];
-    // indicatoreSelectedEdit: any = {};
 
     icfsEdit: any[] = [];
 
     allegatiDoc: Allegato[] = [];
     allegatiEdit: any[] = [];
+    
+    canEditNota : boolean = false;
+
 
     DeleteDocumento(documento: Documento) {
-        // app.delete("/api/documento/delete/", GestioneDocumenti.DeletePDP);
-        // const documento = JSON.parse(req.body.data).Documento;
-        // const indicatori = JSON.parse(req.body.data).Indicatori;
-        // const ICFs = JSON.parse(req.body.data).ICFs;
-        // const allegati = req.files && req.files.allegati ? (Array.isArray(req.files.allegati) ? req.files.allegati : [req.files.allegati]) : [];
-
         this.documentoSelected = documento;
-        this.GetIndicatoriDocumento();
-        this.GetICFSDocumento();
-        this.GetAllegatiDocumento();
-        this.documentoSelected = {} as Documento;
 
-        const params = {
-            documento: JSON.stringify(documento),
-            indicatori: JSON.stringify(this.indicatoriDoc),
-            icfs: JSON.stringify(this.icfsSelected),
-            allegati: JSON.stringify(this.allegatiDoc.map(allegato => ({ Id: allegato.Id })))
-        }
+        forkJoin({
+            indicatori: this.GetIndicatoriDocumento(),
+            icfs: this.GetICFSDocumento(),
+            allegati: this.GetAllegatiDocumento()
+        }).subscribe({
+            next: () => {
+                this.documentoSelected = {} as Documento;
+                const payload = {
+                    Documento: JSON.stringify(documento),
+                    Indicatori: JSON.stringify(this.indicatoriDoc),
+                    ICFs: JSON.stringify(this.icfsSelected),
+                    AllegatiIds: JSON.stringify(this.allegatiDoc.map(a => a.Id))
+                };
 
-        // return this.dataStorageService.InviaRichiesta("DELETE", "/documento/delete", params )!
+                this.dataStorageService.InviaRichiesta("DELETE", "/documento/delete", payload)!
+                    .subscribe({
+                        next: (res) => {
+                            this.documenti = this.documenti.filter(d =>
+                                !(d.Studente_Email == documento.Studente_Email && d.Anno == documento.Anno)
+                            );
+                        },
+                        error: (err) => this.checkError.checkError(err)
+                    });
+            }
+        });
     }
 
     GetMaterieDocente() {
@@ -202,7 +212,7 @@ export class DocumentiService {
     }
 
     GetIndicatoriDocumento() {
-        if (!this.documentoSelected) return;
+        if (!this.documentoSelected) return of(null);
 
         const filters = {
             Documento_Studente_Email: this.documentoSelected.Studente_Email,
@@ -210,8 +220,8 @@ export class DocumentiService {
         }
 
         return this.dataStorageService.InviaRichiesta("GET", "/indicatori-documento", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
-            this.indicatoriDoc = data;
-            // console.log(this.indicatoriDoc);
+            this.indicatoriDoc = data || [];
+            console.log(this.indicatoriDoc);
         }));
     }
 
@@ -267,7 +277,7 @@ export class DocumentiService {
     }
 
     GetICFSDocumento() {
-        if (!this.documentoSelected) return;
+        if (!this.documentoSelected) return of(null);
 
         const filters = {
             Documenti_ICF: {
@@ -279,7 +289,9 @@ export class DocumentiService {
         }
 
         return this.dataStorageService.InviaRichiesta("GET", "/icfs", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
-            this.icfsSelected = data.map((icf: Icf) => new Icf(icf.Codice, icf.Descrizione));
+            this.icfsSelected = (data && Array.isArray(data))
+                ? data.map((icf: Icf) => new Icf(icf.Codice, icf.Descrizione))
+                : [];
             console.log(this.icfsSelected);
         }));
     }
@@ -402,7 +414,7 @@ export class DocumentiService {
     }
 
     GetAllegatiDocumento() {
-        if (!this.documentoSelected) return;
+        if (!this.documentoSelected) return of(null);
 
         const filters = {
             Documento_Studente_Email: this.documentoSelected.Studente_Email,
@@ -410,7 +422,18 @@ export class DocumentiService {
         };
 
         return this.dataStorageService.InviaRichiesta("GET", "/allegati", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
-            this.allegatiDoc = data.map((allegato: any) => new Allegato(allegato.Id, fileManager.convertBase64ToFile(allegato.FileBase64, allegato.Nome, allegato.Tipo)));
+            this.allegatiDoc = (Array.isArray(data)) ?
+                data.map((allegato: any) => {
+                    if (allegato && allegato.FileBase64) {
+                        return new Allegato(
+                            allegato.Id,
+                            fileManager.convertBase64ToFile(allegato.FileBase64, allegato.Nome, allegato.Tipo)
+                        );
+                    }
+                    return null;
+                }).filter(a => a != null)
+                : [];
+            console.log(this.allegatiDoc);
         }))!;
     }
 

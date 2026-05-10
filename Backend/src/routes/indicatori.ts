@@ -65,10 +65,6 @@ async function UpdateIndicatoriDocumento(req: any, res: any) {
         const indicatori = req.body.indicatori;
         const documento = req.body.documento;
 
-        //              [{ id: "Id", Nota: "Nota", "Materia": "Materia", "Value": true/false è true se è da aggiungere senno se è false da eliminare }, ... ],
-
-        // Aggiorna o crea i record in Materia_Documento_Indicatore
-        // Fa la ricerca sull'indicatore e se non esiste uno con quel documento e indicatore, lo crea, altrimenti lo aggiorna
         for (const indicatore of indicatori) {
             if (indicatore.Value == true) {
                 // Creare o fare update del record
@@ -93,10 +89,8 @@ async function UpdateIndicatoriDocumento(req: any, res: any) {
                     }
                 });
             } else if (indicatore.Value == false) {
-                // Eliminare il record
-                // deleteMany non lancia errori se il record non esiste!
                 await prisma.materia_Documento_Indicatore.deleteMany({
-                    where: {                        
+                    where: {
                         Materia_Nome: indicatore.Materia,
                         Indicatore_Id: indicatore.Id,
                         Documento_Anno: new Date(documento.Anno),
@@ -117,21 +111,17 @@ async function UpdateIndicatoriDocumento(req: any, res: any) {
 }
 
 async function DeleteIndicatori(db: any, indicatori: any, studenteEmail: string, anno: Date) {
-    for (const materia in indicatori) {
-        for (const categoria in indicatori[materia]) {
-            for (const indicatore of indicatori[materia][categoria]) {
-                await db.materia_Documento_Indicatore.delete({
-                    where: {
-                        Materia_Nome_Indicatore_Id_Documento_Studente_Email_Documento_Anno: {
-                            Materia_Nome: materia,
-                            Indicatore_Id: indicatore.Id,
-                            Documento_Anno: anno,
-                            Documento_Studente_Email: studenteEmail
-                        }
-                    }
-                });
+    for (const indicatore of indicatori) {
+        await db.materia_Documento_Indicatore.delete({
+            where: {
+                Materia_Nome_Indicatore_Id_Documento_Studente_Email_Documento_Anno: {
+                    Materia_Nome: indicatore.Materia,
+                    Indicatore_Id: indicatore.Id,
+                    Documento_Anno: anno,
+                    Documento_Studente_Email: studenteEmail
+                }
             }
-        }
+        });
     }
 }
 
