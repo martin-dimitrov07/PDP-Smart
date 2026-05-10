@@ -3,7 +3,7 @@ import { DocentiService } from './docenti.service';
 import { DataStorageService } from './data-storage.service';
 import { Studente } from '../../models/studente';
 import { Documento, Tipo } from '../../models/documento';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Ruolo } from '../../models/docente';
 import { Indicatore } from '../../models/indicatore';
 import { Icf } from '../../models/icf';
@@ -11,6 +11,7 @@ import { Classe } from '../../models/classe';
 import { CheckError } from '../utilities/check-error';
 import { Allegato } from '../../models/allegato';
 import { fileManager } from '../utilities/file-manager';
+import { StudentiService } from './studenti.service';
 
 @Injectable({
     providedIn: 'root',
@@ -69,30 +70,67 @@ export class DocumentiService {
     GetMaterieDocente() {
         this.materieDocente = [];
 
-        const filters = this.docentiService.docente.Ruolo == Ruolo.DOCENTE ? {
-            Insegnamenti: {
-                some: {  // serve per relazioni uno a molti
-                    Docente_Email: this.docentiService.docente.Email,
-                    Classe_Id: this.classeSelected.Id
+        let filtersObservable;
+
+        if (this.docentiService.docente.Ruolo == Ruolo.DOCENTE) {
+            const filters = {
+                Insegnamenti: {
+                    some: {
+                        Docente_Email: this.docentiService.docente.Email,
+                        Classe_Id: this.classeSelected.Id
+                    }
                 }
-            },
-        } : {};
+            };
+            filtersObservable = of(filters);
 
-        let params = {};
+        } else if (this.docentiService.docente.Ruolo == Ruolo.COORDINATORE) {
+            filtersObservable = this.GetClassiCoordinatore(this.docentiService.docente.Email).pipe(
+                map((data: any) => {
+                    const isCoordinatore = Object.values(data).some((vettore: any) =>
+                        vettore.some((classe: any) => classe.Id == this.classeSelected.Id)
+                    );
 
-        if (filters) {
-            params = {
-                filters: JSON.stringify(filters)
-            }
+                    if (!isCoordinatore) {
+                        return {
+                            Insegnamenti: {
+                                some: {
+                                    Docente_Email: this.docentiService.docente.Email,
+                                    Classe_Id: this.classeSelected.Id
+                                }
+                            }
+                        };
+                    }
+                    return {};
+                })
+            );
+        } else {
+            filtersObservable = of({});
         }
 
-        // console.log(this.docentiService.docente);
+        return filtersObservable.pipe(
+            switchMap(filters => {
+                const params = {
+                    filters: JSON.stringify(filters)
+                };
+                return this.dataStorageService.InviaRichiesta("GET", "/materie", params)!;
+            }),
+            tap((data: any) => {
+                this.materieDocente = Array.from(data).map((item: any) => item.Nome);
+                console.log("Materie caricate:", this.materieDocente);
+            })
+        );
+    }
 
-        return this.dataStorageService.InviaRichiesta("GET", "/materie", params)!.pipe(tap((data: any) => {
-            this.materieDocente = Array.from(data).map((item: any) => item.Nome);
-            // console.log(this.materieDocente);
-            // console.log(data);
-        }));
+    GetClassiCoordinatore(docenteEmail: string) {
+        const filters = {
+            Coordinatore_Email: docenteEmail
+        };
+
+        const params = {
+            filters: JSON.stringify(filters)
+        }
+
+        return this.dataStorageService.InviaRichiesta("GET", "/classi", params)!
     }
 
     GetMaterieClasse() {

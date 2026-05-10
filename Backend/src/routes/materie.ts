@@ -3,7 +3,7 @@ import { prisma } from "../server.ts";
 async function GetMaterie(req: any, res: any) {
     try {
         const filters: any = req["parsedQuery"].filters || {};
-
+        
         const materie = await prisma.materia.findMany({
             where: filters,
             orderBy: { Nome: 'asc' }
