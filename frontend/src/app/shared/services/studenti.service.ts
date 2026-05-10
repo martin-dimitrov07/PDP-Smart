@@ -71,7 +71,7 @@ export class StudentiService {
             map((res: any) => {
                 const liste = Object.values(res);
                 const classeTrovata: any = liste.find((v: any) => Array.isArray(v) && v.length > 0);
-                return classeTrovata ? classeTrovata[0] : null;
+                return classeTrovata ? new Classe(classeTrovata[0].Id, classeTrovata[0].Classe, classeTrovata[0].Sezione, classeTrovata[0].Indirizzo, classeTrovata[0].Anno_Scolastico) : null;
             })
         );
     }

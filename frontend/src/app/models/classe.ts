@@ -31,7 +31,7 @@ export class Classe {
         return this.Classe.toString() + this.Sezione.toString();
     }
 
-    GetFullNome() {
+    GetFullNome(): string {
         return this.Classe.toString() + this.Sezione.toString() + " " + this.Indirizzo.toString();
     }
 }

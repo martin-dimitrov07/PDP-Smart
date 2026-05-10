@@ -19,26 +19,31 @@ export class DocumentiOptions {
     private readonly studentiService: StudentiService = inject(StudentiService);
 
     ngOnInit() {
-        this.studentiService.GetClassiNoDocEmptyCoordinatore(Documento.SetAnnoCorrect(new Date())).subscribe({
-            next: (data: any) => {
-                console.log(data);
-                const hasStudents = Object.values(data).some((arr: any) => arr && arr.length > 0);
-
-                if (hasStudents) {
-                    this.isClassiEnabled = true;
-                } else {
-                    this.isClassiEnabled = false;
-                }
-            },
-            error: (err: any) => console.log(err)
-        });
-
         this.docentiService.GetDocente().subscribe(isLoaded => {
             if (isLoaded) {
                 const ruolo = this.docentiService.docente.Ruolo;
 
                 if (ruolo != Ruolo.ADMIN && ruolo != Ruolo.COORDINATORE) {
                     this.router.navigate(["404"]);
+                }
+                else {
+                    if (this.docentiService.docente.Ruolo == Ruolo.COORDINATORE) {
+                        this.studentiService.GetClassiNoDocEmptyCoordinatore(Documento.SetAnnoCorrect(new Date())).subscribe({
+                            next: (data: any) => {
+                                console.log(data);
+                                const hasStudents = Object.values(data).some((arr: any) => arr && arr.length > 0);
+
+                                if (hasStudents) {
+                                    this.isClassiEnabled = true;
+                                } else {
+                                    this.isClassiEnabled = false;
+                                }
+                            },
+                            error: (err: any) => console.log(err)
+                        });
+                    }
+                    else
+                        this.isClassiEnabled = true;
                 }
             }
         });
