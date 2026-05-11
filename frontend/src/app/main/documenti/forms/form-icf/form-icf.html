@@ -17,7 +17,7 @@
         </h3>
         <hr>
 
-        <div class="py-2 px-sm-3 d-flex flex-column gap-3">
+        <div class="py-2 px-sm-3 d-flex flex-column">
             <div class="d-flex g-2 gap-3 flex-wrap">
                 @if(documentiService.icfsSelected && documentiService.icfsSelected.length > 0)
                 {
@@ -36,27 +36,32 @@
                     </div>
                 </div>
                 }
+                }@else if(activatedRoute.snapshot.data['root'] == "modifica"){
+                <p class="text-muted fst-italic">Nessun icf presente.</p>
                 }
             </div>
-
-            @if(docentiService.docente.Ruolo == Ruolo.ADMIN)
-            {
-            <button class="btn-add d-flex align-items-center justify-content-center" data-bs-toggle="modal"
-                data-bs-target="#aggiuntaMateria">
-                <i class="bi bi-plus-circle fs-5 secondary-text-color"></i>
-                <span class="text-add secondary-text-color">Aggiungi nuovo ICF</span>
-            </button>
-            }
-
-            @if(activatedRoute.snapshot.data['root'] == "modifica" && docentiService.docente.Ruolo == Ruolo.ADMIN && documentiService.documentoSelected.Stato != StatoDocumento.SCADUTO){
-            <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0"
-                    (click)="Edit()">
-                    <p class="m-0">Salva e modifica</p>
-                </button>
-            </div>
-            }
         </div>
+
+        @if(docentiService.docente.Ruolo == Ruolo.ADMIN)
+        {
+        <hr>
+        <button class="btn-add d-flex align-items-center justify-content-center" data-bs-toggle="modal"
+            data-bs-target="#aggiuntaMateria">
+            <i class="bi bi-plus-circle fs-5 secondary-text-color"></i>
+            <span class="text-add secondary-text-color">Aggiungi nuovo ICF</span>
+        </button>
+        }
+
+        @if(activatedRoute.snapshot.data['root'] == "modifica" && docentiService.docente.Ruolo == Ruolo.ADMIN &&
+        documentiService.documentoSelected.Stato != StatoDocumento.SCADUTO){
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0 mt-1"
+                (click)="Edit()">
+                <p class="m-0">Salva e modifica</p>
+            </button>
+        </div>
+        }
+
     </section>
 
     @if(activatedRoute.snapshot.data['root'] == "crea")
