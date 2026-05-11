@@ -22,4 +22,32 @@ async function IsCoordinatore(req: any, res: any) {
         res.status(500).send("Errore nella esecuzione della richiesta: ", err);
     }
 }
-export { IsCoordinatore };
+
+async function GetDocentiByClasse(req: any, res: any) {
+    try{
+        const id_classe = req["parsedQuery"].id_classe;
+
+        if (!id_classe) {
+            res.status(400).send("ID della classe è richiesto");
+            return;
+        }
+
+        const docenti = await prisma.docente.findMany({
+            where: {
+                Insegnamenti: {
+                    some: {
+                        Classe_Id: id_classe
+                    }
+                }
+            }
+        });
+
+        res.send(docenti);
+    }
+    catch (err) {
+        console.error("Errore esecuzione richiesta");
+        res.status(500).send("Errore nella esecuzione della richiesta: ", err);
+    }
+}
+
+export { IsCoordinatore, GetDocentiByClasse };

@@ -173,7 +173,7 @@ app.delete("/api/documento/delete/", GestioneDocumenti.DeletePDP);
 
 //Docenti
 app.get("/api/is-coordinatore", GestioneDocenti.IsCoordinatore);
-
+app.get("/api/docenti-classe", GestioneDocenti.GetDocentiByClasse);
 //Materie
 app.get("/api/materie", GestioneMaterie.GetMaterie);
 

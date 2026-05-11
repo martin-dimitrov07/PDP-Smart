@@ -12,6 +12,7 @@ export class DocentiService {
     private readonly router: Router = inject(Router);
 
     public docente: Docente = {} as Docente;
+    public docentiConsiglioClasse: Docente[] = [];
 
     GetDocente(): Observable<boolean> {
         return this.dataStorageService.InviaRichiesta("GET", "/email-docente")!.pipe(
@@ -58,6 +59,27 @@ export class DocentiService {
             catchError((err) => {
                 console.error("Errore durante la verifica del coordinatore:", err);
                 return of(false);
+            })
+        );
+    }
+
+    GetDocentiByClasse(id_classe: number = 0): Observable<Docente[]> {
+        if (id_classe == 0) {
+            return of([]);
+        }
+        return this.dataStorageService.InviaRichiesta("GET", "/docenti-classe", { id_classe })!.pipe(
+            map((docenti: any) => {
+                this.docentiConsiglioClasse = docenti.map((docente: any) => new Docente(
+                    docente.Nome,
+                    docente.Cognome,
+                    docente.Email,
+                    docente.Ruolo
+                ));
+                return this.docentiConsiglioClasse;
+            }),
+            catchError((err) => {
+                console.error("Errore durante il recupero dei docenti della classe:", err);
+                return of([]);
             })
         );
     }

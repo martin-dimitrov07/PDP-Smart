@@ -24,7 +24,7 @@ import { HttpClient } from '@angular/common/http';
     styleUrl: './documenti-card.css',
 })
 export class DocumentiCard {
-    public readonly docenteService: DocentiService = inject(DocentiService);
+    public readonly docentiService: DocentiService = inject(DocentiService);
     private readonly documentiService: DocumentiService = inject(DocumentiService);
     private readonly studentiService: StudentiService = inject(StudentiService);
     private readonly checkError: CheckError = inject(CheckError);
@@ -69,7 +69,7 @@ export class DocumentiCard {
     canDelete: Observable<boolean> = of(false);
 
     CanDelete() {
-        const docente = this.docenteService.docente;
+        const docente = this.docentiService.docente;
 
         if (docente.Ruolo == this.RuoloDocente.ADMIN) {
             this.canDelete = of(true);
@@ -151,7 +151,7 @@ export class DocumentiCard {
 
         try {
             const studente: Studente = await lastValueFrom(this.studentiService.GetStudenteByEmail(this.documento.Studente_Email));
-            result.nome_studente = studente.Nome + " " + studente.Cognome;
+            result.nome_studente = studente.Cognome + " " + studente.Nome;
 
             const classe: Classe | null = await lastValueFrom(this.studentiService.GetClasseByDocumento(this.documento));
 
@@ -166,15 +166,18 @@ export class DocumentiCard {
             await lastValueFrom(this.documentiService.GetMaterieClasse());
             await lastValueFrom(this.documentiService.GetIndicatoriDocumento());
 
+            //categorie
             for (let i = 1; i <= 4; i++) {
                 result["c" + i] = this.documentiService.categorieInd[i - 1] || "";
 
                 const indicatori = await lastValueFrom(this.documentiService.GetIndicatori(result["c" + i], this.documento.Tipologia));
 
+                //materie
                 for (let j = 0; j < 13; j++) {
                     result["m" + String.fromCodePoint(65 + j) + "_c" + i] = this.documentiService.materieClasse[j] || "";
                 }
 
+                //descrizioni e valori indicatori
                 for (let k = 0; k < 15; k++) {
                     result["d" + String.fromCodePoint(65 + k) + "_c" + i] = indicatori[k] ? indicatori[k].Descrizione : "";
 
@@ -188,6 +191,13 @@ export class DocumentiCard {
                 }
 
                 result["c" + i] = result["c" + i].replaceAll("_", " ");
+            }
+
+            await lastValueFrom(this.docentiService.GetDocentiByClasse(classe.Id));
+            // docenti del consiglio di classe
+            for(let m = 1; m <= 13; m++) {
+                const nominativo = this.docentiService.docentiConsiglioClasse[m - 1] ? this.docentiService.docentiConsiglioClasse[m - 1].Cognome + " " + this.docentiService.docentiConsiglioClasse[m - 1].Nome : "";
+                result['nome_docente' + m] = nominativo;
             }
 
             return result;
