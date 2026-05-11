@@ -159,6 +159,7 @@ export class DocumentiCard {
                 throw new Error("Classe non trovata per il documento dello studente " + result.nome_studente);
             }
 
+            this.documentiService.classeSelected = classe;
             result.nome_classe = classe.GetFullNome();
 
             await lastValueFrom(this.documentiService.GetCategorieIndicatore());

@@ -1,5 +1,6 @@
 /* Card Principale */
 .btn-card {
+    z-index: 0;
     cursor: default;
 }
 
@@ -85,8 +86,9 @@
 }
 
 /* icone view e edit */
-.bi-pencil-square,
+.bi-download,
 .bi-trash {
+    z-index: 1;
     display: flex;
     align-items: center;
     font-size: 18px;

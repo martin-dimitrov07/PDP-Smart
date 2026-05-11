@@ -173,6 +173,9 @@ export class DocumentiService {
     }
 
     GetMaterieClasse() {
+        if(!this.classeSelected)
+            return of(null);
+
         this.materieClasse = [];
 
         console.log(this.classeSelected);

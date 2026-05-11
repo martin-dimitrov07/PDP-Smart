@@ -1,6 +1,6 @@
-<button (click)="ShowDocumento()"
+<button (click)="documento.Stato == StatoDocumento.IN_BOZZA ? GoEdit() : null" 
     class="btn-card justify-content-between d-flex align-items-center gap-3 gap-sm-4 gap-lg-3 gap-xl-4 py-4 px-3 w-100 border-0 rounded-4 position-relative h-100"
-    [ngClass]="{'documento-card': documento.Stato != StatoDocumento.IN_BOZZA}">
+    [ngClass]="{'documento-card': documento.Stato == StatoDocumento.IN_BOZZA}">
 
     <div class="d-flex gap-3 align-items-center">
         <div class="icon-box p-3 shadow border-0">
@@ -39,13 +39,13 @@
                 }
 
                 <div class="d-flex d-sm-none gap-1">
-                    <button type="button" (click)="GoEdit()"
+                    <button type="button" (click)="$event.stopPropagation(); ShowDocumento();"
                         class="btn btn-sm d-flex justify-content-center align-items-center action-btn">
-                        <i class="bi bi-pencil-square"></i>
+                        <i class="bi bi-download"></i>
                     </button>
 
-                    @if (canDelete | async) {
-                    <button type="button"
+                    @if ((canDelete | async) && documento.Stato == StatoDocumento.IN_BOZZA) {
+                    <button type="button" (click)="$event.stopPropagation(); DeleteDocument()"
                         class="btn btn-sm d-flex justify-content-center align-items-center action-btn delete-btn">
                         <i class="bi bi-trash"></i>
                     </button>
@@ -58,13 +58,13 @@
 
     <div class="d-none d-sm-flex flex-column gap-2">
         <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn"
-            (click)="GoEdit()">
-            <i class="bi bi-pencil-square"></i>
+            (click)="$event.stopPropagation(); ShowDocumento()">
+            <i class="bi bi-download"></i>
         </button>
 
-        @if (canDelete | async) {
+        @if ((canDelete | async) && documento.Stato == StatoDocumento.IN_BOZZA) {
         <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn delete-btn"
-            (click)="DeleteDocument()">
+            (click)="$event.stopPropagation(); DeleteDocument()">
             <i class="bi bi-trash"></i>
         </button>
         }
