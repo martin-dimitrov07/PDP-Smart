@@ -67,7 +67,8 @@
         </div>
         }
 
-        @if(docentiService.docente.Ruolo != Ruolo.DOCENTE)
+        @if((activatedRoute.snapshot.data['root'] == "crea" && docentiService.docente.Ruolo != Ruolo.DOCENTE) || 
+            (activatedRoute.snapshot.data['root'] == "modifica" && (docenteService.docente.Ruolo == Ruolo.ADMIN || (canEdit | async))))
         {
         <hr>
         <!-- Area di drop principale -->
@@ -122,7 +123,7 @@
         </div>
         }
 
-        @if(activatedRoute.snapshot.data['root'] == "modifica" && docentiService.docente.Ruolo != Ruolo.DOCENTE && documentiService.documentoSelected.Stato != StatoDocumento.SCADUTO)
+        @if(activatedRoute.snapshot.data['root'] == "modifica" && (docenteService.docente.Ruolo == Ruolo.ADMIN || (canEdit | async)))
         {
         <div class="d-flex justify-content-end">
             <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0 mt-3"
@@ -133,7 +134,7 @@
         }
     </section>
 
-    @if(activatedRoute.snapshot.data['root'] == "crea")
+    @if(activatedRoute.snapshot.data['root'] == "crea" && docentiService.docente.Ruolo != Ruolo.DOCENTE)
     {
     <div class="d-flex justify-content-between flex-wrap">
         <button type="button" class="btn btn-secondary d-flex gap-2 align-items-center py-2 pe-3 ps-2"

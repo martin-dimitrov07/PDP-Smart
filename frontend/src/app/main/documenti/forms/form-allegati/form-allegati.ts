@@ -5,13 +5,15 @@ import { ModalError } from './modal-error/modal-error';
 import { Router } from '@angular/router';
 import { DocumentiService } from '../../../../shared/services/documenti.service';
 import { StepsService } from '../../../../shared/services/steps.service';
-import { Ruolo } from '../../../../models/docente';
+import { Docente, Ruolo } from '../../../../models/docente';
 import { DocentiService } from '../../../../shared/services/docenti.service';
 import { ActivatedRoute } from '@angular/router';
 import { DocumentiEditBreadcrumb } from '../../documenti-edit/documenti-edit-breadcrumb/documenti-edit-breadcrumb';
 import { CheckError } from '../../../../shared/utilities/check-error';
 import { Allegato } from '../../../../models/allegato';
 import { Stato } from '../../../../models/documento';
+import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
+import { StudentiService } from '../../../../shared/services/studenti.service';
 
 
 @Component({
@@ -22,6 +24,8 @@ import { Stato } from '../../../../models/documento';
 })
 export class FormAllegati {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
+    public readonly docenteService: DocentiService = inject(DocentiService);
+    public readonly studentiService: StudentiService = inject(StudentiService);
     public readonly stepsService: StepsService = inject(StepsService);
     public activatedRoute: ActivatedRoute = inject(ActivatedRoute);
     private readonly checkError: CheckError = inject(CheckError);
@@ -30,6 +34,7 @@ export class FormAllegati {
     Ruolo: typeof Ruolo = Ruolo;
     StatoDocumento: typeof Stato = Stato;
 
+    classiCoordinateIds: number[] = [];
 
     private readonly router: Router = inject(Router);
 
@@ -50,6 +55,7 @@ export class FormAllegati {
             });
         }
         this.documentiService.allegati = [];
+        this.CanEdit();
     }
 
     OnSelect(event: any) {
@@ -131,5 +137,36 @@ export class FormAllegati {
         link.click();
         //Pulizia: rimuove l'URL creato per liberare memoria
         window.URL.revokeObjectURL(fileUrl);
+    }
+
+    canEdit: Observable<boolean> = of(false);
+
+    CanEdit() {
+        const docente = this.docenteService.docente;
+
+        if (docente.Ruolo == Ruolo.ADMIN) {
+            this.canEdit = of(true);
+            return;
+        }
+
+        if (docente.Ruolo == Ruolo.DOCENTE) {
+            this.canEdit = of(false);
+            return;
+        }
+
+        this.canEdit = this.documentiService.GetClassiCoordinatore(this.docentiService.docente.Email).pipe(
+            tap((res) => {
+                this.classiCoordinateIds = Object.values(res).flat().map((c: any) => c.Id);
+            }),
+            switchMap(() => this.studentiService.GetClasseByDocumento(this.documentiService.documentoSelected)),
+            map((classe) => {
+                if (!classe) return false;
+                return this.classiCoordinateIds.includes(classe.Id);
+            }),
+            catchError((err) => {
+                this.checkError.checkError(err);
+                return of(false);
+            })
+        );
     }
 }

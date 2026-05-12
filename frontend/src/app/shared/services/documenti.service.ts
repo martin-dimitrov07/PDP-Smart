@@ -367,7 +367,6 @@ export class DocumentiService {
                     new Date(doc.Anno),
                     doc.Data_Approvazione ? new Date(doc.Data_Approvazione) : undefined
                 ));
-                // console.log(data);
             })
         );
     }
