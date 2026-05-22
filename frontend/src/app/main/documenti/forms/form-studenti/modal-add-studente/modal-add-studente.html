@@ -7,24 +7,37 @@
                 </div>
                 <div class="modal-body">
                     <label for="classeSelected" class="form-label">Classe</label>
-                    <select class="form-select" id="classeSelected" name="classeSelected" [(ngModel)]="documentiService.classeSelected"
-                        (change)="GetStudentiNoDoc()">
-                        @if(allClasses && allClasses.length > 0) {
-                            @for (classe of allClasses; track $index) {
-                            <option [ngValue]="classe">{{classe.GetFullNome()}}</option>
+
+                    @if (isLoadingClasses) {
+                        <div class="d-flex align-items-center justify-content-start py-2">
+                            <div class="loader"></div>
+                        </div>
+                    } @else {
+                        <select class="form-select" id="classeSelected" name="classeSelected" [(ngModel)]="documentiService.classeSelected"
+                            (change)="GetStudentiNoDoc()">
+                            @if(allClasses && allClasses.length > 0) {
+                                @for (classe of allClasses; track $index) {
+                                <option [ngValue]="classe">{{classe.GetFullNome()}}</option>
+                                }
                             }
-                        }
-                    </select>
+                        </select>
+                    }
 
                     <label for="studenteSelected" class="form-label mt-3">Studente</label>
-                    <select class="form-select" id="studenteSelected" [(ngModel)]="studenteEmail"
-                        name="studenteSelected">
-                        @if(studentiService.studentiNoDoc && studentiService.studentiNoDoc.length > 0) {
-                        @for (studente of studentiService.studentiNoDoc; track $index) {
-                        <option [value]="studente.Email">{{studente.GetFullName()}}</option>
-                        }
-                        }
-                    </select>
+                    @if (isLoadingStudents || isLoadingClasses) {
+                        <div class="d-flex align-items-center justify-content-start py-2">
+                            <div class="loader"></div>
+                        </div>
+                    } @else {
+                        <select class="form-select" id="studenteSelected" [(ngModel)]="studenteEmail"
+                            name="studenteSelected">
+                            @if(studentiService.studentiNoDoc && studentiService.studentiNoDoc.length > 0) {
+                                @for (studente of studentiService.studentiNoDoc; track $index) {
+                                    <option [value]="studente.Email">{{studente.GetFullName()}}</option>
+                                }
+                            }
+                        </select>
+                    }
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Annulla</button>

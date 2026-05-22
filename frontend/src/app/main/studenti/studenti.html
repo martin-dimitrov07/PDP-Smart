@@ -5,24 +5,33 @@
         (FilterDSA_BES)="SetFilterDSA_BES($event)"
         (orderValueEvent)="orderValue = $event.toString(); Search()"></app-studenti-filters>
 
-    <div class="row mx-sm-2 g-4 py-4">
-        @if(studentiService.studenti.length > 0)
-        {
-        @for (studente of studentiService.studenti; track $index)
-        {
-        <div class="col-12 col-lg-6">
-            <app-studenti-card [studente]="studente"></app-studenti-card>
+    @if (isLoading) {
+        <div class="d-flex justify-content-center align-items-center my-5 py-5 w-100">
+            <div class="spinner-border loader" role="status">
+                <span class="visually-hidden">Caricamento...</span>
+            </div>
         </div>
-        }
-        }
-        @else
-        {
-        <div class="col-12 my-5">
-            <h3 class="fw-bold text-center">Nessuno studente trovato</h3>
-            <p class="text-muted text-center">
-                Non ci sono studenti che corrispondono alla tua ricerca.
-            </p>
+    }@else {
+        <div class="row mx-sm-2 g-4 py-4">
+            @if(studentiService.studenti.length > 0)
+            {
+                @for (studente of studentiService.studenti; track $index)
+                {
+                    <div class="col-12 col-lg-6">
+                        <app-studenti-card [studente]="studente"></app-studenti-card>
+                    </div>
+                }
+            }
+            @else
+            {
+                <div class="col-12 my-5">
+                    <h3 class="fw-bold text-center">Nessuno studente trovato</h3>
+                    <p class="text-muted text-center">
+                        Non ci sono studenti che corrispondono alla tua ricerca.
+                    </p>
+                </div>
+            }
         </div>
-        }
-    </div>
+    }
+
 </section>

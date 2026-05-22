@@ -21,6 +21,8 @@ export class Classi {
     private readonly colorSectionDirective: ColorSection = inject(ColorSection);
     private readonly checkError: CheckError = inject(CheckError);
 
+    isLoading: boolean = false;
+
     public mainColor: any = {};
     public iconClass: string = "";
     public sectionIndirizzo: string = "";
@@ -41,6 +43,8 @@ export class Classi {
     ngOnInit() {
         this.studentiService.indirizzoSelected = this.activatedRouter.snapshot.paramMap.get("indirizzo")!;
 
+        this.isLoading = true;
+
         this.studentiService.GetAnniScolastici().subscribe({
             next: (data: any) => {
                 // Eseguiamo SOLO se siamo nel browser
@@ -54,11 +58,18 @@ export class Classi {
                 this.studentiService.GetClassi({}, this.filterAnnoScolastico).subscribe({
                     next: (data: any) => {
                         this.studentiService.GetNumeroClassi();
+                        this.isLoading = false;
                     },
-                    error: (err: any) => this.checkError.checkError(err)
+                    error: (err: any) => {
+                        this.checkError.checkError(err);
+                        this.isLoading = false;
+                    }
                 });
             },
-            error: (err: any) => this.checkError.checkError(err)
+            error: (err: any) => {
+                this.checkError.checkError(err);
+                this.isLoading = false;
+            }
         });
     }
 
@@ -84,11 +95,17 @@ export class Classi {
             }
         }
 
+        this.isLoading = true;
+
         this.studentiService.GetClassi(this.filterClassi, this.filterAnnoScolastico).subscribe({
             next: (data: any) => {
                 this.studentiService.GetNumeroClassi();
+                this.isLoading = false
             },
-            error: (err: any) => this.checkError.checkError(err)
+            error: (err: any) => {
+                this.checkError.checkError(err);
+                this.isLoading = false;
+            }
         });
     }
 
@@ -104,11 +121,16 @@ export class Classi {
     SetFilterAnnoScolastico(annoScolastico: Date) {
         document.querySelector("#annoDropdown")!.textContent = annoScolastico.getFullYear().toString() + "/" + (annoScolastico.getFullYear() + 1).toString();
         this.filterAnnoScolastico = annoScolastico;
+        this.isLoading = true;
         this.studentiService.GetClassi(this.filterClassi, this.filterAnnoScolastico).subscribe({
             next: (data: any) => {
                 this.studentiService.GetNumeroClassi();
+                this.isLoading = false;
             },
-            error: (err: any) => this.checkError.checkError(err)
+            error: (err: any) => {
+                this.checkError.checkError(err);
+                this.isLoading = false;
+            }
         });
     }
 }

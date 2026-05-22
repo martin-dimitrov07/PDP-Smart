@@ -22,6 +22,8 @@ export class Studenti {
     private readonly activatedRouter: ActivatedRoute = inject(ActivatedRoute);
     private readonly colorSectionDirective: ColorSection = inject(ColorSection);
 
+    isLoading: boolean = false;
+
     nStudenti: number = 0;
     classeId: number = 0;
     indirizzo: string = "";
@@ -39,6 +41,8 @@ export class Studenti {
         this.colorSectionDirective.GetColorSection(this.indirizzo);
         this.iconClass = this.colorSectionDirective.GetIconSection(this.indirizzo);
 
+        this.isLoading = true;
+
         this.studentiService.GetClasseById(this.classeId).subscribe({
             next: () => { },
             error: (err: any) => this.checkError.checkError(err)
@@ -50,8 +54,9 @@ export class Studenti {
         });
 
         this.studentiService.GetStudenti(this.classeId, this.searchTerm, this.DSA_BES, this.orderValue).subscribe({
-            next: () => { },
+            next: () => { this.isLoading = false; },
             error: (err: any) => {
+                this.isLoading = false;
                 if (err.status == 404)
                     this.studentiService.studenti = [];
 
@@ -64,15 +69,18 @@ export class Studenti {
         clearTimeout(this.timer);
 
         this.timer = setTimeout(() => {
+            this.isLoading = true;
             this.studentiService.GetStudenti(this.classeId, this.searchTerm, this.DSA_BES, this.orderValue).subscribe({
                 next: () => { 
                     this.nStudenti = this.studentiService.studenti.length;
+                    this.isLoading = false;
                 },
                 error: (err: any) => {
                     if (err.status == 404)
                         this.studentiService.studenti = [];
 
-                    this.checkError.checkError(err)
+                    this.checkError.checkError(err);
+                    this.isLoading = false;
                 }
             });
         }, 500)
@@ -97,15 +105,19 @@ export class Studenti {
             document.getElementById("badges-all")?.classList.remove("active");
         }
 
+        this.isLoading = true;
+
         this.studentiService.GetStudenti(this.classeId, this.searchTerm, this.DSA_BES, this.orderValue).subscribe({
             next: () => {
                 this.nStudenti = this.studentiService.studenti.length;
+                this.isLoading = false;
             },
             error: (err: any) => {
                 if (err.status == 404)
                     this.studentiService.studenti = [];
 
-                this.checkError.checkError(err)
+                this.checkError.checkError(err);
+                this.isLoading = false;
             }
         });
     }

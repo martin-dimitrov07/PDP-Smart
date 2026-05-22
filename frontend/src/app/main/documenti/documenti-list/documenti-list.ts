@@ -32,35 +32,54 @@ export class DocumentiList {
     private timer: any;
     classiCoordinateIds: number[] = [];
 
+    public isLoadingDocs: boolean = false;
+
     ngOnInit() {
+        this.isLoadingDocs = true;
         const querySearch = this.activatedRoute.snapshot.queryParamMap.get('search');
         if (querySearch) {
             this.searchTerm = querySearch;
         }
+        const queryAnno = this.activatedRoute.snapshot.queryParamMap.get('anno');
+
         this.documentiService.GetClassiCoordinatore(this.docentiService.docente.Email).subscribe({
             next: (res) => {
                 this.classiCoordinateIds = Object.values(res).flat().map((c: any) => c.Id);
             },
             error: (err) => this.checkError.checkError(err)
         });
+
         this.documentiService.GetAnniScolastici().subscribe({
             next: (data: any) => {
                 if (isPlatformBrowser(this.platformId) && this.documentiService.anniScolastici.length > 0) {
                     document.querySelector("#annoDropdown")!.textContent = this.documentiService.anniScolastici[0].getFullYear().toString() + "/" + (this.documentiService.anniScolastici[0].getFullYear() + 1).toString();
                 }
-                this.filterAnnoScolastico = this.documentiService.anniScolastici[0];
+                if (queryAnno) {
+                    this.filterAnnoScolastico = new Date(queryAnno);
+                    document.querySelector("#annoDropdown")!.textContent = this.filterAnnoScolastico.getFullYear().toString() + "/" + (this.filterAnnoScolastico.getFullYear() + 1).toString();
+                } else {
+                    this.filterAnnoScolastico = this.documentiService.anniScolastici[0];
+                }
                 this.documentiService.GetDocumenti(this.searchTerm, this.DSA_BES, this.Stato_Documento, this.filterAnnoScolastico).subscribe({
                     next: (data: any) => {
                         this.documentiService.GetNumeroDocumenti();
+                        this.isLoadingDocs = false;
                     },
-                    error: (err: any) => this.checkError.checkError(err)
+                    error: (err: any) => {
+                        this.checkError.checkError(err);
+                        this.isLoadingDocs = false;
+                    }
                 });
             },
-            error: (err: any) => this.checkError.checkError(err)
+            error: (err: any) => {
+                this.checkError.checkError(err);
+                this.isLoadingDocs = false;
+            }
         });
     }
 
     SetFilterDSA_BES(filter: any) {
+        this.isLoadingDocs = true;
         if (filter == -1) {
             this.DSA_BES = -1;
             document.getElementById("badges-dsa")?.classList.remove("active");
@@ -83,17 +102,20 @@ export class DocumentiList {
         this.documentiService.GetDocumenti(this.searchTerm, this.DSA_BES, this.Stato_Documento, this.filterAnnoScolastico).subscribe({
             next: () => {
                 this.documentiService.GetNumeroDocumenti();
+                this.isLoadingDocs = false;
             },
             error: (err: any) => {
                 if (err.status == 404)
                     this.documentiService.documenti = [];
 
-                this.checkError.checkError(err)
+                this.checkError.checkError(err);
+                this.isLoadingDocs = false;
             }
         });
     }
 
     SetFilterStato(stato: string) {
+        this.isLoadingDocs = true;
         if (stato == "Tutti") {
             this.resetFilterStatoDocumenti();
         } else {
@@ -115,12 +137,15 @@ export class DocumentiList {
         }
 
         this.Stato_Documento = this.filterStato.in.length == 0 ? -1 : this.filterStato;
-
         this.documentiService.GetDocumenti(this.searchTerm, this.DSA_BES, this.Stato_Documento, this.filterAnnoScolastico).subscribe({
             next: (data: any) => {
                 this.documentiService.GetNumeroDocumenti();
+                this.isLoadingDocs = false;
             },
-            error: (err: any) => this.checkError.checkError(err)
+            error: (err: any) => {
+                this.checkError.checkError(err);
+                this.isLoadingDocs = false;
+            }
         });
     }
 
@@ -147,17 +172,23 @@ export class DocumentiList {
     }
 
     SetFilterAnnoScolastico(annoScolastico: Date) {
+        this.isLoadingDocs = true;
         document.querySelector("#annoDropdown")!.textContent = annoScolastico.getFullYear().toString() + "/" + (annoScolastico.getFullYear() + 1).toString();
         this.filterAnnoScolastico = annoScolastico;
         this.documentiService.GetDocumenti(this.searchTerm, this.DSA_BES, this.Stato_Documento, this.filterAnnoScolastico).subscribe({
             next: (data: any) => {
                 this.documentiService.GetNumeroDocumenti();
+                this.isLoadingDocs = false;
             },
-            error: (err: any) => this.checkError.checkError(err)
+            error: (err: any) => {
+                this.checkError.checkError(err);
+                this.isLoadingDocs = false;
+            }
         });
     }
 
     SearchDocuments(searchTerm: string) {
+        this.isLoadingDocs = true;
         clearTimeout(this.timer);
 
         this.searchTerm = searchTerm;
@@ -165,12 +196,14 @@ export class DocumentiList {
             this.documentiService.GetDocumenti(this.searchTerm, this.DSA_BES, this.Stato_Documento, this.filterAnnoScolastico).subscribe({
                 next: () => {
                     this.documentiService.GetNumeroDocumenti();
+                    this.isLoadingDocs = false;
                 },
                 error: (err: any) => {
                     if (err.status == 404)
                         this.documentiService.documenti = [];
 
-                    this.checkError.checkError(err)
+                    this.checkError.checkError(err);
+                    this.isLoadingDocs = false;
                 }
             });
         }, 500)

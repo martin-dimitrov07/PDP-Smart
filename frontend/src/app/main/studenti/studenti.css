@@ -1,0 +1,6 @@
+.loader {
+    width: 3rem;
+    height: 3rem;
+    color: var(--color) !important;
+    --bs-spinner-border-width: 7px !important;
+}

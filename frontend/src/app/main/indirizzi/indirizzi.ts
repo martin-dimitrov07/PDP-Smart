@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { StudentiService } from '../../shared/services/studenti.service';
-import { Router } from '@angular/router';
 import { CheckError } from '../../shared/utilities/check-error';
 import { IndirizziCard } from "./indirizzi-card/indirizzi-card";
 
@@ -14,10 +13,18 @@ export class Indirizzi {
     public readonly studentiService: StudentiService = inject(StudentiService);
     private readonly checkError: CheckError = inject(CheckError);
 
+    isLoading: boolean = false;
+
     ngOnInit() {
+        this.isLoading = true;
         this.studentiService.GetIndirizzi().subscribe({
-            next: (data: any) => { },
-            error: (err: any) => this.checkError.checkError(err)
+            next: (data: any) => {
+                this.isLoading = false;
+            },
+            error: (err: any) => {
+                this.checkError.checkError(err);
+                this.isLoading = false;
+            }
         });
     }
 }

@@ -6,7 +6,14 @@
         [searchTerm]="searchTerm"></app-documenti-filters>
 
     <div class="row container-xl g-4 mx-auto py-4 px-0 px-sm-5 px-lg-3 px-xl-4">
-        @if(documentiService.documenti.length > 0)
+        @if (isLoadingDocs) {
+            <div class="col-12 d-flex justify-content-center my-5 py-5">
+                <div class="spinner-border loader" role="status">
+                    <span class="visually-hidden">Caricamento...</span>
+                </div>
+            </div>
+        }
+        @else if(documentiService.documenti.length > 0)
         {
             @for (documenti of documentiService.documenti; track $index)
             {

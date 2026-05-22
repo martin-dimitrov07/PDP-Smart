@@ -19,6 +19,9 @@ export class ModalAddStudente {
     studenti: Studente[] = [];
     // classeId: number = 0;
     studenteEmail: string = '';
+    isLoadingClasses: boolean = false;
+    isLoadingStudents: boolean = false;
+
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     public readonly studentiService: StudentiService = inject(StudentiService);
     private readonly checkError: CheckError = inject(CheckError);
@@ -44,6 +47,7 @@ export class ModalAddStudente {
     // }
 
     GetClassiNoDocEmpty() {
+        this.isLoadingClasses = true;
         this.studentiService.indirizzoSelected = "";
         this.studentiService.GetClassiNoDocEmpty({}, Documento.SetAnnoCorrect(new Date())).subscribe({
             next: (data: any) => {
@@ -62,19 +66,28 @@ export class ModalAddStudente {
                 this.documentiService.classeSelected = this.allClasses[0];
 
                 this.GetStudentiNoDoc();
+                this.isLoadingClasses = false;
             },
-            error: (err: any) => this.checkError.checkError(err)
+            error: (err: any) => {
+                this.checkError.checkError(err);
+                this.isLoadingClasses = false;
+            }
         });
     }
 
     GetStudentiNoDoc() {
+        this.isLoadingStudents = true;
         console.log(JSON.stringify(this.documentiService.classeSelected));
         this.studentiService.GetStudentiNoDocumento(Number(this.documentiService.classeSelected.Id)).subscribe({
             next: (data: any) => {
                 this.studentiService.studentiNoDoc = data.map((studente: Studente) => new Studente(studente.Nome, studente.Cognome, studente.Email, studente.DSA_BES));
                 this.studenteEmail = data[0].Email;
+                this.isLoadingStudents = false;
             },
-            error: (err: any) => this.checkError.checkError(err)
+            error: (err: any) => {
+                this.checkError.checkError(err);
+                this.isLoadingStudents = false;
+            }
         });
     }
 

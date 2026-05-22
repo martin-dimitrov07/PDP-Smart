@@ -45,6 +45,7 @@ export class DocumentiService {
     documenti: Documento[] = [];
     nDocumenti: number = 0;
 
+    annoScolasticoSelezionato: Date = new Date();
 
     // indicatori = {
     //     "matematica": 

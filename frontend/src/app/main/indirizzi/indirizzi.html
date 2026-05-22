@@ -6,11 +6,21 @@
         <p class="text-secondary">Scegli l'indirizzo scolastico</p>
     </div>
 
-    <div class="row w-100 mx-auto justify-content-center g-4">
-        @for (indirizzo of studentiService.indirizzi; track $index) {
+    @if (isLoading) {
+        <div class="d-flex justify-content-center align-items-center my-5 py-5 w-100">
+            <div class="spinner-border loader" role="status">
+                <span class="visually-hidden">Caricamento...</span>
+            </div>
+        </div>
+    }@else {
+        <div class="row w-100 mx-auto justify-content-center g-4">
+            @for (indirizzo of studentiService.indirizzi; track $index) {
             <div class="col-lg-6">
                 <app-indirizzi-card [indirizzo]="indirizzo"></app-indirizzi-card>
             </div>
-        }
-    </div>
+            }
+        </div>
+    }
+
+
 </section>

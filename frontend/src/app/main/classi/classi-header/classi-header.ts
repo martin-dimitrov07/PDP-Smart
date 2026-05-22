@@ -1,6 +1,7 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { StudentiService } from '../../../shared/services/studenti.service';
 import { NgClass } from '@angular/common';
+import { DocumentiService } from '../../../shared/services/documenti.service';
 
 @Component({
     selector: 'app-classi-header',
@@ -13,8 +14,10 @@ export class ClassiHeader {
     @Output() annoScolastico = new EventEmitter<Date>();
 
     public readonly studentiService: StudentiService = inject(StudentiService);
+    private readonly documentiService: DocumentiService = inject(DocumentiService);
 
     SetFilterAnnoScolastico(annoScolastico: Date) {
+        this.documentiService.annoScolasticoSelezionato = annoScolastico;
         this.annoScolastico.emit(annoScolastico);
     }
 }
