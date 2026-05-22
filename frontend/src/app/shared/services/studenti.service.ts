@@ -71,7 +71,7 @@ export class StudentiService {
             map((res: any) => {
                 const liste = Object.values(res);
                 const classeTrovata: any = liste.find((v: any) => Array.isArray(v) && v.length > 0);
-                return classeTrovata ? new Classe(classeTrovata[0].Id, classeTrovata[0].Classe, classeTrovata[0].Sezione, classeTrovata[0].Indirizzo, classeTrovata[0].Anno_Scolastico) : null;
+                return classeTrovata ? new Classe(classeTrovata[0].Id, classeTrovata[0].Classe, classeTrovata[0].Sezione, classeTrovata[0].Indirizzo, classeTrovata[0].Coordinatore_Email, classeTrovata[0].Anno_Scolastico) : null;
             })
         );
     }
@@ -210,6 +210,7 @@ export class StudentiService {
                         data[nKey][0].Classe,
                         data[nKey][0].Sezione,
                         data[nKey][0].Indirizzo,
+                        data[nKey][0].Coordinatore_Email,
                         new Date(data[nKey][0].Anno_Scolastico)
                     );
                 }
@@ -228,6 +229,7 @@ export class StudentiService {
                     data.Classe,
                     data.Sezione,
                     data.Indirizzo,
+                    data.Coordinatore_Email,
                     new Date(data.Anno_Scolastico)
                 );
             })

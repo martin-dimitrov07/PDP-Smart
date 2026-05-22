@@ -1,1 +1,4 @@
-
+hr {
+    border: 1.5px solid color-mix(in srgb, var(--dark-blue-color), transparent 80%) !important;
+    opacity: 1 !important;
+}

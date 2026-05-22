@@ -5,8 +5,7 @@ import { DocentiService } from '../../../../shared/services/docenti.service';
 import { Ruolo } from '../../../../models/docente';
 import { Router } from '@angular/router';
 import { DocumentiService } from '../../../../shared/services/documenti.service';
-import { catchError, lastValueFrom, map, Observable, of } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { lastValueFrom } from 'rxjs';
 import { CheckError } from '../../../../shared/utilities/check-error';
 import { StudentiService } from '../../../../shared/services/studenti.service';
 import { Studente } from '../../../../models/studente';
@@ -19,7 +18,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-documenti-card',
-    imports: [NgClass, AsyncPipe],
+    imports: [NgClass],
     templateUrl: './documenti-card.html',
     styleUrl: './documenti-card.css',
 })
@@ -31,10 +30,12 @@ export class DocumentiCard {
     private _documento!: Documento;
     private readonly router: Router = inject(Router);
 
+    canDelete: boolean = false;
+
     // Enum per template
-    public readonly StatoDocumento = Stato;
-    public readonly TipoDocumento = Tipo;
-    public readonly RuoloDocente = Ruolo;
+    StatoDocumento: typeof Stato = Stato;
+    TipoDocumento: typeof Tipo = Tipo;
+    RuoloDocente: typeof Ruolo = Ruolo;
 
     @Input() classiCoordinateIds: number[] = [];
     @Input() set documento(valore: any) {
@@ -57,6 +58,7 @@ export class DocumentiCard {
 
     GoEdit() {
         // console.log("Navigazione a modifica documento:", this.documento);
+        this.documentiService.documentoSelected = this.documento;
         this.router.navigate(["/documenti/modifica", this.documento.Studente_Email.replaceAll('.', '_'), this.documento.Anno?.getFullYear() + "-" + (this.documento.Anno!.getFullYear() + 1)]);
     }
 
@@ -66,31 +68,26 @@ export class DocumentiCard {
         }
     }
 
-    canDelete: Observable<boolean> = of(false);
-
     CanDelete() {
         const docente = this.docentiService.docente;
 
         if (docente.Ruolo == this.RuoloDocente.ADMIN) {
-            this.canDelete = of(true);
+            this.canDelete = true;
             return;
         }
 
         if (docente.Ruolo == this.RuoloDocente.DOCENTE) {
-            this.canDelete = of(false);
+            this.canDelete = false;
             return;
         }
 
-        this.canDelete = this.studentiService.GetClasseByDocumento(this.documento).pipe(
-            map(classe => {
-                if (!classe) return false;
-                return this.classiCoordinateIds.includes(classe.Id);
-            }),
-            catchError(err => {
-                this.checkError.checkError(err);
-                return of(false);
-            })
-        );
+        this.studentiService.GetClasseByDocumento(this.documento).subscribe({
+            next: (classe: Classe | null) => {
+                if(!classe) return;
+                this.canDelete = classe.Coordinatore_Email == docente.Email;
+            },
+            error: (err: any) => this.checkError.checkError(err)
+        });
     }
 
     private readonly platformId = inject(PLATFORM_ID);
@@ -137,7 +134,7 @@ export class DocumentiCard {
                 setTimeout(() => window.URL.revokeObjectURL(fileUrl), 100); // Pulizia dell'URL dopo il download
             }
         } catch (error) {
-            console.error("Errore durante la generazione del documento:", error);
+            this.checkError.checkError(error);
         }
     }
 
@@ -195,7 +192,7 @@ export class DocumentiCard {
 
             await lastValueFrom(this.docentiService.GetDocentiByClasse(classe.Id));
             // docenti del consiglio di classe
-            for(let m = 1; m <= 13; m++) {
+            for (let m = 1; m <= 13; m++) {
                 const nominativo = this.docentiService.docentiConsiglioClasse[m - 1] ? this.docentiService.docentiConsiglioClasse[m - 1].Cognome + " " + this.docentiService.docentiConsiglioClasse[m - 1].Nome : "";
                 result['nome_docente' + m] = nominativo;
             }
@@ -203,7 +200,7 @@ export class DocumentiCard {
             return result;
         }
         catch (err) {
-            console.error("Errore durante l'ottenimento dei dati per il documento:", err);
+            this.checkError.checkError(err);
         }
     }
 }

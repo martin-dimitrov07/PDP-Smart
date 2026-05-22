@@ -32,7 +32,7 @@ export class ModalAddStudente {
         // if (!this.studentiService.anniScolastici || this.studentiService.anniScolastici.length < 1)
         //     this.GetAnniScolastici();
         // else
-            this.GetClassiNoDocEmpty();
+        this.GetClassiNoDocEmpty();
     }
 
     // GetAnniScolastici() {
@@ -55,7 +55,7 @@ export class ModalAddStudente {
                 for (const key in data) {
                     for (const classe of data[key]) {
                         this.allClasses.push(
-                            new Classe(classe.Id, classe.Classe, classe.Sezione, classe.Indirizzo, new Date(classe.Anno_Scolastico))
+                            new Classe(classe.Id, classe.Classe, classe.Sezione, classe.Indirizzo, classe.Coordinatore_Email, new Date(classe.Anno_Scolastico))
                         );
                     }
                 }

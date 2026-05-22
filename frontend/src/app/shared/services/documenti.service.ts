@@ -464,6 +464,21 @@ export class DocumentiService {
         return this.dataStorageService.InviaRichiesta("PATCH", "/allegati/update", formData)!;
     }
 
+    ApprovaDocumento() {
+        if(!this.documentoSelected) return null;
+
+        const filters = {
+            Studente_Email: this.documentoSelected.Studente_Email,
+            Anno: this.documentoSelected.Anno
+        }
+
+        const payload = { 
+            Data_Approvazione: Documento.SetAnnoCorrect(new Date())
+        }
+
+        // return this.dataStorageService.InviaRichiesta("PATCH", "/documento/approva", { filters, payload })!;
+    }
+
     ResetCreateDocumento() {
         this.classeSelected = {} as Classe;
         this.studenteSelected = {} as Studente;

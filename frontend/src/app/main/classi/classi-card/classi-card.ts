@@ -25,6 +25,7 @@ export class ClassiCard {
             valore.Classe,
             valore.Sezione,
             valore.Indirizzo,
+            valore.Coordinatore_Email,
             new Date(valore.Anno_Scolastico)
         );
         // Chiamiamo il caricamento degli studenti

@@ -133,7 +133,7 @@ export class FormAllegati {
 
         const link = document.createElement('a');
         link.href = fileUrl;
-        link.download = allegato.File.name;
+        link.target = '_blank';
         link.click();
         //Pulizia: rimuove l'URL creato per liberare memoria
         window.URL.revokeObjectURL(fileUrl);
