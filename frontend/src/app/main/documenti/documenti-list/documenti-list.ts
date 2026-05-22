@@ -6,6 +6,8 @@ import { CheckError } from '../../../shared/utilities/check-error';
 import { isPlatformBrowser } from '@angular/common';
 import { DocumentiService } from '../../../shared/services/documenti.service';
 import { DocentiService } from '../../../shared/services/docenti.service';
+import { ActivatedRoute } from '@angular/router';
+import { IndirizziStyle } from "../../../shared/directives/indirizzi-style";
 
 @Component({
     selector: 'app-documenti-list',
@@ -17,10 +19,11 @@ export class DocumentiList {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     private readonly docentiService: DocentiService = inject(DocentiService);
     private readonly checkError: CheckError = inject(CheckError);
+    private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
     private platformId = inject(PLATFORM_ID);
 
-    private searchTerm: string = "";
+    public searchTerm: string = "";
     private DSA_BES: any = -1;
     private Stato_Documento: any = -1;
     private filterAnnoScolastico: any = {};
@@ -30,6 +33,10 @@ export class DocumentiList {
     classiCoordinateIds: number[] = [];
 
     ngOnInit() {
+        const querySearch = this.activatedRoute.snapshot.queryParamMap.get('search');
+        if (querySearch) {
+            this.searchTerm = querySearch;
+        }
         this.documentiService.GetClassiCoordinatore(this.docentiService.docente.Email).subscribe({
             next: (res) => {
                 this.classiCoordinateIds = Object.values(res).flat().map((c: any) => c.Id);

@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { Studente } from '../../../models/studente';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-studenti-card',
@@ -9,6 +10,7 @@ import { Studente } from '../../../models/studente';
 })
 export class StudentiCard {
     private _studente!: Studente;
+    private readonly router: Router = inject(Router);
 
     @Input() set studente(valore: any) {
         //appena arriva il dato dal padre, lo trasformiamo in un'istanza di Classe
@@ -22,5 +24,13 @@ export class StudentiCard {
 
     get studente(): Studente {
         return this._studente;
+    }
+
+    GoStudent() {
+        const searchName = `${this.studente.Email}`.trim();
+
+        this.router.navigate(["documenti", "lista"], {
+            queryParams: { search: searchName }
+        });
     }
 }

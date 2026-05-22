@@ -62,7 +62,7 @@
             <i class="bi bi-download"></i>
         </button>
 
-        @if ((canDelete | async) && documento.Stato == StatoDocumento.IN_BOZZA) {
+        @if ((canDelete | async) ) {
         <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn delete-btn"
             (click)="$event.stopPropagation(); DeleteDocument()">
             <i class="bi bi-trash"></i>

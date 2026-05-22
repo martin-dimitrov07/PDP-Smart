@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -12,7 +12,7 @@ export class DocumentiFilters {
     @Output() FilterStato = new EventEmitter<string>();
     @Output() searchTermEvent = new EventEmitter<string>();
 
-    searchTerm: string = "";
+    @Input() searchTerm: string = "";
 
     Search() {
         this.searchTermEvent.emit(this.searchTerm);

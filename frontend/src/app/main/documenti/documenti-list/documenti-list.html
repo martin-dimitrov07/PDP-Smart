@@ -2,7 +2,8 @@
     <app-documenti-header (annoScolastico)="SetFilterAnnoScolastico($event)"></app-documenti-header>
 
     <app-documenti-filters (FilterDSA_BES)="SetFilterDSA_BES($event)"
-        (FilterStato)="SetFilterStato($event)" (searchTermEvent)="SearchDocuments($event)"></app-documenti-filters>
+        (FilterStato)="SetFilterStato($event)" (searchTermEvent)="SearchDocuments($event)"
+        [searchTerm]="searchTerm"></app-documenti-filters>
 
     <div class="row container-xl g-4 mx-auto py-4 px-0 px-sm-5 px-lg-3 px-xl-4">
         @if(documentiService.documenti.length > 0)
