@@ -236,20 +236,26 @@ export class StudentiService {
         );
     }
 
-    GetAnniScolastici(): Observable<any> {
+    GetAnniScolastici(id: number | null = null): Observable<any> {
         let params: any = {};
 
-        if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
-            const filtroDocente = {
-                some: {
-                    Docente_Email: this.docentiService.docente.Email
-                }
-            };
-            params["Insegnamenti"] = JSON.stringify(filtroDocente);
+        if (id) {
+            params.Id = id;
+        }
+        else {
+            if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
+                const filtroDocente = {
+                    some: {
+                        Docente_Email: this.docentiService.docente.Email
+                    }
+                };
+                params["Insegnamenti"] = JSON.stringify(filtroDocente);
+            }
+
+            if (this.indirizzoSelected)
+                params["Indirizzo"] = this.indirizzoSelected;
         }
 
-        if (this.indirizzoSelected)
-            params["Indirizzo"] = this.indirizzoSelected;
 
         return this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici", params)!.pipe(tap(
             (data: any) => {

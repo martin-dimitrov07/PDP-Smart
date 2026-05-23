@@ -35,6 +35,8 @@ export class Studenti {
     DSA_BES: any = -1;
     timer: any;
 
+    annoScolasticoSelezionato: Date | null = null;
+
     ngOnInit() {
         this.indirizzo = String(this.activatedRouter.snapshot.paramMap.get("indirizzo"));
         this.classeId = Number(this.activatedRouter.snapshot.paramMap.get("idClasse"));
@@ -62,6 +64,13 @@ export class Studenti {
 
                 this.checkError.checkError(err)
             }
+        });
+
+        this.studentiService.GetAnniScolastici(this.classeId).subscribe({
+            "next": (data) => {
+                this.annoScolasticoSelezionato = this.studentiService.anniScolastici[0];
+            },
+            "error": (err: any) => this.checkError.checkError(err)
         });
     }
 

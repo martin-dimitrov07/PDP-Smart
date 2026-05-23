@@ -18,7 +18,7 @@
                 @for (studente of studentiService.studenti; track $index)
                 {
                     <div class="col-12 col-lg-6">
-                        <app-studenti-card [studente]="studente"></app-studenti-card>
+                        <app-studenti-card [annoScolasticoSelezionato]="annoScolasticoSelezionato" [studente]="studente"></app-studenti-card>
                     </div>
                 }
             }
