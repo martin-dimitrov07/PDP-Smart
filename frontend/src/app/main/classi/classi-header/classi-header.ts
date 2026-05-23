@@ -16,6 +16,10 @@ export class ClassiHeader {
     public readonly studentiService: StudentiService = inject(StudentiService);
     private readonly documentiService: DocumentiService = inject(DocumentiService);
 
+    ngOnInit() {
+        this.documentiService.annoScolasticoSelezionato = this.studentiService.anniScolastici[0];
+    }
+
     SetFilterAnnoScolastico(annoScolastico: Date) {
         this.documentiService.annoScolasticoSelezionato = annoScolastico;
         this.annoScolastico.emit(annoScolastico);
