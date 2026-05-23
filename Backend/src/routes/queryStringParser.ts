@@ -1,5 +1,3 @@
-//Non è consentito modificare req.query che è in sola lettura (neanche le singole chiavi)
-
 function ParseQueryString(req: any, res: any, next: any) {
     req.parsedQuery = {};
 

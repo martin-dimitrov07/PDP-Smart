@@ -2,13 +2,17 @@ import { prisma } from "../server.ts";
 import * as GestioneIndicatori from "./indicatori.ts";
 import * as GestioneICF from "./icf.ts";
 import * as GestioneAllegati from "./allegati.ts";
+import { writeFile, mkdir, readFile, access } from "fs/promises";
+import { join } from 'path';
+import { promisify } from 'util';
+import libre from 'libreoffice-convert';
 
 async function DeletePDP(req: any, res: any) {
     try {
-        const documento = JSON.parse(req.query.Documento);
-        const indicatori = JSON.parse(req.query.Indicatori);
-        const ICFs = JSON.parse(req.query.ICFs);
-        const allegati = JSON.parse(req.query.AllegatiIds);
+        const documento = JSON.parse(req["parsedQuery"].Documento);
+        const indicatori = JSON.parse(req["parsedQuery"].Indicatori);
+        const ICFs = JSON.parse(req["parsedQuery"].ICFs);
+        const allegati = JSON.parse(req["parsedQuery"].AllegatiIds);
 
         let allegatiDelete: any[] = [];
 
@@ -85,7 +89,7 @@ async function CreatePDP(req: any, res: any) {
         });
 
         if (saveAllegati.length > 0) {
-            const savePromises = saveAllegati.map(item => 
+            const savePromises = saveAllegati.map(item =>
                 GestioneAllegati.SaveAllegato(item.record, item.data)
             );
             await Promise.all(savePromises);
@@ -223,4 +227,61 @@ async function ApprovaDocumento(req: any, res: any) {
     }
 }
 
-export { CreatePDP, GetAnniScolasticiDocumenti, GetDocumenti, DeletePDP, ApprovaDocumento };
+const convertToPdf = promisify(libre.convert);
+
+async function SalvaDocumentoApprovato(req: any, res: any) {
+    try {
+        const documento = req.files.documento;
+        const anno = req.body.anno;
+        const studente_email = req.body.studente_email;
+
+        if (!req.files || !req.files.documento) {
+            return res.status(400).send({ message: "Nessun documento caricato." });
+        }
+
+        const directoryPath = `documenti/${studente_email}/${anno}`;
+        const pdfPath = join(directoryPath, 'PDP_approvato.pdf');
+
+        await mkdir(directoryPath, { recursive: true });
+
+        const docxBuffer = documento.data;
+        const pdfBuffer = await convertToPdf(docxBuffer, '.pdf', undefined); // undefined per usare le impostazioni predefinite di LibreOffice
+
+        await writeFile(pdfPath, pdfBuffer);
+
+        res.status(200).send({ message: "Documento salvato con successo" });
+
+    } catch (err) {
+        console.error("Errore:", err);
+        res.status(500).send({ message: "Errore nel salvataggio del documento approvato" });
+    }
+}
+
+async function GetDocumentoApprovato(req: any, res: any) {
+    try {
+        const anno = req["parsedQuery"].Anno;
+        const studente_email = req["parsedQuery"].Studente_Email;
+
+        if (!anno || !studente_email) {
+            return res.status(400).send({ message: "Email o anno mancanti." });
+        }
+
+        const pdfPath = join(`documenti/${studente_email}/${anno}`, 'PDP_approvato.pdf');
+
+        try {
+            await access(pdfPath);
+        } catch {
+            return res.status(404).send({ message: "Documento approvato non trovato." });
+        }
+
+        const pdfBuffer = await readFile(pdfPath);
+        res.setHeader('Content-Type', 'application/pdf');
+        res.send(pdfBuffer);
+
+    } catch (err) {
+        console.error("Errore:", err);
+        res.status(500).send({ message: "Errore nel recupero del documento approvato" });
+    }
+}
+        
+export { CreatePDP, GetAnniScolasticiDocumenti, GetDocumenti, DeletePDP, ApprovaDocumento, SalvaDocumentoApprovato, GetDocumentoApprovato };

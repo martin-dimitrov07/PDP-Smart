@@ -171,10 +171,13 @@ app.get("/api/anni-scolastici-documenti", GestioneDocumenti.GetAnniScolasticiDoc
 app.get("/api/documenti", GestioneDocumenti.GetDocumenti);
 app.delete("/api/documento/delete/", GestioneDocumenti.DeletePDP);
 app.patch("/api/documento/approva", GestioneDocumenti.ApprovaDocumento);
+app.post("/api/documento/salva-approvato", GestioneDocumenti.SalvaDocumentoApprovato);
+app.get("/api/documento/file-approvato", GestioneDocumenti.GetDocumentoApprovato);
 
 //Docenti
 app.get("/api/is-coordinatore", GestioneDocenti.IsCoordinatore);
 app.get("/api/docenti-classe", GestioneDocenti.GetDocentiByClasse);
+
 //Materie
 app.get("/api/materie", GestioneMaterie.GetMaterie);
 
