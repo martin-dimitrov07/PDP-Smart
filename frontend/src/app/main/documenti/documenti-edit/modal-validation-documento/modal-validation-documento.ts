@@ -15,7 +15,7 @@ export class ModalValidationDocumento {
     private readonly router: Router = inject(Router);
 
     validateDocumento(){
-        this.documentiService.ApprovaDocumento().subscribe({
+        this.documentiService.ApprovaDocumento()?.subscribe({
             next: () => {
                 this.router.navigate(['documenti', 'lista']);
             },

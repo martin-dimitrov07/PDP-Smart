@@ -470,13 +470,11 @@ export class DocumentiService {
         const filters = {
             Studente_Email: this.documentoSelected.Studente_Email,
             Anno: this.documentoSelected.Anno
-        }
+        };
 
-        const payload = { 
-            Data_Approvazione: Documento.SetAnnoCorrect(new Date())
-        }
+        console.log(filters);
 
-        // return this.dataStorageService.InviaRichiesta("PATCH", "/documento/approva", { filters, payload })!;
+        return this.dataStorageService.InviaRichiesta("PATCH", "/documento/approva", { filters })!;
     }
 
     ResetCreateDocumento() {

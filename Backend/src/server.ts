@@ -170,6 +170,7 @@ app.post("/api/documento/create", GestioneDocumenti.CreatePDP);
 app.get("/api/anni-scolastici-documenti", GestioneDocumenti.GetAnniScolasticiDocumenti);
 app.get("/api/documenti", GestioneDocumenti.GetDocumenti);
 app.delete("/api/documento/delete/", GestioneDocumenti.DeletePDP);
+app.patch("/api/documento/approva", GestioneDocumenti.ApprovaDocumento);
 
 //Docenti
 app.get("/api/is-coordinatore", GestioneDocenti.IsCoordinatore);

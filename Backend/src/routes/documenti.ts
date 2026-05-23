@@ -200,4 +200,27 @@ async function GetDocumenti(req: any, res: any) {
     }
 }
 
-export { CreatePDP, GetAnniScolasticiDocumenti, GetDocumenti, DeletePDP };
+async function ApprovaDocumento(req: any, res: any) {
+    try {
+        const Data_Aprprovazione = new Date();
+        const filters = req.body.filters || {};
+
+        const updated = await prisma.documento.updateMany({
+            where: filters,
+            data: {
+                Data_Approvazione: Data_Aprprovazione
+            }
+        });
+
+        if (updated.count > 0) {
+            res.status(200).send({ message: "Documento approvato con successo" });
+        } else {
+            res.status(404).send({ message: "Nessun documento trovato con i criteri specificati" });
+        }
+    } catch (err) {
+        console.error("Errore:", err);
+        res.status(500).send({ message: "Errore nell'approvazione del documento" });
+    }
+}
+
+export { CreatePDP, GetAnniScolasticiDocumenti, GetDocumenti, DeletePDP, ApprovaDocumento };
