@@ -75,3 +75,9 @@ ngx-dropzone-preview, .allegato{
     opacity: 0.7;
 }
 
+.loader {
+    width: 3rem;
+    height: 3rem;
+    color: var(--bg-blue-dark-color) !important;
+    --bs-spinner-border-width: 7px !important;
+}

@@ -36,11 +36,17 @@
         <div class="px-sm-2 d-flex flex-column gap-3">
             @if(datiCaricati)
             {
-            <ng-container>
-                @for (categoria of documentiService.categorieInd; track categoria; let i = $index) {
-                <app-categoria-ind [categoria]="categoria" [index]="i"></app-categoria-ind>
-                }
-            </ng-container>
+                <ng-container>
+                    @for (categoria of documentiService.categorieInd; track categoria; let i = $index) {
+                        <app-categoria-ind [categoria]="categoria" [index]="i"></app-categoria-ind>
+                    }
+                </ng-container>
+            }@else {
+                <div class="d-flex justify-content-center my-5 py-4">
+                    <div class="spinner-border loader" role="status">
+                        <span class="visually-hidden">Caricamento indicatori...</span>
+                    </div>
+                </div>
             }
 
             @if(activatedRoute.snapshot.data['root'] == "modifica" && documentiService.documentoSelected.Stato != StatoDocumento.SCADUTO){

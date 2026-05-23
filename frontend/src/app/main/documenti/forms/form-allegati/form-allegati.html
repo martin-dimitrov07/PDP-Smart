@@ -2,69 +2,77 @@
     <section class="section-form px-3 px-sm-5">
         @if(activatedRoute.snapshot.data['root'] == "modifica")
         {
-        <app-documenti-edit-breadcrumb [currentRoute]="'allegati'"></app-documenti-edit-breadcrumb>
+            <app-documenti-edit-breadcrumb [currentRoute]="'allegati'"></app-documenti-edit-breadcrumb>
         }
         <h3 class="mt-4 mt-sm-0" [class.fs-5]="activatedRoute.snapshot.data['root'] == 'crea'"
             [class.fs-3]="activatedRoute.snapshot.data['root'] == 'modifica'">
             @if(activatedRoute.snapshot.data['root'] == 'crea')
             {
-            Inserisci gli allegati
+                Inserisci gli allegati
             }
             @else
             {
-            Allegati inseriti
+                Allegati inseriti
             }
         </h3>
         <hr>
 
         @if(activatedRoute.snapshot.data['root'] == 'modifica')
         {
-        <div class="mb-4">
-            <h4 class="text-secondary mb-3 fs-5">Documenti già presenti</h4>
-            <div class="d-flex gap-3 flex-wrap">
-                @for (allegato of documentiService.allegatiDoc; track $index) {
-
-                <div (click)="ShowAllegato(allegato)"
-                    class="allegato position-relative rounded d-flex flex-column align-items-center justify-content-center p-3 shadow-sm">
-
-                    @if(docentiService.docente.Ruolo != Ruolo.DOCENTE) {
-                    <button type="button"
-                        class="btn btn-sm btn-delete position-absolute rounded-circle d-flex align-items-center justify-content-center"
-                        (click)="$event.stopPropagation(); RemoveAllegato(allegato)">
-                        <i class="bi bi-x-circle-fill fs-5"></i>
-                    </button>
-                    }
-
-                    @if (allegato.File.type.startsWith('image/')) {
-                    <i class="bi bi-file-earmark-image text-success fs-1"></i>
-                    }
-                    @else if (allegato.File.type === 'application/pdf') {
-                    <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
-                    }
-                    @else if (allegato.File.name.endsWith('.docx')) {
-                    <i class="bi bi-filetype-docx text-primary fs-1"></i>
-                    }
-                    @else if (allegato.File.name.endsWith('.doc')) {
-                    <i class="bi bi-filetype-doc text-primary fs-1"></i>
-                    }
-                    @else {
-                    <i class="bi bi-file-earmark text-secondary fs-1"></i>
-                    }
-
-                    <div class="file-info text-center mt-2 w-100 overflow-hidden">
-                        <span class="file-name text-dark fw-bold text-break d-block" [title]="allegato.File.name">
-                            {{ allegato.File.name }}
-                        </span>
-                        <small class="text-muted d-block">{{ (allegato.File.size / 1024).toFixed(1) }} KB</small>
+            <div class="mb-4">
+                <h4 class="text-secondary mb-3 fs-5">Documenti già presenti</h4>
+                @if (isLoading) {
+                    <div class="d-flex justify-content-center my-5 py-4">
+                        <div class="spinner-border loader" role="status">
+                            <span class="visually-hidden">Caricamento allegati...</span>
+                        </div>
                     </div>
-                </div>
-
-                }
-                @empty {
-                <p class="text-muted fst-italic">Nessun allegato presente.</p>
+                }@else {
+                    <div class="d-flex gap-3 flex-wrap">
+                        @for (allegato of documentiService.allegatiDoc; track $index) {
+    
+                            <div (click)="ShowAllegato(allegato)"
+                                class="allegato position-relative rounded d-flex flex-column align-items-center justify-content-center p-3 shadow-sm">
+    
+                                @if(docentiService.docente.Ruolo != Ruolo.DOCENTE) {
+                                    <button type="button"
+                                        class="btn btn-sm btn-delete position-absolute rounded-circle d-flex align-items-center justify-content-center"
+                                        (click)="$event.stopPropagation(); RemoveAllegato(allegato)">
+                                        <i class="bi bi-x-circle-fill fs-5"></i>
+                                    </button>
+                                }
+    
+                                @if (allegato.File.type.startsWith('image/')) {
+                                    <i class="bi bi-file-earmark-image text-success fs-1"></i>
+                                }
+                                @else if (allegato.File.type == 'application/pdf') {
+                                    <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
+                                }
+                                @else if (allegato.File.name.endsWith('.docx')) {
+                                    <i class="bi bi-filetype-docx text-primary fs-1"></i>
+                                }
+                                @else if (allegato.File.name.endsWith('.doc')) {
+                                    <i class="bi bi-filetype-doc text-primary fs-1"></i>
+                                }
+                                @else {
+                                    <i class="bi bi-file-earmark text-secondary fs-1"></i>
+                                }
+    
+                                <div class="file-info text-center mt-2 w-100 overflow-hidden">
+                                    <span class="file-name text-dark fw-bold text-break d-block" [title]="allegato.File.name">
+                                        {{ allegato.File.name }}
+                                    </span>
+                                    <small class="text-muted d-block">{{ (allegato.File.size / 1024).toFixed(1) }} KB</small>
+                                </div>
+                            </div>
+    
+                        }
+                        @empty {
+                            <p class="text-muted fst-italic">Nessun allegato presente.</p>
+                        }
+                    </div>
                 }
             </div>
-        </div>
         }
 
         @if((activatedRoute.snapshot.data['root'] == "crea" && docentiService.docente.Ruolo != Ruolo.DOCENTE) || 
@@ -90,32 +98,32 @@
                 <div class="d-flex gap-2 flex-wrap justify-content-center overflow-hidden">
                     @for (file of documentiService.allegati; track $index)
                     {
-                    <ngx-dropzone-preview class="px-2 px-sm-3" ngProjectAs="ngx-dropzone-preview" [file]="file.File"
-                        [removable]="true" (removed)="RemoveNewAllegato(file)">
-                        <ngx-dropzone-label class="m-0">
-                            <!-- ICONE -->
-                            @if (file.File.type.startsWith('image/')) {
-                            <i class="bi bi-file-earmark-image text-success fs-1"></i>
-                            }
-                            @else if (file.File.type === 'application/pdf') {
-                            <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
-                            }
-                            @else if (file.File.name.endsWith('.docx')) {
-                            <i class="bi bi-filetype-docx text-primary fs-1"></i>
-                            }
-                            @else if (file.File.name.endsWith('.doc')) {
-                            <i class="bi bi-filetype-doc text-primary fs-1"></i>
-                            }
-                            @else {
-                            <i class="bi bi-file-earmark text-secondary fs-1"></i>
-                            }
+                        <ngx-dropzone-preview class="px-2 px-sm-3" ngProjectAs="ngx-dropzone-preview" [file]="file.File"
+                            [removable]="true" (removed)="RemoveNewAllegato(file)">
+                            <ngx-dropzone-label class="m-0">
+                                <!-- ICONE -->
+                                @if (file.File.type.startsWith('image/')) {
+                                    <i class="bi bi-file-earmark-image text-success fs-1"></i>
+                                }
+                                @else if (file.File.type === 'application/pdf') {
+                                    <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
+                                }
+                                @else if (file.File.name.endsWith('.docx')) {
+                                    <i class="bi bi-filetype-docx text-primary fs-1"></i>
+                                }
+                                @else if (file.File.name.endsWith('.doc')) {
+                                    <i class="bi bi-filetype-doc text-primary fs-1"></i>
+                                }
+                                @else {
+                                    <i class="bi bi-file-earmark text-secondary fs-1"></i>
+                                }
 
-                            <div class="file-info">
-                                <span class="file-name text-dark fw-bold text-break">{{ file.File.name }}</span>
-                                <small class="text-muted d-block">{{ (file.File.size / 1024).toFixed(1) }} KB</small>
-                            </div>
-                        </ngx-dropzone-label>
-                    </ngx-dropzone-preview>
+                                <div class="file-info">
+                                    <span class="file-name text-dark fw-bold text-break">{{ file.File.name }}</span>
+                                    <small class="text-muted d-block">{{ (file.File.size / 1024).toFixed(1) }} KB</small>
+                                </div>
+                            </ngx-dropzone-label>
+                        </ngx-dropzone-preview>
                     }
                 </div>
 
@@ -125,28 +133,28 @@
 
         @if(activatedRoute.snapshot.data['root'] == "modifica" && (docenteService.docente.Ruolo == Ruolo.ADMIN || (canEdit | async)))
         {
-        <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0 mt-3"
-                (click)="Edit()">
-                <p class="m-0">Salva e modifica</p>
-            </button>
-        </div>
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0 mt-3"
+                    (click)="Edit()">
+                    <p class="m-0">Salva e modifica</p>
+                </button>
+            </div>
         }
     </section>
 
     @if(activatedRoute.snapshot.data['root'] == "crea" && docentiService.docente.Ruolo != Ruolo.DOCENTE)
     {
-    <div class="d-flex justify-content-between flex-wrap">
-        <button type="button" class="btn btn-secondary d-flex gap-2 align-items-center py-2 pe-3 ps-2"
-            (click)="docentiService.docente.Ruolo == Ruolo.ADMIN ? stepsService.GoStep('ICF') : stepsService.GoStep('indicatori')">
-            <i class="bi bi-chevron-left"></i>
-            <p class="m-0">Indietro</p>
-        </button>
+        <div class="d-flex justify-content-between flex-wrap">
+            <button type="button" class="btn btn-secondary d-flex gap-2 align-items-center py-2 pe-3 ps-2"
+                (click)="docentiService.docente.Ruolo == Ruolo.ADMIN ? stepsService.GoStep('ICF') : stepsService.GoStep('indicatori')">
+                <i class="bi bi-chevron-left"></i>
+                <p class="m-0">Indietro</p>
+            </button>
 
-        <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0 fw-bold">
-            <p class="m-0" (click)="CreateDocumento()">Crea Documento</p>
-        </button>
-    </div>
+            <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0 fw-bold">
+                <p class="m-0" (click)="CreateDocumento()">Crea Documento</p>
+            </button>
+        </div>
     }
 </div>
 

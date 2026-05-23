@@ -41,6 +41,7 @@ export class FormIndicatori {
 
     ngOnInit() {
         this.stepsService.step = "indicatori";
+        this.datiCaricati = false;
 
         if (this.activatedRoute.snapshot.data['root'] == "modifica") {
             this.documentiService.indicatoriEdit = [];
@@ -69,10 +70,16 @@ export class FormIndicatori {
                                     this.datiCaricati = true;
                                     this.cdr.detectChanges();
                                 },
-                                error: (err) => this.checkError.checkError(err)
+                                error: (err) => {
+                                    this.datiCaricati = true;
+                                    this.checkError.checkError(err);    
+                                }
                             });
                         },
-                        error: (err) => this.checkError.checkError(err)
+                        error: (err) => {
+                            this.datiCaricati = true;
+                            this.checkError.checkError(err);
+                        }
                     })
                 }
             });
@@ -97,10 +104,16 @@ export class FormIndicatori {
                             this.datiCaricati = true;
                             this.cdr.detectChanges();
                         },
-                        error: (err) => this.checkError.checkError(err)
+                        error: (err) => {
+                            this.datiCaricati = true;
+                            this.checkError.checkError(err);
+                        }
                     });
                 },
-                error: (err) => this.checkError.checkError(err)
+                error: (err) => {
+                    this.datiCaricati = true;
+                    this.checkError.checkError(err);
+                }
             })
         }
 

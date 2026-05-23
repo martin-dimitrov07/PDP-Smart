@@ -40,18 +40,25 @@ export class FormAllegati {
 
     @ViewChild('btnTrigger') btnTrigger!: ElementRef;
 
+    public isLoading: boolean = false;
+
     ngOnInit() {
         this.stepsService.step = "allegati";
         // console.log(this.documentiService.documentoSelected)
         // console.log("Allegati Doc: ", this.documentiService.allegatiDoc);
         if (this.activatedRoute.snapshot.data['root'] == 'modifica') {
+            this.isLoading = true;
             this.documentiService.allegatiEdit = [];
             this.documentiService.allegatiDoc = [];
             this.documentiService.GetAllegatiDocumento()?.subscribe({
                 next: (data: any) => {
                     console.log("Allegati del documento:", this.documentiService.allegatiDoc);
+                    this.isLoading = false;
                 },
-                error: (err: any) => this.checkError.checkError(err)
+                error: (err: any) => {
+                    this.checkError.checkError(err)
+                    this.isLoading = false;
+                }
             });
         }
         this.documentiService.allegati = [];

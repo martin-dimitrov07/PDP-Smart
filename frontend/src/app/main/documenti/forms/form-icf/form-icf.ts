@@ -31,10 +31,13 @@ export class FormICF {
 
     prevPage: string = "";
 
+    public isLoading: boolean = false;
+
     ngOnInit() {
         this.root = this.activatedRoute.snapshot.data["root"];
 
         if (this.root == "modifica") {
+            this.isLoading = true;
             this.documentiService.icfsEdit = [];
             this.documentiService.GetICFSDocumento()?.subscribe({
                 next: (data: any) => {
@@ -55,6 +58,7 @@ export class FormICF {
                     this.stepsService.step = "ICF";
                 }
             }
+            this.isLoading = false;
         });
     }
 
