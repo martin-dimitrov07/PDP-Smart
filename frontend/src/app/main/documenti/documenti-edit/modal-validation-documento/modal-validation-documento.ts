@@ -16,8 +16,13 @@ export class ModalValidationDocumento {
 
     async validateDocumento(){
         this.documentiService.ApprovaDocumento()?.subscribe({
-            next: async () => {
-                await this.documentiService.SaveDocumentoApprovato(this.documentiService.documentoSelected);
+            next: () => {
+                this.documentiService.SaveDocumentoApprovato(this.documentiService.documentoSelected).subscribe({
+                    next: () => {
+                        console.log("Documento approvato e salvato con successo")
+                    },
+                    error: (err: any) => this.checkError.checkError(err)
+                });
 
                 this.router.navigate(['documenti', 'lista']);
             },

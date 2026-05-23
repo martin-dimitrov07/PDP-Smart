@@ -3,7 +3,7 @@ import { DocentiService } from './docenti.service';
 import { DataStorageService } from './data-storage.service';
 import { Studente } from '../../models/studente';
 import { Documento, Tipo } from '../../models/documento';
-import { catchError, forkJoin, lastValueFrom, map, Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, forkJoin, from, lastValueFrom, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Ruolo } from '../../models/docente';
 import { Indicatore } from '../../models/indicatore';
 import { Icf } from '../../models/icf';
@@ -496,10 +496,10 @@ export class DocumentiService {
     GetFileDocumentoApprovato(documento: Documento) {
         const filters = {
             Studente_Email: documento.Studente_Email,
-            Anno: documento.Anno
+            Anno: documento.Anno!.toISOString()
         };
 
-        return this.dataStorageService.InviaRichiesta("GET", "/documento/file-approvato", { filters: JSON.stringify(filters) })!.pipe(
+        return this.dataStorageService.ScaricaFile("/documento/file-approvato", filters)!.pipe(
             map((fileData: any) => {
                 if (fileData) {
                     return new Blob([fileData], { type: "application/pdf" });
@@ -509,27 +509,32 @@ export class DocumentiService {
         );
     }
 
-    async SaveDocumentoApprovato(documento: Documento) {
-        const data: any = await this.GetFileDocumentoData(documento);
+    SaveDocumentoApprovato(documento: Documento) {
+        // converte la prima Promise in un Observable usando 'from'
+        return from(this.GetFileDocumentoData(documento)).pipe(
+            switchMap((data: any) => {
+                if (!data) {
+                    console.error("Dati del documento non disponibili, impossibile salvare il documento approvato");
+                    return of(null);
+                }
 
-        if(!data) {
-            console.error("Dati del documento non disponibili, impossibile salvare il documento approvato");
-            return null;
-        }
+                return from(this.CreateFileDocumento(documento, data));
+            }),
 
-        const fileDocx: Blob | null = await this.CreateFileDocumento(documento, data);
+            switchMap((fileDocx: Blob | null) => {
+                if (!fileDocx) {
+                    console.error("Errore nella creazione del file del documento, impossibile salvare il documento approvato");
+                    return of(null);
+                }
 
-        if(!fileDocx) {
-            console.error("Errore nella creazione del file del documento, impossibile salvare il documento approvato");
-            return null;
-        }
+                const formData = new FormData();
+                formData.append('studente_email', documento.Studente_Email);
+                formData.append('anno', documento.Anno ? documento.Anno.toISOString() : "");
+                formData.append('documento', fileDocx);
 
-        const formData = new FormData();    
-        formData.append('studente_email', documento.Studente_Email);
-        formData.append('anno', documento.Anno ? documento.Anno.toISOString() : "");
-        formData.append('documento', fileDocx);
-
-        return this.dataStorageService.InviaRichiesta("POST", "/documento/salva-approvato", formData)!;
+                return this.dataStorageService.InviaRichiesta("POST", "/documento/salva-approvato", formData)!;
+            })
+        );
     }
 
     TipoDocumento: typeof Tipo = Tipo;
@@ -578,7 +583,7 @@ export class DocumentiService {
             data_approvazione: documento.Data_Approvazione ? new Date(documento.Data_Approvazione).toLocaleDateString() : "N/A"
         }
 
-        // this.documentoSelected = documento;
+        this.documentoSelected = documento;
 
         try {
             const studente: Studente = await lastValueFrom(this.studentiService.GetStudenteByEmail(documento.Studente_Email));

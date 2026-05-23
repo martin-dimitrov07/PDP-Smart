@@ -227,12 +227,19 @@ async function ApprovaDocumento(req: any, res: any) {
     }
 }
 
-const convertToPdf = promisify(libre.convert);
+const convertToPdf = (buffer: Buffer, format: string, filter: undefined): Promise<Buffer> => {
+    return new Promise((resolve, reject) => {
+        libre.convert(buffer, format, filter, (err, done) => {
+            if (err) return reject(err);
+            resolve(done);
+        });
+    });
+};
 
 async function SalvaDocumentoApprovato(req: any, res: any) {
     try {
         const documento = req.files.documento;
-        const anno = req.body.anno;
+        const anno = req.body.anno.split('T')[0];
         const studente_email = req.body.studente_email;
 
         if (!req.files || !req.files.documento) {
@@ -259,7 +266,7 @@ async function SalvaDocumentoApprovato(req: any, res: any) {
 
 async function GetDocumentoApprovato(req: any, res: any) {
     try {
-        const anno = req["parsedQuery"].Anno;
+        let anno = req["parsedQuery"].Anno.split('T')[0];
         const studente_email = req["parsedQuery"].Studente_Email;
 
         if (!anno || !studente_email) {
@@ -283,5 +290,5 @@ async function GetDocumentoApprovato(req: any, res: any) {
         res.status(500).send({ message: "Errore nel recupero del documento approvato" });
     }
 }
-        
+
 export { CreatePDP, GetAnniScolasticiDocumenti, GetDocumenti, DeletePDP, ApprovaDocumento, SalvaDocumentoApprovato, GetDocumentoApprovato };
