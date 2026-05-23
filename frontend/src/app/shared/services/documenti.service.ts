@@ -3,7 +3,7 @@ import { DocentiService } from './docenti.service';
 import { DataStorageService } from './data-storage.service';
 import { Studente } from '../../models/studente';
 import { Documento, Tipo } from '../../models/documento';
-import { catchError, forkJoin, map, Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, forkJoin, lastValueFrom, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Ruolo } from '../../models/docente';
 import { Indicatore } from '../../models/indicatore';
 import { Icf } from '../../models/icf';
@@ -13,6 +13,10 @@ import { Allegato } from '../../models/allegato';
 import { fileManager } from '../utilities/file-manager';
 import { StudentiService } from './studenti.service';
 
+import PizZip from 'pizzip';
+import Docxtemplater from 'docxtemplater';
+import { HttpClient } from '@angular/common/http';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -20,6 +24,7 @@ export class DocumentiService {
     private readonly dataStorageService = inject(DataStorageService);
     // private readonly router: Router = inject(Router);
     private readonly docentiService: DocentiService = inject(DocentiService);
+    private readonly studentiService: StudentiService = inject(StudentiService);
     private readonly checkError: CheckError = inject(CheckError);
 
     classeSelected: Classe = {} as Classe;
@@ -172,7 +177,7 @@ export class DocumentiService {
     }
 
     GetMaterieClasse() {
-        if(!this.classeSelected)
+        if (!this.classeSelected)
             return of(null);
 
         this.materieClasse = [];
@@ -463,7 +468,7 @@ export class DocumentiService {
     }
 
     ApprovaDocumento() {
-        if(!this.documentoSelected) return null;
+        if (!this.documentoSelected) return null;
 
         const filters = {
             Studente_Email: this.documentoSelected.Studente_Email,
@@ -486,5 +491,151 @@ export class DocumentiService {
         this.icfsSelected = [];
         this.allegati = [];
         this.errorAllegati = "";
+    }
+
+    GetFileDocumentoApprovato(documento: Documento) {
+        const filters = {
+            Studente_Email: documento.Studente_Email,
+            Anno: documento.Anno
+        };
+
+        return this.dataStorageService.InviaRichiesta("GET", "/documento/file-approvato", { filters: JSON.stringify(filters) })!.pipe(
+            map((fileData: any) => {
+                if (fileData) {
+                    return new Blob([fileData], { type: "application/pdf" });
+                }
+                throw new Error("File del documento approvato non disponibile");
+            })
+        );
+    }
+
+    async SaveDocumentoApprovato(documento: Documento) {
+        const data: any = await this.GetFileDocumentoData(documento);
+
+        if(!data) {
+            console.error("Dati del documento non disponibili, impossibile salvare il documento approvato");
+            return null;
+        }
+
+        const fileDocx: Blob | null = await this.CreateFileDocumento(documento, data);
+
+        if(!fileDocx) {
+            console.error("Errore nella creazione del file del documento, impossibile salvare il documento approvato");
+            return null;
+        }
+
+        const formData = new FormData();    
+        formData.append('studente_email', documento.Studente_Email);
+        formData.append('anno', documento.Anno ? documento.Anno.toISOString() : "");
+        formData.append('documento', fileDocx);
+
+        return this.dataStorageService.InviaRichiesta("POST", "/documento/salva-approvato", formData)!;
+    }
+
+    TipoDocumento: typeof Tipo = Tipo;
+    private readonly http: HttpClient = inject(HttpClient);
+
+    async CreateFileDocumento(documento: Documento, data: any) {
+        try {
+            const pathModel = documento.Tipologia == this.TipoDocumento.DSA ? '/MODELLO_PDP_DSA.docx' : '/MODELLO_PDP_BES.docx';
+
+            const content = await lastValueFrom(
+                this.http.get(pathModel, { responseType: 'arraybuffer' })
+            );
+
+            // Caricamento template .docx con PizZip e Docxtemplater
+            const zip = new PizZip(content);
+            const doc = new Docxtemplater(zip, {
+                paragraphLoop: true, // permette di iterare sui paragrafi del template
+                linebreaks: true  // Mantiene i ritorni a capo del template
+            });
+
+            if (!data) {
+                throw new Error("Dati del documento non disponibili");
+            }
+
+            // Compilazione del template con i dati ottenuti
+            doc.setData(data);
+            doc.render();
+
+            // Generazione del file .docx e download
+            const fileDocx = doc.getZip().generate({
+                type: "blob",
+                mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            });
+
+            return fileDocx;
+        }
+        catch (error) {
+            this.checkError.checkError(error);
+            return null;
+        }
+    }
+
+    async GetFileDocumentoData(documento: Documento) {
+        let result: any = {
+            anno: documento.Anno?.getFullYear() + "/" + (documento.Anno!.getFullYear() + 1),
+            data_approvazione: documento.Data_Approvazione ? new Date(documento.Data_Approvazione).toLocaleDateString() : "N/A"
+        }
+
+        // this.documentoSelected = documento;
+
+        try {
+            const studente: Studente = await lastValueFrom(this.studentiService.GetStudenteByEmail(documento.Studente_Email));
+            result.nome_studente = studente.Cognome + " " + studente.Nome;
+
+            const classe: Classe | null = await lastValueFrom(this.studentiService.GetClasseByDocumento(documento));
+
+            if (!classe) {
+                throw new Error("Classe non trovata per il documento dello studente " + result.nome_studente);
+            }
+
+            this.classeSelected = classe;
+            result.nome_classe = classe.GetFullNome();
+
+            await lastValueFrom(this.GetCategorieIndicatore());
+            await lastValueFrom(this.GetMaterieClasse());
+            await lastValueFrom(this.GetIndicatoriDocumento());
+
+            //categorie
+            for (let i = 1; i <= 4; i++) {
+                result["c" + i] = this.categorieInd[i - 1] || "";
+
+                const indicatori = await lastValueFrom(this.GetIndicatori(result["c" + i], documento.Tipologia));
+
+                //materie
+                for (let j = 0; j < 13; j++) {
+                    result["m" + String.fromCodePoint(65 + j) + "_c" + i] = this.materieClasse[j] || "";
+                }
+
+                //descrizioni e valori indicatori
+                for (let k = 0; k < 15; k++) {
+                    result["d" + String.fromCodePoint(65 + k) + "_c" + i] = indicatori[k] ? indicatori[k].Descrizione : "";
+
+                    for (let l = 0; l < 13; l++) {
+                        if (indicatori[k]) {
+                            result["i" + String.fromCharCode(65 + l) + String.fromCharCode(65 + k) + i] = this.indicatoriDoc.find((ind: any) => ind.Materia == result["m" + String.fromCodePoint(65 + l) + "_c" + i] && ind.Id == indicatori[k].Id) ? "X" : "";
+                        }
+                        else
+                            result["i" + String.fromCharCode(65 + l) + String.fromCharCode(65 + k) + i] = "";
+                    }
+                }
+
+                result["c" + i] = result["c" + i].replaceAll("_", " ");
+            }
+
+            await lastValueFrom(this.docentiService.GetDocentiByClasse(classe.Id));
+            // docenti del consiglio di classe
+            for (let m = 1; m <= 13; m++) {
+                const nominativo = this.docentiService.docentiConsiglioClasse[m - 1] ? this.docentiService.docentiConsiglioClasse[m - 1].Cognome + " " + this.docentiService.docentiConsiglioClasse[m - 1].Nome : "";
+                result['nome_docente' + m] = nominativo;
+            }
+
+            return result;
+        }
+        catch (err) {
+            this.checkError.checkError(err);
+            return null;
+        }
     }
 }

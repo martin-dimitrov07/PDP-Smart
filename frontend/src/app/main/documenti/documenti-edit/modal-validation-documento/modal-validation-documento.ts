@@ -14,9 +14,11 @@ export class ModalValidationDocumento {
     private readonly checkError: CheckError = inject(CheckError);
     private readonly router: Router = inject(Router);
 
-    validateDocumento(){
+    async validateDocumento(){
         this.documentiService.ApprovaDocumento()?.subscribe({
-            next: () => {
+            next: async () => {
+                await this.documentiService.SaveDocumentoApprovato(this.documentiService.documentoSelected);
+
                 this.router.navigate(['documenti', 'lista']);
             },
             error: (err: any) => this.checkError.checkError(err)

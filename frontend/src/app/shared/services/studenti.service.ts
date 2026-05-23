@@ -4,8 +4,7 @@ import { Studente } from '../../models/studente';
 import { Classe } from '../../models/classe';
 import { Ruolo } from '../../models/docente';
 import { DocentiService } from './docenti.service';
-import { firstValueFrom, forkJoin, map, Observable, switchMap, tap } from 'rxjs';
-import { DocumentiService } from './documenti.service';
+import { firstValueFrom, map, Observable, switchMap, tap } from 'rxjs';
 import { CheckError } from '../utilities/check-error';
 import { Documento } from '../../models/documento';
 
@@ -15,7 +14,6 @@ import { Documento } from '../../models/documento';
 export class StudentiService {
     private readonly dataStorageService = inject(DataStorageService);
     private readonly docentiService: DocentiService = inject(DocentiService);
-    private readonly documentiService: DocumentiService = inject(DocumentiService);
     public readonly checkError: CheckError = inject(CheckError);
 
     indirizzi: string[] = [];
@@ -236,11 +234,11 @@ export class StudentiService {
         );
     }
 
-    GetAnniScolastici(id: number | null = null): Observable<any> {
+    GetAnniScolastici(idClasse: number | null = null): Observable<any> {
         let params: any = {};
 
-        if (id) {
-            params.Id = id;
+        if (idClasse) {
+            params.Id = idClasse;
         }
         else {
             if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {

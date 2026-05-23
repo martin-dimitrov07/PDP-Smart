@@ -8,13 +8,9 @@ import { DocumentiService } from '../../../../shared/services/documenti.service'
 import { lastValueFrom } from 'rxjs';
 import { CheckError } from '../../../../shared/utilities/check-error';
 import { StudentiService } from '../../../../shared/services/studenti.service';
-import { Studente } from '../../../../models/studente';
 import { Classe } from '../../../../models/classe';
-
-import PizZip from 'pizzip';
-import Docxtemplater from 'docxtemplater';
 import { isPlatformBrowser } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { Studente } from '../../../../models/studente';
 
 @Component({
     selector: 'app-documenti-card',
@@ -83,7 +79,7 @@ export class DocumentiCard {
 
         this.studentiService.GetClasseByDocumento(this.documento).subscribe({
             next: (classe: Classe | null) => {
-                if(!classe) return;
+                if (!classe) return;
                 this.canDelete = classe.Coordinatore_Email == docente.Email;
             },
             error: (err: any) => this.checkError.checkError(err)
@@ -91,41 +87,25 @@ export class DocumentiCard {
     }
 
     private readonly platformId = inject(PLATFORM_ID);
-    private readonly http: HttpClient = inject(HttpClient);
 
     async ShowDocumento() {
-        try {
-            const pathModel = this.documento.Tipologia == this.TipoDocumento.DSA ? '/MODELLO_PDP_DSA.docx' : '/MODELLO_PDP_BES.docx';
-
-            const content = await lastValueFrom(
-                this.http.get(pathModel, { responseType: 'arraybuffer' })
-            );
-
-            // Caricamento template .docx con PizZip e Docxtemplater
-            const zip = new PizZip(content);
-            const doc = new Docxtemplater(zip, {
-                paragraphLoop: true, // permette di iterare sui paragrafi del template
-                linebreaks: true  // Mantiene i ritorni a capo del template
-            });
-
-            const data = await this.GetDocumentoData();
-
-            if (!data) {
-                throw new Error("Dati del documento non disponibili");
-            }
-
-            // Compilazione del template con i dati ottenuti
-            doc.setData(data);
-            doc.render();
-
-            // Generazione del file .docx e download
+        if (this.documento.Stato == this.StatoDocumento.IN_BOZZA) {
             if (isPlatformBrowser(this.platformId)) { // Verifica che il codice venga eseguito solo in ambiente browser
-                const out = doc.getZip().generate({
-                    type: "blob",
-                    mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                });
+                const data = await this.documentiService.GetFileDocumentoData(this.documento);
 
-                const fileUrl = window.URL.createObjectURL(out);
+                if (!data) {
+                    console.error("Errore nel recupero dei dati del documento.");
+                    return;
+                }
+
+                const fileDocx = await this.documentiService.CreateFileDocumento(this.documento, data);
+
+                if (!fileDocx) {
+                    console.error("Errore nella creazione del file documento.");
+                    return;
+                }
+
+                const fileUrl = window.URL.createObjectURL(fileDocx);
                 const link = document.createElement('a');
                 link.href = fileUrl;
                 link.download = "PDP_" + data.nome_studente.replaceAll(' ', '_') + "_" + data.anno.replaceAll('/', '-') + ".docx";
@@ -133,74 +113,22 @@ export class DocumentiCard {
 
                 setTimeout(() => window.URL.revokeObjectURL(fileUrl), 100); // Pulizia dell'URL dopo il download
             }
-        } catch (error) {
-            this.checkError.checkError(error);
         }
-    }
+        else {
+            this.documentiService.GetFileDocumentoApprovato(this.documento).subscribe({
+                next: async (fileData: Blob) => {
+                    const studente: Studente = await lastValueFrom(this.studentiService.GetStudenteByEmail(this.documento.Studente_Email));
 
-    async GetDocumentoData() {
-        let result: any = {
-            anno: this.documento.Anno?.getFullYear() + "/" + (this.documento.Anno!.getFullYear() + 1),
-            data_approvazione: this.documento.Data_Approvazione ? new Date(this.documento.Data_Approvazione).toLocaleDateString() : "N/A"
-        }
+                    const fileUrl = window.URL.createObjectURL(fileData);
+                    const link = document.createElement('a');
+                    link.href = fileUrl;
+                    link.download = "PDP_" + studente.Cognome.replaceAll(' ', '_') + "_" + studente.Nome.replaceAll(' ', '_') + "_" + this.documento.Anno?.getFullYear() + "-" + (this.documento.Anno!.getFullYear() + 1) + ".pdf";
+                    link.click(); 
 
-        this.documentiService.documentoSelected = this.documento;
-
-        try {
-            const studente: Studente = await lastValueFrom(this.studentiService.GetStudenteByEmail(this.documento.Studente_Email));
-            result.nome_studente = studente.Cognome + " " + studente.Nome;
-
-            const classe: Classe | null = await lastValueFrom(this.studentiService.GetClasseByDocumento(this.documento));
-
-            if (!classe) {
-                throw new Error("Classe non trovata per il documento dello studente " + result.nome_studente);
-            }
-
-            this.documentiService.classeSelected = classe;
-            result.nome_classe = classe.GetFullNome();
-
-            await lastValueFrom(this.documentiService.GetCategorieIndicatore());
-            await lastValueFrom(this.documentiService.GetMaterieClasse());
-            await lastValueFrom(this.documentiService.GetIndicatoriDocumento());
-
-            //categorie
-            for (let i = 1; i <= 4; i++) {
-                result["c" + i] = this.documentiService.categorieInd[i - 1] || "";
-
-                const indicatori = await lastValueFrom(this.documentiService.GetIndicatori(result["c" + i], this.documento.Tipologia));
-
-                //materie
-                for (let j = 0; j < 13; j++) {
-                    result["m" + String.fromCodePoint(65 + j) + "_c" + i] = this.documentiService.materieClasse[j] || "";
-                }
-
-                //descrizioni e valori indicatori
-                for (let k = 0; k < 15; k++) {
-                    result["d" + String.fromCodePoint(65 + k) + "_c" + i] = indicatori[k] ? indicatori[k].Descrizione : "";
-
-                    for (let l = 0; l < 13; l++) {
-                        if (indicatori[k]) {
-                            result["i" + String.fromCharCode(65 + l) + String.fromCharCode(65 + k) + i] = this.documentiService.indicatoriDoc.find((ind: any) => ind.Materia == result["m" + String.fromCodePoint(65 + l) + "_c" + i] && ind.Id == indicatori[k].Id) ? "X" : "";
-                        }
-                        else
-                            result["i" + String.fromCharCode(65 + l) + String.fromCharCode(65 + k) + i] = "";
-                    }
-                }
-
-                result["c" + i] = result["c" + i].replaceAll("_", " ");
-            }
-
-            await lastValueFrom(this.docentiService.GetDocentiByClasse(classe.Id));
-            // docenti del consiglio di classe
-            for (let m = 1; m <= 13; m++) {
-                const nominativo = this.docentiService.docentiConsiglioClasse[m - 1] ? this.docentiService.docentiConsiglioClasse[m - 1].Cognome + " " + this.docentiService.docentiConsiglioClasse[m - 1].Nome : "";
-                result['nome_docente' + m] = nominativo;
-            }
-
-            return result;
-        }
-        catch (err) {
-            this.checkError.checkError(err);
+                    setTimeout(() => window.URL.revokeObjectURL(fileUrl), 100); // Pulizia dell'URL dopo il download
+                },
+                error: (err: any) => this.checkError.checkError(err)
+            });
         }
     }
 }

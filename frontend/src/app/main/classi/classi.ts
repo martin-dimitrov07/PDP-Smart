@@ -100,7 +100,7 @@ export class Classi {
         this.studentiService.GetClassi(this.filterClassi, this.filterAnnoScolastico).subscribe({
             next: (data: any) => {
                 this.studentiService.GetNumeroClassi();
-                this.isLoading = false
+                this.isLoading = false;
             },
             error: (err: any) => {
                 this.checkError.checkError(err);
