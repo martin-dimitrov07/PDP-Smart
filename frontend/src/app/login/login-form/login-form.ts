@@ -28,21 +28,13 @@ export class LoginForm {
             const checkGoogle = setInterval(() => {
                 if (typeof google != 'undefined') {
                     clearInterval(checkGoogle);
-                    this.setupAndRender();
+                    this.setupAndRenderGoogle();
                 }
             }, 100);
         }
     }
 
-    // ngOnChanges(changes: SimpleChanges) {
-    //     if (changes['isDark'] && !changes['isDark'].firstChange) {
-    //         if (typeof google != 'undefined') {
-    //             this.renderGoogleButton();
-    //         }
-    //     }
-    // }
-
-    private setupAndRender() {
+    private setupAndRenderGoogle() {
         if (!LoginForm.googleInitialized) {
             google.accounts.id.initialize({
                 client_id: environment.googleClientId,
@@ -53,6 +45,7 @@ export class LoginForm {
         }
 
         this.renderGoogleButton();
+        google.accounts.id.prompt();
     }
 
     private renderGoogleButton() {

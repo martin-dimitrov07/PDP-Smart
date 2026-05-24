@@ -33,7 +33,7 @@ export class DataStorageService {
         }
     }
 
-    ScaricaFile(resource: string, params: any) {
+    public ScaricaFile(resource: string, params: any) {
         let url = this.REST_API_SERVER + resource;
 
         return this.http.get(url, {
