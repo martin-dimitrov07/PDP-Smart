@@ -12,8 +12,11 @@ import fileupload from "express-fileupload";
 
 // routes
 import * as Login from "./routes/login.ts";
+import * as GestioneIndirizzi from "./routes/indrizzi.ts";
 import * as GestioneStudenti from "./routes/studenti.ts";
+import * as GestioneClassi from "./routes/classi.ts";
 import * as GestioneDocumenti from "./routes/documenti.ts";
+import * as GestioneAnniScolastici from "./routes/anni-scolastici.ts";
 import * as GestioneMaterie from "./routes/materie.ts";
 import * as GestioneIndicatori from "./routes/indicatori.ts";
 import * as GestioneICF from "./routes/icf.ts";
@@ -136,6 +139,7 @@ const LoginLimiter = rateLimit({
     message: "Troppi tentativi di login. Riprova tra 1 minuto.",
     legacyHeaders: false,
 });
+
 //Login
 app.post("/api/login", LoginLimiter, Login.GestioneLogin);
 
@@ -155,24 +159,30 @@ app.get("/api/email-docente", (req: any, res: any) => {
         res.status(500).send("Errore nell'invio della mail del docente");
 });
 
+//Indirizzi
+app.get("/api/indirizzi", GestioneIndirizzi.GetIndirizzi);
+
 //Studenti
-app.get("/api/indirizzi", GestioneStudenti.GetIndirizzi);
-app.get("/api/classi", GestioneStudenti.GetClassi);
-app.get("/api/classe/:id", GestioneStudenti.GetClasseById);
 app.get("/api/studenti", GestioneStudenti.GetStudenti);
 app.get("/api/studenti-no-doc", GestioneStudenti.GetStudentiNoDoc);
 app.get("/api/studente/:email", GestioneStudenti.GetStudenteByEmail);
-app.get("/api/anni-scolastici", GestioneStudenti.GetAnniScolastici);
 app.get("/api/count-studenti", GestioneStudenti.GetCountStudenti);
+
+//Classi
+app.get("/api/classi", GestioneClassi.GetClassi);
+app.get("/api/classe/:id", GestioneClassi.GetClasseById);
 
 //Documenti
 app.post("/api/documento/create", GestioneDocumenti.CreatePDP);
-app.get("/api/anni-scolastici-documenti", GestioneDocumenti.GetAnniScolasticiDocumenti);
 app.get("/api/documenti", GestioneDocumenti.GetDocumenti);
 app.delete("/api/documento/delete/", GestioneDocumenti.DeletePDP);
 app.patch("/api/documento/approva", GestioneDocumenti.ApprovaDocumento);
 app.post("/api/documento/salva-approvato", GestioneDocumenti.SalvaDocumentoApprovato);
 app.get("/api/documento/file-approvato", GestioneDocumenti.GetDocumentoApprovato);
+
+//Anni scolastici
+app.get("/api/anni-scolastici-studenti", GestioneAnniScolastici.GetAnniScolasticiStudenti);
+app.get("/api/anni-scolastici-documenti", GestioneAnniScolastici.GetAnniScolasticiDocumenti);
 
 //Docenti
 app.get("/api/is-coordinatore", GestioneDocenti.IsCoordinatore);

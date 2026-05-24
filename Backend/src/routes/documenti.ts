@@ -4,7 +4,6 @@ import * as GestioneICF from "./icf.ts";
 import * as GestioneAllegati from "./allegati.ts";
 import { writeFile, mkdir, readFile, access } from "fs/promises";
 import { join } from 'path';
-import { promisify } from 'util';
 import libre from 'libreoffice-convert';
 
 async function DeletePDP(req: any, res: any) {
@@ -120,49 +119,6 @@ function SetAnnoCorrect(data: Date): Date {
         annoData -= 1;
     }
     return new Date(Date.UTC(annoData, 8, 1));
-}
-
-async function GetAnniScolasticiDocumenti(req: any, res: any) {
-    try {
-        const docenteEmail = req["parsedQuery"]["docenteEmail"] || null;
-
-        const query: any = {
-            distinct: ['Anno'],
-            orderBy: {
-                Anno: 'desc'
-            },
-            select: {
-                Anno: true
-            },
-            where: {}
-        };
-
-        if (docenteEmail) {
-            query.where = {
-                Studente: {
-                    Classi_Studente: {
-                        some: {
-                            Classe: {
-                                Insegnamenti: {
-                                    some: {
-                                        Docente_Email: docenteEmail
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-        }
-
-        const documenti = await prisma.documento.findMany(query);
-        const anniVettore = documenti.map(d => d.Anno);
-
-        res.status(200).send(anniVettore);
-    } catch (err) {
-        console.error("Errore:", err);
-        res.status(500).send("Errore nel recupero degli anni scolastici");
-    }
 }
 
 async function GetDocumenti(req: any, res: any) {
@@ -291,4 +247,4 @@ async function GetDocumentoApprovato(req: any, res: any) {
     }
 }
 
-export { CreatePDP, GetAnniScolasticiDocumenti, GetDocumenti, DeletePDP, ApprovaDocumento, SalvaDocumentoApprovato, GetDocumentoApprovato };
+export { CreatePDP, GetDocumenti, DeletePDP, ApprovaDocumento, SalvaDocumentoApprovato, GetDocumentoApprovato };

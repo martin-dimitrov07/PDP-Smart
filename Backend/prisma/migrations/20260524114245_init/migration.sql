@@ -49,7 +49,6 @@ CREATE TABLE "Studente" (
 CREATE TABLE "Documento" (
     "Studente_Email" VARCHAR(255) NOT NULL,
     "Anno" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "Stato" "Stato" NOT NULL,
     "Tipologia" "Tipologia_Doc" NOT NULL,
     "Data_Approvazione" TIMESTAMP(3),
 

@@ -49,7 +49,7 @@ INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES
 ('Entrambi', 'Strumenti compensativi', 'pianificazione in sequenze delle attività/recupero'),
 ('Entrambi', 'Strumenti compensativi', 'uso di mappe concettuali (realizzate sotto la guida dell’insegnante)'),
 ('Entrambi', 'Strumenti compensativi', 'uso di schemi riassuntivi (realizzati sotto la guida dell’insegnante)'),
-('Entrambi', 'Strumenti compensativi', 'uso di tablet/smartphone (solo se previsto dalla certificazione)');
+('Entrambi', 'Strumenti compensativi', 'uso di tablet/smartphone (solo se previsto dalla certificazione)'),
 ('Entrambi', 'Strumenti compensativi', 'altro...');
 
 -- MISURE DISPENSATIVE
@@ -65,7 +65,7 @@ INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES
 ('Entrambi', 'Misure dispensative', 'riduzione graduale degli esercizi/degli sviluppi delle prove scritte in corso d’anno'),
 ('Entrambi', 'Misure dispensative', 'riduzione per selezione dei contenuti di studio'),
 ('Entrambi', 'Misure dispensative', 'dispensa dall’utilizzo di tempi standard'),
-('Entrambi', 'Misure dispensative', 'dispensa da un eccessivo carico di compiti con riadattamento e riduzione delle pagine da studiare, senza modificare gli obiettivi formativi');
+('Entrambi', 'Misure dispensative', 'dispensa da un eccessivo carico di compiti con riadattamento e riduzione delle pagine da studiare, senza modificare gli obiettivi formativi'),
 ('Entrambi', 'Misure dispensative', 'altro...');
 
 
@@ -84,7 +84,7 @@ INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES
 ('Entrambi', 'Modalità di verifica', 'predisposizione di interrogazioni orali per le materie che prevedono un voto esclusivamente orale in pagella'),
 ('Entrambi', 'Modalità di verifica', 'utilizzo di prove strutturate negli scritti'),
 ('Entrambi', 'Modalità di verifica', 'modalità di presentazione delle verifiche (cartacea – al PC – con software specifici – altro ...)'),
-('Entrambi', 'Modalità di verifica', 'uso di mediatori didattici durante le interrogazioni (mappe – schemi – immagini concordati/e con l’insegnante)');
+('Entrambi', 'Modalità di verifica', 'uso di mediatori didattici durante le interrogazioni (mappe – schemi – immagini concordati/e con l’insegnante)'),
 ('Entrambi', 'Modalità di verifica', 'altro...');
 
 
@@ -96,7 +96,7 @@ INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES
 ('Entrambi', 'Criteri di valutazione', 'la valutazione delle prove scritte e orali tiene conto del contenuto e non della forma'),
 ('Entrambi', 'Criteri di valutazione', 'si adotta una valutazione che apprezzi le conoscenze rispetto alle competenze'),
 ('Entrambi', 'Criteri di valutazione', 'si adotta una valutazione che eviti di privilegiare il nozionismo e un approccio esclusivamente mnemonico'),
-('BES', 'Criteri di valutazione', 'si adotta una valutazione calibrata sugli obiettivi didattici e di contenuto eventualmente riformulati (vedi infra)');
+('BES', 'Criteri di valutazione', 'si adotta una valutazione calibrata sugli obiettivi didattici e di contenuto eventualmente riformulati (vedi infra)'),
 ('Entrambi', 'Criteri di valutazione', 'altro...');
 
 
@@ -184,26 +184,11 @@ BEGIN
                     v_tipo_scelto := 'BES';
                 END IF;
 
-                -- 2. DETERMINAZIONE STATO E DATA APPROVAZIONE
-                IF (EXTRACT(YEAR FROM v_class."Anno_Scolastico") < v_anno_corrente - 1) THEN
-                    v_stato_scelto := 'Scaduto';
-                    v_data_app := v_class."Anno_Scolastico" + interval '1 month';
-                ELSE
-                    IF (floor(random()*10)::int % 2 = 0) THEN
-                        v_stato_scelto := 'Validato';
-                        v_data_app := NOW();
-                    ELSE
-                        v_stato_scelto := 'In bozza';
-                        v_data_app := NULL;
-                    END IF;
-                END IF;
-
                 -- 3. INSERIMENTO DOCUMENTO
-                INSERT INTO "Documento" ("Studente_Email", "Anno", "Stato", "Tipologia", "Data_Approvazione")
+                INSERT INTO "Documento" ("Studente_Email", "Anno", "Tipologia", "Data_Approvazione")
                 VALUES (
                     v_stud."Email", 
                     v_class."Anno_Scolastico", 
-                    v_stato_scelto::"Stato", 
                     v_tipo_scelto::"Tipologia_Doc", 
                     v_data_app
                 );

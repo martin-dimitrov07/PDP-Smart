@@ -67,7 +67,6 @@ enum Tipologia_Doc {
 model Documento {
     Studente_Email    String        @db.VarChar(255)
     Anno              DateTime      @default(now())
-    Stato             Stato
     Tipologia         Tipologia_Doc
     Data_Approvazione DateTime?
 
