@@ -45,7 +45,6 @@ export class LoginForm {
         }
 
         this.renderGoogleButton();
-        google.accounts.id.prompt();
     }
 
     private renderGoogleButton() {
