@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { DocentiService } from './docenti.service';
 import { DataStorageService } from './data-storage.service';
 import { Studente } from '../../models/studente';
-import { Documento, Tipo } from '../../models/documento';
+import { Documento, Stato, Tipo } from '../../models/documento';
 import { catchError, forkJoin, from, lastValueFrom, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Ruolo } from '../../models/docente';
 import { Indicatore } from '../../models/indicatore';
@@ -26,6 +26,8 @@ export class DocumentiService {
     private readonly docentiService: DocentiService = inject(DocentiService);
     private readonly studentiService: StudentiService = inject(StudentiService);
     private readonly checkError: CheckError = inject(CheckError);
+
+    Stato : typeof Stato = Stato;
 
     classeSelected: Classe = {} as Classe;
     studenteSelected: Studente = {} as Studente;
@@ -352,8 +354,30 @@ export class DocumentiService {
         if (DSA_BES != -1)
             filters.Tipologia = DSA_BES;
 
-        if (Stato_Documento != -1)
-            filters.Stato = Stato_Documento;
+        if (Stato_Documento != -1 && Stato_Documento.in && Stato_Documento.in.length > 0) {
+            const unAnnoFa = new Date();
+            unAnnoFa.setFullYear(unAnnoFa.getFullYear() - 1);
+
+            let orConditions: any[] = [];
+
+            Stato_Documento.in.forEach((stato: string) => {
+                switch (stato) {
+                    case Stato.IN_BOZZA:
+                        orConditions.push({ Data_Approvazione: null });
+                        break;
+                    case Stato.VALIDATO:
+                        orConditions.push({ Data_Approvazione: { gte: unAnnoFa } });
+                        break;
+                    case Stato.SCADUTO:
+                        orConditions.push({ Data_Approvazione: { lt: unAnnoFa } });
+                        break;
+                }
+            });
+
+            if (orConditions.length > 0) {
+                filters.OR = orConditions;
+            }
+        }
 
         let params: any = {
             filters: JSON.stringify(filters)
@@ -410,10 +434,12 @@ export class DocumentiService {
     CreateDocumento() {
         const documento = new Documento(this.studenteSelected.Email, this.studenteSelected.DSA_BES ? Tipo.DSA : Tipo.BES);
 
+        const { Stato, ...documentoPerBackend } = documento;
+
         const formData = new FormData();
 
         const payload = {
-            "Documento": documento,
+            "Documento": documentoPerBackend,
             "Indicatori": this.indicatori,
             "ICFs": this.icfsSelected
         }

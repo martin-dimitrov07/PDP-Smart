@@ -1,6 +1,5 @@
 import { Component, inject, Input, PLATFORM_ID } from '@angular/core';
 import { Documento, Tipo, Stato } from '../../../../models/documento';
-import { NgClass } from '@angular/common';
 import { DocentiService } from '../../../../shared/services/docenti.service';
 import { Ruolo } from '../../../../models/docente';
 import { Router } from '@angular/router';
@@ -14,7 +13,7 @@ import { Studente } from '../../../../models/studente';
 
 @Component({
     selector: 'app-documenti-card',
-    imports: [NgClass],
+    imports: [],
     templateUrl: './documenti-card.html',
     styleUrl: './documenti-card.css',
 })

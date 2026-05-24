@@ -18,7 +18,7 @@
                 [description]="'Documenti e materiali di supporto'" [route]="'allegati'"></app-documenti-edit-section>
         </div>
     </div>
-    @if(canValidate)
+    @if(canValidate && documentiService.documentoSelected.Stato == StatoDocumento.IN_BOZZA)
     {
     <hr class=" mx-4 mx-sm-5 rounded-5">
     <div class="d-flex justify-content-center pt-2">

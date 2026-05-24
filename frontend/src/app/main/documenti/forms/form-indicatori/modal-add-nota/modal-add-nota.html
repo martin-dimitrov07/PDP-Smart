@@ -5,7 +5,7 @@
                 <div class="modal-header">
                     <h3 class="modal-title fs-5" id="aggiuntaStudenteLabel">
                         @if(activatedRoute.snapshot.data['root'] == "modifica") {
-                            @if(documentiService.canEditNota) {
+                            @if(documentiService.canEditNota && documentiService.documentoSelected.Stato == StatoDocumento.IN_BOZZA) {
                                 Modifica nota
                             } @else {
                                 Visualizza nota
@@ -18,9 +18,11 @@
                 </div>
                 <div class="modal-body">
                     <label for="notaInput" class="form-label">Nota</label>
-                    <textarea class="form-control" [readonly]="!documentiService.canEditNota" id="notaInput" rows="3" [(ngModel)]="documentiService.indicatoreSelected.Nota" placeholder="Scrivi qui la tua nota..."></textarea>
+                    <textarea class="form-control" [readonly]="(activatedRoute.snapshot.data['root'] == 'modifica' && (!documentiService.canEditNota || documentiService.documentoSelected.Stato != StatoDocumento.IN_BOZZA)) 
+                    || (activatedRoute.snapshot.data['root'] == 'crea' && !documentiService.canEditNota)" id="notaInput" rows="3" [(ngModel)]="documentiService.indicatoreSelected.Nota" placeholder="Scrivi qui la tua nota..."></textarea>
                 </div>
-                @if (documentiService.canEditNota) {
+                @if ((documentiService.canEditNota && documentiService.documentoSelected.Stato == StatoDocumento.IN_BOZZA && activatedRoute.snapshot.data['root'] == "modifica") 
+                || (activatedRoute.snapshot.data['root'] == 'crea' && documentiService.canEditNota)){
                     <div class="modal-footer" >
                         <!-- <button type="button" class="btn btn-outline-primary" (click)="ResetNota()">Cancella nota</button> -->
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal"

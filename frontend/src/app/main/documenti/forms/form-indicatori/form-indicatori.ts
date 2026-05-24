@@ -34,6 +34,7 @@ export class FormIndicatori {
     StatoDocumento: typeof Stato = Stato;
 
     datiCaricati: boolean = false;
+    canEdit: boolean = true;
 
     private readonly cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
@@ -44,6 +45,12 @@ export class FormIndicatori {
         this.datiCaricati = false;
 
         if (this.activatedRoute.snapshot.data['root'] == "modifica") {
+
+            if (this.documentiService.documentoSelected.Stato == this.StatoDocumento.IN_BOZZA)
+                this.canEdit = true;
+            else
+                this.canEdit = false;
+
             this.documentiService.indicatoriEdit = [];
 
             const annoScolastico = new Date(this.activatedRoute.snapshot.paramMap.get('annoScolastico')!.split("-")[0] + "-09-01");
@@ -72,7 +79,7 @@ export class FormIndicatori {
                                 },
                                 error: (err) => {
                                     this.datiCaricati = true;
-                                    this.checkError.checkError(err);    
+                                    this.checkError.checkError(err);
                                 }
                             });
                         },
@@ -85,6 +92,7 @@ export class FormIndicatori {
             });
         }
         else {
+            this.canEdit = true;
             this.documentiService.GetMaterieClasse().subscribe({
                 next: (data) => {
                     this.documentiService.GetCategorieIndicatore().subscribe({
@@ -115,12 +123,18 @@ export class FormIndicatori {
                     this.checkError.checkError(err);
                 }
             })
+
+
         }
 
-        this.documentiService.GetMaterieDocente().subscribe({
-            next: (data) => { },
-            error: (err) => this.checkError.checkError(err)
-        })
+        if (this.canEdit) {
+            this.documentiService.GetMaterieDocente().subscribe({
+                next: (data) => { },
+                error: (err) => this.checkError.checkError(err)
+            })
+        }
+        else 
+            this.documentiService.materieDocente = [];
     }
 
     Edit() {

@@ -8,7 +8,7 @@ import { StudentiService } from '../../../shared/services/studenti.service';
 import { CheckError } from '../../../shared/utilities/check-error';
 import { Ruolo } from '../../../models/docente';
 import { DocumentiService } from '../../../shared/services/documenti.service';
-import { Documento } from '../../../models/documento';
+import { Stato } from '../../../models/documento';
 import { ModalValidationDocumento } from './modal-validation-documento/modal-validation-documento';
 
 @Component({
@@ -22,12 +22,13 @@ export class DocumentiEdit {
     studenteEmail: string = "";
     private readonly activatedRouter: ActivatedRoute = inject(ActivatedRoute);
 
-    private readonly documentiService: DocumentiService = inject(DocumentiService);
+    public readonly documentiService: DocumentiService = inject(DocumentiService);
     private readonly docentiService: DocentiService = inject(DocentiService);
     private readonly studentiService: StudentiService = inject(StudentiService);
     private readonly checkError: CheckError = inject(CheckError);
 
     RuoloDocente: typeof Ruolo = Ruolo;
+    StatoDocumento: typeof Stato = Stato;
 
     canValidate: boolean = false;
 

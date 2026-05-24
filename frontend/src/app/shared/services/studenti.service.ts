@@ -255,10 +255,9 @@ export class StudentiService {
         }
 
 
-        return this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici", params)!.pipe(tap(
+        return this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici-studenti", params)!.pipe(tap(
             (data: any) => {
                 this.anniScolastici = Array.from(data).map((item: any) => new Date(item));
-                //console.log(new Date(data), new Date(data).getFullYear().toString());
             }
         ));
     }

@@ -19,27 +19,24 @@ export class Documento {
     constructor(
         Studente_Email: string,
         Tipologia: Tipo, // Usiamo l'enum direttamente
-        Anno?: Date,
+        Anno: Date = Documento.SetAnnoCorrect(new Date()), // Imposta l'anno corretto
         Data_Approvazione?: Date
     ) {
         this.Studente_Email = Studente_Email;
         this.Tipologia = Tipologia;
         this.Data_Approvazione = Data_Approvazione;
-
-        if (Anno) {
-            this.Anno = Documento.SetAnnoCorrect(Anno);
-        }
+        this.Anno = Documento.SetAnnoCorrect(Anno);
 
         // Calcolo dello Stato
         this.Stato = this.calcolaStato(Data_Approvazione);
     }
 
     private calcolaStato(approvazione?: Date): Stato {
-        if (!this.Anno || !approvazione) {
+        if (!approvazione) {
             return Stato.IN_BOZZA;
         }
 
-        const scadenza = new Date(this.Anno.getTime());
+        const scadenza = new Date(approvazione.getTime());
         scadenza.setFullYear(scadenza.getFullYear() + 1);
 
         return scadenza < new Date() ? Stato.SCADUTO : Stato.VALIDATO;
