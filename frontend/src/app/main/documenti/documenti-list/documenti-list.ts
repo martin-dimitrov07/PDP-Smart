@@ -8,6 +8,7 @@ import { DocumentiService } from '../../../shared/services/documenti.service';
 import { DocentiService } from '../../../shared/services/docenti.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IndirizziStyle } from "../../../shared/directives/indirizzi-style";
+import { ClassiService } from '../../../shared/services/classi.service';
 
 @Component({
     selector: 'app-documenti-list',
@@ -18,6 +19,7 @@ import { IndirizziStyle } from "../../../shared/directives/indirizzi-style";
 export class DocumentiList {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     private readonly docentiService: DocentiService = inject(DocentiService);
+    private readonly classiService: ClassiService = inject(ClassiService);
     private readonly checkError: CheckError = inject(CheckError);
     private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
     private readonly router: Router = inject(Router);
@@ -55,7 +57,7 @@ export class DocumentiList {
             });
         }
 
-        this.documentiService.GetClassiCoordinatore(this.docentiService.docente.Email).subscribe({
+        this.classiService.GetClassiCoordinatore(this.docentiService.docente.Email).subscribe({
             next: (res) => {
                 this.classiCoordinateIds = Object.values(res).flat().map((c: any) => c.Id);
             },

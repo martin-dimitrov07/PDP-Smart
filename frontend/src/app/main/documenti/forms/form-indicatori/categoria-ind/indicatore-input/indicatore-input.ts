@@ -3,6 +3,7 @@ import { FormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
 import { DocumentiService } from '../../../../../../shared/services/documenti.service';
 import { ActivatedRoute } from '@angular/router';
+import { MaterieService } from '../../../../../../shared/services/materie.service';
 
 @Component({
     selector: 'tr[app-indicatore-input]',
@@ -13,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 export class IndicatoreInput {
     private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
     public readonly documentiService: DocumentiService = inject(DocumentiService);
+    public readonly materieService: MaterieService = inject(MaterieService);
     private _indicatore!: any;
     @Input() categoria!: string;
 
@@ -26,11 +28,9 @@ export class IndicatoreInput {
     }
 
     ngOnInit() {
-        // console.log(this.documentiService.materieDocente);
+        const setMaterieDocente = new Set(this.materieService.materieDocente);
 
-        const setMaterieDocente = new Set(this.documentiService.materieDocente);
-
-        this.documentiService.materieClasse.sort((a, b) => {
+        this.materieService.materieClasse.sort((a, b) => {
             const aInDocente = setMaterieDocente.has(a);
             const bInDocente = setMaterieDocente.has(b);
 

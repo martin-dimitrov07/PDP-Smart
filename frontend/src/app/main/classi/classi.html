@@ -12,12 +12,12 @@
 }@else {
     <div class="mx-3 mt-5 pb-4">
         @for (anno of anni; track $index) {
-            @if(studentiService.classi[anno.id] && studentiService.classi[anno.id].length != 0) {
+            @if(classiService.classi[anno.id] && classiService.classi[anno.id].length != 0) {
                 <section class="title-classe d-flex my-2">
                     <p class="text-uppercase mb-0 fw-bold">{{anno.label}}</p>
                 </section>
                 <div class="d-flex flex-wrap gap-4 px-3 g-3">
-                    @for (classe of studentiService.classi[anno.id]; track $index)
+                    @for (classe of classiService.classi[anno.id]; track $index)
                     {
                         <div class="container-card">
                             <app-classi-card [classe]="classe"></app-classi-card>

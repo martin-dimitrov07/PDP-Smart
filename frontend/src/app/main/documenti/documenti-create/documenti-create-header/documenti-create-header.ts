@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { StudentiService } from '../../../../shared/services/studenti.service';
 import { RouterLink } from '@angular/router';
+import { AnniScolasticiService } from '../../../../shared/services/anni-scolastici.service';
 
 @Component({
     selector: 'app-documenti-create-header',
@@ -10,6 +11,7 @@ import { RouterLink } from '@angular/router';
 })
 export class DocumentiCreateHeader {
     public readonly studentiService: StudentiService = inject(StudentiService);
+    public readonly anniScolasticiService: AnniScolasticiService = inject(AnniScolasticiService);
 
     public get CurrentYear(): string {
         const date = new Date();

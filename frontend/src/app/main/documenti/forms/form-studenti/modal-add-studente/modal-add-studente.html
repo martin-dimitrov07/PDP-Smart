@@ -13,7 +13,7 @@
                             <div class="loader"></div>
                         </div>
                     } @else {
-                        <select class="form-select" id="classeSelected" name="classeSelected" [(ngModel)]="documentiService.classeSelected"
+                        <select class="form-select" id="classeSelected" name="classeSelected" [(ngModel)]="classiService.classeSelected"
                             (change)="GetStudentiNoDoc()">
                             @if(allClasses && allClasses.length > 0) {
                                 @for (classe of allClasses; track $index) {

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { StudentiService } from '../../shared/services/studenti.service';
 import { CheckError } from '../../shared/utilities/check-error';
 import { IndirizziCard } from "./indirizzi-card/indirizzi-card";
+import { IndirizziService } from '../../shared/services/indirizzi.service';
 
 @Component({
     selector: 'app-indirizzi',
@@ -11,13 +12,14 @@ import { IndirizziCard } from "./indirizzi-card/indirizzi-card";
 })
 export class Indirizzi {
     public readonly studentiService: StudentiService = inject(StudentiService);
+    public readonly indirizziService: IndirizziService = inject(IndirizziService);
     private readonly checkError: CheckError = inject(CheckError);
 
     isLoading: boolean = false;
 
     ngOnInit() {
         this.isLoading = true;
-        this.studentiService.GetIndirizzi().subscribe({
+        this.indirizziService.GetIndirizzi().subscribe({
             next: (data: any) => {
                 this.isLoading = false;
             },

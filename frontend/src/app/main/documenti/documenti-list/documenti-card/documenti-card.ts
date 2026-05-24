@@ -10,6 +10,7 @@ import { StudentiService } from '../../../../shared/services/studenti.service';
 import { Classe } from '../../../../models/classe';
 import { isPlatformBrowser } from '@angular/common';
 import { Studente } from '../../../../models/studente';
+import { ClassiService } from '../../../../shared/services/classi.service';
 
 @Component({
     selector: 'app-documenti-card',
@@ -20,6 +21,7 @@ import { Studente } from '../../../../models/studente';
 export class DocumentiCard {
     public readonly docentiService: DocentiService = inject(DocentiService);
     private readonly documentiService: DocumentiService = inject(DocumentiService);
+    private readonly classiService: ClassiService = inject(ClassiService);
     private readonly studentiService: StudentiService = inject(StudentiService);
     private readonly checkError: CheckError = inject(CheckError);
     private _documento!: Documento;
@@ -76,7 +78,7 @@ export class DocumentiCard {
             return;
         }
 
-        this.studentiService.GetClasseByDocumento(this.documento).subscribe({
+        this.classiService.GetClasseByDocumento(this.documento).subscribe({
             next: (classe: Classe | null) => {
                 if (!classe) return;
                 this.canDelete = classe.Coordinatore_Email == docente.Email;

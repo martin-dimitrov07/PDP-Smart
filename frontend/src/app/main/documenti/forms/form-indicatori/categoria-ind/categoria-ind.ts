@@ -3,6 +3,8 @@ import { IndicatoreInput } from './indicatore-input/indicatore-input';
 import { Indicatore } from '../../../../../models/indicatore';
 import { DocumentiService } from '../../../../../shared/services/documenti.service';
 import { CheckError } from '../../../../../shared/utilities/check-error';
+import { MaterieService } from '../../../../../shared/services/materie.service';
+import { StudentiService } from '../../../../../shared/services/studenti.service';
 
 @Component({
     selector: 'app-categoria-ind',
@@ -14,6 +16,8 @@ export class CategoriaInd {
     private _categoria!: string;
     public indicatoriCategoria: Indicatore[] = [];
     public readonly documentiService: DocumentiService = inject(DocumentiService);
+    public readonly studentiService: StudentiService = inject(StudentiService);
+    public readonly materieService: MaterieService = inject(MaterieService);
     private readonly checkError: CheckError = inject(CheckError);
     
     @Input() index!: number;
@@ -27,7 +31,7 @@ export class CategoriaInd {
     }
 
     ngOnInit() {
-        const tipologia = this.documentiService.studenteSelected.DSA_BES ? "DSA" : "BES";
+        const tipologia = this.studentiService.studenteSelected.DSA_BES ? "DSA" : "BES";
 
         this.documentiService.GetIndicatori(this.categoria, tipologia).subscribe({
             next: (data: Indicatore[]) => {
@@ -36,6 +40,5 @@ export class CategoriaInd {
             error: (err) => this.checkError.checkError(err)
         })
 
-        // console.log(this.documentiService.materieDocente)
     }
 }

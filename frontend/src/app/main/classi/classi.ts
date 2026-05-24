@@ -7,6 +7,9 @@ import { ColorSection } from '../../shared/directives/color-section';
 import { CheckError } from '../../shared/utilities/check-error';
 import { ClassiFilters } from "./classi-filters/classi-filters";
 import { ClassiHeader } from './classi-header/classi-header';
+import { ClassiService } from '../../shared/services/classi.service';
+import { IndirizziService } from '../../shared/services/indirizzi.service';
+import { AnniScolasticiService } from '../../shared/services/anni-scolastici.service';
 
 @Component({
     selector: 'app-classi',
@@ -17,6 +20,9 @@ import { ClassiHeader } from './classi-header/classi-header';
 })
 export class Classi {
     public readonly studentiService: StudentiService = inject(StudentiService);
+    public readonly anniScolasticiService: AnniScolasticiService = inject(AnniScolasticiService);
+    public readonly classiService: ClassiService = inject(ClassiService);
+    public readonly indirizziService: IndirizziService = inject(IndirizziService);
     private readonly activatedRouter: ActivatedRoute = inject(ActivatedRoute);
     private readonly colorSectionDirective: ColorSection = inject(ColorSection);
     private readonly checkError: CheckError = inject(CheckError);
@@ -41,23 +47,23 @@ export class Classi {
     ];
 
     ngOnInit() {
-        this.studentiService.indirizzoSelected = this.activatedRouter.snapshot.paramMap.get("indirizzo")!;
+        this.indirizziService.indirizzoSelected = this.activatedRouter.snapshot.paramMap.get("indirizzo")!;
 
         this.isLoading = true;
 
-        this.studentiService.GetAnniScolastici().subscribe({
+        this.anniScolasticiService.GetAnniScolastici().subscribe({
             next: (data: any) => {
                 // Eseguiamo SOLO se siamo nel browser
                 if (isPlatformBrowser(this.platformId)) {
-                    this.colorSectionDirective.GetColorSection(this.studentiService.indirizzoSelected!);
-                    this.iconClass = this.colorSectionDirective.GetIconSection(this.studentiService.indirizzoSelected!);
-                    document.querySelector("#annoDropdown")!.textContent = this.studentiService.anniScolastici[0].getFullYear().toString() + "/" + (this.studentiService.anniScolastici[0].getFullYear() + 1).toString();
+                    this.colorSectionDirective.GetColorSection(this.indirizziService.indirizzoSelected!);
+                    this.iconClass = this.colorSectionDirective.GetIconSection(this.indirizziService.indirizzoSelected!);
+                    document.querySelector("#annoDropdown")!.textContent = this.anniScolasticiService.anniScolastici[0].getFullYear().toString() + "/" + (this.anniScolasticiService.anniScolastici[0].getFullYear() + 1).toString();
                 }
 
-                this.filterAnnoScolastico = this.studentiService.anniScolastici[0];
-                this.studentiService.GetClassi({}, this.filterAnnoScolastico).subscribe({
+                this.filterAnnoScolastico = this.anniScolasticiService.anniScolastici[0];
+                this.classiService.GetClassi({}, this.filterAnnoScolastico).subscribe({
                     next: (data: any) => {
-                        this.studentiService.GetNumeroClassi();
+                        this.classiService.GetNumeroClassi();
                         this.isLoading = false;
                     },
                     error: (err: any) => {
@@ -97,9 +103,9 @@ export class Classi {
 
         this.isLoading = true;
 
-        this.studentiService.GetClassi(this.filterClassi, this.filterAnnoScolastico).subscribe({
+        this.classiService.GetClassi(this.filterClassi, this.filterAnnoScolastico).subscribe({
             next: (data: any) => {
-                this.studentiService.GetNumeroClassi();
+                this.classiService.GetNumeroClassi();
                 this.isLoading = false;
             },
             error: (err: any) => {
@@ -122,9 +128,9 @@ export class Classi {
         document.querySelector("#annoDropdown")!.textContent = annoScolastico.getFullYear().toString() + "/" + (annoScolastico.getFullYear() + 1).toString();
         this.filterAnnoScolastico = annoScolastico;
         this.isLoading = true;
-        this.studentiService.GetClassi(this.filterClassi, this.filterAnnoScolastico).subscribe({
+        this.classiService.GetClassi(this.filterClassi, this.filterAnnoScolastico).subscribe({
             next: (data: any) => {
-                this.studentiService.GetNumeroClassi();
+                this.classiService.GetNumeroClassi();
                 this.isLoading = false;
             },
             error: (err: any) => {

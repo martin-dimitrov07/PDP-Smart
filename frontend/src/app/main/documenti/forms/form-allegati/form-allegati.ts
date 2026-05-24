@@ -14,6 +14,7 @@ import { Allegato } from '../../../../models/allegato';
 import { Stato } from '../../../../models/documento';
 import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { StudentiService } from '../../../../shared/services/studenti.service';
+import { ClassiService } from '../../../../shared/services/classi.service';
 
 
 @Component({
@@ -24,6 +25,7 @@ import { StudentiService } from '../../../../shared/services/studenti.service';
 })
 export class FormAllegati {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
+    public readonly classiService: ClassiService = inject(ClassiService);
     public readonly docenteService: DocentiService = inject(DocentiService);
     public readonly studentiService: StudentiService = inject(StudentiService);
     public readonly stepsService: StepsService = inject(StepsService);
@@ -161,11 +163,11 @@ export class FormAllegati {
             return;
         }
 
-        this.canEdit = this.documentiService.GetClassiCoordinatore(this.docentiService.docente.Email).pipe(
+        this.canEdit = this.classiService.GetClassiCoordinatore(this.docentiService.docente.Email).pipe(
             tap((res) => {
                 this.classiCoordinateIds = Object.values(res).flat().map((c: any) => c.Id);
             }),
-            switchMap(() => this.studentiService.GetClasseByDocumento(this.documentiService.documentoSelected)),
+            switchMap(() => this.classiService.GetClasseByDocumento(this.documentiService.documentoSelected)),
             map((classe) => {
                 if (!classe) return false;
                 return this.classiCoordinateIds.includes(classe.Id);

@@ -10,6 +10,7 @@ import { Ruolo } from '../../../models/docente';
 import { DocumentiService } from '../../../shared/services/documenti.service';
 import { Stato } from '../../../models/documento';
 import { ModalValidationDocumento } from './modal-validation-documento/modal-validation-documento';
+import { ClassiService } from '../../../shared/services/classi.service';
 
 @Component({
     selector: 'app-documenti-edit',
@@ -25,6 +26,7 @@ export class DocumentiEdit {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     private readonly docentiService: DocentiService = inject(DocentiService);
     private readonly studentiService: StudentiService = inject(StudentiService);
+    private readonly classiService: ClassiService = inject(ClassiService);
     private readonly checkError: CheckError = inject(CheckError);
 
     RuoloDocente: typeof Ruolo = Ruolo;
@@ -55,7 +57,7 @@ export class DocumentiEdit {
             return;
         }
 
-        this.studentiService.GetClasseByDocumento(this.documentiService.documentoSelected).subscribe({
+        this.classiService.GetClasseByDocumento(this.documentiService.documentoSelected).subscribe({
             next: (classe: Classe | null) => {
                 if (!classe) return;
                 this.canValidate = classe.Coordinatore_Email == docente.Email;

@@ -14,6 +14,8 @@ import { StudentiService } from '../../../../shared/services/studenti.service';
 import { Classe } from '../../../../models/classe';
 import { Router } from '@angular/router';
 import { Stato } from '../../../../models/documento';
+import { ClassiService } from '../../../../shared/services/classi.service';
+import { MaterieService } from '../../../../shared/services/materie.service';
 
 
 @Component({
@@ -24,7 +26,8 @@ import { Stato } from '../../../../models/documento';
 })
 export class FormIndicatori {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
-    private readonly studentiService: StudentiService = inject(StudentiService);
+    private readonly materieService: MaterieService = inject(MaterieService);
+    private readonly classiService: ClassiService = inject(ClassiService);
     public readonly stepsService: StepsService = inject(StepsService);
     private readonly checkError: CheckError = inject(CheckError);
     private readonly router: Router = inject(Router);
@@ -55,11 +58,11 @@ export class FormIndicatori {
 
             const annoScolastico = new Date(this.activatedRoute.snapshot.paramMap.get('annoScolastico')!.split("-")[0] + "-09-01");
 
-            this.studentiService.GetClasseStudente(this.activatedRoute.snapshot.paramMap.get('studenteEmail')!.replaceAll('_', '.'), annoScolastico).subscribe({
+            this.classiService.GetClasseStudente(this.activatedRoute.snapshot.paramMap.get('studenteEmail')!.replaceAll('_', '.'), annoScolastico).subscribe({
                 next: (classe: Classe) => {
-                    this.documentiService.classeSelected = classe;
+                    this.classiService.classeSelected = classe;
 
-                    this.documentiService.GetMaterieClasse().subscribe({
+                    this.materieService.GetMaterieClasse().subscribe({
                         next: (data) => {
                             this.documentiService.GetCategorieIndicatore().subscribe({
                                 next: (data) => {
@@ -93,7 +96,7 @@ export class FormIndicatori {
         }
         else {
             this.canEdit = true;
-            this.documentiService.GetMaterieClasse().subscribe({
+            this.materieService.GetMaterieClasse().subscribe({
                 next: (data) => {
                     this.documentiService.GetCategorieIndicatore().subscribe({
                         next: (data) => {
@@ -128,13 +131,13 @@ export class FormIndicatori {
         }
 
         if (this.canEdit) {
-            this.documentiService.GetMaterieDocente().subscribe({
+            this.materieService.GetMaterieDocente().subscribe({
                 next: (data) => { },
                 error: (err) => this.checkError.checkError(err)
             })
         }
         else 
-            this.documentiService.materieDocente = [];
+            this.materieService.materieDocente = [];
     }
 
     Edit() {

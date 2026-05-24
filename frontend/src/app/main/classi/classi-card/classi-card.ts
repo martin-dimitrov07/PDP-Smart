@@ -3,6 +3,8 @@ import { Classe } from '../../../models/classe';
 import { StudentiService } from '../../../shared/services/studenti.service';
 import { Router } from '@angular/router';
 import { CheckError } from '../../../shared/utilities/check-error';
+import { IndirizziService } from '../../../shared/services/indirizzi.service';
+import { ClassiService } from '../../../shared/services/classi.service';
 
 @Component({
     selector: 'app-classi-card',
@@ -13,6 +15,8 @@ import { CheckError } from '../../../shared/utilities/check-error';
 export class ClassiCard {
     private _classe!: Classe;
     public readonly studentiService = inject(StudentiService);
+    public readonly indirizziService : IndirizziService = inject(IndirizziService);
+    public readonly classiService : ClassiService = inject(ClassiService);
     private readonly router: Router = inject(Router);
     private readonly checkError: CheckError = inject(CheckError);
 
@@ -48,9 +52,9 @@ export class ClassiCard {
 
     GoStudenti() {
         if (this.nStudenti > 0) {
-            this.studentiService.classeSelected = this.classe;
+            this.classiService.classeSelected = this.classe;
 
-            this.router.navigate(["/indirizzi", this.studentiService.indirizzoSelected, "classi", this.classe.Id, "studenti"]);
+            this.router.navigate(["/indirizzi", this.indirizziService.indirizzoSelected, "classi", this.classe.Id, "studenti"]);
         }
     }
 }

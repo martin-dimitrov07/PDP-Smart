@@ -1,19 +1,19 @@
 <td class="sticky-col">
     <label class="form-label m-0" for="ind-{{indicatore.Id}}">{{indicatore.Descrizione}}</label>
 </td>
-@for (materia of documentiService.materieClasse; track $index)
+@for (materia of materieService.materieClasse; track $index)
 {
 <td class="p-0 text-center align-middle" >
     <div class="d-flex justify-content-center gap-1">
         <input type="checkbox" class="form-check-input" [checked]="IsItemSelected(materia)"
             [id]="'ind-' + indicatore.Id + '-' + materia.replace(' ', '-')"
-            (input)="SetValue(materia, $event)" [disabled]="!documentiService.materieDocente.includes(materia)">
+            (input)="SetValue(materia, $event)" [disabled]="!materieService.materieDocente.includes(materia)">
 
         @if(IsItemSelected(materia))
         {
             <i class="bi fs-6 d-flex align-items-center" data-bs-toggle="modal"
                 [class.bi-pen]="!HasNota(materia)" [class.bi-pen-fill]="HasNota(materia)"
-                data-bs-target="#aggiuntaNota" (click)="documentiService.materieDocente.includes(materia) ? SetNota(materia, true) : SetNota(materia, false)"></i>
+                data-bs-target="#aggiuntaNota" (click)="materieService.materieDocente.includes(materia) ? SetNota(materia, true) : SetNota(materia, false)"></i>
         }
     </div>
 </td>

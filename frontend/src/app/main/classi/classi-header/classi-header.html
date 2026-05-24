@@ -13,7 +13,7 @@
             Anno
         </button>
         <ul class="dropdown-menu">
-            @for (anno of studentiService.anniScolastici; track $index) {
+            @for (anno of anniScolasticiService.anniScolastici; track $index) {
             <li><a class="dropdown-item cursor-pointer" (click)="SetFilterAnnoScolastico(anno)">
                     {{anno.getFullYear().toString()}}/{{(anno.getFullYear() +
                     1).toString()}}
@@ -28,14 +28,14 @@
     <div class="d-flex align-items-center gap-2 gap-sm-4 px-4 px-sm-4 w-100">
         <div class="icon-box shadow"><i class="bi" [ngClass]="IconClass"></i></div>
         <div class="flex-grow-1">
-            <h2 class="sigla text-start text-white fs-3 lh-1 m-0">{{this.studentiService.indirizzoSelected}}</h2>
+            <h2 class="sigla text-start text-white fs-3 lh-1 m-0">{{this.indirizziService.indirizzoSelected}}</h2>
         </div>
         <div class="icon-box p-3 shadow" style="width: auto !important;">
-            @if (studentiService.nClassi == 1) {
-            <p class="m-0 fw-bold">{{studentiService.nClassi}} classe</p>
+            @if (classiService.nClassi == 1) {
+            <p class="m-0 fw-bold">{{classiService.nClassi}} classe</p>
             }
             @else {
-            <p class="m-0 fw-bold">{{studentiService.nClassi}} classi</p>
+            <p class="m-0 fw-bold">{{classiService.nClassi}} classi</p>
             }
         </div>
     </div>

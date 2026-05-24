@@ -9,6 +9,8 @@ import { Docente, Ruolo } from '../../../models/docente';
 import { DocumentiCreateHeader } from './documenti-create-header/documenti-create-header';
 import e from 'express';
 import { Documento } from '../../../models/documento';
+import { ClassiService } from '../../../shared/services/classi.service';
+import { AnniScolasticiService } from '../../../shared/services/anni-scolastici.service';
 
 @Component({
     selector: 'app-documenti-create',
@@ -18,6 +20,8 @@ import { Documento } from '../../../models/documento';
 })
 export class DocumentiCreate {
     private readonly studentiService: StudentiService = inject(StudentiService);
+    private readonly anniScolasticiService: AnniScolasticiService = inject(AnniScolasticiService);
+    private readonly classiService: ClassiService = inject(ClassiService);
     private readonly docentiService: DocentiService = inject(DocentiService);
     private readonly checkError: CheckError = inject(CheckError);
     private readonly router: Router = inject(Router);
@@ -36,7 +40,7 @@ export class DocumentiCreate {
                 } 
                 
                 if (ruolo == Ruolo.COORDINATORE) {
-                    this.studentiService.GetClassiNoDocEmptyCoordinatore(Documento.SetAnnoCorrect(new Date())).subscribe({
+                    this.classiService.GetClassiNoDocEmptyCoordinatore(Documento.SetAnnoCorrect(new Date())).subscribe({
                         next: (data: any) => {
                             const hasStudents = Object.values(data).some((arr: any) => arr && arr.length > 0);
 
@@ -45,7 +49,7 @@ export class DocumentiCreate {
                                 return;
                             }
 
-                            this.studentiService.GetAnniScolastici().subscribe({
+                            this.anniScolasticiService.GetAnniScolastici().subscribe({
                                 error: (err: any) => this.checkError.checkError(err)
                             });
                         },
@@ -53,7 +57,7 @@ export class DocumentiCreate {
                     });
                 }
                 else {
-                    this.studentiService.GetAnniScolastici().subscribe({
+                    this.anniScolasticiService.GetAnniScolastici().subscribe({
                         error: (err: any) => this.checkError.checkError(err)
                     });
                 }

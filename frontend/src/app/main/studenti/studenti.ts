@@ -8,6 +8,8 @@ import { StudentiCard } from './studenti-card/studenti-card';
 import { FormsModule } from '@angular/forms';
 import { StudentiHeader } from "./studenti-header/studenti-header";
 import { StudentiFilters } from "./studenti-filters/studenti-filters";
+import { ClassiService } from '../../shared/services/classi.service';
+import { AnniScolasticiService } from '../../shared/services/anni-scolastici.service';
 
 @Component({
     selector: 'app-studenti',
@@ -18,6 +20,8 @@ import { StudentiFilters } from "./studenti-filters/studenti-filters";
 })
 export class Studenti {
     public readonly studentiService: StudentiService = inject(StudentiService);
+    public readonly anniScolasticiService: AnniScolasticiService = inject(AnniScolasticiService);
+    public readonly classiService: ClassiService = inject(ClassiService);
     private readonly checkError: CheckError = inject(CheckError);
     private readonly activatedRouter: ActivatedRoute = inject(ActivatedRoute);
     private readonly colorSectionDirective: ColorSection = inject(ColorSection);
@@ -45,7 +49,7 @@ export class Studenti {
 
         this.isLoading = true;
 
-        this.studentiService.GetClasseById(this.classeId).subscribe({
+        this.classiService.GetClasseById(this.classeId).subscribe({
             next: () => { },
             error: (err: any) => this.checkError.checkError(err)
         });
@@ -66,9 +70,9 @@ export class Studenti {
             }
         });
 
-        this.studentiService.GetAnniScolastici(this.classeId).subscribe({
+        this.anniScolasticiService.GetAnniScolastici(this.classeId).subscribe({
             "next": (data) => {
-                this.annoScolasticoSelezionato = this.studentiService.anniScolastici[0];
+                this.annoScolasticoSelezionato = this.anniScolasticiService.anniScolastici[0];
             },
             "error": (err: any) => this.checkError.checkError(err)
         });
@@ -80,7 +84,7 @@ export class Studenti {
         this.timer = setTimeout(() => {
             this.isLoading = true;
             this.studentiService.GetStudenti(this.classeId, this.searchTerm, this.DSA_BES, this.orderValue).subscribe({
-                next: () => { 
+                next: () => {
                     this.nStudenti = this.studentiService.studenti.length;
                     this.isLoading = false;
                 },

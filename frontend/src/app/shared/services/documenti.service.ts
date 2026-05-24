@@ -16,24 +16,22 @@ import { StudentiService } from './studenti.service';
 import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
 import { HttpClient } from '@angular/common/http';
+import { ClassiService } from './classi.service';
+import { MaterieService } from './materie.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DocumentiService {
-    private readonly dataStorageService = inject(DataStorageService);
-    // private readonly router: Router = inject(Router);
+    private readonly dataStorageService : DataStorageService = inject(DataStorageService);
+    private readonly classiService: ClassiService = inject(ClassiService);
     private readonly docentiService: DocentiService = inject(DocentiService);
     private readonly studentiService: StudentiService = inject(StudentiService);
+    private readonly materieService: MaterieService = inject(MaterieService);
     private readonly checkError: CheckError = inject(CheckError);
 
     Stato : typeof Stato = Stato;
 
-    classeSelected: Classe = {} as Classe;
-    studenteSelected: Studente = {} as Studente;
-
-    materieDocente: string[] = [];
-    materieClasse: string[] = [];
 
     // materiaSelected: string = "";
     indicatori: any = {};
@@ -112,103 +110,7 @@ export class DocumentiService {
         });
     }
 
-    GetMaterieDocente() {
-        this.materieDocente = [];
-
-        let filtersObservable;
-
-        if (this.docentiService.docente.Ruolo == Ruolo.DOCENTE) {
-            const filters = {
-                Insegnamenti: {
-                    some: {
-                        Docente_Email: this.docentiService.docente.Email,
-                        Classe_Id: this.classeSelected.Id
-                    }
-                }
-            };
-            filtersObservable = of(filters);
-
-        } else if (this.docentiService.docente.Ruolo == Ruolo.COORDINATORE) {
-            filtersObservable = this.GetClassiCoordinatore(this.docentiService.docente.Email).pipe(
-                map((data: any) => {
-                    const isCoordinatore = Object.values(data).some((vettore: any) =>
-                        vettore.some((classe: any) => classe.Id == this.classeSelected.Id)
-                    );
-
-                    if (!isCoordinatore) {
-                        return {
-                            Insegnamenti: {
-                                some: {
-                                    Docente_Email: this.docentiService.docente.Email,
-                                    Classe_Id: this.classeSelected.Id
-                                }
-                            }
-                        };
-                    }
-                    return {};
-                })
-            );
-        } else {
-            filtersObservable = of({});
-        }
-
-        return filtersObservable.pipe(
-            switchMap(filters => {
-                const params = {
-                    filters: JSON.stringify(filters)
-                };
-                return this.dataStorageService.InviaRichiesta("GET", "/materie", params)!;
-            }),
-            tap((data: any) => {
-                this.materieDocente = Array.from(data).map((item: any) => item.Nome);
-                console.log("Materie caricate:", this.materieDocente);
-            })
-        );
-    }
-
-    GetClassiCoordinatore(docenteEmail: string) {
-        const filters = {
-            Coordinatore_Email: docenteEmail
-        };
-
-        const params = {
-            filters: JSON.stringify(filters)
-        }
-
-        return this.dataStorageService.InviaRichiesta("GET", "/classi", params)!
-    }
-
-    GetMaterieClasse() {
-        if (!this.classeSelected)
-            return of(null);
-
-        this.materieClasse = [];
-
-        console.log(this.classeSelected);
-        const filters = {
-            Insegnamenti: {
-                some: {  // serve per relazioni uno a molti
-                    Classe_Id: this.classeSelected.Id,
-                }
-            }
-        };
-
-        let params = {};
-
-        if (filters) {
-            params = {
-                filters: JSON.stringify(filters)
-            }
-        }
-
-        // console.log(this.docentiService.docente);
-
-        return this.dataStorageService.InviaRichiesta("GET", "/materie", params)!.pipe(tap((data: any) => {
-            this.materieClasse = Array.from(data).map((item: any) => item.Nome);
-            console.log(this.materieClasse);
-            // console.log(data);
-        }));
-    }
+    
 
     GetIndicatori(categoria: string = "", tipologia: string) {
         let filters: any = {};
@@ -243,7 +145,6 @@ export class DocumentiService {
 
     GetCategorieIndicatore() {
         return this.dataStorageService.InviaRichiesta("GET", "/indicatori")!.pipe(tap((data: any) => {
-            // console.log(data);
             this.categorieInd = [...new Set<string>(data.map((ind: Indicatore) => ind.Categoria))];
         }));
     }
@@ -251,7 +152,7 @@ export class DocumentiService {
     InitializeIndicatori() {
         this.indicatori = {};
 
-        for (let materia of this.materieClasse) {
+        for (let materia of this.materieService.materieClasse) {
             this.indicatori[materia] = {};
 
             for (let categoria of this.categorieInd) {
@@ -432,7 +333,7 @@ export class DocumentiService {
     }
 
     CreateDocumento() {
-        const documento = new Documento(this.studenteSelected.Email, this.studenteSelected.DSA_BES ? Tipo.DSA : Tipo.BES);
+        const documento = new Documento(this.studentiService.studenteSelected.Email, this.studentiService.studenteSelected.DSA_BES ? Tipo.DSA : Tipo.BES);
 
         const { Stato, ...documentoPerBackend } = documento;
 
@@ -507,10 +408,10 @@ export class DocumentiService {
     }
 
     ResetCreateDocumento() {
-        this.classeSelected = {} as Classe;
-        this.studenteSelected = {} as Studente;
-        this.materieDocente = [];
-        this.materieClasse = [];
+        this.classiService.classeSelected = {} as Classe;
+        this.studentiService.studenteSelected = {} as Studente;
+        this.materieService.materieDocente = [];
+        this.materieService.materieClasse = [];
         this.indicatori = {};
         this.categorieInd = [];
         this.icfs = [];
@@ -615,17 +516,17 @@ export class DocumentiService {
             const studente: Studente = await lastValueFrom(this.studentiService.GetStudenteByEmail(documento.Studente_Email));
             result.nome_studente = studente.Cognome + " " + studente.Nome;
 
-            const classe: Classe | null = await lastValueFrom(this.studentiService.GetClasseByDocumento(documento));
+            const classe: Classe | null = await lastValueFrom(this.classiService.GetClasseByDocumento(documento));
 
             if (!classe) {
                 throw new Error("Classe non trovata per il documento dello studente " + result.nome_studente);
             }
 
-            this.classeSelected = classe;
+            this.classiService.classeSelected = classe;
             result.nome_classe = classe.GetFullNome();
 
             await lastValueFrom(this.GetCategorieIndicatore());
-            await lastValueFrom(this.GetMaterieClasse());
+            await lastValueFrom(this.materieService.GetMaterieClasse());
             await lastValueFrom(this.GetIndicatoriDocumento());
 
             //categorie
@@ -636,7 +537,7 @@ export class DocumentiService {
 
                 //materie
                 for (let j = 0; j < 13; j++) {
-                    result["m" + String.fromCodePoint(65 + j) + "_c" + i] = this.materieClasse[j] || "";
+                    result["m" + String.fromCodePoint(65 + j) + "_c" + i] = this.materieService.materieClasse[j] || "";
                 }
 
                 //descrizioni e valori indicatori

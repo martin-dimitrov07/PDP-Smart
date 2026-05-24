@@ -6,6 +6,8 @@ import { DocumentiService } from '../../../../shared/services/documenti.service'
 import { CheckError } from '../../../../shared/utilities/check-error';
 import { StepsService } from '../../../../shared/services/steps.service';
 import { Studente } from '../../../../models/studente';
+import { MaterieService } from '../../../../shared/services/materie.service';
+import { StudentiService } from '../../../../shared/services/studenti.service';
 
 @Component({
     selector: 'app-form-studenti',
@@ -16,6 +18,8 @@ import { Studente } from '../../../../models/studente';
 
 export class FormStudenti {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
+    public readonly studentiService: StudentiService = inject(StudentiService);
+    public readonly materieService: MaterieService = inject(MaterieService);
     private readonly checkError: CheckError = inject(CheckError);
     public readonly stepsService: StepsService = inject(StepsService);
 
@@ -32,9 +36,9 @@ export class FormStudenti {
     }
 
     SaveStudente(studente: Studente) {
-        this.documentiService.studenteSelected = studente;
+        this.studentiService.studenteSelected = studente;
 
-        this.documentiService.GetMaterieClasse().subscribe({
+        this.materieService.GetMaterieClasse().subscribe({
             next: (data) => {
                 this.documentiService.GetCategorieIndicatore().subscribe({
                     next: (data) => {
@@ -48,7 +52,7 @@ export class FormStudenti {
     }
 
     RemoveStudente() {
-        this.documentiService.studenteSelected = {} as Studente;
+        this.studentiService.studenteSelected = {} as Studente;
         this.documentiService.ResetCreateDocumento();
         this.resetComponent();
     }

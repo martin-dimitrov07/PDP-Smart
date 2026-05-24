@@ -1,6 +1,7 @@
 import { NgClass } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import { StudentiService } from '../../../shared/services/studenti.service';
+import { ClassiService } from '../../../shared/services/classi.service';
 
 @Component({
     selector: 'app-studenti-header',
@@ -14,4 +15,5 @@ export class StudentiHeader {
     @Input() nStudenti!: number;
 
     public readonly studentiService: StudentiService = inject(StudentiService);
+    public readonly classiService: ClassiService = inject(ClassiService);
 }

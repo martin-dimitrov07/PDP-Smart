@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { StudentiService } from '../../../shared/services/studenti.service';
 import { Documento } from '../../../models/documento';
 import e from 'express';
+import { ClassiService } from '../../../shared/services/classi.service';
 @Component({
     selector: 'app-documenti-options',
     imports: [DocumentiOptionCard],
@@ -17,6 +18,7 @@ export class DocumentiOptions {
     private readonly router: Router = inject(Router);
     public isClassiEnabled: boolean = false;
     private readonly studentiService: StudentiService = inject(StudentiService);
+    private readonly classiService: ClassiService = inject(ClassiService);
 
     ngOnInit() {
         this.docentiService.GetDocente().subscribe(isLoaded => {
@@ -28,7 +30,7 @@ export class DocumentiOptions {
                 }
                 else {
                     if (this.docentiService.docente.Ruolo == Ruolo.COORDINATORE) {
-                        this.studentiService.GetClassiNoDocEmptyCoordinatore(Documento.SetAnnoCorrect(new Date())).subscribe({
+                        this.classiService.GetClassiNoDocEmptyCoordinatore(Documento.SetAnnoCorrect(new Date())).subscribe({
                             next: (data: any) => {
                                 console.log(data);
                                 const hasStudents = Object.values(data).some((arr: any) => arr && arr.length > 0);

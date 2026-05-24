@@ -14,7 +14,7 @@
         </div>
     }@else {
         <div class="row w-100 mx-auto justify-content-center g-4">
-            @for (indirizzo of studentiService.indirizzi; track $index) {
+            @for (indirizzo of indirizziService.indirizzi; track $index) {
             <div class="col-lg-6">
                 <app-indirizzi-card [indirizzo]="indirizzo"></app-indirizzi-card>
             </div>

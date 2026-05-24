@@ -6,6 +6,8 @@ import { DocumentiService } from '../../../../../shared/services/documenti.servi
 import { StudentiService } from '../../../../../shared/services/studenti.service';
 import { CheckError } from '../../../../../shared/utilities/check-error';
 import { Documento } from '../../../../../models/documento';
+import { IndirizziService } from '../../../../../shared/services/indirizzi.service';
+import { ClassiService } from '../../../../../shared/services/classi.service';
 
 
 @Component({
@@ -23,33 +25,21 @@ export class ModalAddStudente {
     isLoadingStudents: boolean = false;
 
     public readonly documentiService: DocumentiService = inject(DocumentiService);
+    public readonly indirizziService: IndirizziService = inject(IndirizziService);
+    public readonly classiService: ClassiService = inject(ClassiService);
     public readonly studentiService: StudentiService = inject(StudentiService);
     private readonly checkError: CheckError = inject(CheckError);
 
     @Output() studenteEvent = new EventEmitter<Studente>();
 
     ngOnInit() {
-        // if (!this.studentiService.anniScolastici || this.studentiService.anniScolastici.length < 1)
-        //     this.GetAnniScolastici();
-        // else
         this.GetClassiNoDocEmpty();
     }
 
-    // GetAnniScolastici() {
-    //     this.studentiService.GetAnniScolastici().subscribe({
-    //         next: (data: any) => {
-    //             console.log(this.studentiService.anniScolastici);
-    //             this.GetClassiNoDocEmpty();
-
-    //         },
-    //         error: (err: any) => this.checkError.checkError(err)
-    //     });
-    // }
-
     GetClassiNoDocEmpty() {
         this.isLoadingClasses = true;
-        this.studentiService.indirizzoSelected = "";
-        this.studentiService.GetClassiNoDocEmpty({}, Documento.SetAnnoCorrect(new Date())).subscribe({
+        this.indirizziService.indirizzoSelected = "";
+        this.classiService.GetClassiNoDocEmpty({}, Documento.SetAnnoCorrect(new Date())).subscribe({
             next: (data: any) => {
                 console.log(data);
                 for (const key in data) {
@@ -63,7 +53,7 @@ export class ModalAddStudente {
                 console.log(data);
                 console.log(this.allClasses);
 
-                this.documentiService.classeSelected = this.allClasses[0];
+                this.classiService.classeSelected = this.allClasses[0];
 
                 this.GetStudentiNoDoc();
                 this.isLoadingClasses = false;
@@ -77,8 +67,8 @@ export class ModalAddStudente {
 
     GetStudentiNoDoc() {
         this.isLoadingStudents = true;
-        console.log(JSON.stringify(this.documentiService.classeSelected));
-        this.studentiService.GetStudentiNoDocumento(Number(this.documentiService.classeSelected.Id)).subscribe({
+        console.log(JSON.stringify(this.classiService.classeSelected));
+        this.studentiService.GetStudentiNoDocumento(Number(this.classiService.classeSelected.Id)).subscribe({
             next: (data: any) => {
                 this.studentiService.studentiNoDoc = data.map((studente: Studente) => new Studente(studente.Nome, studente.Cognome, studente.Email, studente.DSA_BES));
                 this.studenteEmail = data[0].Email;

@@ -3,6 +3,7 @@ import { IndirizziStyle } from '../../../shared/directives/indirizzi-style';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { StudentiService } from '../../../shared/services/studenti.service';
+import { IndirizziService } from '../../../shared/services/indirizzi.service';
 
 @Component({
     selector: 'app-indirizzi-card',
@@ -14,10 +15,11 @@ export class IndirizziCard {
     @Input() indirizzo!: string;
     private readonly router: Router = inject(Router);
     public readonly studentiService: StudentiService = inject(StudentiService);
+    public readonly indirizziService: IndirizziService = inject(IndirizziService);
 
 
     GoClassi(indirizzo: string) {
-        this.studentiService.indirizzoSelected = indirizzo;
+        this.indirizziService.indirizzoSelected = indirizzo;
 
         this.router.navigate(["indirizzi", indirizzo, "classi"]);
     }
