@@ -82,7 +82,7 @@ export class ModalAddStudente {
     }
 
     SaveStudente() {
-        this.studentiService.GetStudenteByEmail(this.studenteEmail).subscribe({
+        this.studentiService.GetStudenteByEmail(this.studenteEmail, this.classiService.classeSelected.Anno_Scolastico).subscribe({
             next: async (studente: Studente) => {
                 // if(this.studentiSelected.findIndex(s => s.Email == studente.Email) == -1) {
                 //     this.studentiSelected.push(new Studente(

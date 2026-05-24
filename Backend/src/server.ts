@@ -163,7 +163,7 @@ app.get("/api/email-docente", (req: any, res: any) => {
 app.get("/api/indirizzi", GestioneIndirizzi.GetIndirizzi);
 
 //Studenti
-app.get("/api/studenti", GestioneStudenti.GetStudenti);
+app.get("/api/studenti", GestioneStudenti.GetStudentiDocumento);
 app.get("/api/studenti-no-doc", GestioneStudenti.GetStudentiNoDoc);
 app.get("/api/studente/:email", GestioneStudenti.GetStudenteByEmail);
 app.get("/api/count-studenti-documento", GestioneStudenti.GetCountStudentiDocumento);

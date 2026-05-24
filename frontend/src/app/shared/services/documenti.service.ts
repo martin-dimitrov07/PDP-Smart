@@ -307,7 +307,7 @@ export class DocumentiService {
         this.documentoSelected = documento;
 
         try {
-            const studente: Studente = await lastValueFrom(this.studentiService.GetStudenteByEmail(documento.Studente_Email));
+            const studente: Studente = await lastValueFrom(this.studentiService.GetStudenteByEmail(documento.Studente_Email, documento.Anno!));
             result.nome_studente = studente.Cognome + " " + studente.Nome;
 
             const classe: Classe | null = await lastValueFrom(this.classiService.GetClasseByDocumento(documento));

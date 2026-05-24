@@ -6,11 +6,20 @@ async function GetIndirizzi(req: any, res: any) {
         const filters: any = req["parsedQuery"].filters || {};
         const distinct: any = req["parsedQuery"].distinct || "";
 
-        if(!filters.Insegnamenti.some?.Docente_Email) {
-            if(!await CheckAdmin(req))
-                return res.status(403).send("Accesso negato: solo admin possono filtrare per docente");
-            else if(filters.Insegnamenti.some?.Docente_Email != req.docente) 
-                return res.status(403).send("Accesso negato: autenticazione docente non corrisponde al filtro richiesto");
+        const isAdmin = await CheckAdmin(req);
+
+        if (!isAdmin) {
+            const requestedEmail = filters?.Insegnamenti?.some?.Docente_Email;
+
+            if (requestedEmail && requestedEmail != req.docente.Email) {
+                return res.status(403).send("Accesso negato: non puoi filtrare per un altro docente.");
+            }
+
+            if (!requestedEmail) {
+                filters.Insegnamenti = {
+                    some: { Docente_Email: req.docente.Email }
+                };
+            }
         }
 
         let query: any = {

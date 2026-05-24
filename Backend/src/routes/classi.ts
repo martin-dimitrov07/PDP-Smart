@@ -17,8 +17,6 @@ async function GetClassi(req: any, res: any) {
 
         const classi = await prisma.classe.findMany(query);
 
-        req.classi = classi; // per uso interno in altre funzioni (controllo accessi)
-
         const groupsClassi: any = {
             "1": [],
             "2": [],

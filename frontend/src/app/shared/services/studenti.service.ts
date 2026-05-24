@@ -63,8 +63,8 @@ export class StudentiService {
         );
     }
 
-    GetStudenteByEmail(email: string): Observable<any> {
-        return this.dataStorageService.InviaRichiesta("GET", "/studente/" + email)!.pipe(tap((data: any) => {
+    GetStudenteByEmail(email: string, anno: Date): Observable<any> {
+        return this.dataStorageService.InviaRichiesta("GET", "/studente/" + email, { filters: JSON.stringify({ Anno_Scolastico: anno }) })!.pipe(tap((data: any) => {
             return new Studente(
                 data.Nome,
                 data.Cognome,
@@ -98,6 +98,6 @@ export class StudentiService {
             Classe_Id: classeId
         }
 
-        return this.dataStorageService.InviaRichiesta("GET", "/count-studenti", { filters: JSON.stringify(filters) })!;
+        return this.dataStorageService.InviaRichiesta("GET", "/count-studenti-documento", { filters: JSON.stringify(filters) })!;
     }
 }

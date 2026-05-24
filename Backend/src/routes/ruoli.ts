@@ -2,13 +2,13 @@ import { prisma } from "../server.ts";
 
 async function CheckAdmin(req: any): Promise<boolean> {
     try {
-        if (!req.docente) {
+        if (!req.docente.Email) {
             return false;
         }
 
         const docente = await prisma.docente.findUnique({
             where: {
-                Email: req.docente,
+                Email: req.docente.Email,
                 Ruolo: "ADMIN"
             }
         });
@@ -26,13 +26,13 @@ async function CheckAdmin(req: any): Promise<boolean> {
 
 async function CheckCoordinatore(req: any, classeId: number): Promise<boolean> {
     try {
-        if (!req.docente) {
+        if (!req.docente.Email) {
             return false;
         }
 
         const classe = await prisma.classe.findUnique({
             where: {
-                Coordinatore_Email: req.docente,
+                Coordinatore_Email: req.docente.Email,
                 Id: classeId
             }
         });
@@ -50,13 +50,13 @@ async function CheckCoordinatore(req: any, classeId: number): Promise<boolean> {
 
 async function CheckDocente(req: any, classeId: number): Promise<boolean> {
     try {
-        if (!req.docente) {
+        if (!req.docente.Email) {
             return false;
         }
 
         const insegnamentiDocente = await prisma.insegnamento.findMany({
             where: {
-                Docente_Email: req.docente,
+                Docente_Email: req.docente.Email,
                 Classe_Id: classeId
             }
         });
