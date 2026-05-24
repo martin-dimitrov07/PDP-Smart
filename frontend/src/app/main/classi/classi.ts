@@ -51,7 +51,7 @@ export class Classi {
 
         this.isLoading = true;
 
-        this.anniScolasticiService.GetAnniScolastici().subscribe({
+        this.anniScolasticiService.GetAnniScolasticiStudenti().subscribe({
             next: (data: any) => {
                 // Eseguiamo SOLO se siamo nel browser
                 if (isPlatformBrowser(this.platformId)) {

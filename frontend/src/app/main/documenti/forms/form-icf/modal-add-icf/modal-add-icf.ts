@@ -1,45 +1,63 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Output, ViewChild } from '@angular/core';
 import { DocumentiService } from '../../../../../shared/services/documenti.service';
 import { CheckError } from '../../../../../shared/utilities/check-error';
 import { FormsModule } from '@angular/forms';
 import { Icf } from '../../../../../models/icf';
+import { IcfService } from '../../../../../shared/services/icf.service';
 
 @Component({
-  selector: 'app-modal-add-icf',
-  imports: [FormsModule],
-  templateUrl: './modal-add-icf.html',
-  styleUrl: './modal-add-icf.css',
+    selector: 'app-modal-add-icf',
+    imports: [FormsModule],
+    templateUrl: './modal-add-icf.html',
+    styleUrl: './modal-add-icf.css',
 })
 export class ModalAddIcf {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
+    public readonly icfService: IcfService = inject(IcfService);
     private readonly checkError: CheckError = inject(CheckError);
 
     @Output() icfEvent = new EventEmitter<Icf>();
 
-    icfValue: string = "";
+    @ViewChild('descrizioneDiv') descrizioneDiv!: ElementRef<HTMLDivElement>;
 
-    ngOnInit(){
-        this.documentiService.GetICFs()?.subscribe({
-            next: (data) => { },
+    icfValue: string = "";
+    descrizione: string = "";
+    icfsCod: string[] = [];
+
+    ngOnInit() {
+        this.icfService.GetICFs()?.subscribe({
+            next: (data) => {
+                this.icfsCod = data.map((icf: any) => icf.Codice);
+            },
             error: (err) => this.checkError.checkError(err)
         })
     }
 
-    SetICF(){
-        const icfsCod = this.documentiService.icfs.map(icf => icf.Codice);
+    SetICF() {
+        const regex = /^(?:[A-Z]\d{2}(?:.\d{1,4})?|[bsdeBSDE]\d{1,5}(?:.\d{1,4})?|\d{3}(?:.\d{1,2})?)$/i;
 
-        if(icfsCod.includes(this.icfValue))
+        if (regex.test(this.icfValue)) {
             document.querySelector(".modal-footer .btn-primary")!.classList.remove("disabled");
-        else
+        } else {
             document.querySelector(".modal-footer .btn-primary")!.classList.add("disabled");
+        }
 
-        // console.log(document.querySelector(".btn-primary"));
-        // console.log(this.icfValue);
-        // console.log(icfsCod);
+        if (this.icfsCod.includes(this.icfValue) || !regex.test(this.icfValue)) {
+            this.descrizioneDiv.nativeElement.classList.add("d-none");
+        }
+        else if (regex.test(this.icfValue)) {
+            this.descrizioneDiv.nativeElement.classList.remove("d-none");
+        }
     }
 
-    SaveICF(){
-        this.icfEvent.emit(new Icf(this.icfValue, document.getElementById(this.icfValue)!.textContent));
+    SaveICF() {
+        if(this.icfsCod.includes(this.icfValue)) {
+            this.icfEvent.emit(new Icf(this.icfValue, document.getElementById(this.icfValue)!.textContent));
+        }
+        else {
+            this.icfEvent.emit(new Icf(this.icfValue, this.descrizione));
+        }
+        this.descrizione = "";
         this.icfValue = "";
     }
 }

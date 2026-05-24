@@ -70,7 +70,7 @@ export class Studenti {
             }
         });
 
-        this.anniScolasticiService.GetAnniScolastici(this.classeId).subscribe({
+        this.anniScolasticiService.GetAnniScolasticiStudenti(this.classeId).subscribe({
             "next": (data) => {
                 this.annoScolasticoSelezionato = this.anniScolasticiService.anniScolastici[0];
             },

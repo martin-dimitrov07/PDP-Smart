@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { DocumentiService } from '../../../../../shared/services/documenti.service';
 import { ActivatedRoute } from '@angular/router';
 import { Stato } from '../../../../../models/documento';
+import { IndicatoriService } from '../../../../../shared/services/indicatori.service';
 
 @Component({
     selector: 'app-modal-add-nota',
@@ -12,25 +13,23 @@ import { Stato } from '../../../../../models/documento';
 })
 export class ModalAddNota {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
+    public readonly indicatoriService: IndicatoriService = inject(IndicatoriService);
     public readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
     StatoDocumento: typeof Stato = Stato;
-    // ResetNota() {
-    //     this.documentiService.indicatoreSelected.Nota = "";
-    // }
 
     EditNota(){
         if(this.activatedRoute.snapshot.data['root'] == "modifica") {
-            const indexEdit = this.documentiService.indicatoriEdit.findIndex((item: any) => item.Id === this.documentiService.indicatoreSelected.Id && item.Materia === this.documentiService.indicatoreSelected.Materia);
+            const indexEdit = this.indicatoriService.indicatoriEdit.findIndex((item: any) => item.Id == this.indicatoriService.indicatoreSelected.Id && item.Materia == this.indicatoriService.indicatoreSelected.Materia);
             if (indexEdit !== -1) {
-                this.documentiService.indicatoriEdit[indexEdit].Nota = this.documentiService.indicatoreSelected.Nota;
+                this.indicatoriService.indicatoriEdit[indexEdit].Nota = this.indicatoriService.indicatoreSelected.Nota;
             }
             else
             {
-                this.documentiService.indicatoriEdit.push({
-                    Id: this.documentiService.indicatoreSelected.Id,
-                    Materia: this.documentiService.indicatoreSelected.Materia,
-                    Nota: this.documentiService.indicatoreSelected.Nota,
+                this.indicatoriService.indicatoriEdit.push({
+                    Id: this.indicatoriService.indicatoreSelected.Id,
+                    Materia: this.indicatoriService.indicatoreSelected.Materia,
+                    Nota: this.indicatoriService.indicatoreSelected.Nota,
                     Value: true
                 });
             }

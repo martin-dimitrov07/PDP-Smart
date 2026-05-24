@@ -29,7 +29,7 @@
                     </div>
                 }@else {
                     <div class="d-flex gap-3 flex-wrap">
-                        @for (allegato of documentiService.allegatiDoc; track $index) {
+                        @for (allegato of allegatiService.allegatiDoc; track $index) {
     
                             <div (click)="ShowAllegato(allegato)"
                                 class="allegato position-relative rounded d-flex flex-column align-items-center justify-content-center p-3 shadow-sm">
@@ -96,7 +96,7 @@
                 </ngx-dropzone-label>
 
                 <div class="d-flex gap-2 flex-wrap justify-content-center overflow-hidden">
-                    @for (file of documentiService.allegati; track $index)
+                    @for (file of allegatiService.allegati; track $index)
                     {
                         <ngx-dropzone-preview class="px-2 px-sm-3" ngProjectAs="ngx-dropzone-preview" [file]="file.File"
                             [removable]="true" (removed)="RemoveNewAllegato(file)">

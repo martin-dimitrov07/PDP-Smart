@@ -37,7 +37,7 @@
             @if(datiCaricati)
             {
                 <ng-container>
-                    @for (categoria of documentiService.categorieInd; track categoria; let i = $index) {
+                    @for (categoria of indicatoriService.categorieInd; track categoria; let i = $index) {
                         <app-categoria-ind [categoria]="categoria" [index]="i"></app-categoria-ind>
                     }
                 </ng-container>

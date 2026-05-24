@@ -5,12 +5,8 @@ import { Studente } from '../../models/studente';
 import { Documento, Stato, Tipo } from '../../models/documento';
 import { catchError, forkJoin, from, lastValueFrom, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Ruolo } from '../../models/docente';
-import { Indicatore } from '../../models/indicatore';
-import { Icf } from '../../models/icf';
 import { Classe } from '../../models/classe';
 import { CheckError } from '../utilities/check-error';
-import { Allegato } from '../../models/allegato';
-import { fileManager } from '../utilities/file-manager';
 import { StudentiService } from './studenti.service';
 
 import PizZip from 'pizzip';
@@ -18,6 +14,9 @@ import Docxtemplater from 'docxtemplater';
 import { HttpClient } from '@angular/common/http';
 import { ClassiService } from './classi.service';
 import { MaterieService } from './materie.service';
+import { IndicatoriService } from './indicatori.service';
+import { IcfService } from './icf.service';
+import { AllegatiService } from './allegati.service';
 
 @Injectable({
     providedIn: 'root',
@@ -26,68 +25,37 @@ export class DocumentiService {
     private readonly dataStorageService : DataStorageService = inject(DataStorageService);
     private readonly classiService: ClassiService = inject(ClassiService);
     private readonly docentiService: DocentiService = inject(DocentiService);
+    private readonly allegatiService: AllegatiService = inject(AllegatiService);
     private readonly studentiService: StudentiService = inject(StudentiService);
+    private readonly indicatoriService: IndicatoriService = inject(IndicatoriService);
     private readonly materieService: MaterieService = inject(MaterieService);
+    private readonly icfService: IcfService = inject(IcfService);
     private readonly checkError: CheckError = inject(CheckError);
+    private readonly http: HttpClient = inject(HttpClient);
 
+    TipoDocumento: typeof Tipo = Tipo;
     Stato : typeof Stato = Stato;
 
-
-    // materiaSelected: string = "";
-    indicatori: any = {};
-    categorieInd: string[] = [];
-
-    indicatoreSelected: any = {};
-
-    icfs: Icf[] = [];
-    icfsSelected: Icf[] = [];
-
-    allegati: Allegato[] = [];
-    errorAllegati: string = "";
-
-    anniScolastici: Date[] = [];
-    // annoSelected = signal<string>("Anno");
     documenti: Documento[] = [];
     nDocumenti: number = 0;
-
-    // indicatori = {
-    //     "matematica": 
-    //         {
-    //             "criteri": [ { id: "Id", Nota: "Nota" }, ... ],
-    //             "categoria": []
-    //         },
-    // }
-
-    //edit
-
     documentoSelected: Documento = {} as Documento;
-
-    indicatoriDoc: any[] = [];
-    indicatoriEdit: any[] = [];
-
-    icfsEdit: any[] = [];
-
-    allegatiDoc: Allegato[] = [];
-    allegatiEdit: any[] = [];
-
     canEditNota: boolean = false;
-
 
     DeleteDocumento(documento: Documento) {
         this.documentoSelected = documento;
 
         forkJoin({
-            indicatori: this.GetIndicatoriDocumento(),
-            icfs: this.GetICFSDocumento(),
-            allegati: this.GetAllegatiDocumento()
+            indicatori: this.indicatoriService.GetIndicatoriDocumento(),
+            icfs: this.icfService.GetICFSDocumento(),
+            allegati: this.allegatiService.GetAllegatiDocumento()
         }).subscribe({
             next: () => {
                 this.documentoSelected = {} as Documento;
                 const payload = {
                     Documento: JSON.stringify(documento),
-                    Indicatori: JSON.stringify(this.indicatoriDoc),
-                    ICFs: JSON.stringify(this.icfsSelected),
-                    AllegatiIds: JSON.stringify(this.allegatiDoc.map(a => a.Id))
+                    Indicatori: JSON.stringify(this.indicatoriService.indicatoriDoc),
+                    ICFs: JSON.stringify(this.icfService.icfsSelected),
+                    AllegatiIds: JSON.stringify(this.allegatiService.allegatiDoc.map(a => a.Id))
                 };
 
                 this.dataStorageService.InviaRichiesta("DELETE", "/documento/delete", payload)!
@@ -108,136 +76,6 @@ export class DocumentiService {
                     });
             }
         });
-    }
-
-    
-
-    GetIndicatori(categoria: string = "", tipologia: string) {
-        let filters: any = {};
-
-        if (categoria) {
-            filters.Categoria = categoria;
-        }
-
-        if (tipologia) {
-            filters.Tipologia = { in: [tipologia, "ENTRAMBI"] }
-        }
-
-        return this.dataStorageService.InviaRichiesta("GET", "/indicatori", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
-            // console.log(data);
-            return data.map((ind: Indicatore) => new Indicatore(ind.Id, ind.Tipologia, ind.Categoria, ind.Descrizione));
-        }));
-    }
-
-    GetIndicatoriDocumento() {
-        if (!this.documentoSelected) return of(null);
-
-        const filters = {
-            Documento_Studente_Email: this.documentoSelected.Studente_Email,
-            Documento_Anno: this.documentoSelected.Anno
-        }
-
-        return this.dataStorageService.InviaRichiesta("GET", "/indicatori-documento", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
-            this.indicatoriDoc = data || [];
-            console.log(this.indicatoriDoc);
-        }));
-    }
-
-    GetCategorieIndicatore() {
-        return this.dataStorageService.InviaRichiesta("GET", "/indicatori")!.pipe(tap((data: any) => {
-            this.categorieInd = [...new Set<string>(data.map((ind: Indicatore) => ind.Categoria))];
-        }));
-    }
-
-    InitializeIndicatori() {
-        this.indicatori = {};
-
-        for (let materia of this.materieService.materieClasse) {
-            this.indicatori[materia] = {};
-
-            for (let categoria of this.categorieInd) {
-                this.indicatori[materia][categoria] = [];
-            }
-        }
-    }
-
-    SetIndicatori() {
-        this.GetIndicatoriDocumento()?.subscribe({
-            next: () => {
-                for (let indicatore of this.indicatoriDoc) {
-                    if (this.indicatori[indicatore.Materia]) {
-                        this.indicatori[indicatore.Materia][indicatore.Categoria].push({ Id: indicatore.Id, Nota: indicatore.Nota });
-                    }
-                }
-            },
-            error: (err) => this.checkError.checkError(err)
-        })
-    }
-
-    UpdateIndicatoriDocumento() {
-        if (!this.documentoSelected) return;
-
-        const payload = {
-            documento: this.documentoSelected,
-            indicatori: this.indicatoriEdit
-        }
-
-        return this.dataStorageService.InviaRichiesta("PATCH", "/indicatori/update", payload)!;
-    }
-
-    GetICFs() {
-        this.icfs = [];
-
-        return this.dataStorageService.InviaRichiesta("GET", "/icfs")?.pipe(tap((data: any) => {
-            this.icfs = data.map((icf: Icf) => new Icf(icf.Codice, icf.Descrizione));
-        }))
-    }
-
-    GetICFSDocumento() {
-        if (!this.documentoSelected) return of(null);
-
-        const filters = {
-            Documenti_ICF: {
-                some: {
-                    Documento_Studente_Email: this.documentoSelected.Studente_Email,
-                    Documento_Anno: this.documentoSelected.Anno
-                }
-            }
-        }
-
-        return this.dataStorageService.InviaRichiesta("GET", "/icfs", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
-            this.icfsSelected = (data && Array.isArray(data))
-                ? data.map((icf: Icf) => new Icf(icf.Codice, icf.Descrizione))
-                : [];
-            console.log(this.icfsSelected);
-        }));
-    }
-
-    UpdateICFsDocumento() {
-        if (!this.documentoSelected) return;
-
-        const payload = {
-            documento: this.documentoSelected,
-            icfs: this.icfsEdit
-        }
-
-        return this.dataStorageService.InviaRichiesta("PATCH", "/icfs/update", payload)!;
-    }
-
-    GetAnniScolastici(): Observable<any> {
-        this.anniScolastici = [];
-
-        let params: any = {};
-
-        if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
-            params.docenteEmail = this.docentiService.docente.Email;
-        }
-
-        return this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici-documenti", params)!.pipe(
-            tap((data: any) => {
-                this.anniScolastici = Array.from(data).map((item: any) => new Date(item));
-            })
-        );
     }
 
     GetDocumenti(searchTerm: string = "", DSA_BES: any = -1, Stato_Documento: any = -1, filterAnnoScolastico: Date): Observable<any> {
@@ -341,57 +179,16 @@ export class DocumentiService {
 
         const payload = {
             "Documento": documentoPerBackend,
-            "Indicatori": this.indicatori,
-            "ICFs": this.icfsSelected
+            "Indicatori": this.indicatoriService.indicatori,
+            "ICFs": this.icfService.icfsSelected
         }
 
         formData.append('data', JSON.stringify(payload));
-        for (const file of this.allegati) {
+        for (const file of this.allegatiService.allegati) {
             formData.append('allegati', file.File);
         }
 
         return this.dataStorageService.InviaRichiesta("POST", "/documento/create", formData)!;
-    }
-
-    GetAllegatiDocumento() {
-        if (!this.documentoSelected) return of(null);
-
-        const filters = {
-            Documento_Studente_Email: this.documentoSelected.Studente_Email,
-            Documento_Anno: this.documentoSelected.Anno
-        };
-
-        return this.dataStorageService.InviaRichiesta("GET", "/allegati", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
-            this.allegatiDoc = (Array.isArray(data)) ?
-                data.map((allegato: any) => {
-                    if (allegato && allegato.FileBase64) {
-                        return new Allegato(
-                            allegato.Id,
-                            fileManager.convertBase64ToFile(allegato.FileBase64, allegato.Nome, allegato.Tipo)
-                        );
-                    }
-                    return null;
-                }).filter(a => a != null)
-                : [];
-            console.log(this.allegatiDoc);
-        }))!;
-    }
-
-    UpdateAllegatiDocumento() {
-        if (!this.documentoSelected) return;
-
-        const formData: FormData = new FormData();
-
-        formData.append('documento', JSON.stringify(this.documentoSelected));
-
-        for (const file of this.allegatiEdit) {
-            if (file.Value)
-                formData.append('allegatiAdd', file.Allegato.File);
-            else
-                formData.append('allegatiDelete', file.Allegato.Id);
-        }
-
-        return this.dataStorageService.InviaRichiesta("PATCH", "/allegati/update", formData)!;
     }
 
     ApprovaDocumento() {
@@ -412,12 +209,12 @@ export class DocumentiService {
         this.studentiService.studenteSelected = {} as Studente;
         this.materieService.materieDocente = [];
         this.materieService.materieClasse = [];
-        this.indicatori = {};
-        this.categorieInd = [];
-        this.icfs = [];
-        this.icfsSelected = [];
-        this.allegati = [];
-        this.errorAllegati = "";
+        this.indicatoriService.indicatori = {};
+        this.indicatoriService.categorieInd = [];
+        this.icfService.icfs = [];
+        this.icfService.icfsSelected = [];
+        this.allegatiService.allegati = [];
+        this.allegatiService.errorAllegati = "";
     }
 
     GetFileDocumentoApprovato(documento: Documento) {
@@ -463,9 +260,6 @@ export class DocumentiService {
             })
         );
     }
-
-    TipoDocumento: typeof Tipo = Tipo;
-    private readonly http: HttpClient = inject(HttpClient);
 
     async CreateFileDocumento(documento: Documento, data: any) {
         try {
@@ -525,15 +319,15 @@ export class DocumentiService {
             this.classiService.classeSelected = classe;
             result.nome_classe = classe.GetFullNome();
 
-            await lastValueFrom(this.GetCategorieIndicatore());
+            await lastValueFrom(this.indicatoriService.GetCategorieIndicatore());
             await lastValueFrom(this.materieService.GetMaterieClasse());
-            await lastValueFrom(this.GetIndicatoriDocumento());
+            await lastValueFrom(this.indicatoriService.GetIndicatoriDocumento());
 
             //categorie
             for (let i = 1; i <= 4; i++) {
-                result["c" + i] = this.categorieInd[i - 1] || "";
+                result["c" + i] = this.indicatoriService.categorieInd[i - 1] || "";
 
-                const indicatori = await lastValueFrom(this.GetIndicatori(result["c" + i], documento.Tipologia));
+                const indicatori = await lastValueFrom(this.indicatoriService.GetIndicatori(result["c" + i], documento.Tipologia));
 
                 //materie
                 for (let j = 0; j < 13; j++) {
@@ -546,7 +340,7 @@ export class DocumentiService {
 
                     for (let l = 0; l < 13; l++) {
                         if (indicatori[k]) {
-                            result["i" + String.fromCharCode(65 + l) + String.fromCharCode(65 + k) + i] = this.indicatoriDoc.find((ind: any) => ind.Materia == result["m" + String.fromCodePoint(65 + l) + "_c" + i] && ind.Id == indicatori[k].Id) ? "X" : "";
+                            result["i" + String.fromCharCode(65 + l) + String.fromCharCode(65 + k) + i] = this.indicatoriService.indicatoriDoc.find((ind: any) => ind.Materia == result["m" + String.fromCodePoint(65 + l) + "_c" + i] && ind.Id == indicatori[k].Id) ? "X" : "";
                         }
                         else
                             result["i" + String.fromCharCode(65 + l) + String.fromCharCode(65 + k) + i] = "";

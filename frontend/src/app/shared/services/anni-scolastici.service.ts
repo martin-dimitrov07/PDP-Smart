@@ -15,7 +15,7 @@ export class AnniScolasticiService {
 
     anniScolastici: Date[] = [];
 
-    GetAnniScolastici(idClasse: number | null = null): Observable<any> {
+    GetAnniScolasticiStudenti(idClasse: number | null = null): Observable<any> {
         let params: any = {};
 
         if (idClasse) {
@@ -41,5 +41,21 @@ export class AnniScolasticiService {
                 this.anniScolastici = Array.from(data).map((item: any) => new Date(item));
             }
         ));
+    }
+
+    GetAnniScolasticiDocumenti(): Observable<any> {
+        this.anniScolastici = [];
+
+        let params: any = {};
+
+        if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
+            params.docenteEmail = this.docentiService.docente.Email;
+        }
+
+        return this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici-documenti", params)!.pipe(
+            tap((data: any) => {
+                this.anniScolastici = Array.from(data).map((item: any) => new Date(item));
+            })
+        );
     }
 }

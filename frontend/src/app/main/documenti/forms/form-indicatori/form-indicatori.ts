@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { Stato } from '../../../../models/documento';
 import { ClassiService } from '../../../../shared/services/classi.service';
 import { MaterieService } from '../../../../shared/services/materie.service';
+import { IndicatoriService } from '../../../../shared/services/indicatori.service';
 
 
 @Component({
@@ -30,9 +31,10 @@ export class FormIndicatori {
     private readonly classiService: ClassiService = inject(ClassiService);
     public readonly stepsService: StepsService = inject(StepsService);
     private readonly checkError: CheckError = inject(CheckError);
+    public readonly docentiService: DocentiService = inject(DocentiService);
+    public readonly indicatoriService: IndicatoriService = inject(IndicatoriService);
     private readonly router: Router = inject(Router);
 
-    public readonly docentiService: DocentiService = inject(DocentiService);
     Ruolo: typeof Ruolo = Ruolo;
     StatoDocumento: typeof Stato = Stato;
 
@@ -54,7 +56,7 @@ export class FormIndicatori {
             else
                 this.canEdit = false;
 
-            this.documentiService.indicatoriEdit = [];
+            this.indicatoriService.indicatoriEdit = [];
 
             const annoScolastico = new Date(this.activatedRoute.snapshot.paramMap.get('annoScolastico')!.split("-")[0] + "-09-01");
 
@@ -64,18 +66,16 @@ export class FormIndicatori {
 
                     this.materieService.GetMaterieClasse().subscribe({
                         next: (data) => {
-                            this.documentiService.GetCategorieIndicatore().subscribe({
+                            this.indicatoriService.GetCategorieIndicatore().subscribe({
                                 next: (data) => {
                                     this.datiCaricati = false;
                                     // Forziamo Angular a capire che c'è stato un cambiamento
                                     this.cdr.detectChanges();
 
-                                    // console.log(this.documentiService.indicatori.object);
+                                    this.indicatoriService.InitializeIndicatori();
+                                    this.indicatoriService.SetIndicatori();
 
-                                    this.documentiService.InitializeIndicatori();
-                                    this.documentiService.SetIndicatori();
-
-                                    console.log(this.documentiService.indicatori);
+                                    console.log(this.indicatoriService.indicatori);
 
                                     this.datiCaricati = true;
                                     this.cdr.detectChanges();
@@ -98,19 +98,15 @@ export class FormIndicatori {
             this.canEdit = true;
             this.materieService.GetMaterieClasse().subscribe({
                 next: (data) => {
-                    this.documentiService.GetCategorieIndicatore().subscribe({
+                    this.indicatoriService.GetCategorieIndicatore().subscribe({
                         next: (data) => {
                             this.datiCaricati = false;
                             // Forziamo Angular a capire che c'è stato un cambiamento
                             this.cdr.detectChanges();
 
-                            // console.log(this.documentiService.indicatori.object);
-
-                            if (Object.keys(this.documentiService.indicatori).length == 0) {
-                                this.documentiService.InitializeIndicatori();
+                            if (Object.keys(this.indicatoriService.indicatori).length == 0) {
+                                this.indicatoriService.InitializeIndicatori();
                             }
-
-                            // console.log(this.documentiService.indicatori);
 
                             this.datiCaricati = true;
                             this.cdr.detectChanges();
@@ -142,8 +138,8 @@ export class FormIndicatori {
 
     Edit() {
         // console.log(this.documentiService.indicatoriEdit);
-        if (this.documentiService.indicatoriEdit.length > 0) {
-            this.documentiService.UpdateIndicatoriDocumento()?.subscribe({
+        if (this.indicatoriService.indicatoriEdit.length > 0) {
+            this.indicatoriService.UpdateIndicatoriDocumento()?.subscribe({
                 next: (data: any) => {
                     console.log("Indicatori modificati con successo");
                 },

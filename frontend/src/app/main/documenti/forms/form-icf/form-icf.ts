@@ -9,6 +9,7 @@ import { DocentiService } from '../../../../shared/services/docenti.service';
 import { DocumentiEditBreadcrumb } from '../../documenti-edit/documenti-edit-breadcrumb/documenti-edit-breadcrumb';
 import { CheckError } from '../../../../shared/utilities/check-error';
 import { Stato } from '../../../../models/documento';
+import { IcfService } from '../../../../shared/services/icf.service';
 
 @Component({
     selector: 'app-form-icf',
@@ -20,6 +21,7 @@ export class FormICF {
     public readonly docentiService: DocentiService = inject(DocentiService);
     private readonly router: Router = inject(Router);
     public readonly documentiService: DocumentiService = inject(DocumentiService);
+    public readonly icfService: IcfService = inject(IcfService);
     public readonly stepsService: StepsService = inject(StepsService);
     public readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
     private readonly checkError: CheckError = inject(CheckError);
@@ -38,15 +40,15 @@ export class FormICF {
 
         if (this.root == "modifica") {
             this.isLoading = true;
-            this.documentiService.icfsEdit = [];
-            this.documentiService.GetICFSDocumento()?.subscribe({
+            this.icfService.icfsEdit = [];
+            this.icfService.GetICFSDocumento()?.subscribe({
                 next: (data: any) => {
-                    console.log(this.documentiService.icfsSelected);
+                    console.log(this.icfService.icfsSelected);
                 },
                 error: (err: any) => console.log(err)
             });
         }
-        this.documentiService.icfsSelected = [];
+        this.icfService.icfsSelected = [];
 
         this.docentiService.GetDocente().subscribe(isLoaded => {
             if (isLoaded) {
@@ -63,36 +65,36 @@ export class FormICF {
     }
 
     SaveICF(icf: Icf) {
-        if (this.documentiService.icfsSelected.findIndex((icfArray: Icf) => icfArray.Codice == icf.Codice) == -1) {
-            this.documentiService.icfsSelected.push(new Icf(icf.Codice, icf.Descrizione));
+        if (this.icfService.icfsSelected.findIndex((icfArray: Icf) => icfArray.Codice == icf.Codice) == -1) {
+            this.icfService.icfsSelected.push(new Icf(icf.Codice, icf.Descrizione));
             if (this.root == "modifica") {
-                const indexICFEdit = this.documentiService.icfsEdit.findIndex((icfEdit: any) => icfEdit.Icf.Codice == icf.Codice);
+                const indexICFEdit = this.icfService.icfsEdit.findIndex((icfEdit: any) => icfEdit.Icf.Codice == icf.Codice);
                 if (indexICFEdit != -1) {
-                    this.documentiService.icfsEdit[indexICFEdit].Value = true;
+                    this.icfService.icfsEdit[indexICFEdit].Value = true;
                 } else {
-                    this.documentiService.icfsEdit.push({ Icf: new Icf(icf.Codice, icf.Descrizione), Value: true });
+                    this.icfService.icfsEdit.push({ Icf: new Icf(icf.Codice, icf.Descrizione), Value: true });
                 }
             }
         }
-        console.log(this.documentiService.icfsEdit);
+        console.log(this.icfService.icfsEdit);
     }
 
     RemoveICF(codice: string) {
-        this.documentiService.icfsSelected.splice(this.documentiService.icfsSelected.findIndex(icf => icf.Codice == codice), 1);
+        this.icfService.icfsSelected.splice(this.icfService.icfsSelected.findIndex(icf => icf.Codice == codice), 1);
         if (this.root == "modifica") {
-            const indexICFEdit = this.documentiService.icfsEdit.findIndex((icfEdit: any) => icfEdit.Icf.Codice == codice);
+            const indexICFEdit = this.icfService.icfsEdit.findIndex((icfEdit: any) => icfEdit.Icf.Codice == codice);
             if (indexICFEdit != -1) {
-                this.documentiService.icfsEdit.splice(indexICFEdit, 1);
+                this.icfService.icfsEdit.splice(indexICFEdit, 1);
             } else {
-                this.documentiService.icfsEdit.push({ Icf: new Icf(codice), Value: false });
+                this.icfService.icfsEdit.push({ Icf: new Icf(codice), Value: false });
             }
         }
-        console.log(this.documentiService.icfsEdit);
+        console.log(this.icfService.icfsEdit);
     }
 
     Edit(){
-        if(this.documentiService.icfsEdit.length > 0){
-            this.documentiService.UpdateICFsDocumento()?.subscribe({
+        if(this.icfService.icfsEdit.length > 0){
+            this.icfService.UpdateICFsDocumento()?.subscribe({
                 next: (data: any) => {
                     console.log("ICF modificati con successo");
                 },

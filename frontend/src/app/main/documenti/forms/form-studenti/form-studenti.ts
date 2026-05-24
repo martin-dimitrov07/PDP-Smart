@@ -8,6 +8,7 @@ import { StepsService } from '../../../../shared/services/steps.service';
 import { Studente } from '../../../../models/studente';
 import { MaterieService } from '../../../../shared/services/materie.service';
 import { StudentiService } from '../../../../shared/services/studenti.service';
+import { IndicatoriService } from '../../../../shared/services/indicatori.service';
 
 @Component({
     selector: 'app-form-studenti',
@@ -20,6 +21,7 @@ export class FormStudenti {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     public readonly studentiService: StudentiService = inject(StudentiService);
     public readonly materieService: MaterieService = inject(MaterieService);
+    public readonly indicatoriService: IndicatoriService = inject(IndicatoriService);
     private readonly checkError: CheckError = inject(CheckError);
     public readonly stepsService: StepsService = inject(StepsService);
 
@@ -40,9 +42,9 @@ export class FormStudenti {
 
         this.materieService.GetMaterieClasse().subscribe({
             next: (data) => {
-                this.documentiService.GetCategorieIndicatore().subscribe({
+                this.indicatoriService.GetCategorieIndicatore().subscribe({
                     next: (data) => {
-                        this.documentiService.InitializeIndicatori();
+                        this.indicatoriService.InitializeIndicatori();
                     },
                     error: (err) => this.checkError.checkError(err)
                 });

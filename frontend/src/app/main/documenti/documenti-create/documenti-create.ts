@@ -49,7 +49,7 @@ export class DocumentiCreate {
                                 return;
                             }
 
-                            this.anniScolasticiService.GetAnniScolastici().subscribe({
+                            this.anniScolasticiService.GetAnniScolasticiStudenti().subscribe({
                                 error: (err: any) => this.checkError.checkError(err)
                             });
                         },
@@ -57,7 +57,7 @@ export class DocumentiCreate {
                     });
                 }
                 else {
-                    this.anniScolasticiService.GetAnniScolastici().subscribe({
+                    this.anniScolasticiService.GetAnniScolasticiStudenti().subscribe({
                         error: (err: any) => this.checkError.checkError(err)
                     });
                 }

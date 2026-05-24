@@ -9,6 +9,7 @@ import { DocentiService } from '../../../shared/services/docenti.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IndirizziStyle } from "../../../shared/directives/indirizzi-style";
 import { ClassiService } from '../../../shared/services/classi.service';
+import { AnniScolasticiService } from '../../../shared/services/anni-scolastici.service';
 
 @Component({
     selector: 'app-documenti-list',
@@ -19,6 +20,7 @@ import { ClassiService } from '../../../shared/services/classi.service';
 export class DocumentiList {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     private readonly docentiService: DocentiService = inject(DocentiService);
+    private readonly anniScolasticiService: AnniScolasticiService = inject(AnniScolasticiService);
     private readonly classiService: ClassiService = inject(ClassiService);
     private readonly checkError: CheckError = inject(CheckError);
     private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
@@ -64,16 +66,16 @@ export class DocumentiList {
             error: (err) => this.checkError.checkError(err)
         });
 
-        this.documentiService.GetAnniScolastici().subscribe({
+        this.anniScolasticiService.GetAnniScolasticiDocumenti().subscribe({
             next: (data: any) => {
-                if (isPlatformBrowser(this.platformId) && this.documentiService.anniScolastici.length > 0) {
-                    document.querySelector("#annoDropdown")!.textContent = this.documentiService.anniScolastici[0].getFullYear().toString() + "/" + (this.documentiService.anniScolastici[0].getFullYear() + 1).toString();
+                if (isPlatformBrowser(this.platformId) && this.anniScolasticiService.anniScolastici.length > 0) {
+                    document.querySelector("#annoDropdown")!.textContent = this.anniScolasticiService.anniScolastici[0].getFullYear().toString() + "/" + (this.anniScolasticiService.anniScolastici[0].getFullYear() + 1).toString();
                 }
 
                 if (queryAnno && isPlatformBrowser(this.platformId)) {
                     document.querySelector("#annoDropdown")!.textContent = this.filterAnnoScolastico.getFullYear().toString() + "/" + (this.filterAnnoScolastico.getFullYear() + 1).toString();
                 } else {
-                    this.filterAnnoScolastico = this.documentiService.anniScolastici[0];
+                    this.filterAnnoScolastico = this.anniScolasticiService.anniScolastici[0];
                 }
 
                 this.documentiService.GetDocumenti(this.searchTerm, this.DSA_BES, this.Stato_Documento, this.filterAnnoScolastico).subscribe({

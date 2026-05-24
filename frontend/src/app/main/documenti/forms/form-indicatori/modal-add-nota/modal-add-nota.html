@@ -19,7 +19,7 @@
                 <div class="modal-body">
                     <label for="notaInput" class="form-label">Nota</label>
                     <textarea class="form-control" [readonly]="(activatedRoute.snapshot.data['root'] == 'modifica' && (!documentiService.canEditNota || documentiService.documentoSelected.Stato != StatoDocumento.IN_BOZZA)) 
-                    || (activatedRoute.snapshot.data['root'] == 'crea' && !documentiService.canEditNota)" id="notaInput" rows="3" [(ngModel)]="documentiService.indicatoreSelected.Nota" placeholder="Scrivi qui la tua nota..."></textarea>
+                    || (activatedRoute.snapshot.data['root'] == 'crea' && !documentiService.canEditNota)" id="notaInput" rows="3" [(ngModel)]="indicatoriService.indicatoreSelected.Nota" placeholder="Scrivi qui la tua nota..."></textarea>
                 </div>
                 @if ((documentiService.canEditNota && documentiService.documentoSelected.Stato == StatoDocumento.IN_BOZZA && activatedRoute.snapshot.data['root'] == "modifica") 
                 || (activatedRoute.snapshot.data['root'] == 'crea' && documentiService.canEditNota)){

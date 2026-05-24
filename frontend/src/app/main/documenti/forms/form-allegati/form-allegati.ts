@@ -15,6 +15,7 @@ import { Stato } from '../../../../models/documento';
 import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { StudentiService } from '../../../../shared/services/studenti.service';
 import { ClassiService } from '../../../../shared/services/classi.service';
+import { AllegatiService } from '../../../../shared/services/allegati.service';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class FormAllegati {
     public readonly docenteService: DocentiService = inject(DocentiService);
     public readonly studentiService: StudentiService = inject(StudentiService);
     public readonly stepsService: StepsService = inject(StepsService);
+    public readonly allegatiService: AllegatiService = inject(AllegatiService);
     public activatedRoute: ActivatedRoute = inject(ActivatedRoute);
     private readonly checkError: CheckError = inject(CheckError);
 
@@ -46,15 +48,13 @@ export class FormAllegati {
 
     ngOnInit() {
         this.stepsService.step = "allegati";
-        // console.log(this.documentiService.documentoSelected)
-        // console.log("Allegati Doc: ", this.documentiService.allegatiDoc);
         if (this.activatedRoute.snapshot.data['root'] == 'modifica') {
             this.isLoading = true;
-            this.documentiService.allegatiEdit = [];
-            this.documentiService.allegatiDoc = [];
-            this.documentiService.GetAllegatiDocumento()?.subscribe({
+            this.allegatiService.allegatiEdit = [];
+            this.allegatiService.allegatiDoc = [];
+            this.allegatiService.GetAllegatiDocumento()?.subscribe({
                 next: (data: any) => {
-                    console.log("Allegati del documento:", this.documentiService.allegatiDoc);
+                    console.log("Allegati del documento:", this.allegatiService.allegatiDoc);
                     this.isLoading = false;
                 },
                 error: (err: any) => {
@@ -63,38 +63,38 @@ export class FormAllegati {
                 }
             });
         }
-        this.documentiService.allegati = [];
+        this.allegatiService.allegati = [];
         this.CanEdit();
     }
 
     OnSelect(event: any) {
         console.log(event);
         // Aggiunge i nuovi file a quelli esistenti
-        this.documentiService.allegati.push(...event.addedFiles.map((file: File) => new Allegato(0, file)));
+        this.allegatiService.allegati.push(...event.addedFiles.map((file: File) => new Allegato(0, file)));
 
         if (event.rejectedFiles.length > 0) {
             switch (event.rejectedFiles[0].reason) {
                 case "type":
-                    this.documentiService.errorAllegati = "Il file " + event.rejectedFiles[0].name + " non è in un formato supportato (immagini o PDF o documenti Word).";
+                    this.allegatiService.errorAllegati = "Il file " + event.rejectedFiles[0].name + " non è in un formato supportato (immagini o PDF o documenti Word).";
                     break;
                 case "size":
-                    this.documentiService.errorAllegati = "Il file " + event.rejectedFiles[0].name + " supera la dimensione massima consentita (5MB).";
+                    this.allegatiService.errorAllegati = "Il file " + event.rejectedFiles[0].name + " supera la dimensione massima consentita (5MB).";
                     break;
                 default:
-                    this.documentiService.errorAllegati = "Il file " + event.rejectedFiles[0].name + " non è stato accettato (errore sconosciuto).";
+                    this.allegatiService.errorAllegati = "Il file " + event.rejectedFiles[0].name + " non è stato accettato (errore sconosciuto).";
             }
 
-            console.log(this.documentiService.errorAllegati);
+            console.log(this.allegatiService.errorAllegati);
 
             this.btnTrigger.nativeElement.click();
 
-            console.log(this.documentiService.errorAllegati);
+            console.log(this.allegatiService.errorAllegati);
         }
     }
 
     RemoveNewAllegato(allegato: Allegato) {
         // Rimuove il file dall'array
-        this.documentiService.allegati.splice(this.documentiService.allegati.findIndex((f) => f === allegato), 1);
+        this.allegatiService.allegati.splice(this.allegatiService.allegati.findIndex((f) => f === allegato), 1);
     }
 
     CreateDocumento() {
@@ -115,12 +115,12 @@ export class FormAllegati {
     }
 
     Edit() {
-        for (const allegato of this.documentiService.allegati) {
-            this.documentiService.allegatiEdit.push({ Allegato: allegato, Value: true });
+        for (const allegato of this.allegatiService.allegati) {
+            this.allegatiService.allegatiEdit.push({ Allegato: allegato, Value: true });
         }
 
-        if (this.documentiService.allegatiEdit.length > 0) {
-            this.documentiService.UpdateAllegatiDocumento()?.subscribe({
+        if (this.allegatiService.allegatiEdit.length > 0) {
+            this.allegatiService.UpdateAllegatiDocumento()?.subscribe({
                 next: (data: any) => {
                     console.log("Allegati modificati con successo");
                 },
@@ -132,9 +132,9 @@ export class FormAllegati {
     }
 
     RemoveAllegato(allegato: Allegato) {
-        const indexAllegato = this.documentiService.allegatiDoc.indexOf(allegato);
-        this.documentiService.allegatiDoc.splice(indexAllegato, 1);
-        this.documentiService.allegatiEdit.push({ Allegato: allegato, Value: false });
+        const indexAllegato = this.allegatiService.allegatiDoc.indexOf(allegato);
+        this.allegatiService.allegatiDoc.splice(indexAllegato, 1);
+        this.allegatiService.allegatiEdit.push({ Allegato: allegato, Value: false });
     }
 
     ShowAllegato(allegato: Allegato) {
