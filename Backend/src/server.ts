@@ -166,7 +166,7 @@ app.get("/api/indirizzi", GestioneIndirizzi.GetIndirizzi);
 app.get("/api/studenti", GestioneStudenti.GetStudenti);
 app.get("/api/studenti-no-doc", GestioneStudenti.GetStudentiNoDoc);
 app.get("/api/studente/:email", GestioneStudenti.GetStudenteByEmail);
-app.get("/api/count-studenti", GestioneStudenti.GetCountStudenti);
+app.get("/api/count-studenti-documento", GestioneStudenti.GetCountStudentiDocumento);
 
 //Classi
 app.get("/api/classi", GestioneClassi.GetClassi);

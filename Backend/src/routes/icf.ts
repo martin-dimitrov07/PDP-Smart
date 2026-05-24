@@ -31,7 +31,7 @@ async function DeleteICFs(db: any, ICFs: any, studenteEmail: string, anno: Date)
     }
 }
 
-async function CreateICFs(db: any, ICFs: any, studenteEmail: string, anno: Date) {
+async function CreateDocumentoICFs(db: any, ICFs: any, studenteEmail: string, anno: Date) {
     for (const icf of ICFs) {
         const record = {
             ICF_Codice: icf.Codice,
@@ -40,6 +40,22 @@ async function CreateICFs(db: any, ICFs: any, studenteEmail: string, anno: Date)
         };
         await db.documento_ICF.create({
             data: record
+        });
+    }
+}
+
+async function CreateICF(req: any, res: any) {
+    try {
+        const icf = req.body;
+        const newICF = await prisma.iCF.create({
+            data: icf
+        });
+        res.send(newICF);
+    } catch (err) {
+        console.error("Errore nella creazione dell'ICF:", err);
+        res.status(500).send({
+            error: "Errore durante la creazione dell'ICF",
+            details: err
         });
     }
 }
@@ -104,4 +120,4 @@ async function UpdateICFsDocumento(req: any, res: any) {
     }
 }
 
-export { GetIcfs , DeleteICFs, CreateICFs, UpdateICFsDocumento };
+export { GetIcfs , DeleteICFs, CreateDocumentoICFs, UpdateICFsDocumento, CreateICF };

@@ -8,10 +8,10 @@ import libre from 'libreoffice-convert';
 
 async function DeletePDP(req: any, res: any) {
     try {
-        const documento = JSON.parse(req["parsedQuery"].Documento);
-        const indicatori = JSON.parse(req["parsedQuery"].Indicatori);
-        const ICFs = JSON.parse(req["parsedQuery"].ICFs);
-        const allegati = JSON.parse(req["parsedQuery"].AllegatiIds);
+        const documento = req["parsedQuery"].Documento;
+        const indicatori = req["parsedQuery"].Indicatori;
+        const ICFs = req["parsedQuery"].ICFs;
+        const allegati = req["parsedQuery"].AllegatiIds;
 
         let allegatiDelete: any[] = [];
 
@@ -77,7 +77,7 @@ async function CreatePDP(req: any, res: any) {
                 await GestioneIndicatori.CreateIndicatori(tx, indicatori, newDoc.Studente_Email, newDoc.Anno);
             }
             if (ICFs && ICFs.length > 0) {
-                await GestioneICF.CreateICFs(tx, ICFs, newDoc.Studente_Email, newDoc.Anno);
+                await GestioneICF.CreateDocumentoICFs(tx, ICFs, newDoc.Studente_Email, newDoc.Anno);
             }
             if (allegati && allegati.length > 0) {
                 saveAllegati = await GestioneAllegati.CreateAllegati(tx, allegati, newDoc.Studente_Email, newDoc.Anno);

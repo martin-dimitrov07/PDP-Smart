@@ -1,8 +1,13 @@
 import { prisma } from "../server.ts";
+import { CheckAdmin, CheckDocente } from "./ruoli.ts";
+import { GetClassi } from "./classi.ts";
 
-async function GetCountStudenti(req: any, res: any) {
+async function GetCountStudentiDocumento(req: any, res: any) {
     try {
         const filters = req["parsedQuery"]?.filters || {};
+
+        if(!await CheckDocente(req, filters.Classe_Id) && !await CheckAdmin(req))
+            return res.status(403).send("Accesso negato: non sei un docente o un amministratore");
 
         filters.Studente = {
             Documento: {
@@ -29,6 +34,14 @@ async function GetStudenti(req: any, res: any) {
         const filters: any = req["parsedQuery"].filters || {};
         const order: any = req["parsedQuery"].order || { Nome: 'asc' };
 
+        if (!filters.Classi_Studente.some?.Classe_Id) {
+            if (!await CheckAdmin(req))
+                return res.status(403).send("Accesso negato: non sei un amministratore");
+        }
+
+        if (!await CheckDocente(req, filters.Classi_Studente.some?.Classe_Id))
+            return res.status(403).send("Accesso negato: non sei un docente");
+
         filters.Documento = {
             some: {}
         };
@@ -49,6 +62,31 @@ async function GetStudenti(req: any, res: any) {
 async function GetStudenteByEmail(req: any, res: any) {
     try {
         const studenteMail: any = req.params.email || "";
+        const annoScolastico: any = req["parsedQuery"]?.filters?.Anno_Scolastico;
+
+        req["parsedQuery"].filters = {
+            Anno_Scolastico: annoScolastico,
+            Insegnamemti: {
+                some: {
+                    Doente_Email: req.docente
+                }
+            },
+            Classi_Studente: {
+                some: {
+                    Studente_Email: studenteMail
+                }
+            }
+        }
+
+        GetClassi(req, res); // per popolare req.classi
+
+        for (const key in req.classi) {
+            for (const classe of req.classi[key]) {
+                if (!await CheckDocente(req, classe.Id) && !await CheckAdmin(req)) {
+                    return res.status(403).send("Accesso negato: non sei un docente o un amministratore");
+                }
+            }
+        }
 
         const studente = await prisma.studente.findUnique({
             where: { Email: studenteMail }
@@ -70,6 +108,14 @@ async function GetStudentiNoDoc(req: any, res: any) {
         const filters: any = req["parsedQuery"].filters || {};
         const order: any = req["parsedQuery"].order || { Nome: 'asc' };
 
+        if (!filters.Classi_Studente.some?.Classe_Id) {
+            if (!await CheckAdmin(req))
+                return res.status(403).send("Accesso negato: non sei un amministratore");
+        }
+
+        if (!await CheckDocente(req, filters.Classi_Studente.some?.Classe_Id))
+            return res.status(403).send("Accesso negato: non sei un docente");
+
         filters.Documento = {
             none: {}
         };
@@ -87,4 +133,4 @@ async function GetStudentiNoDoc(req: any, res: any) {
     }
 }
 
-export { GetStudenti, GetStudenteByEmail, GetStudentiNoDoc, GetCountStudenti };
+export { GetStudenti, GetStudenteByEmail, GetStudentiNoDoc, GetCountStudentiDocumento };
