@@ -25,6 +25,15 @@
                     }
                 </div>
             }
+        }      
+        
+        @if(hasNoClasses) {
+            <div class="col-12 my-5">
+                <h3 class="fw-bold text-center">Nessuna classe trovata</h3>
+                <p class="text-muted text-center">
+                    Non ci sono classi che corrispondono alla tua ricerca.
+                </p>
+            </div>
         }
     </div>
 }

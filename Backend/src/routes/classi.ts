@@ -1,4 +1,5 @@
 import { prisma } from "../server.ts";
+import { CheckAdmin, CheckDocente } from "./ruoli.ts";
 
 async function GetClassi(req: any, res: any) {
     try {
@@ -25,13 +26,24 @@ async function GetClassi(req: any, res: any) {
             "5": []
         };
 
-        classi.forEach((c: any) => {
-            const anno = c.Classe.toString();
+        if (await CheckAdmin(req)) {
+            classi.forEach((c: any) => {
+                const anno = c.Classe.toString();
 
-            if (groupsClassi[anno]) {
-                groupsClassi[anno].push(c);
+                if (groupsClassi[anno]) {
+                    groupsClassi[anno].push(c);
+                }
+            });
+        }
+        else {
+            for (const c of classi) {
+                const anno = c.Classe.toString();
+
+                if (await CheckDocente(req, c.Id) && groupsClassi[anno]) {
+                    groupsClassi[anno].push(c);
+                }
             }
-        });
+        }
 
         res.send(groupsClassi);
     } catch (err) {
@@ -43,6 +55,12 @@ async function GetClassi(req: any, res: any) {
 async function GetClasseById(req: any, res: any) {
     try {
         const classeId: number = parseInt(req.params.id) || 0;
+
+        if (!await CheckAdmin(req)) {
+            if (!await CheckDocente(req, classeId))
+                return res.status(403).send("Accesso negato: non sei un docente di questa classe.");
+            return res.status(403).send("Accesso negato: non sei un amministratore.");
+        }
 
         const classe = await prisma.classe.findUnique({
             where: { Id: classeId }

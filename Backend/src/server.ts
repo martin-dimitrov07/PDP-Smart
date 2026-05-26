@@ -160,17 +160,17 @@ app.get("/api/email-docente", (req: any, res: any) => {
 });
 
 //Indirizzi
-app.get("/api/indirizzi", GestioneIndirizzi.GetIndirizzi);
+app.get("/api/indirizzi", GestioneIndirizzi.GetIndirizzi); //fatto sicurezza
 
 //Studenti
-app.get("/api/studenti", GestioneStudenti.GetStudentiDocumento);
-app.get("/api/studenti-no-doc", GestioneStudenti.GetStudentiNoDoc);
-app.get("/api/studente/:email", GestioneStudenti.GetStudenteByEmail);
-app.get("/api/count-studenti-documento", GestioneStudenti.GetCountStudentiDocumento);
+app.get("/api/studenti", GestioneStudenti.GetStudentiDocumento); //fatto sicurezza
+app.get("/api/studenti-no-doc", GestioneStudenti.GetStudentiNoDoc); //fatto sicurezza
+app.get("/api/studente/:email", GestioneStudenti.GetStudenteByEmail); //fatto sicurezza
+app.get("/api/count-studenti-documento", GestioneStudenti.GetCountStudentiDocumento); //fatto sicurezza
 
 //Classi
-app.get("/api/classi", GestioneClassi.GetClassi);
-app.get("/api/classe/:id", GestioneClassi.GetClasseById);
+app.get("/api/classi", GestioneClassi.GetClassi); // fatto sicurezza
+app.get("/api/classe/:id", GestioneClassi.GetClasseById); //fatto sicurezza
 
 //Documenti
 app.post("/api/documento/create", GestioneDocumenti.CreatePDP);
@@ -181,8 +181,8 @@ app.post("/api/documento/salva-approvato", GestioneDocumenti.SalvaDocumentoAppro
 app.get("/api/documento/file-approvato", GestioneDocumenti.GetDocumentoApprovato);
 
 //Anni scolastici
-app.get("/api/anni-scolastici-studenti", GestioneAnniScolastici.GetAnniScolasticiStudenti);
-app.get("/api/anni-scolastici-documenti", GestioneAnniScolastici.GetAnniScolasticiDocumenti);
+app.get("/api/anni-scolastici-studenti", GestioneAnniScolastici.GetAnniScolasticiStudenti); //fatto sicurezza (da testare)
+app.get("/api/anni-scolastici-documenti", GestioneAnniScolastici.GetAnniScolasticiDocumenti); //fatto sicurezza (da testare)
 
 //Docenti
 app.get("/api/is-coordinatore", GestioneDocenti.IsCoordinatore);

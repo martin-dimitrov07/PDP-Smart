@@ -1,13 +1,19 @@
 import { prisma } from "../server.ts";
 import { CheckAdmin, CheckDocente } from "./ruoli.ts";
-import { GetClassi } from "./classi.ts";
 
 async function GetCountStudentiDocumento(req: any, res: any) {
     try {
         const filters = req["parsedQuery"]?.filters || {};
+        const isAdmin = await CheckAdmin(req);
 
-        if (!await CheckDocente(req, filters.Classe_Id) && !await CheckAdmin(req))
-            return res.status(403).send("Accesso negato: non sei un docente o un amministratore");
+        if (!isAdmin) {
+            if (!filters.Classe_Id) {
+                return res.status(403).send("Accesso negato: devi specificare una classe se non sei amministratore.");
+            }
+
+            if (!await CheckDocente(req, filters.Classe_Id))
+                return res.status(403).send("Accesso negato: non sei un docente o un amministratore");
+        }
 
         filters.Studente = {
             Documento: {
@@ -66,6 +72,7 @@ async function GetStudentiDocumento(req: any, res: any) {
 async function GetStudenteByEmail(req: any, res: any) {
     try {
         const studenteMail = req.params.email || "";
+        const AnnoScolastico = req["parsedQuery"]?.filters?.Anno_Scolastico;
         const isAdmin = await CheckAdmin(req);
 
         let studente;
@@ -75,12 +82,16 @@ async function GetStudenteByEmail(req: any, res: any) {
                 where: { Email: studenteMail }
             });
         } else {
+            if (!AnnoScolastico) {
+                return res.status(400).send("Accesso negato: devi specificare un anno scolastico se non sei amministratore.");
+            }
             studente = await prisma.studente.findFirst({
                 where: {
                     Email: studenteMail,
                     Classi_Studente: {
                         some: {
                             Classe: {
+                                Anno_Scolastico: new Date(AnnoScolastico),
                                 Insegnamenti: {
                                     some: { Docente_Email: req.docente.Email }
                                 }

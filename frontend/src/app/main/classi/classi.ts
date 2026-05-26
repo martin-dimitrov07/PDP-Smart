@@ -79,6 +79,16 @@ export class Classi {
         });
     }
 
+    get hasNoClasses(): boolean {
+        if (!this.anni || !this.classiService.classi) return true;
+
+        const haAlmenoUnaClasse = this.anni.some((anno: any) =>
+            this.classiService.classi[anno.id] && this.classiService.classi[anno.id].length > 0
+        );
+
+        return !haAlmenoUnaClasse;
+    }
+
     SetFilterAnno(anno: number) {
         if (anno == 0) {
             this.resetFiltersAnno();
