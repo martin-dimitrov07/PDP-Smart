@@ -1,5 +1,5 @@
 import { prisma } from "../server.ts";
-import { CheckAdmin, CheckDocente } from "./ruoli.ts";
+import { CheckAdmin, CheckDocente, CheckCoordinatore } from "./ruoli.ts";
 
 async function GetClassi(req: any, res: any) {
     try {

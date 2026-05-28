@@ -1,4 +1,5 @@
 import { prisma } from "../server.ts";
+import { CheckAdmin, CheckDocente } from "./ruoli.ts";
 
 async function IsCoordinatore(req: any, res: any) {
     try {
@@ -7,6 +8,11 @@ async function IsCoordinatore(req: any, res: any) {
         if (!email) {
             res.status(400).send("Email del docente è richiesta");
             return;
+        }
+
+        if (!await CheckAdmin(req)) {
+            if (req.docente && req.docente.Email != email)
+                return res.status(403).send("Accesso negato: non puoi verificare se un altro docente è coordinatore");
         }
 
         const classi = await prisma.classe.findMany({
@@ -24,12 +30,19 @@ async function IsCoordinatore(req: any, res: any) {
 }
 
 async function GetDocentiByClasse(req: any, res: any) {
-    try{
+    try {
         const id_classe = req["parsedQuery"].id_classe;
 
         if (!id_classe) {
             res.status(400).send("ID della classe è richiesto");
             return;
+        }
+
+        const isAdmin = await CheckAdmin(req);
+
+        if (!isAdmin) {
+            if (!await CheckDocente(req, id_classe))
+                return res.status(403).send("Accesso negato: non sei docente di questa classe");
         }
 
         const docenti = await prisma.docente.findMany({

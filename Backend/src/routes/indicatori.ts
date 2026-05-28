@@ -1,4 +1,5 @@
 import { prisma } from "../server.ts";
+import { CheckAdmin, CheckCoordinatore, CheckDocente } from "../routes/ruoli.ts";
 
 async function GetIndicatori(req: any, res: any) {
     try {
@@ -64,6 +65,10 @@ async function UpdateIndicatoriDocumento(req: any, res: any) {
     try {
         const indicatori = req.body.indicatori;
         const documento = req.body.documento;
+
+        // if(!CheckAdmin(req) || CheckCoordinatore(req)) {
+// 
+        // }
 
         for (const indicatore of indicatori) {
             if (indicatore.Value == true) {

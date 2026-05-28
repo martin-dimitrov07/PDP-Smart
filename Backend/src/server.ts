@@ -181,15 +181,15 @@ app.post("/api/documento/salva-approvato", GestioneDocumenti.SalvaDocumentoAppro
 app.get("/api/documento/file-approvato", GestioneDocumenti.GetDocumentoApprovato);
 
 //Anni scolastici
-app.get("/api/anni-scolastici-studenti", GestioneAnniScolastici.GetAnniScolasticiStudenti); //fatto sicurezza (da testare)
-app.get("/api/anni-scolastici-documenti", GestioneAnniScolastici.GetAnniScolasticiDocumenti); //fatto sicurezza (da testare)
+app.get("/api/anni-scolastici-studenti", GestioneAnniScolastici.GetAnniScolasticiStudenti); //fatto sicurezza
+app.get("/api/anni-scolastici-documenti", GestioneAnniScolastici.GetAnniScolasticiDocumenti); //fatto sicurezza
 
 //Docenti
-app.get("/api/is-coordinatore", GestioneDocenti.IsCoordinatore);
-app.get("/api/docenti-classe", GestioneDocenti.GetDocentiByClasse);
+app.get("/api/is-coordinatore", GestioneDocenti.IsCoordinatore); //fatto sicurezza
+app.get("/api/docenti-classe", GestioneDocenti.GetDocentiByClasse); //fatto sicurezza
 
 //Materie
-app.get("/api/materie", GestioneMaterie.GetMaterie);
+app.get("/api/materie", GestioneMaterie.GetMaterie); //fatto sicurezza
 
 //Indicatori
 app.patch("/api/indicatori/update", GestioneIndicatori.UpdateIndicatoriDocumento);
