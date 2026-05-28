@@ -27,13 +27,13 @@ async function GetClassi(req: any, res: any) {
         };
 
         if (await CheckAdmin(req)) {
-            classi.forEach((c: any) => {
+            for (const c of classi) {
                 const anno = c.Classe.toString();
 
                 if (groupsClassi[anno]) {
                     groupsClassi[anno].push(c);
                 }
-            });
+            }
         }
         else {
             for (const c of classi) {
@@ -74,4 +74,22 @@ async function GetClasseById(req: any, res: any) {
     }
 }
 
-export { GetClassi, GetClasseById };
+function GetClasseIdByDocumento(documento: any) {
+    const classe: any = prisma.classe.findFirst({
+        where: {
+            Anno_Scolastico: documento.Anno,
+            Classi_Studente: {
+                some: {
+                    Studente_Email: documento.Studente_Email
+                }
+            }
+        },
+        select: {
+            Id: true
+        }
+    });
+
+    return classe?.Id;
+}
+
+export { GetClassi, GetClasseById, GetClasseIdByDocumento };

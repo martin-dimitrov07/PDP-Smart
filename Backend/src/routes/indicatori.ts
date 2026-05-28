@@ -1,9 +1,14 @@
 import { prisma } from "../server.ts";
 import { CheckAdmin, CheckCoordinatore, CheckDocente } from "../routes/ruoli.ts";
+import { GetClasseIdByDocumento } from "./classi.ts";
+import { GetMaterieInsegnamenti } from "./materie.ts";
 
 async function GetIndicatori(req: any, res: any) {
     try {
         const filters = req["parsedQuery"]?.filters || {};
+
+        if(!await CheckAdmin(req) && filters.Materia_Documenti_Indicatori)
+            return res.status(400).send("questo tipo di filtro non è consentito in questa richiesta se non sei un amministratore.");
 
         const indicatori = await prisma.indicatore.findMany({
             where: filters
@@ -63,12 +68,27 @@ async function GetIndicatoriByDocumento(req: any, res: any) {
 
 async function UpdateIndicatoriDocumento(req: any, res: any) {
     try {
-        const indicatori = req.body.indicatori;
-        const documento = req.body.documento;
+        const indicatori: any[] = req.body.payload.indicatori;
+        const documento: any = req.body.payload.documento;
 
-        // if(!CheckAdmin(req) || CheckCoordinatore(req)) {
-// 
-        // }
+        const classeId = await GetClasseIdByDocumento(documento);
+
+        if (!classeId) {
+            return res.status(404).send("Classe non trovata per il documento specificato.");
+        }
+
+        if (!await CheckAdmin(req) || !await CheckCoordinatore(req, classeId)) {
+            if (!await CheckDocente(req, classeId)) {
+                return res.status(403).send("Accesso negato: non sei un docente della classe associata a questo documento.");
+            }
+
+            const materieDocente = await GetMaterieInsegnamenti(classeId, req.docente.Email);
+            const materieIndicatori: string[] = [...new Set(indicatori.map((i: any) => i.Materia))];
+
+            if (!materieIndicatori.every(m => materieDocente.includes(m))) {
+                return res.status(403).send("Accesso negato: non sei il docente delle materie selezionate.");
+            }
+        }
 
         for (const indicatore of indicatori) {
             if (indicatore.Value == true) {

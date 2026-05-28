@@ -6,6 +6,9 @@ async function GetMaterie(req: any, res: any) {
         const filters: any = req["parsedQuery"].filters || {};
 
         if (!await CheckAdmin(req)) {
+            if(filters.Materia_Documenti_Indicatori)
+                return res.status(403).send("Accesso negato: questo tipo di filtro non è consentito se non sei un amministratore.");
+
             if (!filters.Insegnamenti.Classe_Id)
                 return res.status(403).send("Accesso negato: devi specificare una classe di cui sei docente se non sei un amministratore.");
 
@@ -28,4 +31,18 @@ async function GetMaterie(req: any, res: any) {
     }
 }
 
-export { GetMaterie };
+async function GetMaterieInsegnamenti(classeId: number, docenteEmail: string) {
+    const insegnamenti = prisma.insegnamento.findMany({
+        where: {
+            Classe_Id: classeId,
+            Docente_Email: docenteEmail
+        },
+        select: {
+            Materia_Nome: true
+        }
+    });
+
+    return (await insegnamenti).map(i => i.Materia_Nome);
+}
+
+export { GetMaterie, GetMaterieInsegnamenti };

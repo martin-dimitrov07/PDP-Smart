@@ -192,8 +192,8 @@ app.get("/api/docenti-classe", GestioneDocenti.GetDocentiByClasse); //fatto sicu
 app.get("/api/materie", GestioneMaterie.GetMaterie); //fatto sicurezza
 
 //Indicatori
-app.patch("/api/indicatori/update", GestioneIndicatori.UpdateIndicatoriDocumento);
-app.get("/api/indicatori", GestioneIndicatori.GetIndicatori);
+app.patch("/api/indicatori/update", GestioneIndicatori.UpdateIndicatoriDocumento); //fatto sicurezza
+app.get("/api/indicatori", GestioneIndicatori.GetIndicatori); //fatto sicurezza
 app.get("/api/indicatori-documento", GestioneIndicatori.GetIndicatoriByDocumento);
 
 //ICF
