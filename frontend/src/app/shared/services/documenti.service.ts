@@ -42,15 +42,12 @@ export class DocumentiService {
     canEditNota: boolean = false;
 
     DeleteDocumento(documento: Documento) {
-        this.documentoSelected = documento;
-
         forkJoin({
             indicatori: this.indicatoriService.GetIndicatoriDocumento(),
             icfs: this.icfService.GetICFSDocumento(),
             allegati: this.allegatiService.GetAllegatiDocumento()
         }).subscribe({
             next: () => {
-                this.documentoSelected = {} as Documento;
                 const payload = {
                     Documento: JSON.stringify(documento),
                     Indicatori: JSON.stringify(this.indicatoriService.indicatoriDoc),

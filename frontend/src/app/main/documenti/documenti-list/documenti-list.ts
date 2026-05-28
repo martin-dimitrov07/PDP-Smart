@@ -7,13 +7,13 @@ import { isPlatformBrowser } from '@angular/common';
 import { DocumentiService } from '../../../shared/services/documenti.service';
 import { DocentiService } from '../../../shared/services/docenti.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IndirizziStyle } from "../../../shared/directives/indirizzi-style";
 import { ClassiService } from '../../../shared/services/classi.service';
 import { AnniScolasticiService } from '../../../shared/services/anni-scolastici.service';
+import { ModalDeleteDocumento } from './modal-delete-documento/modal-delete-documento';
 
 @Component({
     selector: 'app-documenti-list',
-    imports: [DocumentiCard, DocumentiHeader, DocumentiFilters],
+    imports: [DocumentiCard, DocumentiHeader, DocumentiFilters, ModalDeleteDocumento],
     templateUrl: './documenti-list.html',
     styleUrl: './documenti-list.css',
 })

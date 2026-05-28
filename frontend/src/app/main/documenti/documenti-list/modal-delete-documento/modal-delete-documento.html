@@ -1,0 +1,21 @@
+<div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title d-flex gap-2 fs-5" id="confirmDeleteLabel">
+                    <i class="bi bi-trash-fill"></i>
+                    <p class="m-0">Conferma Eliminazione</p>
+                </h3>
+            </div>
+            <div class="modal-body">
+                Sei sicuro di voler eliminare questo documento? <br> Una volta eliminato, non potrà più essere
+                recuperato. </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="DeleteDocumento()">Sì,
+                    conferma</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -19,23 +19,23 @@
                     </span>
 
                     @if(documento.Tipologia == TipoDocumento.DSA) {
-                        <span class="badge badge-dsa">DSA</span>
+                    <span class="badge badge-dsa">DSA</span>
                     } @else {
-                        <span class="badge badge-bes">BES</span>
+                    <span class="badge badge-bes">BES</span>
                     }
 
                     @if(documento.Stato == StatoDocumento.IN_BOZZA) {
-                        <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">
-                            In Bozza
-                        </span>
+                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">
+                        In Bozza
+                    </span>
                     } @else if(documento.Stato == StatoDocumento.SCADUTO) {
-                        <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">
-                            Scaduto
-                        </span>
+                    <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle">
+                        Scaduto
+                    </span>
                     }@else if(documento.Stato == StatoDocumento.VALIDATO) {
-                        <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">
-                            Validato
-                        </span>
+                    <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">
+                        Validato
+                    </span>
                     }
                 </div>
 
@@ -46,7 +46,9 @@
                     </button>
 
                     @if ((canDelete) && documento.Stato == StatoDocumento.IN_BOZZA) {
-                    <button type="button" (click)="$event.stopPropagation(); DeleteDocument()"
+                    <button type="button"
+                        (click)="$event.stopPropagation(); this.documentiService.documentoSelected = this.documento;"
+                        data-bs-toggle="modal" data-bs-target="#confirmDelete"
                         class="btn btn-sm d-flex justify-content-center align-items-center action-btn delete-btn">
                         <i class="bi bi-trash"></i>
                     </button>
@@ -56,7 +58,6 @@
         </div>
     </div>
 
-
     <div class="d-none d-sm-flex flex-column gap-2">
         <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn"
             (click)="$event.stopPropagation(); ShowDocumento()">
@@ -65,10 +66,10 @@
 
         @if ((canDelete) && documento.Stato == StatoDocumento.IN_BOZZA) {
         <button type="button" class="btn btn-sm d-flex justify-content-center align-items-center action-btn delete-btn"
-            (click)="$event.stopPropagation(); DeleteDocument()">
+            (click)="$event.stopPropagation(); this.documentiService.documentoSelected = this.documento;"
+            data-bs-toggle="modal" data-bs-target="#confirmDelete">
             <i class="bi bi-trash"></i>
         </button>
         }
     </div>
-
 </button>

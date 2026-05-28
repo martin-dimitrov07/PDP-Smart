@@ -20,7 +20,7 @@ import { ClassiService } from '../../../../shared/services/classi.service';
 })
 export class DocumentiCard {
     public readonly docentiService: DocentiService = inject(DocentiService);
-    private readonly documentiService: DocumentiService = inject(DocumentiService);
+    public readonly documentiService: DocumentiService = inject(DocumentiService);
     private readonly classiService: ClassiService = inject(ClassiService);
     private readonly studentiService: StudentiService = inject(StudentiService);
     private readonly checkError: CheckError = inject(CheckError);
@@ -57,12 +57,6 @@ export class DocumentiCard {
         // console.log("Navigazione a modifica documento:", this.documento);
         this.documentiService.documentoSelected = this.documento;
         this.router.navigate(["/documenti/modifica", this.documento.Studente_Email.replaceAll('.', '_'), this.documento.Anno?.getFullYear() + "-" + (this.documento.Anno!.getFullYear() + 1)]);
-    }
-
-    DeleteDocument() {
-        if (confirm("Sei sicuro di voler eliminare questo documento?")) {
-            this.documentiService.DeleteDocumento(this.documento);
-        }
     }
 
     CanDelete() {
@@ -124,7 +118,7 @@ export class DocumentiCard {
                     const link = document.createElement('a');
                     link.href = fileUrl;
                     link.download = "PDP_" + studente.Cognome.replaceAll(' ', '_') + "_" + studente.Nome.replaceAll(' ', '_') + "_" + this.documento.Anno?.getFullYear() + "-" + (this.documento.Anno!.getFullYear() + 1) + ".pdf";
-                    link.click(); 
+                    link.click();
 
                     setTimeout(() => window.URL.revokeObjectURL(fileUrl), 100); // Pulizia dell'URL dopo il download
                 },
