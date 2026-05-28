@@ -197,8 +197,9 @@ app.get("/api/indicatori", GestioneIndicatori.GetIndicatori); //fatto sicurezza
 app.get("/api/indicatori-documento", GestioneIndicatori.GetIndicatoriByDocumento);
 
 //ICF
-app.get("/api/icfs", GestioneICF.GetIcfs);
+app.get("/api/icfs", GestioneICF.GetICFs);
 app.patch("/api/icfs/update", GestioneICF.UpdateICFsDocumento);
+app.post("/api/icfs/create", GestioneICF.CreateICFs);
 
 //Allegati
 app.get("/api/allegati", GestioneAllegati.GetAllegati);

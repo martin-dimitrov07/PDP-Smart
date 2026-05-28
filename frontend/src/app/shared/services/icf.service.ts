@@ -18,6 +18,7 @@ export class IcfService {
     icfs: Icf[] = [];
     icfsSelected: Icf[] = [];
     icfsEdit: any[] = [];
+    newIcfs: Icf[] = [];
 
     GetICFs() {
         this.icfs = [];
@@ -58,4 +59,13 @@ export class IcfService {
         return this.dataStorageService.InviaRichiesta("PATCH", "/icfs/update", payload)!;
     }
 
+    CreateICFs(icfs: Icf[]) {
+        if(icfs.length == 0) return;
+
+        const payload = {
+            icfs: icfs
+        }
+
+        return this.dataStorageService.InviaRichiesta("POST", "/icfs/create", payload)!;
+    }
 }

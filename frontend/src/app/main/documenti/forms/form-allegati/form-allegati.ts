@@ -16,6 +16,7 @@ import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { StudentiService } from '../../../../shared/services/studenti.service';
 import { ClassiService } from '../../../../shared/services/classi.service';
 import { AllegatiService } from '../../../../shared/services/allegati.service';
+import { IcfService } from '../../../../shared/services/icf.service';
 
 
 @Component({
@@ -26,21 +27,23 @@ import { AllegatiService } from '../../../../shared/services/allegati.service';
 })
 export class FormAllegati {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
-    public readonly classiService: ClassiService = inject(ClassiService);
+    private readonly classiService: ClassiService = inject(ClassiService);
     public readonly docenteService: DocentiService = inject(DocentiService);
-    public readonly studentiService: StudentiService = inject(StudentiService);
     public readonly stepsService: StepsService = inject(StepsService);
     public readonly allegatiService: AllegatiService = inject(AllegatiService);
-    public activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+    private readonly icfsService: IcfService = inject(IcfService);
+    public readonly docentiService: DocentiService = inject(DocentiService);
     private readonly checkError: CheckError = inject(CheckError);
 
-    public readonly docentiService: DocentiService = inject(DocentiService);
+
+    private readonly router: Router = inject(Router);
+    public activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+
     Ruolo: typeof Ruolo = Ruolo;
     StatoDocumento: typeof Stato = Stato;
 
     classiCoordinateIds: number[] = [];
 
-    private readonly router: Router = inject(Router);
 
     @ViewChild('btnTrigger') btnTrigger!: ElementRef;
 
@@ -63,7 +66,6 @@ export class FormAllegati {
                 }
             });
         }
-        this.allegatiService.allegati = [];
         this.CanEdit();
     }
 
@@ -95,6 +97,20 @@ export class FormAllegati {
     RemoveNewAllegato(allegato: Allegato) {
         // Rimuove il file dall'array
         this.allegatiService.allegati.splice(this.allegatiService.allegati.findIndex((f) => f === allegato), 1);
+    }
+
+    PrepareDocumento() {
+        if (this.icfsService.newIcfs.length > 0) {
+            this.icfsService.CreateICFs(this.icfsService.newIcfs)?.subscribe({
+                next: (data: any) => {
+                    this.CreateDocumento();
+                },
+                error: (err: any) => this.checkError.checkError(err)
+            });
+        }
+        else {
+            this.CreateDocumento();
+        }
     }
 
     CreateDocumento() {

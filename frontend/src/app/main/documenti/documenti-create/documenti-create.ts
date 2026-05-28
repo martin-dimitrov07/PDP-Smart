@@ -11,6 +11,9 @@ import e from 'express';
 import { Documento } from '../../../models/documento';
 import { ClassiService } from '../../../shared/services/classi.service';
 import { AnniScolasticiService } from '../../../shared/services/anni-scolastici.service';
+import { IcfService } from '../../../shared/services/icf.service';
+import { AllegatiService } from '../../../shared/services/allegati.service';
+import { IndicatoriService } from '../../../shared/services/indicatori.service';
 
 @Component({
     selector: 'app-documenti-create',
@@ -19,7 +22,9 @@ import { AnniScolasticiService } from '../../../shared/services/anni-scolastici.
     styleUrl: './documenti-create.css',
 })
 export class DocumentiCreate {
-    private readonly studentiService: StudentiService = inject(StudentiService);
+    private readonly indicatoriService: IndicatoriService = inject(IndicatoriService);
+    private readonly icfService: IcfService = inject(IcfService);
+    private readonly allegatiService: AllegatiService = inject(AllegatiService);
     private readonly anniScolasticiService: AnniScolasticiService = inject(AnniScolasticiService);
     private readonly classiService: ClassiService = inject(ClassiService);
     private readonly docentiService: DocentiService = inject(DocentiService);
@@ -29,6 +34,10 @@ export class DocumentiCreate {
 
     ngOnInit() {
         this.router.navigate(['studenti'], { relativeTo: this.activatedRoute });
+
+        this.indicatoriService.indicatori = {};
+        this.icfService.icfsSelected = [];
+        this.allegatiService.allegati = [];
 
         this.docentiService.GetDocente().subscribe(isLoaded => {
             if (isLoaded) {

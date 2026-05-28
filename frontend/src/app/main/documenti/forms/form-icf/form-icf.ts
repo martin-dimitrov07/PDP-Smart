@@ -48,7 +48,6 @@ export class FormICF {
                 error: (err: any) => console.log(err)
             });
         }
-        this.icfService.icfsSelected = [];
 
         this.docentiService.GetDocente().subscribe(isLoaded => {
             if (isLoaded) {
@@ -67,6 +66,11 @@ export class FormICF {
     SaveICF(icf: Icf) {
         if (this.icfService.icfsSelected.findIndex((icfArray: Icf) => icfArray.Codice == icf.Codice) == -1) {
             this.icfService.icfsSelected.push(new Icf(icf.Codice, icf.Descrizione));
+
+            if(this.icfService.icfs.findIndex((icfArray: Icf) => icfArray.Codice == icf.Codice) == -1) {
+                this.icfService.newIcfs.push(new Icf(icf.Codice, icf.Descrizione));
+            }
+
             if (this.root == "modifica") {
                 const indexICFEdit = this.icfService.icfsEdit.findIndex((icfEdit: any) => icfEdit.Icf.Codice == icf.Codice);
                 if (indexICFEdit != -1) {
@@ -76,11 +80,16 @@ export class FormICF {
                 }
             }
         }
-        console.log(this.icfService.icfsEdit);
+        // console.log(this.icfService.icfsEdit);
     }
 
     RemoveICF(codice: string) {
         this.icfService.icfsSelected.splice(this.icfService.icfsSelected.findIndex(icf => icf.Codice == codice), 1);
+
+        if(this.icfService.newIcfs.findIndex((icfArray: Icf) => icfArray.Codice == codice) != -1) {
+            this.icfService.newIcfs.splice(this.icfService.newIcfs.findIndex((icfArray: Icf) => icfArray.Codice == codice), 1);
+        }
+
         if (this.root == "modifica") {
             const indexICFEdit = this.icfService.icfsEdit.findIndex((icfEdit: any) => icfEdit.Icf.Codice == codice);
             if (indexICFEdit != -1) {
@@ -89,7 +98,7 @@ export class FormICF {
                 this.icfService.icfsEdit.push({ Icf: new Icf(codice), Value: false });
             }
         }
-        console.log(this.icfService.icfsEdit);
+        // console.log(this.icfService.icfsEdit);
     }
 
     Edit(){

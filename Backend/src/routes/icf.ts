@@ -1,6 +1,6 @@
 import { prisma } from "../server.ts";
 
-async function GetIcfs(req: any, res: any) {
+async function GetICFs(req: any, res: any) {
     try {
         const filters: any = req["parsedQuery"].filters || {};
 
@@ -44,13 +44,20 @@ async function CreateDocumentoICFs(db: any, ICFs: any, studenteEmail: string, an
     }
 }
 
-async function CreateICF(req: any, res: any) {
+async function CreateICFs(req: any, res: any) {
     try {
-        const icf = req.body;
-        const newICF = await prisma.iCF.create({
-            data: icf
-        });
-        res.send(newICF);
+        const icfs: any[]  = req.body.icfs;
+
+        for (const icf of icfs) {
+            await prisma.iCF.create({
+                data: {
+                    Codice: icf.Codice,
+                    Descrizione: icf.Descrizione
+                }
+            });
+        }
+
+        res.status(201).send({ message: "ICFs creati con successo" });
     } catch (err) {
         console.error("Errore nella creazione dell'ICF:", err);
         res.status(500).send({
@@ -120,4 +127,4 @@ async function UpdateICFsDocumento(req: any, res: any) {
     }
 }
 
-export { GetIcfs , DeleteICFs, CreateDocumentoICFs, UpdateICFsDocumento, CreateICF };
+export { GetICFs , DeleteICFs, CreateDocumentoICFs, UpdateICFsDocumento, CreateICFs };
