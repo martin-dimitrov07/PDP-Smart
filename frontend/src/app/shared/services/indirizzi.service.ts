@@ -15,20 +15,11 @@ export class IndirizziService {
     indirizzoSelected?: string;
 
     GetIndirizzi(): Observable<any> {
-        const filters = this.docentiService.docente.Ruolo != Ruolo.ADMIN ? {
-            Insegnamenti: {
-                some: {  // serve per relazioni uno a molti
-                    Docente_Email: this.docentiService.docente.Email
-                }
-            }
-        } : {};
-
         const params = {
-            filters: JSON.stringify(filters),
             distinct: "Indirizzo"
         }
 
-        console.log(this.docentiService.docente);
+        // console.log(this.docentiService.docente);
 
         return this.dataStorageService.InviaRichiesta("GET", "/indirizzi", params)!.pipe(tap((data: any) => {
             this.indirizzi = Array.from(data).map((item: any) => item.Indirizzo);

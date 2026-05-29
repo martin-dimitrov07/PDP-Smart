@@ -31,6 +31,19 @@ async function GetIndicatoriByDocumento(req: any, res: any) {
             return;
         }
 
+        const classeId = await GetClasseIdByDocumento(filters.Documento_Anno, filters.Documento_Studente_Email);
+        
+        if (!classeId) {
+            return res.status(404).send("Classe non trovata per il documento specificato.");
+        }
+
+        if(!await CheckAdmin(req))
+        {
+            if (!await CheckDocente(req, classeId)) {
+                return res.status(403).send("Accesso negato: non sei un docente della classe associata a questo documento.");
+            }
+        }
+
         // tutti i record che hanno quel studente_Email e documento_Anno
         // restituire id nota e materia e categoria
         // restituire un array
@@ -71,7 +84,7 @@ async function UpdateIndicatoriDocumento(req: any, res: any) {
         const indicatori: any[] = req.body.payload.indicatori;
         const documento: any = req.body.payload.documento;
 
-        const classeId = await GetClasseIdByDocumento(documento);
+        const classeId = await GetClasseIdByDocumento(documento.Anno, documento.Studente_Email);
 
         if (!classeId) {
             return res.status(404).send("Classe non trovata per il documento specificato.");

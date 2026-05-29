@@ -1,8 +1,28 @@
 import { prisma } from "../server.ts";
+import { GetClasseIdByDocumento } from "./classi.ts";
+import { CheckAdmin, CheckDocente } from "./ruoli.ts";
 
 async function GetICFs(req: any, res: any) {
     try {
         const filters: any = req["parsedQuery"].filters || {};
+
+        if (!await CheckAdmin(req)) {
+            if (filters.Documenti_ICF) {
+                if (!filters.Documenti_ICF.Documento_Studente_Email || !filters.Documenti_ICF.Documento_Anno) {
+                    return res.status(403).send("Accesso negato: non sei un amministratore. Per visualizzare gli ICFs di un documento devi specificare sia l'email dello studente che l'anno del documento.");
+                }
+
+                const classeId = await GetClasseIdByDocumento(filters.Documenti_ICF.Documento_Anno, filters.Documenti_ICF.Documento_Studente_Email);
+
+                if (!classeId) {
+                    return res.status(404).send("Classe non trovata per il documento specificato.");
+                }
+
+                if (!await CheckDocente(req, classeId)) {
+                    return res.status(403).send("Accesso negato: non sei un docente della classe associata a questo documento.");
+                }
+            }
+        }
 
         const icf = await prisma.iCF.findMany({
             where: filters,
@@ -46,7 +66,11 @@ async function CreateDocumentoICFs(db: any, ICFs: any, studenteEmail: string, an
 
 async function CreateICFs(req: any, res: any) {
     try {
-        const icfs: any[]  = req.body.icfs;
+        const icfs: any[] = req.body.icfs;
+
+        if (!await CheckAdmin(req)) {
+            return res.status(403).send("Accesso negato: non sei un amministratore. Solo un amministratore può creare nuovi ICFs.");
+        }
 
         for (const icf of icfs) {
             await prisma.iCF.create({
@@ -69,7 +93,7 @@ async function CreateICFs(req: any, res: any) {
 
 async function UpdateICFsDocumento(req: any, res: any) {
     try {
-        //         ICF_Codice               String
+        // ICF_Codice               String
         // Documento_Anno           DateTime
         // Documento_Studente_Email String
         // ICFs = {
@@ -81,6 +105,10 @@ async function UpdateICFsDocumento(req: any, res: any) {
 
         const ICFs = req.body.icfs;
         const documento = req.body.documento;
+
+        if (!await CheckAdmin(req)) {
+            return res.status(403).send("Accesso negato: non sei un amministratore. Solo un amministratore può aggiornare gli ICFs di un documento.");
+        }
 
         for (const ICFKey in ICFs) {
             const ICF = ICFs[ICFKey];
@@ -127,4 +155,4 @@ async function UpdateICFsDocumento(req: any, res: any) {
     }
 }
 
-export { GetICFs , DeleteICFs, CreateDocumentoICFs, UpdateICFsDocumento, CreateICFs };
+export { GetICFs, DeleteICFs, CreateDocumentoICFs, UpdateICFsDocumento, CreateICFs };

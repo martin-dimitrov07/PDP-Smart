@@ -74,13 +74,13 @@ async function GetClasseById(req: any, res: any) {
     }
 }
 
-function GetClasseIdByDocumento(documento: any) {
+function GetClasseIdByDocumento(anno: string, studenteEmail: string) {
     const classe: any = prisma.classe.findFirst({
         where: {
-            Anno_Scolastico: documento.Anno,
+            Anno_Scolastico: anno,
             Classi_Studente: {
                 some: {
-                    Studente_Email: documento.Studente_Email
+                    Studente_Email: studenteEmail
                 }
             }
         },

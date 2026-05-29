@@ -173,12 +173,12 @@ app.get("/api/classi", GestioneClassi.GetClassi); // fatto sicurezza
 app.get("/api/classe/:id", GestioneClassi.GetClasseById); //fatto sicurezza
 
 //Documenti
-app.post("/api/documento/create", GestioneDocumenti.CreatePDP);
-app.get("/api/documenti", GestioneDocumenti.GetDocumenti);
-app.delete("/api/documento/delete/", GestioneDocumenti.DeletePDP);
-app.patch("/api/documento/approva", GestioneDocumenti.ApprovaDocumento);
-app.post("/api/documento/salva-approvato", GestioneDocumenti.SalvaDocumentoApprovato);
-app.get("/api/documento/file-approvato", GestioneDocumenti.GetDocumentoApprovato);
+app.post("/api/documento/create", GestioneDocumenti.CreatePDP); //fatto sicurezza
+app.get("/api/documenti", GestioneDocumenti.GetDocumenti); //fatto sicurezza
+app.delete("/api/documento/delete/", GestioneDocumenti.DeletePDP); //fatto sicurezza
+app.patch("/api/documento/approva", GestioneDocumenti.ApprovaDocumento); //fatto sicurezza
+app.post("/api/documento/salva-approvato", GestioneDocumenti.SalvaDocumentoApprovato); //fatto sicurezza
+app.get("/api/documento/file-approvato", GestioneDocumenti.GetDocumentoApprovato); //fatto sicurezza
 
 //Anni scolastici
 app.get("/api/anni-scolastici-studenti", GestioneAnniScolastici.GetAnniScolasticiStudenti); //fatto sicurezza
@@ -194,16 +194,16 @@ app.get("/api/materie", GestioneMaterie.GetMaterie); //fatto sicurezza
 //Indicatori
 app.patch("/api/indicatori/update", GestioneIndicatori.UpdateIndicatoriDocumento); //fatto sicurezza
 app.get("/api/indicatori", GestioneIndicatori.GetIndicatori); //fatto sicurezza
-app.get("/api/indicatori-documento", GestioneIndicatori.GetIndicatoriByDocumento);
+app.get("/api/indicatori-documento", GestioneIndicatori.GetIndicatoriByDocumento); //fatto sicurezza
 
 //ICF
-app.get("/api/icfs", GestioneICF.GetICFs);
-app.patch("/api/icfs/update", GestioneICF.UpdateICFsDocumento);
-app.post("/api/icfs/create", GestioneICF.CreateICFs);
+app.get("/api/icfs", GestioneICF.GetICFs); //fatto sicurezza
+app.patch("/api/icfs/update", GestioneICF.UpdateICFsDocumento); //fatto sicurezza
+app.post("/api/icfs/create", GestioneICF.CreateICFs); //fatto sicurezza
 
 //Allegati
-app.get("/api/allegati", GestioneAllegati.GetAllegati);
-app.patch("/api/allegati/update", GestioneAllegati.UpdateAllegatiDocumento);
+app.get("/api/allegati", GestioneAllegati.GetAllegati); //fatto sicurezza
+app.patch("/api/allegati/update", GestioneAllegati.UpdateAllegatiDocumento); //fatto sicurezza
 
 //F. default root e gestione errori
 app.use(function (req, res) {

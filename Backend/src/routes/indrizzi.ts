@@ -9,17 +9,9 @@ async function GetIndirizzi(req: any, res: any) {
         const isAdmin = await CheckAdmin(req);
 
         if (!isAdmin) {
-            const requestedEmail = filters?.Insegnamenti?.some?.Docente_Email;
-
-            if (requestedEmail && requestedEmail != req.docente.Email) {
-                return res.status(403).send("Accesso negato: non puoi filtrare per un altro docente.");
-            }
-
-            if (!requestedEmail) {
-                filters.Insegnamenti = {
-                    some: { Docente_Email: req.docente.Email }
-                };
-            }
+            filters.Insegnamenti = {
+                some: { Docente_Email: req.docente.Email }
+            };
         }
 
         let query: any = {

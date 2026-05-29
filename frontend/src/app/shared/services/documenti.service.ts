@@ -119,9 +119,7 @@ export class DocumentiService {
             filters: JSON.stringify(filters)
         };
 
-        if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
-            params.docenteEmail = this.docentiService.docente.Email;
-        }
+        params.docenteEmail = this.docentiService.docente.Email;
 
         return this.dataStorageService.InviaRichiesta("GET", "/documenti", params)!.pipe(
             tap((data: any) => {

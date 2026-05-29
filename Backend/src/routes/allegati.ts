@@ -1,6 +1,8 @@
 import { writeFile, mkdir, unlink, readdir, readFile, access } from "fs/promises";
 import { prisma } from "../server.ts";
 import { extname, join } from "path";
+import { GetClasseIdByDocumento } from "./classi.ts";
+import { CheckAdmin, CheckCoordinatore, CheckDocente } from "./ruoli.ts";
 
 async function CreateAllegati(db: any, allegati: any[], studenteEmail: string, anno: Date) {
     const allegatiCreati = [];
@@ -59,6 +61,22 @@ async function UpdateAllegatiDocumento(req: any, res: any) {
         const allegatiAdd = req.files && req.files.allegatiAdd ? (Array.isArray(req.files.allegatiAdd) ? req.files.allegatiAdd : [req.files.allegatiAdd]) : [];
         const allegatiDelete = req.body.allegatiDelete ? Array.isArray(req.body.allegatiDelete) ? req.body.allegatiDelete : [req.body.allegatiDelete] : [];
 
+        if(!documento || !documento.Studente_Email || !documento.Anno) {
+            return res.status(400).send("Mancano informazioni sul documento nella richiesta");
+        }
+
+        if(!await CheckAdmin(req)) {
+            const classeId = await GetClasseIdByDocumento(documento.Anno, documento.Studente_Email);
+
+            if(!classeId) {
+                return res.status(404).send("Classe non trovata per lo studente e l'anno specificati nel documento.");
+            }
+
+            if(!await CheckCoordinatore(req, classeId)) {
+                return res.status(403).send("Accesso negato: non sei un amministratore o un coordinatore della classe associata a questo documento.");
+            }
+        }
+
         let filesDelete: any[] = [];
         let saveAllegati: any[] = [];
 
@@ -105,7 +123,19 @@ async function GetAllegati(req: any, res: any) {
         const anno = filters["Documento_Anno"] ? new Date(filters["Documento_Anno"]).getFullYear().toString() : null;
 
         if (!studente_Email || !anno) {
-            return res.status(400).send({ error: "Mancano utente o anno nella richiesta" });
+            return res.status(400).send("Mancano utente o anno nella richiesta");
+        }
+
+        const classeId = await GetClasseIdByDocumento(anno, studente_Email);
+
+        if(!classeId) {
+            return res.status(404).send("Classe non trovata per lo studente e l'anno specificati");
+        }
+
+        if(!await CheckAdmin(req)) {
+            if (!await CheckDocente(req, classeId)) {
+                return res.status(403).send("Accesso negato: non sei un docente della classe associata a questo documento.");
+            }
         }
 
         const cartellaTarget = join(`${process.env.ALLEGATI_PATH}`, studente_Email, anno);
