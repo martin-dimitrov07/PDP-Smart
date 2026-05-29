@@ -1,5 +1,5 @@
 import { prisma } from "../server.ts";
-import { CheckAdmin, CheckDocente } from "./ruoli.ts";
+import { CheckAdmin, CheckCoordinatore, CheckDocente } from "./ruoli.ts";
 
 async function GetMaterie(req: any, res: any) {
     try {
@@ -9,10 +9,12 @@ async function GetMaterie(req: any, res: any) {
             if(filters.Materia_Documenti_Indicatori)
                 return res.status(403).send("Accesso negato: questo tipo di filtro non è consentito se non sei un amministratore.");
 
-            if (!filters.Insegnamenti.Classe_Id)
+            const classeId = filters?.Insegnamenti?.some?.Classe_Id;
+            if (!classeId)
                 return res.status(403).send("Accesso negato: devi specificare una classe di cui sei docente se non sei un amministratore.");
 
-            const isDocente = await CheckDocente(req, filters.Insegnamenti.Classe_Id);
+            const isDocente = await CheckDocente(req, classeId);
+            const isCoordinatore = await CheckCoordinatore(req, classeId);
 
             if(!isDocente)
                 return res.status(403).send("Accesso negato: non sei un docente di questa classe.");

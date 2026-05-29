@@ -187,6 +187,7 @@ app.get("/api/anni-scolastici-documenti", GestioneAnniScolastici.GetAnniScolasti
 //Docenti
 app.get("/api/is-coordinatore", GestioneDocenti.IsCoordinatore); //fatto sicurezza
 app.get("/api/docenti-classe", GestioneDocenti.GetDocentiByClasse); //fatto sicurezza
+app.get("/api/is-coordinatore-classe", GestioneDocenti.IsCoordinatoreClasse);
 
 //Materie
 app.get("/api/materie", GestioneMaterie.GetMaterie); //fatto sicurezza

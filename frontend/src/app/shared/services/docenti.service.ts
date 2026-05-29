@@ -83,4 +83,16 @@ export class DocentiService {
             })
         );
     }
+
+    isCoordinatoreClasse(id_classe: number): Observable<boolean> {
+        return this.dataStorageService.InviaRichiesta("GET", "/is-coordinatore-classe", { id_classe })!.pipe(
+            map((response: any) => {
+                return response.isCoordinatore;
+            }),
+            catchError((err) => {
+                console.error("Errore durante la verifica del coordinatore di classe:", err);
+                return of(false);
+            })
+        );
+    }
 }

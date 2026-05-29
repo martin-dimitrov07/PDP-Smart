@@ -1,5 +1,5 @@
 import { prisma } from "../server.ts";
-import { CheckAdmin, CheckDocente } from "./ruoli.ts";
+import { CheckAdmin, CheckCoordinatore, CheckDocente } from "./ruoli.ts";
 
 async function IsCoordinatore(req: any, res: any) {
     try {
@@ -22,6 +22,18 @@ async function IsCoordinatore(req: any, res: any) {
         });
 
         res.send({ isCoordinatore: classi.length > 0 });
+    }
+    catch (err) {
+        console.error("Errore esecuzione richiesta");
+        res.status(500).send("Errore nella esecuzione della richiesta: ", err);
+    }
+}
+
+async function IsCoordinatoreClasse(req: any, res: any) {
+    try {
+        const id_classe = req["parsedQuery"].id_classe;
+
+        res.send({ isCoordinatore: await CheckCoordinatore(req, id_classe) });
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
@@ -63,4 +75,4 @@ async function GetDocentiByClasse(req: any, res: any) {
     }
 }
 
-export { IsCoordinatore, GetDocentiByClasse };
+export { IsCoordinatore, GetDocentiByClasse, IsCoordinatoreClasse };

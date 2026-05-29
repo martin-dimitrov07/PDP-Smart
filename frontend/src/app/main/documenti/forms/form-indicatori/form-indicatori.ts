@@ -17,6 +17,7 @@ import { Stato } from '../../../../models/documento';
 import { ClassiService } from '../../../../shared/services/classi.service';
 import { MaterieService } from '../../../../shared/services/materie.service';
 import { IndicatoriService } from '../../../../shared/services/indicatori.service';
+import { lastValueFrom } from 'rxjs';
 
 
 @Component({
@@ -45,95 +46,62 @@ export class FormIndicatori {
 
     public readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
-    ngOnInit() {
+    async ngOnInit() {
         this.stepsService.step = "indicatori";
         this.datiCaricati = false;
 
-        if (this.activatedRoute.snapshot.data['root'] == "modifica") {
+        try {
+            if (this.activatedRoute.snapshot.data['root'] == "modifica") {
 
-            if (this.documentiService.documentoSelected.Stato == this.StatoDocumento.IN_BOZZA)
-                this.canEdit = true;
+                if (this.documentiService.documentoSelected.Stato == this.StatoDocumento.IN_BOZZA || this.activatedRoute.snapshot.data['root'] == "crea")
+                    this.canEdit = true;
+                else
+                    this.canEdit = false;
+
+                this.indicatoriService.indicatoriEdit = [];
+
+                const annoScolastico = new Date(this.activatedRoute.snapshot.paramMap.get('annoScolastico')!.split("-")[0] + "-09-01");
+                const studenteEmail = this.activatedRoute.snapshot.paramMap.get('studenteEmail')!.replaceAll('_', '.');
+
+                const classe: Classe = await lastValueFrom(this.classiService.GetClasseStudente(studenteEmail, annoScolastico));
+                this.classiService.classeSelected = classe;
+            }
+            
+            await lastValueFrom(this.materieService.GetMaterieClasse());
+
+            await lastValueFrom(this.indicatoriService.GetCategorieIndicatore());
+
+            this.datiCaricati = false;
+            // Forziamo Angular a capire che c'è stato un cambiamento
+            this.cdr.detectChanges();
+
+            if (this.activatedRoute.snapshot.data['root'] == "modifica") {
+                this.indicatoriService.InitializeIndicatori();
+                this.indicatoriService.SetIndicatori();
+            } else {
+                if (Object.keys(this.indicatoriService.indicatori).length == 0) {
+                    this.indicatoriService.InitializeIndicatori();
+                }
+            }
+
+            console.log(this.indicatoriService.indicatori);
+
+            this.datiCaricati = true;
+            this.cdr.detectChanges();
+
+            if (this.canEdit) {
+                (await this.materieService.GetMaterieDocente()).subscribe({
+                    error: (err) => this.checkError.checkError(err)
+                });
+            }
             else
-                this.canEdit = false;
-
-            this.indicatoriService.indicatoriEdit = [];
-
-            const annoScolastico = new Date(this.activatedRoute.snapshot.paramMap.get('annoScolastico')!.split("-")[0] + "-09-01");
-
-            this.classiService.GetClasseStudente(this.activatedRoute.snapshot.paramMap.get('studenteEmail')!.replaceAll('_', '.'), annoScolastico).subscribe({
-                next: (classe: Classe) => {
-                    this.classiService.classeSelected = classe;
-
-                    this.materieService.GetMaterieClasse().subscribe({
-                        next: (data) => {
-                            this.indicatoriService.GetCategorieIndicatore().subscribe({
-                                next: (data) => {
-                                    this.datiCaricati = false;
-                                    // Forziamo Angular a capire che c'è stato un cambiamento
-                                    this.cdr.detectChanges();
-
-                                    this.indicatoriService.InitializeIndicatori();
-                                    this.indicatoriService.SetIndicatori();
-
-                                    console.log(this.indicatoriService.indicatori);
-
-                                    this.datiCaricati = true;
-                                    this.cdr.detectChanges();
-                                },
-                                error: (err) => {
-                                    this.datiCaricati = true;
-                                    this.checkError.checkError(err);
-                                }
-                            });
-                        },
-                        error: (err) => {
-                            this.datiCaricati = true;
-                            this.checkError.checkError(err);
-                        }
-                    })
-                }
-            });
+                this.materieService.materieDocente = [];
         }
-        else {
-            this.canEdit = true;
-            this.materieService.GetMaterieClasse().subscribe({
-                next: (data) => {
-                    this.indicatoriService.GetCategorieIndicatore().subscribe({
-                        next: (data) => {
-                            this.datiCaricati = false;
-                            // Forziamo Angular a capire che c'è stato un cambiamento
-                            this.cdr.detectChanges();
-
-                            if (Object.keys(this.indicatoriService.indicatori).length == 0) {
-                                this.indicatoriService.InitializeIndicatori();
-                            }
-
-                            this.datiCaricati = true;
-                            this.cdr.detectChanges();
-                        },
-                        error: (err) => {
-                            this.datiCaricati = true;
-                            this.checkError.checkError(err);
-                        }
-                    });
-                },
-                error: (err) => {
-                    this.datiCaricati = true;
-                    this.checkError.checkError(err);
-                }
-            })
-
-
+        catch (err) {
+            this.datiCaricati = true;
+            this.checkError.checkError(err);
+            return;
         }
-
-        if (this.canEdit) {
-            this.materieService.GetMaterieDocente().subscribe({
-                next: (data) => { },
-                error: (err) => this.checkError.checkError(err)
-            })
-        }
-        else 
-            this.materieService.materieDocente = [];
     }
 
     Edit() {

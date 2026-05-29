@@ -1,7 +1,7 @@
 import { inject, Injectable, Injector } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
 import { Indicatore } from '../../models/indicatore';
-import { of, tap } from 'rxjs';
+import { map, of, tap } from 'rxjs';
 import { DocumentiService } from './documenti.service';
 import { MaterieService } from './materie.service';
 import { CheckError } from '../utilities/check-error';
@@ -102,8 +102,9 @@ export class IndicatoriService {
     }
 
     GetCategorieIndicatore() {
-        return this.dataStorageService.InviaRichiesta("GET", "/indicatori")!.pipe(tap((data: any) => {
+        return this.dataStorageService.InviaRichiesta("GET", "/indicatori")!.pipe(map((data: any) => {
             this.categorieInd = [...new Set<string>(data.map((ind: Indicatore) => ind.Categoria))];
+            return this.categorieInd;
         }));
     }
 
