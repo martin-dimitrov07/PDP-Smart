@@ -77,13 +77,9 @@ export class ClassiService {
                     const classesGroup = data[key];
 
                     const validateClasses = classesGroup.map(async (classe: any) => {
-                        const studentsCount = await firstValueFrom(this.studentiService.GetNumeroStudenti(classe.Id));
-
-                        if (studentsCount.countStudenti > 0) {
-                            const studentiNoDoc = await firstValueFrom(this.studentiService.GetStudentiNoDocumento(classe.Id));
-                            if (studentiNoDoc && studentiNoDoc.length > 0) {
-                                return classe;
-                            }
+                        const studentiNoDoc = await firstValueFrom(this.studentiService.GetStudentiNoDocumento(classe.Id));
+                        if (studentiNoDoc && studentiNoDoc.length > 0) {
+                            return classe;
                         }
                         return null;
                     });
@@ -124,13 +120,9 @@ export class ClassiService {
                     const classesGroup = data[key];
 
                     const validateClasses = classesGroup.map(async (classe: any) => {
-                        const studentsCount = await firstValueFrom(this.studentiService.GetNumeroStudenti(classe.Id));
-
-                        if (studentsCount.countStudenti > 0) {
-                            const studentiNoDoc = await firstValueFrom(this.studentiService.GetStudentiNoDocumento(classe.Id));
-                            if (studentiNoDoc && studentiNoDoc.length > 0) {
-                                return classe;
-                            }
+                        const studentiNoDoc = await firstValueFrom(this.studentiService.GetStudentiNoDocumento(classe.Id));
+                        if (studentiNoDoc && studentiNoDoc.length > 0) {
+                            return classe;
                         }
                         return null;
                     });
