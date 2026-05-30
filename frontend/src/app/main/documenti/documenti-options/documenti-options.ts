@@ -30,7 +30,7 @@ export class DocumentiOptions {
                 }
                 else {
                     if (this.docentiService.docente.Ruolo == Ruolo.COORDINATORE) {
-                        this.classiService.GetClassiNoDocEmptyCoordinatore(Documento.SetAnnoCorrect(new Date())).subscribe({
+                        this.classiService.GetClassiNoDocNoEmpty(Documento.SetAnnoCorrect(new Date())).subscribe({
                             next: (data: any) => {
                                 console.log(data);
                                 const hasStudents = Object.values(data).some((arr: any) => arr && arr.length > 0);

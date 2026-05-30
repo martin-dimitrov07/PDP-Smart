@@ -8,7 +8,7 @@ export class CheckError {
     private readonly router: Router = inject(Router);
 
     checkError(err: any) {
-        if (err.status == 401)
+        if (err.status == 401 || err.status == 403)
             this.router.navigate(["/login"]);
         else
             console.error("Errore API:", err.status, err.error);    

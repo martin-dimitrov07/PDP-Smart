@@ -33,13 +33,13 @@ export class ModalAddStudente {
     @Output() studenteEvent = new EventEmitter<Studente>();
 
     ngOnInit() {
-        this.GetClassiNoDocEmpty();
+        this.GetClassiNoDocNoEmpty();
     }
 
-    GetClassiNoDocEmpty() {
+    GetClassiNoDocNoEmpty() {
         this.isLoadingClasses = true;
-        this.indirizziService.indirizzoSelected = "";
-        this.classiService.GetClassiNoDocNoEmpty({}, Documento.SetAnnoCorrect(new Date())).subscribe({
+        // this.indirizziService.indirizzoSelected = "";
+        this.classiService.GetClassiNoDocNoEmpty(Documento.SetAnnoCorrect(new Date())).subscribe({
             next: (data: any) => {
                 console.log(data);
                 for (const key in data) {

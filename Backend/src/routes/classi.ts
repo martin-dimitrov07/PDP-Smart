@@ -6,7 +6,23 @@ async function GetClassi(req: any, res: any) {
         const filters: any = req["parsedQuery"].filters || {};
 
         if (!await CheckAdmin(req)) {
-            filters.Insegnamenti.some.Docente_Email = req.docente.Email;
+            filters.Insegnamenti = {
+                some: {
+                    Docente_Email: req.docente.Email
+                }
+            };
+
+            if(filters.Classi_Studente.some.Studente_Email && filters.Anno_Scolastico) {
+                const classeId = await GetClasseIdByDocumento(filters.Anno_Scolastico, filters.Classi_Studente.some.Studente_Email);
+
+                if (!classeId) {
+                    return res.status(404).send("Classe non trovata per lo studente e l'anno scolastico specificati.");
+                }
+
+                if (!await CheckDocente(req, classeId)) {
+                    return res.status(403).send("Accesso negato: non sei un docente di questa classe.");
+                }
+            }
         }
 
         if (filters.Anno_Scolastico)
@@ -40,11 +56,22 @@ async function GetClassi(req: any, res: any) {
             }
         }
         else {
-            for (const c of classi) {
-                const anno = c.Classe.toString();
+            if (filters.Coordinatore_Email) {
+                for (const c of classi) {
+                    const anno = c.Classe.toString();
 
-                if (await CheckDocente(req, c.Id) && groupsClassi[anno]) {
-                    groupsClassi[anno].push(c);
+                    if (await CheckCoordinatore(req, c.Id) && groupsClassi[anno]) {
+                        groupsClassi[anno].push(c);
+                    }
+                }
+            }
+            else {
+                for (const c of classi) {
+                    const anno = c.Classe.toString();
+
+                    if (await CheckDocente(req, c.Id) && groupsClassi[anno]) {
+                        groupsClassi[anno].push(c);
+                    }
                 }
             }
         }

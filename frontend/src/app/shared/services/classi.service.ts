@@ -56,54 +56,24 @@ export class ClassiService {
         }));
     }
 
-
-    GetClassiNoDocNoEmpty(filterClassi: any, filterAnnoScolastico: any) {
-        this.indirizziService.indirizzoSelected = "";
-        if (this.docentiService.docente.Ruolo == Ruolo.COORDINATORE) {
-            return this.GetClassiNoDocEmptyCoordinatore(filterAnnoScolastico);
-        }
-        return this.GetClassi(filterClassi, filterAnnoScolastico).pipe(
-            switchMap(async (data: any) => {
-                const resultLocal: any = {};
-
-                const groupPromises = Object.keys(data).map(async (key) => {
-                    const classesGroup = data[key];
-
-                    const validateClasses = classesGroup.map(async (classe: any) => {
-                        const studentiNoDoc = await firstValueFrom(this.studentiService.GetStudentiNoDocumento(classe.Id));
-                        if (studentiNoDoc && studentiNoDoc.length > 0) {
-                            return classe;
-                        }
-                        return null;
-                    });
-
-                    const risultati = await Promise.all(validateClasses);
-
-                    resultLocal[key] = risultati.filter(c => c != null);
-                });
-
-                await Promise.all(groupPromises);
-
-                this.classiNoEmpty = resultLocal;
-                return resultLocal;
-            })
-        );
-    }
-
-    GetClassiNoDocEmptyCoordinatore(filterAnnoScolastico: Date | null): Observable<any> {
-        const filters: any = {
-            Coordinatore_Email: this.docentiService.docente.Email,
-            Classi_Studente: {
-                some: {}
-            }
-        };
+    GetClassiNoDocNoEmpty(filterAnnoScolastico: any) {
+        let filters: any = {};
 
         if (filterAnnoScolastico)
             filters.Anno_Scolastico = filterAnnoScolastico;
 
+        if (this.docentiService.docente.Ruolo == Ruolo.COORDINATORE) {
+            filters = {
+                Coordinatore_Email: this.docentiService.docente.Email,
+                Classi_Studente: {
+                    some: {}
+                }
+            };
+        }
+
         const params = {
             filters: JSON.stringify(filters)
-        };
+        }
 
         return this.dataStorageService.InviaRichiesta("GET", "/classi", params)!.pipe(
             switchMap(async (data: any) => {

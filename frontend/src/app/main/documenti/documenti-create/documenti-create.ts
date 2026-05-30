@@ -39,38 +39,54 @@ export class DocumentiCreate {
         this.icfService.icfsSelected = [];
         this.allegatiService.allegati = [];
 
-        this.docentiService.GetDocente().subscribe(isLoaded => {
-            if (isLoaded) {
-                const ruolo = this.docentiService.docente.Ruolo;
+        this.classiService.GetClassiNoDocNoEmpty(Documento.SetAnnoCorrect(new Date())).subscribe({
+            next: (data: any) => {
+                const hasStudents = Object.values(data).some((arr: any) => arr && arr.length > 0);
 
-                if (ruolo != Ruolo.ADMIN && ruolo != Ruolo.COORDINATORE) {
+                if (!hasStudents) {
                     this.router.navigate(["404"]);
                     return;
-                } 
-                
-                if (ruolo == Ruolo.COORDINATORE) {
-                    this.classiService.GetClassiNoDocEmptyCoordinatore(Documento.SetAnnoCorrect(new Date())).subscribe({
-                        next: (data: any) => {
-                            const hasStudents = Object.values(data).some((arr: any) => arr && arr.length > 0);
-
-                            if (!hasStudents) {
-                                this.router.navigate(["404"]);
-                                return;
-                            }
-
-                            this.anniScolasticiService.GetAnniScolasticiStudenti().subscribe({
-                                error: (err: any) => this.checkError.checkError(err)
-                            });
-                        },
-                        error: (err: any) => this.checkError.checkError(err)
-                    });
                 }
-                else {
-                    this.anniScolasticiService.GetAnniScolasticiStudenti().subscribe({
-                        error: (err: any) => this.checkError.checkError(err)
-                    });
-                }
-            }
+
+                this.anniScolasticiService.GetAnniScolasticiStudenti().subscribe({
+                    error: (err: any) => this.checkError.checkError(err)
+                });
+            },
+            error: (err: any) => this.checkError.checkError(err)
         });
+
+        // this.docentiService.GetDocente().subscribe(isLoaded => {
+        //     if (isLoaded) {
+        //         const ruolo = this.docentiService.docente.Ruolo;
+
+        //         if (ruolo != Ruolo.ADMIN && ruolo != Ruolo.COORDINATORE) {
+        //             this.router.navigate(["404"]);
+        //             return;
+        //         }
+
+        //         if (ruolo == Ruolo.COORDINATORE) {
+        //             this.classiService.GetClassiNoDocNoEmptyCoordinatore(Documento.SetAnnoCorrect(new Date())).subscribe({
+        //                 next: (data: any) => {
+        //                     const hasStudents = Object.values(data).some((arr: any) => arr && arr.length > 0);
+
+        //                     if (!hasStudents) {
+        //                         this.router.navigate(["404"]);
+        //                         return;
+        //                     }
+
+        //                     this.anniScolasticiService.GetAnniScolasticiStudenti().subscribe({
+        //                         error: (err: any) => this.checkError.checkError(err)
+        //                     });
+        //                 },
+        //                 error: (err: any) => this.checkError.checkError(err)
+        //             });
+        //         }
+        //         else {
+        //             this.anniScolasticiService.GetAnniScolasticiStudenti().subscribe({
+        //                 error: (err: any) => this.checkError.checkError(err)
+        //             });
+        //         }
+        //     }
+        // });
     }
 }
