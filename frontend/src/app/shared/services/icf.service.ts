@@ -29,7 +29,8 @@ export class IcfService {
     }
 
     GetICFSDocumento() {
-        if (!this.documentiService.documentoSelected) return of(null);
+        if (!this.documentiService.documentoSelected)
+            return of(null);
 
         const filters = {
             Documenti_ICF: {
@@ -49,7 +50,8 @@ export class IcfService {
     }
 
     UpdateICFsDocumento() {
-        if (!this.documentiService.documentoSelected) return;
+        if (!this.documentiService.documentoSelected) 
+            return;
 
         const payload = {
             documento: this.documentiService.documentoSelected,
@@ -60,7 +62,7 @@ export class IcfService {
     }
 
     CreateICFs(icfs: Icf[]) {
-        if(icfs.length == 0) return;
+        if (icfs.length == 0) return;
 
         const payload = {
             icfs: icfs

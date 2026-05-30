@@ -22,25 +22,18 @@ export class ClassiService {
     nClassi: number = 0;
     classeSelected: Classe = {} as Classe;
 
-
-    GetClassi(filterClassi: any, filterAnnoScolastico: any, Studente_Email?: string): Observable<any> {
+    GetClassi(filterClassi: any, filterAnnoScolastico: any): Observable<any> {
         let filters: any = {};
 
-        if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
-            filters = {
-                Insegnamenti: {
-                    some: {  // serve per relazioni uno a molti
-                        Docente_Email: this.docentiService.docente.Email
-                    }
-                }
-            }
-            if (Studente_Email) {
-                filters.Insegnamenti.some = {
-                    ...filters.Insegnamenti.some,
-                    Studente_Email: Studente_Email
-                }
-            }
-        }
+        // if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
+
+        //     if (Studente_Email) {
+        //         filters.Insegnamenti.some = {
+        //             ...filters.Insegnamenti.some,
+        //             Studente_Email: Studente_Email
+        //         }
+        //     }
+        // }
 
         if (this.indirizziService.indirizzoSelected)
             filters.Indirizzo = this.indirizziService.indirizzoSelected;
@@ -64,7 +57,7 @@ export class ClassiService {
     }
 
 
-    GetClassiNoDocEmpty(filterClassi: any, filterAnnoScolastico: any) {
+    GetClassiNoDocNoEmpty(filterClassi: any, filterAnnoScolastico: any) {
         this.indirizziService.indirizzoSelected = "";
         if (this.docentiService.docente.Ruolo == Ruolo.COORDINATORE) {
             return this.GetClassiNoDocEmptyCoordinatore(filterAnnoScolastico);

@@ -12,7 +12,7 @@
                     <th class="text-center align-middle"></th>
                     @for (materia of materieService.materieClasse; track $index)
                     {
-                    <th class="text-center align-middle" [class.text-uppercase]="materieService.materieDocente.includes(materia)">{{materia}}</th>
+                    <th class="text-center align-middle" [class.text-uppercase]="materieService.materieEdit.includes(materia)">{{materia}}</th>
                     }
                 </tr>
             </thead>

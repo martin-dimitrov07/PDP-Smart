@@ -8,11 +8,11 @@ async function GetICFs(req: any, res: any) {
 
         if (!await CheckAdmin(req)) {
             if (filters.Documenti_ICF) {
-                if (!filters.Documenti_ICF.Documento_Studente_Email || !filters.Documenti_ICF.Documento_Anno) {
+                if (!filters.Documenti_ICF.some.Documento_Studente_Email || !filters.Documenti_ICF.some.Documento_Anno) {
                     return res.status(403).send("Accesso negato: non sei un amministratore. Per visualizzare gli ICFs di un documento devi specificare sia l'email dello studente che l'anno del documento.");
                 }
 
-                const classeId = await GetClasseIdByDocumento(filters.Documenti_ICF.Documento_Anno, filters.Documenti_ICF.Documento_Studente_Email);
+                const classeId = await GetClasseIdByDocumento(filters.Documenti_ICF.some.Documento_Anno, filters.Documenti_ICF.some.Documento_Studente_Email);
 
                 if (!classeId) {
                     return res.status(404).send("Classe non trovata per il documento specificato.");
@@ -81,13 +81,10 @@ async function CreateICFs(req: any, res: any) {
             });
         }
 
-        res.status(201).send({ message: "ICFs creati con successo" });
+        res.status(200).send("ICFs creati con successo");
     } catch (err) {
         console.error("Errore nella creazione dell'ICF:", err);
-        res.status(500).send({
-            error: "Errore durante la creazione dell'ICF",
-            details: err
-        });
+        res.status(500).send("Errore durante la creazione dell'ICF");
     }
 }
 

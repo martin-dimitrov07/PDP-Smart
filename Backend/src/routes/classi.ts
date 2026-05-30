@@ -5,6 +5,10 @@ async function GetClassi(req: any, res: any) {
     try {
         const filters: any = req["parsedQuery"].filters || {};
 
+        if (!await CheckAdmin(req)) {
+            filters.Insegnamenti.some.Docente_Email = req.docente.Email;
+        }
+
         if (filters.Anno_Scolastico)
             filters.Anno_Scolastico = new Date(filters.Anno_Scolastico);
 
@@ -75,9 +79,9 @@ async function GetClasseById(req: any, res: any) {
 }
 
 async function GetClasseIdByDocumento(anno: string, studenteEmail: string) {
-    const classe: any = prisma.classe.findFirst({
+    const classe: any = await prisma.classe.findFirst({
         where: {
-            Anno_Scolastico: anno,
+            Anno_Scolastico: new Date(anno),
             Classi_Studente: {
                 some: {
                     Studente_Email: studenteEmail

@@ -29,18 +29,6 @@ export class IndicatoreInput {
         return this._indicatore;
     }
 
-    ngOnInit() {
-        const setMaterieDocente = new Set(this.materieService.materieDocente);
-
-        this.materieService.materieClasse.sort((a, b) => {
-            const aInDocente = setMaterieDocente.has(a);
-            const bInDocente = setMaterieDocente.has(b);
-
-            // Restituisce -1 se 'a' deve stare prima, 1 se deve stare dopo, 0 se invariato
-            return (bInDocente ? 1 : 0) - (aInDocente ? 1 : 0);
-        });
-    }
-
     HasNota(materia: string): boolean {
         const listaInd = this.indicatoriService.indicatori[materia]?.[this.categoria];
         const item = listaInd?.find((item: any) => item.Id === this.indicatore.Id);

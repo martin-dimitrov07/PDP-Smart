@@ -163,10 +163,9 @@ app.get("/api/email-docente", (req: any, res: any) => {
 app.get("/api/indirizzi", GestioneIndirizzi.GetIndirizzi); //fatto sicurezza
 
 //Studenti
-app.get("/api/studenti", GestioneStudenti.GetStudentiDocumento); //fatto sicurezza
+app.get("/api/studenti-documento", GestioneStudenti.GetStudentiDocumento); //fatto sicurezza 
 app.get("/api/studenti-no-doc", GestioneStudenti.GetStudentiNoDoc); //fatto sicurezza
 app.get("/api/studente/:email", GestioneStudenti.GetStudenteByEmail); //fatto sicurezza
-app.get("/api/count-studenti-documento", GestioneStudenti.GetCountStudentiDocumento); //fatto sicurezza
 
 //Classi
 app.get("/api/classi", GestioneClassi.GetClassi); // fatto sicurezza
@@ -187,7 +186,7 @@ app.get("/api/anni-scolastici-documenti", GestioneAnniScolastici.GetAnniScolasti
 //Docenti
 app.get("/api/is-coordinatore", GestioneDocenti.IsCoordinatore); //fatto sicurezza
 app.get("/api/docenti-classe", GestioneDocenti.GetDocentiByClasse); //fatto sicurezza
-app.get("/api/is-coordinatore-classe", GestioneDocenti.IsCoordinatoreClasse);
+app.get("/api/is-coordinatore-classe", GestioneDocenti.IsCoordinatoreClasse); //fatto sicurezza
 
 //Materie
 app.get("/api/materie", GestioneMaterie.GetMaterie); //fatto sicurezza

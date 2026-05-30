@@ -45,14 +45,15 @@ export class IndicatoriService {
             filters.Tipologia = { in: [tipologia, "ENTRAMBI"] }
         }
 
-        return this.dataStorageService.InviaRichiesta("GET", "/indicatori", { filters: JSON.stringify(filters) })!.pipe(tap((data: any) => {
+        return this.dataStorageService.InviaRichiesta("GET", "/indicatori", { filters: JSON.stringify(filters) })!.pipe(map((data: any) => {
             // console.log(data);
             return data.map((ind: Indicatore) => new Indicatore(ind.Id, ind.Tipologia, ind.Categoria, ind.Descrizione));
         }));
     }
 
     GetIndicatoriDocumento() {
-        if (!this.documentiService.documentoSelected) return of(null);
+        if (!this.documentiService.documentoSelected)
+            return of(null);
 
         const filters = {
             Documento_Studente_Email: this.documentiService.documentoSelected.Studente_Email,

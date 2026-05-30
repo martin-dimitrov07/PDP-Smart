@@ -54,8 +54,8 @@ export class Studenti {
             error: (err: any) => this.checkError.checkError(err)
         });
 
-        this.studentiService.GetNumeroStudenti(this.classeId).subscribe({
-            next: (data) => { this.nStudenti = data.countStudenti; },
+        this.studentiService.GetNumeroStudentiDocumento(this.classeId).subscribe({
+            next: (data) => { this.nStudenti = data; },
             error: (err: any) => this.checkError.checkError(err)
         });
 

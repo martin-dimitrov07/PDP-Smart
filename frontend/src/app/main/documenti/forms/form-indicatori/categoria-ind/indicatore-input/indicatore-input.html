@@ -7,13 +7,13 @@
     <div class="d-flex justify-content-center gap-1">
         <input type="checkbox" class="form-check-input" [checked]="IsItemSelected(materia)"
             [id]="'ind-' + indicatore.Id + '-' + materia.replace(' ', '-')"
-            (input)="SetValue(materia, $event)" [disabled]="!materieService.materieDocente.includes(materia)">
+            (input)="SetValue(materia, $event)" [disabled]="!materieService.materieEdit.includes(materia)">
 
         @if(IsItemSelected(materia))
         {
             <i class="bi fs-6 d-flex align-items-center" data-bs-toggle="modal"
                 [class.bi-pen]="!HasNota(materia)" [class.bi-pen-fill]="HasNota(materia)"
-                data-bs-target="#aggiuntaNota" (click)="materieService.materieDocente.includes(materia) ? SetNota(materia, true) : SetNota(materia, false)"></i>
+                data-bs-target="#aggiuntaNota" (click)="materieService.materieEdit.includes(materia) ? SetNota(materia, true) : SetNota(materia, false)"></i>
         }
     </div>
 </td>

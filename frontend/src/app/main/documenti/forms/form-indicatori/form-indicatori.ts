@@ -17,7 +17,7 @@ import { Stato } from '../../../../models/documento';
 import { ClassiService } from '../../../../shared/services/classi.service';
 import { MaterieService } from '../../../../shared/services/materie.service';
 import { IndicatoriService } from '../../../../shared/services/indicatori.service';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, map } from 'rxjs';
 
 
 @Component({
@@ -66,7 +66,7 @@ export class FormIndicatori {
                 const classe: Classe = await lastValueFrom(this.classiService.GetClasseStudente(studenteEmail, annoScolastico));
                 this.classiService.classeSelected = classe;
             }
-            
+
             await lastValueFrom(this.materieService.GetMaterieClasse());
 
             await lastValueFrom(this.indicatoriService.GetCategorieIndicatore());
@@ -78,10 +78,8 @@ export class FormIndicatori {
             if (this.activatedRoute.snapshot.data['root'] == "modifica") {
                 this.indicatoriService.InitializeIndicatori();
                 this.indicatoriService.SetIndicatori();
-            } else {
-                if (Object.keys(this.indicatoriService.indicatori).length == 0) {
-                    this.indicatoriService.InitializeIndicatori();
-                }
+            } else if (Object.keys(this.indicatoriService.indicatori).length == 0) {
+                this.indicatoriService.InitializeIndicatori();
             }
 
             console.log(this.indicatoriService.indicatori);
@@ -90,12 +88,20 @@ export class FormIndicatori {
             this.cdr.detectChanges();
 
             if (this.canEdit) {
-                (await this.materieService.GetMaterieDocente()).subscribe({
-                    error: (err) => this.checkError.checkError(err)
-                });
+                await lastValueFrom(await this.materieService.GetMaterieEdit());
             }
             else
-                this.materieService.materieDocente = [];
+                this.materieService.materieEdit = [];
+
+            const setMaterieEdit = new Set(this.materieService.materieEdit);
+
+            this.materieService.materieClasse.sort((a, b) => {
+                const aInDocente = setMaterieEdit.has(a);
+                const bInDocente = setMaterieEdit.has(b);
+
+                // Restituisce -1 se 'a' deve stare prima, 1 se deve stare dopo, 0 se invariato
+                return (bInDocente ? 1 : 0) - (aInDocente ? 1 : 0);
+            });
         }
         catch (err) {
             this.datiCaricati = true;

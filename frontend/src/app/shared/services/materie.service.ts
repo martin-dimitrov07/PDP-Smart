@@ -13,14 +13,14 @@ export class MaterieService {
     private readonly docentiService: DocentiService = inject(DocentiService);
     private readonly classiService: ClassiService = inject(ClassiService);
 
-    materieDocente: string[] = [];
+    materieEdit: string[] = [];
     materieClasse: string[] = [];
 
-    async GetMaterieDocente() {
+    async GetMaterieEdit(): Promise<Observable<any>> {
         if (!this.docentiService.docente.Email || !this.classiService.classeSelected.Id)
             return of(null);
 
-        this.materieDocente = [];
+        this.materieEdit = [];
 
         let filters: any = {
             Insegnamenti: {
@@ -41,9 +41,10 @@ export class MaterieService {
 
         return this.dataStorageService.InviaRichiesta("GET", "/materie", { filters: JSON.stringify(filters) })!
             .pipe(
-                tap((data: any) => {
-                    this.materieDocente = Array.from(data).map((item: any) => item.Nome);
-                    console.log("Materie caricate:", this.materieDocente);
+                map((data: any) => {
+                    this.materieEdit = Array.from(data).map((item: any) => item.Nome);
+                    console.log("Materie caricate:", this.materieEdit);
+                    return this.materieEdit;
                 })
             )
     }

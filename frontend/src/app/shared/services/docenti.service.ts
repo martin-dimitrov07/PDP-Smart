@@ -18,6 +18,7 @@ export class DocentiService {
         return this.dataStorageService.InviaRichiesta("GET", "/email-docente")!.pipe(
             switchMap((data: any) => {  
                 if (data.docente.Ruolo == Ruolo.DOCENTE) {
+                    // viene messo il ruolo di coordinatore se è coordinatore in almeno una classe
                     return this.isCoordinatore(data.docente.Email).pipe(
                         map((isCoord) => {
                             if (isCoord) {
@@ -41,7 +42,7 @@ export class DocentiService {
                 return true;
             }),
             catchError((err) => {
-                if (err.status === 401 || err.status === 403 || err.status === 404) {
+                if (err.status == 401 || err.status == 403 || err.status == 404) {
                     this.docente = {} as Docente;
                     this.router.navigate(["login"]);
                 }

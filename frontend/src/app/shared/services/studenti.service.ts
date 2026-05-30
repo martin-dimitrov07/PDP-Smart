@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
 import { Studente } from '../../models/studente';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { CheckError } from '../utilities/check-error';
 
 @Injectable({
@@ -50,7 +50,7 @@ export class StudentiService {
 
         console.log(params);
 
-        return this.dataStorageService.InviaRichiesta("GET", "/studenti", params)!.pipe(
+        return this.dataStorageService.InviaRichiesta("GET", "/studenti-documento", params)!.pipe(
             tap((data: any) => {
                 this.studenti = Array.from(data).map((studente: any) => new Studente(
                     studente.Nome,
@@ -93,11 +93,19 @@ export class StudentiService {
         }));
     }
 
-    GetNumeroStudenti(classeId: number): Observable<any> {
+    GetNumeroStudentiDocumento(classeId: number): Observable<any> {
         const filters: any = {
-            Classe_Id: classeId
+            Classi_Studente: {
+                some: {
+                    Classe_Id: classeId
+                }
+            }
         }
 
-        return this.dataStorageService.InviaRichiesta("GET", "/count-studenti-documento", { filters: JSON.stringify(filters) })!;
+        return this.dataStorageService.InviaRichiesta("GET", "/studenti-documento", { filters: JSON.stringify(filters) })!.pipe(
+            map((data: any) => {
+                return data.length;
+            })
+        );
     }
 }

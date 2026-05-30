@@ -1,38 +1,6 @@
 import { prisma } from "../server.ts";
 import { CheckAdmin, CheckDocente } from "./ruoli.ts";
 
-async function GetCountStudentiDocumento(req: any, res: any) {
-    try {
-        const filters = req["parsedQuery"]?.filters || {};
-        const isAdmin = await CheckAdmin(req);
-
-        if (!isAdmin) {
-            if (!filters.Classe_Id) {
-                return res.status(403).send("Accesso negato: devi specificare una classe se non sei amministratore.");
-            }
-
-            if (!await CheckDocente(req, filters.Classe_Id))
-                return res.status(403).send("Accesso negato: non sei un docente o un amministratore");
-        }
-
-        filters.Studente = {
-            Documento: {
-                some: {}
-            }
-        }
-
-        const countStudenti = await prisma.classe_Studente.count({
-            where: filters
-        });
-
-        res.status(200).send({ countStudenti });
-
-    } catch (err) {
-        console.error("Errore:", err);
-        res.status(500).send("Errore nel conteggio degli studenti per classe");
-    }
-}
-
 // STUDENTI
 
 async function GetStudentiDocumento(req: any, res: any) {
@@ -148,4 +116,4 @@ async function GetStudentiNoDoc(req: any, res: any) {
     }
 }
 
-export { GetStudentiDocumento, GetStudenteByEmail, GetStudentiNoDoc, GetCountStudentiDocumento };
+export { GetStudentiDocumento, GetStudenteByEmail, GetStudentiNoDoc };

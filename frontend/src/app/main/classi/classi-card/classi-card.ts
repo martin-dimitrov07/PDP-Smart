@@ -43,8 +43,8 @@ export class ClassiCard {
 
     caricaStudenti() {
         if (this._classe.Id) {
-            this.studentiService.GetNumeroStudenti(this._classe.Id).subscribe({
-                next: (data) => { this.nStudenti = data.countStudenti; },
+            this.studentiService.GetNumeroStudentiDocumento(this._classe.Id).subscribe({
+                next: (data) => { this.nStudenti = data; },
                 error: (err: any) => this.checkError.checkError(err)
             });
         }

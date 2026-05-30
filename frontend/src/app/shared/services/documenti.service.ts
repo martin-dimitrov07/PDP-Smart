@@ -202,7 +202,7 @@ export class DocumentiService {
     ResetCreateDocumento() {
         this.classiService.classeSelected = {} as Classe;
         this.studentiService.studenteSelected = {} as Studente;
-        this.materieService.materieDocente = [];
+        this.materieService.materieEdit = [];
         this.materieService.materieClasse = [];
         this.indicatoriService.indicatori = {};
         this.indicatoriService.categorieInd = [];

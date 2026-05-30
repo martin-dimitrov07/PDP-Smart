@@ -33,6 +33,16 @@ async function IsCoordinatoreClasse(req: any, res: any) {
     try {
         const id_classe = req["parsedQuery"].id_classe;
 
+        if(!id_classe) {
+            res.status(400).send("ID della classe è richiesto");
+            return;
+        }
+
+        if(!await CheckAdmin(req)) {
+            if(!await CheckDocente(req, id_classe))
+                return res.status(403).send("Accesso negato: non sei docente di questa classe");
+        }
+
         res.send({ isCoordinatore: await CheckCoordinatore(req, id_classe) });
     }
     catch (err) {

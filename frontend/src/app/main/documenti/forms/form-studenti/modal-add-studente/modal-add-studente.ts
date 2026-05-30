@@ -39,7 +39,7 @@ export class ModalAddStudente {
     GetClassiNoDocEmpty() {
         this.isLoadingClasses = true;
         this.indirizziService.indirizzoSelected = "";
-        this.classiService.GetClassiNoDocEmpty({}, Documento.SetAnnoCorrect(new Date())).subscribe({
+        this.classiService.GetClassiNoDocNoEmpty({}, Documento.SetAnnoCorrect(new Date())).subscribe({
             next: (data: any) => {
                 console.log(data);
                 for (const key in data) {
