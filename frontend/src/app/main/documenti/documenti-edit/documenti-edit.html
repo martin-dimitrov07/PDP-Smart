@@ -1,4 +1,8 @@
 <div class="container-lg pb-5">
+    <div class="overlay-creating-doc" [class.d-none]="!isCreatingDoc">
+        <h3>Approvazione del documento in corso...</h3>
+    </div>
+
     <app-documenti-edit-header [studenteEmail]="studenteEmail"
         [annoScolastico]="annoScolastico"></app-documenti-edit-header>
 
@@ -28,4 +32,4 @@
     }
 </div>
 
-<app-modal-validation-documento></app-modal-validation-documento>
+<app-modal-validation-documento (onValidation)="onValidation()"></app-modal-validation-documento>

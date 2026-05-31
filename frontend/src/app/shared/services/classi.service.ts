@@ -59,17 +59,17 @@ export class ClassiService {
     GetClassiNoDocNoEmpty(filterAnnoScolastico: any) {
         let filters: any = {};
 
-        if (filterAnnoScolastico)
-            filters.Anno_Scolastico = filterAnnoScolastico;
-
         if (this.docentiService.docente.Ruolo == Ruolo.COORDINATORE) {
             filters = {
                 Coordinatore_Email: this.docentiService.docente.Email,
                 Classi_Studente: {
                     some: {}
-                }
+                },
             };
         }
+
+        if (filterAnnoScolastico)
+            filters.Anno_Scolastico = filterAnnoScolastico;
 
         const params = {
             filters: JSON.stringify(filters)

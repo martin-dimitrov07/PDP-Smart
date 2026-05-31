@@ -254,8 +254,9 @@ async function SalvaDocumentoApprovato(req: any, res: any) {
         const documento = req.files.documento;
         const anno = req.body.anno.split('T')[0];
         const studente_email = req.body.studente_email;
+        const data_approvazione = req.body.data_approvazione;
 
-        if(!documento.Data_Approvazione) {
+        if(!data_approvazione) {
             return res.status(400).send("Il documento non è stato approvato. Non è possibile salvarlo.");
         }
 

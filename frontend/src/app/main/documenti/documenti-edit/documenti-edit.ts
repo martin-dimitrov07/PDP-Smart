@@ -25,7 +25,6 @@ export class DocumentiEdit {
 
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     private readonly docentiService: DocentiService = inject(DocentiService);
-    private readonly studentiService: StudentiService = inject(StudentiService);
     private readonly classiService: ClassiService = inject(ClassiService);
     private readonly checkError: CheckError = inject(CheckError);
 
@@ -33,6 +32,8 @@ export class DocumentiEdit {
     StatoDocumento: typeof Stato = Stato;
 
     canValidate: boolean = false;
+
+    isCreatingDoc: boolean = false;
 
     ngOnInit() {
         this.annoScolastico = this.activatedRouter.snapshot.paramMap.get("annoScolastico")!.replace("-", "/");
@@ -64,5 +65,9 @@ export class DocumentiEdit {
             },
             error: (err: any) => this.checkError.checkError(err)
         });
+    }
+
+    onValidation() {
+        this.isCreatingDoc = true;
     }
 }

@@ -2,3 +2,45 @@ hr {
     border: 1.5px solid color-mix(in srgb, var(--dark-blue-color), transparent 80%) !important;
     opacity: 1 !important;
 }
+
+.overlay-creating-doc {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(-45deg,
+            color-mix(in srgb, var(--bg-blue-color), transparent 10%),
+            color-mix(in srgb, var(--bg-blue-color), transparent 40%),
+            color-mix(in srgb, var(--bg-blue-color), transparent 20%));
+    /*Ingrandire il background per poterlo muovere */
+    background-size: 400% 400%;
+    animation: loadingBackground 3s ease infinite;
+    backdrop-filter: blur(4px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.overlay-creating-doc h3 {
+    font-size: 3.5rem;
+    color: var(--white);
+    margin: 0 !important;
+}
+
+@keyframes loadingBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}

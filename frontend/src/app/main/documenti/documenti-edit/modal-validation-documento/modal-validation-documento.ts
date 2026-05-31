@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { DocumentiService } from '../../../../shared/services/documenti.service';
 import { CheckError } from '../../../../shared/utilities/check-error';
 import { Router } from '@angular/router';
@@ -14,7 +14,11 @@ export class ModalValidationDocumento {
     private readonly checkError: CheckError = inject(CheckError);
     private readonly router: Router = inject(Router);
 
+    @Output() onValidation = new EventEmitter<void>();
+
     async validateDocumento() {
+        this.onValidation.emit();
+
         this.documentiService.ApprovaDocumento()?.subscribe({
             next: () => {
                 this.documentiService.GetDocumentoById(this.documentiService.documentoSelected.Studente_Email, this.documentiService.documentoSelected.Anno!).subscribe({
@@ -22,6 +26,7 @@ export class ModalValidationDocumento {
                         if (res) {
                             this.documentiService.SaveDocumentoApprovato(this.documentiService.documentoSelected).subscribe({
                                 next: () => {
+                                    this.router.navigate(['documenti', 'lista']);
                                     console.log("Documento approvato e salvato con successo")
                                 },
                                 error: (err: any) => this.checkError.checkError(err)
@@ -30,7 +35,6 @@ export class ModalValidationDocumento {
                     },
                     error: (err: any) => this.checkError.checkError(err)
                 });
-                this.router.navigate(['documenti', 'lista']);
             },
             error: (err: any) => this.checkError.checkError(err)
         });

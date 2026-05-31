@@ -12,7 +12,7 @@ async function GetClassi(req: any, res: any) {
                 }
             };
 
-            if(filters.Classi_Studente.some.Studente_Email && filters.Anno_Scolastico) {
+            if(filters.Classi_Studente?.some?.Studente_Email && filters.Anno_Scolastico) {
                 const classeId = await GetClasseIdByDocumento(filters.Anno_Scolastico, filters.Classi_Studente.some.Studente_Email);
 
                 if (!classeId) {

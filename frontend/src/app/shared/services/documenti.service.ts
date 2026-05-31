@@ -229,6 +229,7 @@ export class DocumentiService {
     }
 
     SaveDocumentoApprovato(documento: Documento) {
+        console.log(documento);
         // converte la prima Promise in un Observable usando 'from'
         return from(this.GetFileDocumentoData(documento)).pipe(
             switchMap((data: any) => {
@@ -249,6 +250,7 @@ export class DocumentiService {
                 const formData = new FormData();
                 formData.append('studente_email', documento.Studente_Email);
                 formData.append('anno', documento.Anno ? documento.Anno.toISOString() : "");
+                formData.append('data_approvazione', documento.Data_Approvazione ? documento.Data_Approvazione.toISOString() : "");
                 formData.append('documento', fileDocx);
 
                 return this.dataStorageService.InviaRichiesta("POST", "/documento/salva-approvato", formData)!;
