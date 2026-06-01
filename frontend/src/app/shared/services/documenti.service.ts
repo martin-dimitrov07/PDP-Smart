@@ -22,7 +22,7 @@ import { AllegatiService } from './allegati.service';
     providedIn: 'root',
 })
 export class DocumentiService {
-    private readonly dataStorageService : DataStorageService = inject(DataStorageService);
+    private readonly dataStorageService: DataStorageService = inject(DataStorageService);
     private readonly classiService: ClassiService = inject(ClassiService);
     private readonly docentiService: DocentiService = inject(DocentiService);
     private readonly allegatiService: AllegatiService = inject(AllegatiService);
@@ -34,7 +34,7 @@ export class DocumentiService {
     private readonly http: HttpClient = inject(HttpClient);
 
     TipoDocumento: typeof Tipo = Tipo;
-    Stato : typeof Stato = Stato;
+    Stato: typeof Stato = Stato;
 
     documenti: Documento[] = [];
     nDocumenti: number = 0;
@@ -59,14 +59,10 @@ export class DocumentiService {
                     .subscribe({
                         next: (res) => {
                             console.log("documento eliminato con successo");
-                            this.documenti = this.documenti.filter(d => {
-                                if (!d.Anno || !documento.Anno) return true;
-
-                                const dataLista = new Date(d.Anno).getTime();
-                                const dataDaEliminare = new Date(documento.Anno).getTime();
-
-                                return !(d.Studente_Email === documento.Studente_Email && dataLista === dataDaEliminare);
-                            });
+                            const indexDelDoc = this.documenti.findIndex(d => d.Studente_Email == documento.Studente_Email && d.Anno?.getTime() == documento.Anno?.getTime());
+                            if (indexDelDoc !== -1) {
+                                this.documenti.splice(indexDelDoc, 1);
+                            }
                             this.GetNumeroDocumenti();
                         },
                         error: (err) => this.checkError.checkError(err)
@@ -91,8 +87,8 @@ export class DocumentiService {
             filters.Tipologia = DSA_BES;
 
         if (Stato_Documento != -1 && Stato_Documento.in && Stato_Documento.in.length > 0) {
-            const unAnnoFa = new Date();
-            unAnnoFa.setFullYear(unAnnoFa.getFullYear() - 1);
+            const lastYear = new Date();
+            lastYear.setFullYear(lastYear.getFullYear() - 1);
 
             let orConditions: any[] = [];
 
@@ -102,10 +98,10 @@ export class DocumentiService {
                         orConditions.push({ Data_Approvazione: null });
                         break;
                     case Stato.VALIDATO:
-                        orConditions.push({ Data_Approvazione: { gte: unAnnoFa } });
+                        orConditions.push({ Data_Approvazione: { gte: lastYear } });
                         break;
                     case Stato.SCADUTO:
-                        orConditions.push({ Data_Approvazione: { lt: unAnnoFa } });
+                        orConditions.push({ Data_Approvazione: { lt: lastYear } });
                         break;
                 }
             });
@@ -115,11 +111,11 @@ export class DocumentiService {
             }
         }
 
+        filters.Docente_Email = this.docentiService.docente.Email;
+
         let params: any = {
             filters: JSON.stringify(filters)
         };
-
-        params.docenteEmail = this.docentiService.docente.Email;
 
         return this.dataStorageService.InviaRichiesta("GET", "/documenti", params)!.pipe(
             tap((data: any) => {
@@ -136,7 +132,8 @@ export class DocumentiService {
     GetDocumentoById(studenteEmail: string, anno: Date): Observable<any> {
         const filters = {
             Studente_Email: studenteEmail,
-            Anno: anno
+            Anno: anno,
+            Docente_Email: this.docentiService.docente.Email
         };
 
         return this.dataStorageService.InviaRichiesta("GET", "/documenti", { filters: JSON.stringify(filters) })!.pipe(
@@ -168,12 +165,16 @@ export class DocumentiService {
     CreateDocumento() {
         const documento = new Documento(this.studentiService.studenteSelected.Email, this.studentiService.studenteSelected.DSA_BES ? Tipo.DSA : Tipo.BES);
 
-        const { Stato, ...documentoPerBackend } = documento;
+        const newDoc = {
+            Studente_Email: documento.Studente_Email,
+            Anno: documento.Anno,
+            Tipologia: documento.Tipologia
+        };
 
         const formData = new FormData();
 
         const payload = {
-            "Documento": documentoPerBackend,
+            "Documento": newDoc,
             "Indicatori": this.indicatoriService.indicatori,
             "ICFs": this.icfService.icfsSelected
         }
@@ -194,7 +195,7 @@ export class DocumentiService {
             Anno: this.documentoSelected.Anno
         };
 
-        console.log(filters);
+        // console.log(filters);
 
         return this.dataStorageService.InviaRichiesta("PATCH", "/documento/approva", { filters })!;
     }
@@ -210,6 +211,8 @@ export class DocumentiService {
         this.icfService.icfsSelected = [];
         this.allegatiService.allegati = [];
         this.allegatiService.errorAllegati = "";
+        this.allegatiService.allegatiDoc = [];
+        this.allegatiService.allegatiEdit = [];
     }
 
     GetFileDocumentoApprovato(documento: Documento) {
@@ -221,7 +224,7 @@ export class DocumentiService {
         return this.dataStorageService.ScaricaFile("/documento/file-approvato", filters)!.pipe(
             map((fileData: any) => {
                 if (fileData) {
-                    return new Blob([fileData], { type: "application/pdf" });
+                    return new File([fileData], "Documento_approvato_" + documento.Studente_Email + "_" + documento.Anno!.toISOString().split('T')[0] + ".pdf", { type: "application/pdf" });
                 }
                 throw new Error("File del documento approvato non disponibile");
             })

@@ -48,9 +48,9 @@ export class DocumentiCreate {
                     return;
                 }
 
-                this.anniScolasticiService.GetAnniScolasticiStudenti().subscribe({
-                    error: (err: any) => this.checkError.checkError(err)
-                });
+                // this.anniScolasticiService.GetAnniScolasticiStudenti().subscribe({
+                //     error: (err: any) => this.checkError.checkError(err)
+                // });
             },
             error: (err: any) => this.checkError.checkError(err)
         });

@@ -111,7 +111,7 @@ export class DocumentiCard {
         }
         else {
             this.documentiService.GetFileDocumentoApprovato(this.documento).subscribe({
-                next: async (fileData: Blob) => {
+                next: async (fileData: File) => {
                     const studente: Studente = await lastValueFrom(this.studentiService.GetStudenteByEmail(this.documento.Studente_Email, this.documento.Anno!));
 
                     const fileUrl = window.URL.createObjectURL(fileData);

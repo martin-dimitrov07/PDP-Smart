@@ -76,7 +76,7 @@ export class LoginForm {
             const token = response.credential;
 
             // stampa token creato da google
-            console.log("TOKEN JWT:", token);
+            // console.log("TOKEN JWT:", token);
 
             // invierà il token al nostro server
             this.loginService.Login(token).subscribe({

@@ -16,25 +16,23 @@ export class AnniScolasticiService {
     anniScolastici: Date[] = [];
 
     GetAnniScolasticiStudenti(idClasse: number | null = null): Observable<any> {
-        let params: any = {};
+        const filters: any = {};
 
         if (idClasse) {
-            params.Id = idClasse;
-        }
-        else {
-            if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
-                const filtroDocente = {
-                    some: {
-                        Docente_Email: this.docentiService.docente.Email
-                    }
-                };
-                params["Insegnamenti"] = JSON.stringify(filtroDocente);
-            }
-
-            if (this.indirizziService.indirizzoSelected)
-                params["Indirizzo"] = this.indirizziService.indirizzoSelected;
+            filters.Classe_Id = idClasse;
         }
 
+        if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
+            filters.Insegnamenti = {
+                some: {
+                    Docente_Email: this.docentiService.docente.Email
+                }
+            };
+        }
+
+        const params = {
+            filters: JSON.stringify(filters)
+        };
 
         return this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici-studenti", params)!.pipe(tap(
             (data: any) => {
@@ -46,13 +44,13 @@ export class AnniScolasticiService {
     GetAnniScolasticiDocumenti(): Observable<any> {
         this.anniScolastici = [];
 
-        let params: any = {};
+        let filters: any = {};
 
         if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
-            params.docenteEmail = this.docentiService.docente.Email;
+            filters.Docente_Email = this.docentiService.docente.Email;
         }
 
-        return this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici-documenti", params)!.pipe(
+        return this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici-documenti", { filters })!.pipe(
             tap((data: any) => {
                 this.anniScolastici = Array.from(data).map((item: any) => new Date(item));
             })
