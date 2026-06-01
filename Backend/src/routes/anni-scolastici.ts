@@ -3,19 +3,19 @@ import { CheckAdmin, CheckDocente } from "./ruoli.ts";
 
 async function GetAnniScolasticiStudenti(req: any, res: any) {
     try {
-        const filters = req["parsedQuery"] || "";
+        const filters = req["parsedQuery"].filters || {};
 
         const isAdmin = await CheckAdmin(req);
 
         if (!isAdmin) {
-            if (filters.Id) {
-                if (!(await CheckDocente(req, filters.Id))) {
+            if (filters.Classe_Id) {
+                if (!(await CheckDocente(req, filters.Classe_Id))) {
                     return res.status(403).send("Accesso negato: non sei un docente di questa classe.");
                 }
             }
             else if (filters.Insegnamenti?.some?.Docente_Email) {
                 if (!req.docente || req.docente.Email != filters.Insegnamenti.some.Docente_Email) {
-                    return res.status(403).send("Accesso negato: non sei il docente associato a questo documento.");
+                    filters.Insegnamenti.some.Docente_Email = req.docente.Email;
                 }
             }
             else {
@@ -52,16 +52,16 @@ async function GetAnniScolasticiStudenti(req: any, res: any) {
 
 async function GetAnniScolasticiDocumenti(req: any, res: any) {
     try {
-        const docenteEmail = req["parsedQuery"]["docenteEmail"] || null;
+        const filters = req["parsedQuery"].filters || {};
 
         const isAdmin = await CheckAdmin(req);
 
         if (!isAdmin) {
-            if (!docenteEmail || !req.docente) {
+            if (!filters.Docente_Email || !req.docente) {
                 return res.status(403).send("Accesso negato: devi specificare la tua email per accedere a questa risorsa.");
             }
 
-            if (req.docente.Email !== docenteEmail) {
+            if (req.docente.Email != filters.Docente_Email) {
                 return res.status(403).send("Accesso negato: non sei il docente associato a questo documento.");
             }
         }
@@ -77,7 +77,7 @@ async function GetAnniScolasticiDocumenti(req: any, res: any) {
             where: {}
         };
 
-        if (docenteEmail) {
+        if (filters.Docente_Email) {
             query.where = {
                 Studente: {
                     Classi_Studente: {
@@ -85,7 +85,7 @@ async function GetAnniScolasticiDocumenti(req: any, res: any) {
                             Classe: {
                                 Insegnamenti: {
                                     some: {
-                                        Docente_Email: docenteEmail
+                                        Docente_Email: filters.Docente_Email
                                     }
                                 }
                             }

@@ -23,13 +23,13 @@ async function DeletePDP(req: any, res: any) {
             return res.status(400).send("Mancano informazioni sul documento nella richiesta");
         }
 
-        const classeId = await GetClasseIdByDocumento(documento.Anno, documento.Studente_Email);
-
-        if (!classeId) {
-            return res.status(404).send("Classe non trovata per lo studente e l'anno specificati nel documento.");
-        }
-
         if (!await CheckAdmin(req)) {
+            const classeId = await GetClasseIdByDocumento(documento.Anno, documento.Studente_Email);
+
+            if (!classeId) {
+                return res.status(404).send("Classe non trovata per lo studente e l'anno specificati nel documento.");
+            }
+
             if (!await CheckCoordinatore(req, classeId)) {
                 return res.status(403).send("Accesso negato: non sei un amministratore o un coordinatore della classe associata a questo documento.");
             }
@@ -61,14 +61,11 @@ async function DeletePDP(req: any, res: any) {
             await Promise.all(deletePromises);
         }
 
-        res.status(200).send({ message: "Documento eliminato con successo" });
+        res.status(200).send("Documento eliminato con successo");
     }
     catch (err) {
         console.error("Errore nella cancellazione del documento:", err);
-        res.status(500).send({
-            error: "Errore durante la cancellazione del documento",
-            details: err
-        });
+        res.status(500).send("Errore durante la cancellazione del documento");
     }
 }
 
@@ -168,6 +165,22 @@ async function GetDocumenti(req: any, res: any) {
                 return res.status(400).send("Non è possibile filtrare i documenti con questi filtri se non si è un amministratore.");
             }
 
+            if (req.docente.Email != filters.Docente_Email) {
+                return res.status(403).send("Accesso negato: non sei il docente associato a questo/i documento/i.");
+            }
+
+            if(filters.Studente_Email && filters.Anno) {
+                const classeId = await GetClasseIdByDocumento(filters.Anno, filters.Studente_Email);
+
+                if (!classeId) {
+                    return res.status(404).send("Classe non trovata per lo studente e l'anno specificati nel documento.");
+                }
+
+                if (!await CheckDocente(req, classeId)) {
+                    return res.status(403).send("Accesso negato: non sei un docente di questa classe.");
+                }
+            }
+
             filters.Studente = {
                 Classi_Studente: {
                     some: {
@@ -208,15 +221,15 @@ async function ApprovaDocumento(req: any, res: any) {
 
         if (!filters.Studente_Email || !filters.Anno) {
             return res.status(400).send("Mancano informazioni per identificare il documento da approvare.");
-        }
-
-        const classeId = await GetClasseIdByDocumento(filters.Anno, filters.Studente_Email);
-
-        if (!classeId) {
-            return res.status(404).send("Classe non trovata per lo studente e l'anno specificati nel documento.");
-        }
-
+        } 
+        
         if (!await CheckAdmin(req)) {
+            const classeId = await GetClasseIdByDocumento(filters.Anno, filters.Studente_Email);
+
+            if (!classeId) {
+                return res.status(404).send("Classe non trovata per lo studente e l'anno specificati nel documento.");
+            }
+
             if (!await CheckCoordinatore(req, classeId)) {
                 return res.status(403).send("Accesso negato: non sei un amministratore o un coordinatore della classe associata a questo documento.");
             }
@@ -256,21 +269,21 @@ async function SalvaDocumentoApprovato(req: any, res: any) {
         const studente_email = req.body.studente_email;
         const data_approvazione = req.body.data_approvazione;
 
-        if(!data_approvazione) {
+        if (!data_approvazione) {
             return res.status(400).send("Il documento non è stato approvato. Non è possibile salvarlo.");
         }
 
         if (!anno || !studente_email) {
             return res.status(400).send("Mancano informazioni per identificare il documento da approvare.");
         }
-
-        const classeId = await GetClasseIdByDocumento(anno, studente_email);
-
-        if (!classeId) {
-            return res.status(404).send("Classe non trovata per lo studente e l'anno specificati nel documento.");
-        }
-
+        
         if (!await CheckAdmin(req)) {
+            const classeId = await GetClasseIdByDocumento(anno, studente_email);
+    
+            if (!classeId) {
+                return res.status(404).send("Classe non trovata per lo studente e l'anno specificati nel documento.");
+            }
+
             if (!await CheckCoordinatore(req, classeId)) {
                 return res.status(403).send("Accesso negato: non sei un amministratore o un coordinatore della classe associata a questo documento.");
             }
@@ -306,14 +319,14 @@ async function GetDocumentoApprovato(req: any, res: any) {
         if (!anno || !studente_email) {
             return res.status(400).send("Mancano informazioni per identificare il documento da recuperare.");
         }
-
-        const classeId = await GetClasseIdByDocumento(anno, studente_email);
-
-        if (!classeId) {
-            return res.status(404).send("Classe non trovata per lo studente e l'anno specificati nel documento.");
-        }
-
+ 
         if (!await CheckAdmin(req)) {
+            const classeId = await GetClasseIdByDocumento(anno, studente_email);
+    
+            if (!classeId) {
+                return res.status(404).send("Classe non trovata per lo studente e l'anno specificati nel documento.");
+            }
+
             if (!await CheckDocente(req, classeId)) {
                 return res.status(403).send("Accesso negato: non sei un amministratore o un docente della classe associata a questo documento.");
             }
