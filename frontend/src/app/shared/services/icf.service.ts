@@ -2,7 +2,7 @@ import { inject, Injectable, Injector } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
 import { Icf } from '../../models/icf';
 import { DocumentiService } from './documenti.service';
-import { of, tap } from 'rxjs';
+import { map, Observable, of, tap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -49,25 +49,30 @@ export class IcfService {
         }));
     }
 
-    UpdateICFsDocumento() {
-        if (!this.documentiService.documentoSelected) 
-            return;
+    UpdateICFsDocumento():Observable<any> {
+        if (!this.documentiService.documentoSelected)
+            return of(null);
 
         const payload = {
             documento: this.documentiService.documentoSelected,
             icfs: this.icfsEdit
         }
 
-        return this.dataStorageService.InviaRichiesta("PATCH", "/icfs/update", payload)!;
+        return this.dataStorageService.InviaRichiesta("PATCH", "/icfs/update", payload)!.pipe(map((data: any) => {
+            console.log("ICF modificati con successo");
+            return data;
+        }));
     }
 
-    CreateICFs(icfs: Icf[]) {
-        if (icfs.length == 0) return;
+    CreateICFs(icfs: Icf[]): Observable<any> {
+        if (icfs.length == 0) return of(null);
 
         const payload = {
             icfs: icfs
         }
 
-        return this.dataStorageService.InviaRichiesta("POST", "/icfs/create", payload)!;
+        return this.dataStorageService.InviaRichiesta("POST", "/icfs/create", payload)!.pipe(map((data: any) => {
+            return data;
+        }));
     }
 }

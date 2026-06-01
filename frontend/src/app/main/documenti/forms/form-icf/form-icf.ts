@@ -10,6 +10,7 @@ import { DocumentiEditBreadcrumb } from '../../documenti-edit/documenti-edit-bre
 import { CheckError } from '../../../../shared/utilities/check-error';
 import { Stato } from '../../../../models/documento';
 import { IcfService } from '../../../../shared/services/icf.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-form-icf',
@@ -41,6 +42,7 @@ export class FormICF {
         if (this.root == "modifica") {
             this.isLoading = true;
             this.icfService.icfsEdit = [];
+            this.icfService.newIcfs = [];
             this.icfService.GetICFSDocumento()?.subscribe({
                 next: (data: any) => {
                     console.log(this.icfService.icfsSelected);
@@ -67,7 +69,7 @@ export class FormICF {
         if (this.icfService.icfsSelected.findIndex((icfArray: Icf) => icfArray.Codice == icf.Codice) == -1) {
             this.icfService.icfsSelected.push(new Icf(icf.Codice, icf.Descrizione));
 
-            if(this.icfService.icfs.findIndex((icfArray: Icf) => icfArray.Codice == icf.Codice) == -1) {
+            if (this.icfService.icfs.findIndex((icfArray: Icf) => icfArray.Codice == icf.Codice) == -1) {
                 this.icfService.newIcfs.push(new Icf(icf.Codice, icf.Descrizione));
             }
 
@@ -86,7 +88,7 @@ export class FormICF {
     RemoveICF(codice: string) {
         this.icfService.icfsSelected.splice(this.icfService.icfsSelected.findIndex(icf => icf.Codice == codice), 1);
 
-        if(this.icfService.newIcfs.findIndex((icfArray: Icf) => icfArray.Codice == codice) != -1) {
+        if (this.icfService.newIcfs.findIndex((icfArray: Icf) => icfArray.Codice == codice) != -1) {
             this.icfService.newIcfs.splice(this.icfService.newIcfs.findIndex((icfArray: Icf) => icfArray.Codice == codice), 1);
         }
 
@@ -101,16 +103,20 @@ export class FormICF {
         // console.log(this.icfService.icfsEdit);
     }
 
-    Edit(){
-        if(this.icfService.icfsEdit.length > 0){
-            this.icfService.UpdateICFsDocumento()?.subscribe({
-                next: (data: any) => {
-                    console.log("ICF modificati con successo");
-                },
-                error: (err: any) => this.checkError.checkError(err)
-            });
-        }
+    async Edit() {
+        try {
+            if (this.icfService.newIcfs.length > 0) {
+                await lastValueFrom(this.icfService.CreateICFs(this.icfService.newIcfs));
+            }
 
-        this.router.navigate(["../"], { relativeTo: this.activatedRoute });
+            if (this.icfService.icfsEdit.length > 0) {
+                await lastValueFrom(this.icfService.UpdateICFsDocumento());
+            }
+
+            this.router.navigate(["../"], { relativeTo: this.activatedRoute });
+        }
+        catch (err) {
+            this.checkError.checkError(err);
+        }
     }
 }

@@ -81,7 +81,7 @@ async function CreateICFs(req: any, res: any) {
             });
         }
 
-        res.status(200).send("ICFs creati con successo");
+        res.status(200).send({ message: "ICFs creati con successo" });
     } catch (err) {
         console.error("Errore nella creazione dell'ICF:", err);
         res.status(500).send("Errore durante la creazione dell'ICF");

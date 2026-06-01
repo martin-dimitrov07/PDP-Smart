@@ -44,6 +44,7 @@ export class ModalAddIcf {
 
         if (this.icfsCod.includes(this.icfValue) || !regex.test(this.icfValue)) {
             this.descrizioneDiv.nativeElement.classList.add("d-none");
+            this.descrizione = "";
         }
         else if (regex.test(this.icfValue) && !this.icfsCod.some((codice: string) => codice.toLowerCase().includes(this.icfValue.toLowerCase()))) {
             this.descrizioneDiv.nativeElement.classList.remove("d-none");
