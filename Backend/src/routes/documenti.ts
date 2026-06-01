@@ -61,7 +61,7 @@ async function DeletePDP(req: any, res: any) {
             await Promise.all(deletePromises);
         }
 
-        res.status(200).send("Documento eliminato con successo");
+        res.status(200).send({message: "Documento eliminato con successo"});
     }
     catch (err) {
         console.error("Errore nella cancellazione del documento:", err);
@@ -133,10 +133,7 @@ async function CreatePDP(req: any, res: any) {
 
     } catch (err: any) {
         console.error("Errore nella transazione:", err);
-        res.status(500).send({
-            error: "Errore durante la creazione del documento",
-            details: err
-        });
+        res.status(500).send("Errore durante la creazione del documento");
     }
 }
 
@@ -173,7 +170,8 @@ async function GetDocumenti(req: any, res: any) {
                 const classeId = await GetClasseIdByDocumento(filters.Anno, filters.Studente_Email);
 
                 if (!classeId) {
-                    return res.status(404).send("Classe non trovata per lo studente e l'anno specificati nel documento.");
+                    return res.status(200).send([]);
+                    // return res.status(404).send("Classe non trovata per lo studente e l'anno specificati nel documento.");
                 }
 
                 if (!await CheckDocente(req, classeId)) {
@@ -196,6 +194,7 @@ async function GetDocumenti(req: any, res: any) {
             };
         }
 
+        delete filters.Docente_Email;
         const documenti = await prisma.documento.findMany({
             where: filters,
             orderBy: {
@@ -207,10 +206,7 @@ async function GetDocumenti(req: any, res: any) {
     }
     catch (err) {
         console.error("Errore esecuzione richiesta documenti:", err);
-        res.status(500).send({
-            error: "Errore nella esecuzione della richiesta dei documenti",
-            details: err
-        });
+        res.status(500).send("Errore nella esecuzione della richiesta dei documenti");
     }
 }
 
@@ -245,11 +241,11 @@ async function ApprovaDocumento(req: any, res: any) {
         if (updated.count > 0) {
             res.status(200).send({ message: "Documento approvato con successo" });
         } else {
-            res.status(404).send({ message: "Nessun documento trovato con i criteri specificati" });
+            res.status(404).send("Nessun documento trovato con i criteri specificati");
         }
     } catch (err) {
         console.error("Errore:", err);
-        res.status(500).send({ message: "Errore nell'approvazione del documento" });
+        res.status(500).send("Errore nell'approvazione del documento");
     }
 }
 
@@ -290,7 +286,7 @@ async function SalvaDocumentoApprovato(req: any, res: any) {
         }
 
         if (!req.files || !req.files.documento) {
-            return res.status(400).send({ message: "Nessun documento caricato." });
+            return res.status(400).send("Nessun documento caricato.");
         }
 
         const directoryPath = `documenti/${studente_email}/${anno}`;
@@ -307,7 +303,7 @@ async function SalvaDocumentoApprovato(req: any, res: any) {
 
     } catch (err) {
         console.error("Errore:", err);
-        res.status(500).send({ message: "Errore nel salvataggio del documento approvato" });
+        res.status(500).send("Errore nel salvataggio del documento approvato");
     }
 }
 
@@ -333,7 +329,7 @@ async function GetDocumentoApprovato(req: any, res: any) {
         }
 
         if (!anno || !studente_email) {
-            return res.status(400).send({ message: "Email o anno mancanti." });
+            return res.status(400).send("Email o anno mancanti.");
         }
 
         const pdfPath = join(`documenti/${studente_email}/${anno}`, 'PDP_approvato.pdf');
@@ -341,7 +337,7 @@ async function GetDocumentoApprovato(req: any, res: any) {
         try {
             await access(pdfPath);
         } catch {
-            return res.status(404).send({ message: "Documento approvato non trovato." });
+            return res.status(404).send("Documento approvato non trovato.");
         }
 
         const pdfBuffer = await readFile(pdfPath);
@@ -350,7 +346,7 @@ async function GetDocumentoApprovato(req: any, res: any) {
 
     } catch (err) {
         console.error("Errore:", err);
-        res.status(500).send({ message: "Errore nel recupero del documento approvato" });
+        res.status(500).send("Errore nel recupero del documento approvato");
     }
 }
 

@@ -8,8 +8,8 @@ async function GetAnniScolasticiStudenti(req: any, res: any) {
         const isAdmin = await CheckAdmin(req);
 
         if (!isAdmin) {
-            if (filters.Classe_Id) {
-                if (!(await CheckDocente(req, filters.Classe_Id))) {
+            if (filters.Id) {
+                if (!(await CheckDocente(req, filters.Id))) {
                     return res.status(403).send("Accesso negato: non sei un docente di questa classe.");
                 }
             }
@@ -52,6 +52,7 @@ async function GetAnniScolasticiStudenti(req: any, res: any) {
 
 async function GetAnniScolasticiDocumenti(req: any, res: any) {
     try {
+        console.log(req["parsedQuery"].filters);
         const filters = req["parsedQuery"].filters || {};
 
         const isAdmin = await CheckAdmin(req);

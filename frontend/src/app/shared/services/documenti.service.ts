@@ -55,18 +55,17 @@ export class DocumentiService {
                     AllegatiIds: JSON.stringify(this.allegatiService.allegatiDoc.map(a => a.Id))
                 };
 
-                this.dataStorageService.InviaRichiesta("DELETE", "/documento/delete", payload)!
-                    .subscribe({
-                        next: (res) => {
-                            console.log("documento eliminato con successo");
-                            const indexDelDoc = this.documenti.findIndex(d => d.Studente_Email == documento.Studente_Email && d.Anno?.getTime() == documento.Anno?.getTime());
-                            if (indexDelDoc !== -1) {
-                                this.documenti.splice(indexDelDoc, 1);
-                            }
-                            this.GetNumeroDocumenti();
-                        },
-                        error: (err) => this.checkError.checkError(err)
-                    });
+                this.dataStorageService.InviaRichiesta("DELETE", "/documento/delete", payload)!.subscribe({
+                    next: (res) => {
+                        console.log("Documento eliminato con successo");
+                        const indexDelDoc = this.documenti.findIndex(d => d.Studente_Email == documento.Studente_Email && d.Anno?.getTime() == documento.Anno?.getTime());
+                        if (indexDelDoc != -1) {
+                            this.documenti.splice(indexDelDoc, 1);
+                        }
+                        this.GetNumeroDocumenti();
+                    },
+                    error: (err) => this.checkError.checkError(err)
+                });
             }
         });
     }
@@ -113,11 +112,7 @@ export class DocumentiService {
 
         filters.Docente_Email = this.docentiService.docente.Email;
 
-        let params: any = {
-            filters: JSON.stringify(filters)
-        };
-
-        return this.dataStorageService.InviaRichiesta("GET", "/documenti", params)!.pipe(
+        return this.dataStorageService.InviaRichiesta("GET", "/documenti", { filters: JSON.stringify(filters) })!.pipe(
             tap((data: any) => {
                 this.documenti = data.map((doc: any) => new Documento(
                     doc.Studente_Email,

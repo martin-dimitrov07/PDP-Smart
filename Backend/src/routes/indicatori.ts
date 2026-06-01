@@ -72,10 +72,7 @@ async function GetIndicatoriByDocumento(req: any, res: any) {
     }
     catch (err) {
         console.error("Errore nel recupero degli indicatori del documento:", err);
-        res.status(500).send({
-            error: "Errore durante il recupero degli indicatori del documento",
-            details: err
-        });
+        res.status(500).send("Errore durante il recupero degli indicatori del documento");
     }
 }
 
@@ -141,10 +138,7 @@ async function UpdateIndicatoriDocumento(req: any, res: any) {
         res.status(200).send({ message: "Indicatori aggiornati con successo" });
     } catch (err) {
         console.error("Errore nell'aggiornamento degli indicatori del documento:", err);
-        res.status(500).send({
-            error: "Errore durante l'aggiornamento degli indicatori del documento",
-            details: err
-        });
+        res.status(500).send("Errore durante l'aggiornamento degli indicatori del documento");
     }
 }
 

@@ -55,6 +55,7 @@ export class FormAllegati {
             this.isLoading = true;
             this.allegatiService.allegatiEdit = [];
             this.allegatiService.allegatiDoc = [];
+            this.allegatiService.allegati = [];
             this.allegatiService.GetAllegatiDocumento()?.subscribe({
                 next: (data: any) => {
                     console.log("Allegati del documento:", this.allegatiService.allegatiDoc);

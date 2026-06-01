@@ -12,7 +12,7 @@ async function GetClassi(req: any, res: any) {
                 }
             };
 
-            if(filters.Classi_Studente?.some?.Studente_Email && filters.Anno_Scolastico) {
+            if (filters.Classi_Studente?.some?.Studente_Email && filters.Anno_Scolastico) {
                 const classeId = await GetClasseIdByDocumento(filters.Anno_Scolastico, filters.Classi_Studente.some.Studente_Email);
 
                 if (!classeId) {
@@ -90,7 +90,6 @@ async function GetClasseById(req: any, res: any) {
         if (!await CheckAdmin(req)) {
             if (!await CheckDocente(req, classeId))
                 return res.status(403).send("Accesso negato: non sei un docente di questa classe.");
-            return res.status(403).send("Accesso negato: non sei un amministratore.");
         }
 
         const classe = await prisma.classe.findUnique({

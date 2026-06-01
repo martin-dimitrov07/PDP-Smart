@@ -61,18 +61,18 @@ async function UpdateAllegatiDocumento(req: any, res: any) {
         const allegatiAdd = req.files && req.files.allegatiAdd ? (Array.isArray(req.files.allegatiAdd) ? req.files.allegatiAdd : [req.files.allegatiAdd]) : [];
         const allegatiDelete = req.body.allegatiDelete ? Array.isArray(req.body.allegatiDelete) ? req.body.allegatiDelete : [req.body.allegatiDelete] : [];
 
-        if(!documento || !documento.Studente_Email || !documento.Anno) {
+        if (!documento || !documento.Studente_Email || !documento.Anno) {
             return res.status(400).send("Mancano informazioni sul documento nella richiesta");
         }
 
-        if(!await CheckAdmin(req)) {
+        if (!await CheckAdmin(req)) {
             const classeId = await GetClasseIdByDocumento(documento.Anno, documento.Studente_Email);
 
-            if(!classeId) {
+            if (!classeId) {
                 return res.status(404).send("Classe non trovata per lo studente e l'anno specificati nel documento.");
             }
 
-            if(!await CheckCoordinatore(req, classeId)) {
+            if (!await CheckCoordinatore(req, classeId)) {
                 return res.status(403).send("Accesso negato: non sei un amministratore o un coordinatore della classe associata a questo documento.");
             }
         }
@@ -94,7 +94,7 @@ async function UpdateAllegatiDocumento(req: any, res: any) {
         });
 
         if (saveAllegati.length > 0) {
-            const savePromises = saveAllegati.map(item => 
+            const savePromises = saveAllegati.map(item =>
                 SaveAllegato(item.record, item.data)
             );
             await Promise.all(savePromises);
@@ -109,10 +109,7 @@ async function UpdateAllegatiDocumento(req: any, res: any) {
     }
     catch (err) {
         console.error("Errore nell'aggiornamento degli allegati del documento:", err);
-        res.status(500).send({
-            error: "Errore durante l'aggiornamento degli allegati del documento",
-            details: err
-        });
+        res.status(500).send("Errore durante l'aggiornamento degli allegati del documento");
     }
 }
 
@@ -126,13 +123,13 @@ async function GetAllegati(req: any, res: any) {
             return res.status(400).send("Mancano utente o anno nella richiesta");
         }
 
-        const classeId = await GetClasseIdByDocumento(anno, studente_Email);
+        const classeId = await GetClasseIdByDocumento(filters["Documento_Anno"], studente_Email);
 
-        if(!classeId) {
+        if (!classeId) {
             return res.status(404).send("Classe non trovata per lo studente e l'anno specificati");
         }
 
-        if(!await CheckAdmin(req)) {
+        if (!await CheckAdmin(req)) {
             if (!await CheckDocente(req, classeId)) {
                 return res.status(403).send("Accesso negato: non sei un docente della classe associata a questo documento.");
             }
@@ -176,7 +173,7 @@ async function GetAllegati(req: any, res: any) {
 
     } catch (err) {
         console.error("Errore nel recupero degli allegati:", err);
-        res.status(500).send({ error: "Errore durante il recupero degli allegati" });
+        res.status(500).send("Errore durante il recupero degli allegati");
     }
 }
 

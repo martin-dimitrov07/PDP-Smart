@@ -19,7 +19,7 @@ export class AnniScolasticiService {
         const filters: any = {};
 
         if (idClasse) {
-            filters.Classe_Id = idClasse;
+            filters.Id = idClasse;
         }
 
         if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
@@ -30,11 +30,7 @@ export class AnniScolasticiService {
             };
         }
 
-        const params = {
-            filters: JSON.stringify(filters)
-        };
-
-        return this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici-studenti", params)!.pipe(tap(
+        return this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici-studenti", { filters: JSON.stringify(filters) })!.pipe(tap(
             (data: any) => {
                 this.anniScolastici = Array.from(data).map((item: any) => new Date(item));
             }
@@ -50,7 +46,7 @@ export class AnniScolasticiService {
             filters.Docente_Email = this.docentiService.docente.Email;
         }
 
-        return this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici-documenti", { filters })!.pipe(
+        return this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici-documenti", { filters: JSON.stringify(filters) })!.pipe(
             tap((data: any) => {
                 this.anniScolastici = Array.from(data).map((item: any) => new Date(item));
             })

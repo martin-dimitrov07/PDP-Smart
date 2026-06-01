@@ -145,10 +145,7 @@ async function UpdateICFsDocumento(req: any, res: any) {
     }
     catch (err) {
         console.error("Errore nell'aggiornamento degli ICFs del documento:", err);
-        res.status(500).send({
-            error: "Errore durante l'aggiornamento degli ICFs del documento",
-            details: err
-        });
+        res.status(500).send("Errore durante l'aggiornamento degli ICFs del documento");
     }
 }
 
