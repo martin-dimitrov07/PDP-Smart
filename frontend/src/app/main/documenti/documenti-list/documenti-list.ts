@@ -23,8 +23,6 @@ export class DocumentiList {
     private readonly anniScolasticiService: AnniScolasticiService = inject(AnniScolasticiService);
     private readonly classiService: ClassiService = inject(ClassiService);
     private readonly checkError: CheckError = inject(CheckError);
-    private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
-    private readonly router: Router = inject(Router);
 
     private platformId = inject(PLATFORM_ID);
 
@@ -41,22 +39,14 @@ export class DocumentiList {
 
     ngOnInit() {
         this.isLoadingDocs = true;
-        const querySearch = this.activatedRoute.snapshot.queryParamMap.get('search');
-        const queryAnno = this.activatedRoute.snapshot.queryParamMap.get('anno');
+        const querySearch = this.documentiService.searchTermFilter;
+        const queryAnno = this.documentiService.annoScolasticoFilter;
 
         if (querySearch) {
             this.searchTerm = querySearch;
         }
         if (queryAnno) {
             this.filterAnnoScolastico = new Date(queryAnno);
-        }
-
-        if (querySearch || queryAnno) {
-            this.router.navigate([], {
-                relativeTo: this.activatedRoute,
-                queryParams: { search: null, anno: null },
-                queryParamsHandling: 'merge'
-            });
         }
 
         this.classiService.GetClassiCoordinatore(this.docentiService.docente.Email).subscribe({

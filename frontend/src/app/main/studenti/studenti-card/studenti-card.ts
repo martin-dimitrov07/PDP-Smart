@@ -32,11 +32,9 @@ export class StudentiCard {
     GoStudent() {
         const searchName = `${this.studente.Email}`.trim();
 
-        this.router.navigate(["documenti", "lista"], {
-            queryParams: {
-                search: searchName,
-                anno: this.annoScolasticoSelezionato ? this.annoScolasticoSelezionato.toISOString() : null
-            }
-        });
+        this.documentiService.searchTermFilter = searchName;
+        this.documentiService.annoScolasticoFilter = this.annoScolasticoSelezionato;
+
+        this.router.navigate(["documenti", "lista"]);
     }
 }

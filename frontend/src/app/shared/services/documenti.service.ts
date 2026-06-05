@@ -4,7 +4,6 @@ import { DataStorageService } from './data-storage.service';
 import { Studente } from '../../models/studente';
 import { Documento, Stato, Tipo } from '../../models/documento';
 import { catchError, forkJoin, from, lastValueFrom, map, Observable, of, switchMap, tap } from 'rxjs';
-import { Ruolo } from '../../models/docente';
 import { Classe } from '../../models/classe';
 import { CheckError } from '../utilities/check-error';
 import { StudentiService } from './studenti.service';
@@ -32,6 +31,11 @@ export class DocumentiService {
     private readonly icfService: IcfService = inject(IcfService);
     private readonly checkError: CheckError = inject(CheckError);
     private readonly http: HttpClient = inject(HttpClient);
+
+    searchTermFilter: string = "";
+    annoScolasticoFilter: Date | null = null;
+    TipoFilter: Tipo | null = null;
+    StatoFilter: Stato | null = null;
 
     TipoDocumento: typeof Tipo = Tipo;
     Stato: typeof Stato = Stato;

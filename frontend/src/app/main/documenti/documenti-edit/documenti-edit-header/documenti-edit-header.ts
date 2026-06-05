@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-documenti-edit-header',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './documenti-edit-header.html',
   styleUrl: './documenti-edit-header.css',
 })

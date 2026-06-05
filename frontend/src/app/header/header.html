@@ -21,7 +21,7 @@
 
                 <hr class="text-white d-lg-none">
                 <div class="nav-item dropdown d-lg-none d-flex flex-column">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center gap-3 text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center gap-3 text-white" [routerLink]="[]" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         @if (userImgPath) {
                             <img [src]="userImgPath" class="icon-profile rounded-circle border border-1" alt="Profilo">
                         } @else {
@@ -39,7 +39,7 @@
         <div class="col-3 d-none d-lg-flex justify-content-end">
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle d-flex align-items-center gap-3 text-white" 
-                   href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                   [routerLink]="[]" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     @if (userImgPath) {
                         <img [src]="userImgPath" class="icon-profile rounded-circle border border-1" alt="Profilo">
                     } @else {

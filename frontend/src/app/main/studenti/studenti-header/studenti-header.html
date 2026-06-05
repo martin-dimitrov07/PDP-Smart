@@ -1,9 +1,9 @@
 <div class="px-3 my-4">
     <nav aria-label="breadcrumb" class="px-3 my-3">
         <ol class="breadcrumb m-0">
-            <li class="breadcrumb-item"><a href="/indirizzi"
+            <li class="breadcrumb-item"><a routerLink="/indirizzi"
                     class="text-decoration-none third-text-color opacity-75">Indirizzi</a></li>
-            <li class="breadcrumb-item"><a href="/indirizzi/{{indirizzo}}/classi"
+            <li class="breadcrumb-item"><a [routerLink]="['/indirizzi', indirizzo, 'classi']"
                     class="text-decoration-none third-text-color opacity-75">Classi</a></li>
             <li class="breadcrumb-item secondary-text-color fw-bold" aria-current="page">Studenti</li>
         </ol>

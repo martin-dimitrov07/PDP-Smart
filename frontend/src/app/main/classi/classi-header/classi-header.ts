@@ -5,10 +5,11 @@ import { DocumentiService } from '../../../shared/services/documenti.service';
 import { IndirizziService } from '../../../shared/services/indirizzi.service';
 import { ClassiService } from '../../../shared/services/classi.service';
 import { AnniScolasticiService } from '../../../shared/services/anni-scolastici.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-classi-header',
-    imports: [NgClass],
+    imports: [NgClass, RouterLink],
     templateUrl: './classi-header.html',
     styleUrl: './classi-header.css',
 })
