@@ -24,6 +24,10 @@ export class ColorSection {
             this.document.documentElement.style.setProperty('--color', `var(${config.main})`);
             this.document.documentElement.style.setProperty('--color-hover', `var(${config.hover})`);
             this.document.documentElement.style.setProperty('--color-hover-dark', `var(${config.dark})`);
+        } else {
+            this.document.documentElement.style.setProperty('--color', '#4b5563');
+            this.document.documentElement.style.setProperty('--color-hover', '#f3f4f6');
+            this.document.documentElement.style.setProperty('--color-hover-dark', '#e5e7eb');
         }
     }
 
@@ -37,6 +41,6 @@ export class ColorSection {
             'TUR': "bi-airplane-fill",
             'ENE': "bi-battery-charging"
         };
-        return icons[indirizzo] || "";
+        return icons[indirizzo] || "bi-mortarboard-fill";
     }
 }
