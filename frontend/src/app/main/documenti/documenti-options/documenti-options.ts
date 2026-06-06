@@ -22,7 +22,7 @@ export class DocumentiOptions {
     private readonly checkError: CheckError = inject(CheckError);
 
     ngOnInit() {
-        const ruolo = this.docentiService.docente.Ruolo;
+        const ruolo = this.docentiService.docente?.Ruolo;
 
         if (ruolo != Ruolo.ADMIN && ruolo != Ruolo.COORDINATORE) {
             this.router.navigate(["documenti/lista"]);

@@ -22,10 +22,10 @@ export class AnniScolasticiService {
             filters.Id = idClasse;
         }
 
-        if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
+        if (this.docentiService.docente?.Ruolo != Ruolo.ADMIN) {
             filters.Insegnamenti = {
                 some: {
-                    Docente_Email: this.docentiService.docente.Email
+                    Docente_Email: this.docentiService.docente?.Email
                 }
             };
         }
@@ -42,8 +42,8 @@ export class AnniScolasticiService {
 
         let filters: any = {};
 
-        if (this.docentiService.docente.Ruolo != Ruolo.ADMIN) {
-            filters.Docente_Email = this.docentiService.docente.Email;
+        if (this.docentiService.docente?.Ruolo != Ruolo.ADMIN) {
+            filters.Docente_Email = this.docentiService.docente?.Email;
         }
 
         return this.dataStorageService.InviaRichiesta("GET", "/anni-scolastici-documenti", { filters: JSON.stringify(filters) })!.pipe(

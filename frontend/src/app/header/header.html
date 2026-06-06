@@ -27,7 +27,7 @@
                         } @else {
                             <i class="bi bi-person-circle fs-3"></i>
                         }
-                        <span class="nav-link text-white">Prof. {{docentiService.docente.Cognome}}</span>
+                        <span class="nav-link text-white">Prof. {{docentiService.docente?.Cognome}}</span>
                     </a>
                     <ul class="dropdown-menu border-secondary">
                         <li (click)="logout()"><button class="dropdown-item text-danger"><i class="bi bi-box-arrow-right me-2"></i>Logout</button></li>
@@ -45,7 +45,7 @@
                     } @else {
                         <i class="bi bi-person-circle fs-3 d-flex align-items-center"></i>
                     }
-                    <span class="prof-name nav-link text-white">Prof. {{docentiService.docente.Cognome}}</span>
+                    <span class="prof-name nav-link text-white">Prof. {{docentiService.docente?.Cognome}}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-secondary w-100">
                     <li (click)="logout()"><button class="dropdown-item py-2 text-danger"><i class="bi bi-box-arrow-right me-2"></i>Logout</button></li>

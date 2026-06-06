@@ -21,9 +21,19 @@ export class ModalValidationDocumento {
 
         this.documentiService.ApprovaDocumento()?.subscribe({
             next: () => {
-                this.documentiService.GetDocumentoById(this.documentiService.documentoSelected.Studente_Email, this.documentiService.documentoSelected.Anno!).subscribe({
+                if (!this.documentiService.documentoSelected) {
+                    this.router.navigate(['documenti', 'lista']);
+                    return;
+                }
+                
+                this.documentiService.GetDocumentoById(this.documentiService.documentoSelected?.Studente_Email, this.documentiService.documentoSelected?.Anno!).subscribe({
                     next: (res) => {
                         if (res) {
+                            if (!this.documentiService.documentoSelected) {
+                                this.router.navigate(['documenti', 'lista']);
+                                return;
+                            }
+
                             this.documentiService.SaveDocumentoApprovato(this.documentiService.documentoSelected).subscribe({
                                 next: () => {
                                     this.router.navigate(['documenti', 'lista']);

@@ -53,7 +53,7 @@ export class FormIndicatori {
         try {
             if (this.activatedRoute.snapshot.data['root'] == "modifica") {
 
-                if (this.documentiService.documentoSelected.Stato == this.StatoDocumento.IN_BOZZA || this.activatedRoute.snapshot.data['root'] == "crea")
+                if (this.documentiService.documentoSelected?.Stato == this.StatoDocumento.IN_BOZZA || this.activatedRoute.snapshot.data['root'] == "crea")
                     this.canEdit = true;
                 else
                     this.canEdit = false;

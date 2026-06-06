@@ -3,7 +3,7 @@ import { DocentiService } from './docenti.service';
 import { DataStorageService } from './data-storage.service';
 import { Studente } from '../../models/studente';
 import { Documento, Stato, Tipo } from '../../models/documento';
-import { catchError, forkJoin, from, lastValueFrom, map, Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, forkJoin, from, lastValueFrom, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { Classe } from '../../models/classe';
 import { CheckError } from '../utilities/check-error';
 import { StudentiService } from './studenti.service';
@@ -42,7 +42,7 @@ export class DocumentiService {
 
     documenti: Documento[] = [];
     nDocumenti: number = 0;
-    documentoSelected: Documento = {} as Documento;
+    documentoSelected: Documento | null = null;
     canEditNota: boolean = false;
 
     DeleteDocumento(documento: Documento) {
@@ -114,7 +114,7 @@ export class DocumentiService {
             }
         }
 
-        filters.Docente_Email = this.docentiService.docente.Email;
+        filters.Docente_Email = this.docentiService.docente?.Email;
 
         return this.dataStorageService.InviaRichiesta("GET", "/documenti", { filters: JSON.stringify(filters) })!.pipe(
             tap((data: any) => {
@@ -132,7 +132,7 @@ export class DocumentiService {
         const filters = {
             Studente_Email: studenteEmail,
             Anno: anno,
-            Docente_Email: this.docentiService.docente.Email
+            Docente_Email: this.docentiService.docente?.Email
         };
 
         return this.dataStorageService.InviaRichiesta("GET", "/documenti", { filters: JSON.stringify(filters) })!.pipe(
@@ -162,6 +162,9 @@ export class DocumentiService {
     }
 
     CreateDocumento() {
+        if (!this.studentiService.studenteSelected?.Email || !this.studentiService.studenteSelected?.DSA_BES) {
+            return
+        }
         const documento = new Documento(this.studentiService.studenteSelected.Email, this.studentiService.studenteSelected.DSA_BES ? Tipo.DSA : Tipo.BES);
 
         const newDoc = {
@@ -201,7 +204,7 @@ export class DocumentiService {
 
     ResetCreateDocumento() {
         this.classiService.classeSelected = null;
-        this.studentiService.studenteSelected = {} as Studente;
+        this.studentiService.studenteSelected = null;
         this.materieService.materieEdit = [];
         this.materieService.materieClasse = [];
         this.indicatoriService.indicatori = {};

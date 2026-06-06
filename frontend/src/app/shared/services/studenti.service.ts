@@ -13,7 +13,7 @@ export class StudentiService {
 
     studenti: Studente[] = [];
     studentiNoDoc: Studente[] = [];
-    studenteSelected: Studente = {} as Studente;
+    studenteSelected: Studente | null = null;
 
     GetStudenti(classeId: number = 0, searchTerm: string = "", DSA_BES: number = -1, order: any = {}): Observable<any> {
 

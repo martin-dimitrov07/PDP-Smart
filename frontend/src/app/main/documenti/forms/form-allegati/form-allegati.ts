@@ -115,7 +115,7 @@ export class FormAllegati {
     }
 
     CreateDocumento() {
-        this.documentiService.CreateDocumento().subscribe({
+        this.documentiService.CreateDocumento()?.subscribe({
             next: (response) => {
                 console.log("Documento creato con successo:", response);
                 this.documentiService.ResetCreateDocumento();
@@ -165,12 +165,17 @@ export class FormAllegati {
     CanEdit() {
         const docente = this.docentiService.docente;
 
-        if (docente.Ruolo == this.Ruolo.ADMIN) {
+        if (docente?.Ruolo == this.Ruolo.ADMIN) {
             this.canEdit = true;
             return;
         }
 
-        if (docente.Ruolo == this.Ruolo.DOCENTE) {
+        if (docente?.Ruolo == this.Ruolo.DOCENTE) {
+            this.canEdit = false;
+            return;
+        }
+
+        if (!this.documentiService.documentoSelected) {
             this.canEdit = false;
             return;
         }
@@ -178,7 +183,7 @@ export class FormAllegati {
         this.classiService.GetClasseByDocumento(this.documentiService.documentoSelected).subscribe({
             next: (classe: Classe | null) => {
                 if (!classe) return;
-                this.canEdit = classe.Coordinatore_Email == docente.Email;
+                this.canEdit = classe.Coordinatore_Email == docente?.Email;
             },
             error: (err: any) => this.checkError.checkError(err)
         });

@@ -12,7 +12,7 @@
         <p class="sp-text m-0" [class.fw-bold]="this.stepsService.step === 'indicatori'">Indicatori</p>
     </div>
 
-    @if(docentiService.docente.Ruolo == Ruolo.ADMIN) {
+    @if(docentiService.docente?.Ruolo == Ruolo.ADMIN) {
     <div class="sp-line" [class.active]="isStepActive('icf')">
     </div>
     <div class="sp icf" [class.active]="isStepActive('icf')" (click)="GoPage('icf')">
@@ -25,7 +25,7 @@
     <div class="sp-line" [class.active]="isStepActive('allegati')">
     </div>
     <div class="sp allegati" [class.active]="isStepActive('allegati')" (click)="GoPage('allegati')">
-        <div class="dot">@if(docentiService.docente.Ruolo == Ruolo.ADMIN) { 4 } @else { 3 }</div>
+        <div class="dot">@if(docentiService.docente?.Ruolo == Ruolo.ADMIN) { 4 } @else { 3 }</div>
         <p class="sp-text m-0" [class.fw-bold]="this.stepsService.step === 'allegati'">Allegati</p>
     </div>
 </div>

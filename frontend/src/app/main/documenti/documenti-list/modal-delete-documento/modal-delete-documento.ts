@@ -11,6 +11,7 @@ export class ModalDeleteDocumento {
     private readonly documentiService: DocumentiService = inject(DocumentiService);
 
     DeleteDocumento() {
+        if (!this.documentiService.documentoSelected) return;
         this.documentiService.DeleteDocumento(this.documentiService.documentoSelected);
     }
 }

@@ -20,7 +20,7 @@ export class DocentiService {
     private readonly checkError: CheckError = inject(CheckError);
     private readonly router: Router = inject(Router);
 
-    public docente: Docente = {} as Docente;
+    public docente: Docente | null = null;
     public docentiConsiglioClasse: Docente[] = [];
 
     GetDocente(): Observable<boolean> {
@@ -52,7 +52,7 @@ export class DocentiService {
             }),
             catchError((err) => {
                 if (err.status == 401 || err.status == 403 || err.status == 404) {
-                    this.docente = {} as Docente;
+                    this.docente = null;
                     this.router.navigate(["login"]);
                 }
                 console.error(err.status + ": " + err.error);
