@@ -54,7 +54,7 @@ export class FormStudenti {
     }
 
     RemoveStudente() {
-        this.studentiService.studenteSelected = {} as Studente;
+        this.studentiService.studenteSelected = null;
         this.documentiService.ResetCreateDocumento();
         this.resetComponent();
     }

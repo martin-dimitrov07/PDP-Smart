@@ -18,7 +18,7 @@ export class DocumentiHeader {
     public readonly documentiService: DocumentiService = inject(DocumentiService);
     public readonly anniScolasticiService: AnniScolasticiService = inject(AnniScolasticiService);
 
-    ruoloDocente: Ruolo = this.docentiService.docente.Ruolo;
+    ruoloDocente: Ruolo | undefined = this.docentiService.docente?.Ruolo;
     Ruolo: typeof Ruolo = Ruolo; // esporta l'enum Ruolo per poterlo usare nell'html
 
     SetFilterAnnoScolastico(annoScolastico: Date) {

@@ -53,7 +53,7 @@ export class FormICF {
 
         this.docentiService.GetDocente().subscribe(isLoaded => {
             if (isLoaded) {
-                const ruolo = this.docentiService.docente.Ruolo;
+                const ruolo = this.docentiService.docente?.Ruolo;
 
                 if (ruolo != Ruolo.ADMIN && this.root == "crea") {
                     this.router.navigate(["404"]);

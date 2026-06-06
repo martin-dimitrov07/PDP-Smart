@@ -33,7 +33,7 @@ export class CategoriaInd {
     }
 
     ngOnInit() {
-        const tipologia = this.studentiService.studenteSelected.DSA_BES ? "DSA" : "BES";
+        const tipologia = this.studentiService.studenteSelected?.DSA_BES ? "DSA" : "BES";
 
         this.indicatoriService.GetIndicatori(this.categoria, tipologia).subscribe({
             next: (data: Indicatore[]) => {

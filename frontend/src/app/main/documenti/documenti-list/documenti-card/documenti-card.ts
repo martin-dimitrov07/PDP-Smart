@@ -61,12 +61,12 @@ export class DocumentiCard {
     CanDelete() {
         const docente = this.docentiService.docente;
 
-        if (docente.Ruolo == this.RuoloDocente.ADMIN) {
+        if (docente?.Ruolo == this.RuoloDocente.ADMIN) {
             this.canDelete = true;
             return;
         }
 
-        if (docente.Ruolo == this.RuoloDocente.DOCENTE) {
+        if (docente?.Ruolo == this.RuoloDocente.DOCENTE) {
             this.canDelete = false;
             return;
         }
@@ -74,7 +74,7 @@ export class DocumentiCard {
         this.classiService.GetClasseByDocumento(this.documento).subscribe({
             next: (classe: Classe | null) => {
                 if (!classe) return;
-                this.canDelete = classe.Coordinatore_Email == docente.Email;
+                this.canDelete = classe.Coordinatore_Email == docente?.Email;
             },
             error: (err: any) => this.checkError.checkError(err)
         });

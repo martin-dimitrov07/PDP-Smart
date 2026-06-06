@@ -59,9 +59,9 @@ export class ClassiService {
     GetClassiNoDocNoEmpty(filterAnnoScolastico: any) {
         let filters: any = {};
 
-        if (this.docentiService.docente.Ruolo == Ruolo.COORDINATORE) {
+        if (this.docentiService.docente?.Ruolo == Ruolo.COORDINATORE) {
             filters = {
-                Coordinatore_Email: this.docentiService.docente.Email,
+                Coordinatore_Email: this.docentiService.docente?.Email,
                 Classi_Studente: {
                     some: {}
                 },
@@ -133,10 +133,10 @@ export class ClassiService {
         const filters = {
             Classi_Studente: {
                 some: {
-                    Studente_Email: documento.Studente_Email
+                    Studente_Email: documento?.Studente_Email
                 }
             },
-            Anno_Scolastico: documento.Anno
+            Anno_Scolastico: documento?.Anno
         };
 
         const params = {

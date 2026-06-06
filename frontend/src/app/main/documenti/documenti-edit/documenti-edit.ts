@@ -48,20 +48,25 @@ export class DocumentiEdit {
     CanValidate() {
         const docente = this.docentiService.docente;
 
-        if (docente.Ruolo == this.RuoloDocente.ADMIN) {
+        if (docente?.Ruolo == this.RuoloDocente.ADMIN) {
             this.canValidate = true;
             return;
         }
 
-        if (docente.Ruolo == this.RuoloDocente.DOCENTE) {
+        if (docente?.Ruolo == this.RuoloDocente.DOCENTE) {
             this.canValidate = false;
             return;
         }
 
+        if (!this.documentiService.documentoSelected) {
+            this.canValidate = false;
+            return;
+        }
+        
         this.classiService.GetClasseByDocumento(this.documentiService.documentoSelected).subscribe({
             next: (classe: Classe | null) => {
                 if (!classe) return;
-                this.canValidate = classe.Coordinatore_Email == docente.Email;
+                this.canValidate = classe.Coordinatore_Email == docente?.Email;
             },
             error: (err: any) => this.checkError.checkError(err)
         });

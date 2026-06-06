@@ -38,7 +38,7 @@ export class DocumentiCreate {
         this.allegatiService.allegati = [];
 
 
-        const ruolo = this.docentiService.docente.Ruolo;
+        const ruolo = this.docentiService.docente?.Ruolo;
 
         if (ruolo != Ruolo.ADMIN && ruolo != Ruolo.COORDINATORE) {
             this.router.navigate(["documenti/lista"]);

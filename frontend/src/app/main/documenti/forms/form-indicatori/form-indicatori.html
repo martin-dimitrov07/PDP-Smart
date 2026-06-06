@@ -24,7 +24,7 @@
             @else
             {
                 Visualizza le misure applicate per ogni voce. 
-                @if(documentiService.documentoSelected.Stato != StatoDocumento.SCADUTO)
+                @if(documentiService.documentoSelected?.Stato != StatoDocumento.SCADUTO)
                 {
                 Per effettuare modifiche occore aggiungere o rimuovere la
                 spunta sull'indicatore desiderato
@@ -49,7 +49,7 @@
                 </div>
             }
 
-            @if(activatedRoute.snapshot.data['root'] == "modifica" && documentiService.documentoSelected.Stato == StatoDocumento.IN_BOZZA){
+            @if(activatedRoute.snapshot.data['root'] == "modifica" && documentiService.documentoSelected?.Stato == StatoDocumento.IN_BOZZA){
             <div class="d-flex justify-content-end">
                 <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0"
                     (click)="Edit()">
@@ -70,7 +70,7 @@
         </button>
 
         <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 ps-3 pe-2 border-0"
-            (click)="docentiService.docente.Ruolo == Ruolo.ADMIN ? stepsService.GoStep('icf') : stepsService.GoStep('allegati')">
+            (click)="docentiService.docente?.Ruolo == Ruolo.ADMIN ? stepsService.GoStep('icf') : stepsService.GoStep('allegati')">
             <p class="m-0">Avanti</p>
             <i class="bi bi-chevron-right"></i>
         </button>

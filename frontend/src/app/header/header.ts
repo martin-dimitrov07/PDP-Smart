@@ -21,7 +21,7 @@ export class Header {
 
     ngOnInit() {
         setTimeout(() => {
-            this.userImgPath = this.docentiService.docente.FotoUrl;
+            this.userImgPath = this.docentiService.docente?.FotoUrl;
         }, 500)
     }
 
@@ -39,7 +39,7 @@ export class Header {
     }
 
     get routesDocumento(): string[] {
-        return this.docentiService.docente.Ruolo == Ruolo.DOCENTE
+        return this.docentiService.docente?.Ruolo == Ruolo.DOCENTE
             ? ['/documenti', 'lista']
             : ['/documenti'];
     }

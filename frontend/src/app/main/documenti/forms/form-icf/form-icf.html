@@ -36,8 +36,8 @@
                                         <h5 class="card-title m-0">{{icf.Codice.toUpperCase()}}</h5>
                                         <p class="m-0">{{icf.Descrizione}}</p>
                                     </div>
-                                    @if((activatedRoute.snapshot.data['root'] == "crea" && docentiService.docente.Ruolo == Ruolo.ADMIN) 
-                                    || (docentiService.docente.Ruolo == Ruolo.ADMIN && documentiService.documentoSelected.Stato == StatoDocumento.IN_BOZZA && activatedRoute.snapshot.data['root'] == "modifica"))
+                                    @if((activatedRoute.snapshot.data['root'] == "crea" && docentiService.docente?.Ruolo == Ruolo.ADMIN) 
+                                || (docentiService.docente?.Ruolo == Ruolo.ADMIN && documentiService.documentoSelected?.Stato == StatoDocumento.IN_BOZZA && activatedRoute.snapshot.data['root'] == "modifica"))
                                     {
                                         <i class="bi bi-x-lg text-danger" style="cursor: pointer;" (click)="RemoveICF(icf.Codice)"></i>
                                     }
@@ -51,8 +51,8 @@
             </div>
         }
 
-        @if((docentiService.docente.Ruolo == Ruolo.ADMIN && documentiService.documentoSelected.Stato == StatoDocumento.IN_BOZZA && activatedRoute.snapshot.data['root'] == "modifica") 
-        || (activatedRoute.snapshot.data['root'] == "crea" && docentiService.docente.Ruolo == Ruolo.ADMIN))
+        @if((docentiService.docente?.Ruolo == Ruolo.ADMIN && documentiService.documentoSelected?.Stato == StatoDocumento.IN_BOZZA && activatedRoute.snapshot.data['root'] == "modifica") 
+        || (activatedRoute.snapshot.data['root'] == "crea" && docentiService.docente?.Ruolo == Ruolo.ADMIN))
         {
             <hr>
             <button class="btn-add d-flex align-items-center justify-content-center" data-bs-toggle="modal"
@@ -62,8 +62,8 @@
             </button>
         }
 
-        @if(activatedRoute.snapshot.data['root'] == "modifica" && docentiService.docente.Ruolo == Ruolo.ADMIN &&
-        documentiService.documentoSelected.Stato == StatoDocumento.IN_BOZZA)
+        @if(activatedRoute.snapshot.data['root'] == "modifica" && docentiService.docente?.Ruolo == Ruolo.ADMIN &&
+        documentiService.documentoSelected?.Stato == StatoDocumento.IN_BOZZA)
         {
             <div class="d-flex justify-content-end">
                 <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0 mt-1"
