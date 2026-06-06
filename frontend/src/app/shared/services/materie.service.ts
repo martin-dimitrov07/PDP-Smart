@@ -17,7 +17,7 @@ export class MaterieService {
     materieClasse: string[] = [];
 
     async GetMaterieEdit(): Promise<Observable<any>> {
-        if (!this.docentiService.docente.Email || !this.classiService.classeSelected.Id)
+        if (!this.docentiService.docente.Email || !this.classiService.classeSelected?.Id)
             return of(null);
 
         this.materieEdit = [];
@@ -50,7 +50,7 @@ export class MaterieService {
     }
 
     GetMaterieClasse(): Observable<any> {
-        if (!this.classiService.classeSelected.Id)
+        if (!this.classiService.classeSelected?.Id)
             return of(null);
 
         this.materieClasse = [];

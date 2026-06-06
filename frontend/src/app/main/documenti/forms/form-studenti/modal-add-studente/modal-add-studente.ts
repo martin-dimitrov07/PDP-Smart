@@ -68,7 +68,7 @@ export class ModalAddStudente {
     GetStudentiNoDoc() {
         this.isLoadingStudents = true;
         console.log(JSON.stringify(this.classiService.classeSelected));
-        this.studentiService.GetStudentiNoDocumento(Number(this.classiService.classeSelected.Id)).subscribe({
+        this.studentiService.GetStudentiNoDocumento(Number(this.classiService.classeSelected?.Id)).subscribe({
             next: (data: any) => {
                 this.studentiService.studentiNoDoc = data.map((studente: Studente) => new Studente(studente.Nome, studente.Cognome, studente.Email, studente.DSA_BES));
                 this.studenteEmail = data[0].Email;
@@ -82,7 +82,13 @@ export class ModalAddStudente {
     }
 
     SaveStudente() {
-        this.studentiService.GetStudenteByEmail(this.studenteEmail, this.classiService.classeSelected.Anno_Scolastico).subscribe({
+        const annoScolastico = this.classiService.classeSelected?.Anno_Scolastico;
+        
+        if (!annoScolastico) {
+            return;
+        }
+
+        this.studentiService.GetStudenteByEmail(this.studenteEmail, annoScolastico).subscribe({
             next: async (studente: Studente) => {
                 // if(this.studentiSelected.findIndex(s => s.Email == studente.Email) == -1) {
                 //     this.studentiSelected.push(new Studente(

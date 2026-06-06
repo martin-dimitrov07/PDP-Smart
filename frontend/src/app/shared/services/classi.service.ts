@@ -20,8 +20,8 @@ export class ClassiService {
     classi: any = {};
     classiNoEmpty: any = {};
     nClassi: number = 0;
-    classeSelected: Classe = {} as Classe;
-
+    classeSelected: Classe | null = null;
+    
     GetClassi(filterClassi: any, filterAnnoScolastico: any): Observable<any> {
         let filters: any = {};
 
