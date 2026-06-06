@@ -78,4 +78,19 @@ export class MaterieService {
             return this.materieClasse;
         }));
     }
+
+    GetMaterieDocenteClasse(docenteEmail: any, classeId: number): Observable<string[]> {
+        const filters: any = {
+            Insegnamenti: {
+                some: {
+                    Docente_Email: docenteEmail,
+                    Classe_Id: classeId
+                }
+            }
+        };
+
+        return this.dataStorageService.InviaRichiesta("GET", "/materie", { filters: JSON.stringify(filters) })!.pipe(map((data: any) => {
+            return Array.from(data).map((item: any) => item.Nome);
+        }));
+    }
 }
