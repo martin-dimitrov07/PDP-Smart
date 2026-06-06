@@ -357,15 +357,25 @@ export class DocumentiService {
             }
 
             await lastValueFrom(this.docentiService.GetDocentiByClasse(classe.Id));
+
             // docenti del consiglio di classe
-            for (let m = 1; m <= 13; m++) {
-                const nominativo = this.docentiService.docentiConsiglioClasse[m - 1] ? this.docentiService.docentiConsiglioClasse[m - 1].Cognome + " " + this.docentiService.docentiConsiglioClasse[m - 1].Nome : "";
-                result['nome_docente' + m] = nominativo;
+            let m = 0;
+            for (const docente of this.docentiService.docentiConsiglioClasse) {
+                const materie = await lastValueFrom(this.materieService.GetMaterieDocenteClasse(docente.Email, classe.Id));
+
+                const nominativo = docente.Cognome + " " + docente.Nome;
+                result['nome_docente' + (m + 1)] = nominativo + " (" + materie.join(", ") + ")";
+                m++;
             }
+
+            if(m < 13)
+                for (let n = m + 1; n <= 13; n++) {
+                    result['nome_docente' + n] = "";
+                }
 
             return result;
         }
-        catch (err) {
+        catch (err: any) {
             this.checkError.checkError(err);
             return null;
         }
