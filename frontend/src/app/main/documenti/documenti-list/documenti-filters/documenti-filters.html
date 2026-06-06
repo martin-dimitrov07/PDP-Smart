@@ -21,15 +21,15 @@
 
                 <div class="d-flex justify-content-center gap-3 flex-wrap">
 
-                    <button class="flex-fill badges-filter" id="badges-all"
+                    <button class="flex-fill badges-filter shadow" id="badges-all"
                         [class.active]="documentiService.TipoFilter == null"
                         (click)="SetFilterDSA_BES(-1)">Tutti</button>
 
-                    <button class="flex-fill badges-filter" id="badges-dsa"
+                    <button class="flex-fill badges-filter shadow" id="badges-dsa"
                         [class.active]="documentiService.TipoFilter == TipoDocumento.DSA"
                         (click)="SetFilterDSA_BES(true)">DSA</button>
 
-                    <button class="flex-fill badges-filter" id="badges-bes"
+                    <button class="flex-fill badges-filter shadow" id="badges-bes"
                         [class.active]="documentiService.TipoFilter == TipoDocumento.BES"
                         (click)="SetFilterDSA_BES(false)">BES</button>
 
@@ -47,25 +47,25 @@
                 <div class="row g-3 justify-content-center">
 
                     <div class="col-6 col-sm-3">
-                        <button id="tipoDoc-all" class="w-100 badges-filter tipoDoc-tab"
+                        <button id="tipoDoc-all" class="w-100 badges-filter tipoDoc-tab shadow"
                             [class.active]="documentiService.StatoFilter.length == 0"
                             (click)="SetFilterStato('Tutti')">Tutti</button>
                     </div>
 
                     <div class="col-6 col-sm-3">
-                        <button id="tipoDoc-scaduto" class="w-100 badges-filter tipoDoc-tab"
+                        <button id="tipoDoc-scaduto" class="w-100 badges-filter tipoDoc-tab shadow"
                             [class.active]="documentiService.StatoFilter.includes('SCADUTO')"
                             (click)="SetFilterStato('SCADUTO')">Scaduto</button>
                     </div>
 
                     <div class="col-6 col-sm-3">
-                        <button id="tipoDoc-in-bozza" class="w-100 badges-filter tipoDoc-tab"
+                        <button id="tipoDoc-in-bozza" class="w-100 badges-filter tipoDoc-tab shadow"
                             [class.active]="documentiService.StatoFilter.includes('IN_BOZZA')"
                             (click)="SetFilterStato('IN_BOZZA')">In bozza</button>
                     </div>
 
                     <div class="col-6 col-sm-3">
-                        <button id="tipoDoc-approvato" class="w-100 badges-filter tipoDoc-tab"
+                        <button id="tipoDoc-approvato" class="w-100 badges-filter tipoDoc-tab shadow"
                             [class.active]="documentiService.StatoFilter.includes('VALIDATO')"
                             (click)="SetFilterStato('VALIDATO')">Validato</button>
                     </div>

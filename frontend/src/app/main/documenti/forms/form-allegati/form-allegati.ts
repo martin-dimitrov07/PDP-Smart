@@ -123,11 +123,7 @@ export class FormAllegati {
 
                 //mostrare toast messaggio successo
             },
-            error: (error) => {
-                console.error("Errore durante la creazione del documento:", error);
-
-                //mostrare toast messaggio errore
-            }
+            error: (error) => this.checkError.checkError(error)
         });
     }
 

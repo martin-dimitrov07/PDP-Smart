@@ -109,10 +109,7 @@ export class DocumentiList {
                 this.isLoadingDocs = false;
             },
             error: (err: any) => {
-                if (err.status == 404)
-                    this.documentiService.documenti = [];
-
-                this.checkError.checkError(err);
+                    this.checkError.checkError(err);
                 this.isLoadingDocs = false;
             }
         });
@@ -181,9 +178,6 @@ export class DocumentiList {
                     this.isLoadingDocs = false;
                 },
                 error: (err: any) => {
-                    if (err.status == 404)
-                        this.documentiService.documenti = [];
-
                     this.checkError.checkError(err);
                     this.isLoadingDocs = false;
                 }

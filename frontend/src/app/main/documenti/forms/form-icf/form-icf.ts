@@ -47,7 +47,7 @@ export class FormICF {
                 next: (data: any) => {
                     console.log(this.icfService.icfsSelected);
                 },
-                error: (err: any) => console.log(err)
+                error: (err: any) => this.checkError.checkError(err)
             });
         }
 

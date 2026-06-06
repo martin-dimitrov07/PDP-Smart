@@ -63,9 +63,6 @@ export class Studenti {
             next: () => { this.isLoading = false; },
             error: (err: any) => {
                 this.isLoading = false;
-                if (err.status == 404)
-                    this.studentiService.studenti = [];
-
                 this.checkError.checkError(err)
             }
         });
@@ -89,9 +86,6 @@ export class Studenti {
                     this.isLoading = false;
                 },
                 error: (err: any) => {
-                    if (err.status == 404)
-                        this.studentiService.studenti = [];
-
                     this.checkError.checkError(err);
                     this.isLoading = false;
                 }
@@ -126,9 +120,6 @@ export class Studenti {
                 this.isLoading = false;
             },
             error: (err: any) => {
-                if (err.status == 404)
-                    this.studentiService.studenti = [];
-
                 this.checkError.checkError(err);
                 this.isLoading = false;
             }
