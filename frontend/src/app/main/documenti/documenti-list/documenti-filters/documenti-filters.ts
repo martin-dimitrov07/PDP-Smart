@@ -15,32 +15,13 @@ export class DocumentiFilters {
     @Output() FilterStato = new EventEmitter<string>();
     @Output() searchTermEvent = new EventEmitter<string>();
 
-    private readonly documentiService: DocumentiService = inject(DocumentiService);
+    public readonly documentiService: DocumentiService = inject(DocumentiService);
 
     @Input() searchTerm: string = "";
+    TipoDocumento: typeof Tipo = Tipo; 
 
     ngOnInit() {
         this.searchTerm = this.documentiService.searchTermFilter;
-    }
-
-    ngAfterViewInit() {
-        if (this.documentiService.TipoFilter === Tipo.DSA) {
-            document.querySelector("#badges-dsa")!.classList.add("active");
-        } else if (this.documentiService.TipoFilter === Tipo.BES) {
-            document.querySelector("#badges-bes")!.classList.add("active");
-        } else {
-            document.querySelector("#badges-all")!.classList.add("active");
-        }
-
-        if (this.documentiService.StatoFilter === Stato.IN_BOZZA) {
-            document.querySelector("#tipoDoc-in-bozza")!.classList.add("active");
-        } else if (this.documentiService.StatoFilter === Stato.SCADUTO) {
-            document.querySelector("#tipoDoc-scaduto")!.classList.add("active");
-        } else if (this.documentiService.StatoFilter === Stato.VALIDATO) {
-            document.querySelector("#tipoDoc-approvato")!.classList.add("active");
-        } else {
-            document.querySelector("#tipoDoc-all")!.classList.add("active");
-        }
     }
 
     Search() {
@@ -49,23 +30,18 @@ export class DocumentiFilters {
     }
 
     SetFilterDSA_BES(filter: any) {
-        this.documentiService.TipoFilter =
-            filter ? Tipo.DSA :
-                !filter ? Tipo.BES :
-                    null
-            ;
+        if (filter == -1) {
+            this.documentiService.TipoFilter = null;
+        } else if (filter == true) {
+            this.documentiService.TipoFilter = Tipo.DSA;
+        } else if (filter == false) {
+            this.documentiService.TipoFilter = Tipo.BES;
+        }
 
         this.FilterDSA_BES.emit(filter);
     }
 
     SetFilterStato(stato: string) {
-        this.documentiService.StatoFilter =
-            stato === "SCADUTO" ? Stato.SCADUTO :
-                stato === "IN_BOZZA" ? Stato.IN_BOZZA :
-                    stato === "VALIDATO" ? Stato.VALIDATO :
-                        null
-            ;
-
         this.FilterStato.emit(stato);
     }
 }

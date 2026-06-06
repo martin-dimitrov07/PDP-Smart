@@ -35,7 +35,7 @@ export class DocumentiService {
     searchTermFilter: string = "";
     annoScolasticoFilter: Date | null = null;
     TipoFilter: Tipo | null = null;
-    StatoFilter: Stato | null = null;
+    StatoFilter: string[] = [];
 
     TipoDocumento: typeof Tipo = Tipo;
     Stato: typeof Stato = Stato;

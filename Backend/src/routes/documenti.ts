@@ -175,7 +175,8 @@ async function GetDocumenti(req: any, res: any) {
                 }
 
                 if (!await CheckDocente(req, classeId)) {
-                    return res.status(403).send("Accesso negato: non sei un docente di questa classe.");
+                    return res.status(200).send([]);
+                    // return res.status(403).send("Accesso negato: non sei un docente di questa classe.");
                 }
             }
 

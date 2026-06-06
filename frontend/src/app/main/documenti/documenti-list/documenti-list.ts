@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ClassiService } from '../../../shared/services/classi.service';
 import { AnniScolasticiService } from '../../../shared/services/anni-scolastici.service';
 import { ModalDeleteDocumento } from './modal-delete-documento/modal-delete-documento';
+import { Stato, Tipo } from '../../../models/documento';
 
 @Component({
     selector: 'app-documenti-list',
@@ -26,20 +27,32 @@ export class DocumentiList {
 
     private platformId = inject(PLATFORM_ID);
 
-    public searchTerm: string = "";
-    private DSA_BES: any = -1;
-    private Stato_Documento: any = -1;
-    private filterAnnoScolastico: any = {};
-
-    private filterStato: any = { in: [] };
     private timer: any;
 
     public isLoadingDocs: boolean = false;
+
+    public searchTerm: string = "";
+    private DSA_BES: any;
+    private Stato_Documento: any;
+    private filterAnnoScolastico: any = {};
+    private filterStato: any = { in: [] };
 
     ngOnInit() {
         this.isLoadingDocs = true;
         const querySearch = this.documentiService.searchTermFilter;
         const queryAnno = this.documentiService.annoScolasticoFilter;
+
+        const tipoFilter = this.documentiService.TipoFilter;
+        this.DSA_BES = tipoFilter == Tipo.DSA ? "DSA" : tipoFilter === Tipo.BES ? "BES" : -1;
+
+        const statiSalvati = this.documentiService.StatoFilter;
+        if (statiSalvati && statiSalvati.length > 0) {
+            this.filterStato.in = [...statiSalvati];
+            this.Stato_Documento = this.filterStato;
+        } else {
+            this.filterStato.in = [];
+            this.Stato_Documento = -1;
+        }
 
         if (querySearch) {
             this.searchTerm = querySearch;
@@ -82,21 +95,12 @@ export class DocumentiList {
         this.isLoadingDocs = true;
         if (filter == -1) {
             this.DSA_BES = -1;
-            document.getElementById("badges-dsa")?.classList.remove("active");
-            document.getElementById("badges-bes")?.classList.remove("active");
-            document.getElementById("badges-all")?.classList.add("active");
         }
         else if (filter) {
             this.DSA_BES = "DSA";
-            document.getElementById("badges-dsa")?.classList.add("active");
-            document.getElementById("badges-bes")?.classList.remove("active");
-            document.getElementById("badges-all")?.classList.remove("active");
         }
         else {
             this.DSA_BES = "BES";
-            document.getElementById("badges-dsa")?.classList.remove("active");
-            document.getElementById("badges-bes")?.classList.add("active");
-            document.getElementById("badges-all")?.classList.remove("active");
         }
 
         this.documentiService.GetDocumenti(this.searchTerm, this.DSA_BES, this.Stato_Documento, this.filterAnnoScolastico).subscribe({
@@ -116,27 +120,26 @@ export class DocumentiList {
 
     SetFilterStato(stato: string) {
         this.isLoadingDocs = true;
+
         if (stato == "Tutti") {
-            this.resetFilterStatoDocumenti();
+            this.filterStato.in = [];
         } else {
             const index = this.filterStato.in.indexOf(stato);
-            const elementId = this.getButtonId(stato);
 
             if (index > -1) {
-                this.filterStato.in.splice(index, 1);
-                document.getElementById(elementId)?.classList.remove("active");
+                this.filterStato.in.splice(index, 1); 
             } else {
-                this.filterStato.in.push(stato);
-                document.getElementById(elementId)?.classList.add("active");
-                document.getElementById("tipoDoc-all")?.classList.remove("active");
+                this.filterStato.in.push(stato); 
             }
 
             if (this.filterStato.in.length == 3 || this.filterStato.in.length == 0) {
-                this.resetFilterStatoDocumenti();
+                this.filterStato.in = [];
             }
         }
 
+        this.documentiService.StatoFilter = [...this.filterStato.in];
         this.Stato_Documento = this.filterStato.in.length == 0 ? -1 : this.filterStato;
+
         this.documentiService.GetDocumenti(this.searchTerm, this.DSA_BES, this.Stato_Documento, this.filterAnnoScolastico).subscribe({
             next: (data: any) => {
                 this.documentiService.GetNumeroDocumenti();
@@ -149,32 +152,11 @@ export class DocumentiList {
         });
     }
 
-    private getButtonId(stato: string): string {
-        switch (stato) {
-            case 'SCADUTO': return 'tipoDoc-scaduto';
-            case 'IN_BOZZA': return 'tipoDoc-in-bozza';
-            case 'VALIDATO': return 'tipoDoc-approvato';
-            default: return '';
-        }
-    }
-
-    resetFilterStatoDocumenti() {
-        if (!isPlatformBrowser(this.platformId)) return;
-
-        this.Stato_Documento = -1;
-        this.filterStato.in = [];
-        document.getElementById("tipoDoc-all")?.classList.add("active");
-        for (const element of document.querySelectorAll(".tipoDoc-tab")) {
-            if (element.id != "tipoDoc-all") {
-                element.classList.remove("active");
-            }
-        }
-    }
-
     SetFilterAnnoScolastico(annoScolastico: Date) {
         this.isLoadingDocs = true;
         document.querySelector("#annoDropdown")!.textContent = annoScolastico.getFullYear().toString() + "/" + (annoScolastico.getFullYear() + 1).toString();
         this.filterAnnoScolastico = annoScolastico;
+        this.documentiService.annoScolasticoFilter = annoScolastico;
         this.documentiService.GetDocumenti(this.searchTerm, this.DSA_BES, this.Stato_Documento, this.filterAnnoScolastico).subscribe({
             next: (data: any) => {
                 this.documentiService.GetNumeroDocumenti();
