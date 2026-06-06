@@ -10,6 +10,7 @@ import { map, Observable, of, tap } from 'rxjs';
 export class IcfService {
     private readonly dataStorageService: DataStorageService = inject(DataStorageService);
 
+    // serve per evitare dipendenze circolari con documentiService, che a sua volta dipende da icfService
     private readonly injector: Injector = inject(Injector);
     private get documentiService(): DocumentiService {
         return this.injector.get(DocumentiService);

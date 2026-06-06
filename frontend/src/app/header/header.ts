@@ -28,10 +28,7 @@ export class Header {
     logout() {
         this.loginService.Logout().subscribe({
             "next": () => {
-                this.documentiService.searchTermFilter = "";
-                this.documentiService.annoScolasticoFilter = null;
-                this.documentiService.TipoFilter = null;
-                this.documentiService.StatoFilter = [];
+                this.documentiService.ResetFiltriDocumenti();
                 this.router.navigate(["login"]);
             },
             "error": (error: any) => {

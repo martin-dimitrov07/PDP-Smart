@@ -58,7 +58,7 @@ export class FormICF {
                 if (ruolo != Ruolo.ADMIN && this.root == "crea") {
                     this.router.navigate(["404"]);
                 } else {
-                    this.stepsService.step = "ICF";
+                    this.stepsService.step = "icf";
                 }
             }
             this.isLoading = false;

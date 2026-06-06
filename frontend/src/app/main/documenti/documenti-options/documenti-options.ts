@@ -7,6 +7,7 @@ import { StudentiService } from '../../../shared/services/studenti.service';
 import { Documento } from '../../../models/documento';
 import e from 'express';
 import { ClassiService } from '../../../shared/services/classi.service';
+import { CheckError } from '../../../shared/utilities/check-error';
 @Component({
     selector: 'app-documenti-options',
     imports: [DocumentiOptionCard],
@@ -17,65 +18,27 @@ export class DocumentiOptions {
     private readonly docentiService: DocentiService = inject(DocentiService);
     private readonly router: Router = inject(Router);
     public isClassiEnabled: boolean = false;
-    private readonly studentiService: StudentiService = inject(StudentiService);
     private readonly classiService: ClassiService = inject(ClassiService);
+    private readonly checkError: CheckError = inject(CheckError);
 
     ngOnInit() {
-        // this.isClassiEnabled = this.docentiService.docente.Ruolo != Ruolo.DOCENTE;
+        const ruolo = this.docentiService.docente.Ruolo;
 
-        // this.docentiService.GetDocente().subscribe(isLoaded => {
-        //     if (isLoaded) {
-        //         const ruolo = this.docentiService.docente.Ruolo;
+        if (ruolo != Ruolo.ADMIN && ruolo != Ruolo.COORDINATORE) {
+            this.router.navigate(["documenti/lista"]);
+            return;
+        }
 
-        //         if (ruolo != Ruolo.ADMIN && ruolo != Ruolo.COORDINATORE) {
-        //             this.router.navigate(["404"]);
-        //         }
-        //         else {
-        //             if (this.docentiService.docente.Ruolo == Ruolo.COORDINATORE) {
-        //                 this.classiService.GetClassiNoDocNoEmpty(Documento.SetAnnoCorrect(new Date())).subscribe({
-        //                     next: (data: any) => {
-        //                         console.log(data);
-        //                         const hasStudents = Object.values(data).some((arr: any) => arr && arr.length > 0);
+        if (ruolo == Ruolo.ADMIN) {
+            this.isClassiEnabled = true;
+            return;
+        }
 
-        //                         if (hasStudents) {
-        //                             this.isClassiEnabled = true;
-        //                         } else {
-        //                             this.isClassiEnabled = false;
-        //                         }
-        //                     },
-        //                     error: (err: any) => console.log(err)
-        //                 });
-        //             }
-        //             else
-        //                 this.isClassiEnabled = true;
-        //         }
-        //     }
-        // });
-
-        this.docentiService.GetDocente().subscribe(isLoaded => {
-            if (!isLoaded) return;
-
-            const ruolo = this.docentiService.docente.Ruolo;
-
-            if (ruolo != Ruolo.ADMIN && ruolo != Ruolo.COORDINATORE) {
-                this.router.navigate(["404"]);
-                return;
-            }
-
-            if (ruolo == Ruolo.ADMIN) {
-                this.isClassiEnabled = true;
-                return;
-            }
-
-            const annoCorrect = Documento.SetAnnoCorrect(new Date());
-            
-            this.classiService.GetClassiNoDocNoEmpty(annoCorrect).subscribe({
-                next: (data: any) => {
-                    console.log(data);
-                    this.isClassiEnabled = Object.values(data).some((arr: any) => arr?.length > 0);
-                },
-                error: (err: any) => console.error(err) 
-            });
+        this.docentiService.isCoordinatoreClassiNoDocNoEmpty().subscribe({
+            next: (isEnabled) => {
+                this.isClassiEnabled = isEnabled;
+            },
+            error: (err) => this.checkError.checkError(err)
         });
     }
 }

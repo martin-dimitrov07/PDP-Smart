@@ -13,13 +13,21 @@ async function GetClassi(req: any, res: any) {
             };
 
             if (filters.Classi_Studente?.some?.Studente_Email && filters.Anno_Scolastico) {
-                const classeId = await GetClasseIdByDocumento(filters.Anno_Scolastico, filters.Classi_Studente.some.Studente_Email);
+                const classiIds = await GetClasseIdByDocumento(filters.Anno_Scolastico, filters.Classi_Studente.some.Studente_Email);
 
-                if (!classeId) {
+                if (!classiIds || classiIds.length === 0) {
                     return res.status(404).send("Classe non trovata per lo studente e l'anno scolastico specificati.");
                 }
 
-                if (!await CheckDocente(req, classeId)) {
+                let hasAccess = false;
+                for (const classeId of classiIds) {
+                    if (await CheckDocente(req, classeId)) {
+                        hasAccess = true;
+                        break;
+                    }
+                }
+
+                if (!hasAccess) {
                     return res.status(403).send("Accesso negato: non sei un docente di questa classe.");
                 }
             }
@@ -104,10 +112,18 @@ async function GetClasseById(req: any, res: any) {
     }
 }
 
-async function GetClasseIdByDocumento(anno: string, studenteEmail: string) {
-    const classe: any = await prisma.classe.findFirst({
+async function GetClasseIdByDocumento(anno: string | Date, studenteEmail: string | any): Promise<number[]> {
+    if (typeof studenteEmail != 'string') {
+        const keys = Object.keys(studenteEmail);
+
+        if (keys.length != 2 || !(keys.includes('contains') && keys.includes('mode'))) {
+            return [];
+        }
+    }
+
+    const classi = await prisma.classe.findMany({
         where: {
-            Anno_Scolastico: new Date(anno),
+            Anno_Scolastico: typeof anno == 'string' ? new Date(anno) : anno,
             Classi_Studente: {
                 some: {
                     Studente_Email: studenteEmail
@@ -119,7 +135,7 @@ async function GetClasseIdByDocumento(anno: string, studenteEmail: string) {
         }
     });
 
-    return classe?.Id;
+    return classi.map(c => c.Id);
 }
 
 export { GetClassi, GetClasseById, GetClasseIdByDocumento };

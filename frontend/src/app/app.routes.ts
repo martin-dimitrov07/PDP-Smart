@@ -19,14 +19,14 @@ const formStepsCreate: Routes = [
     { path: "", redirectTo: "studenti", pathMatch: "full" },
     { path: "studenti", component: FormStudenti, data: { root: "crea" } },
     { path: "indicatori", component: FormIndicatori, data: { root: "crea" } },
-    { path: "ICF", component: FormICF, data: { root: "crea" } },
+    { path: "icf", component: FormICF, data: { root: "crea" } },
     { path: "allegati", component: FormAllegati, data: { root: "crea" } }
 ];
 
 const formStepsEdit: Routes = [
     { path: "", component: DocumentiEdit },
     { path: "indicatori", component: FormIndicatori, data: { root: "modifica" } },
-    { path: "ICF", component: FormICF, data: { root: "modifica" } },
+    { path: "icf", component: FormICF, data: { root: "modifica" } },
     { path: "allegati", component: FormAllegati, data: { root: "modifica" } }
 ];
 

@@ -17,7 +17,7 @@ export class StepBar {
     public readonly docentiService: DocentiService = inject(DocentiService);
     Ruolo: typeof Ruolo = Ruolo;
 
-    steps = ['studenti', 'indicatori', 'ICF', 'allegati'];
+    steps = ['studenti', 'indicatori', 'icf', 'allegati'];
 
     // Crea una funzione di supporto per verificare lo stato
     isStepActive(stepName: string): boolean {

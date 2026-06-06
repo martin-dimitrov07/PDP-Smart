@@ -7,7 +7,7 @@ async function GetIndicatori(req: any, res: any) {
     try {
         const filters = req["parsedQuery"]?.filters || {};
 
-        if(!await CheckAdmin(req) && filters.Materia_Documenti_Indicatori)
+        if (!await CheckAdmin(req) && filters.Materia_Documenti_Indicatori)
             return res.status(400).send("questo tipo di filtro non è consentito in questa richiesta se non sei un amministratore.");
 
         const indicatori = await prisma.indicatore.findMany({
@@ -31,15 +31,22 @@ async function GetIndicatoriByDocumento(req: any, res: any) {
             return;
         }
 
-        const classeId = await GetClasseIdByDocumento(filters.Documento_Anno, filters.Documento_Studente_Email);
-        
-        if (!classeId) {
-            return res.status(404).send("Classe non trovata per il documento specificato.");
-        }
+        if (!await CheckAdmin(req)) {
+            const classiIds = await GetClasseIdByDocumento(filters.Documento_Anno, filters.Documento_Studente_Email);
 
-        if(!await CheckAdmin(req))
-        {
-            if (!await CheckDocente(req, classeId)) {
+            if (!classiIds || classiIds.length == 0) {
+                return res.status(404).send("Classe non trovata per il documento specificato.");
+            }
+
+            let hasAccess = false;
+            for (const classeId of classiIds) {
+                if (await CheckDocente(req, classeId)) {
+                    hasAccess = true;
+                    break;
+                }
+            }
+
+            if (!hasAccess) {
                 return res.status(403).send("Accesso negato: non sei un docente della classe associata a questo documento.");
             }
         }
@@ -81,22 +88,43 @@ async function UpdateIndicatoriDocumento(req: any, res: any) {
         const indicatori: any[] = req.body.indicatori;
         const documento: any = req.body.documento;
 
-        const classeId = await GetClasseIdByDocumento(documento.Anno, documento.Studente_Email);
+        if (!await CheckAdmin(req)) {
+            const classiIds = await GetClasseIdByDocumento(documento.Anno, documento.Studente_Email);
 
-        if (!classeId) {
-            return res.status(404).send("Classe non trovata per il documento specificato.");
-        }
-
-        if (!await CheckAdmin(req) && !await CheckCoordinatore(req, classeId)) {
-            if (!await CheckDocente(req, classeId)) {
-                return res.status(403).send("Accesso negato: non sei un docente della classe associata a questo documento.");
+            if (!classiIds || classiIds.length == 0) {
+                return res.status(404).send("Classe non trovata per il documento specificato.");
             }
 
-            const materieDocente = await GetMaterieInsegnamenti(classeId, req.docente.Email);
-            const materieIndicatori: string[] = [...new Set(indicatori.map((i: any) => i.Materia))];
+            let isCoordinatore = false;
+            for (const classeId of classiIds) {
+                if (await CheckCoordinatore(req, classeId)) {
+                    isCoordinatore = true;
+                    break;
+                }
+            }
 
-            if (!materieIndicatori.every(m => materieDocente.includes(m))) {
-                return res.status(403).send("Accesso negato: non sei il docente delle materie selezionate.");
+            if (!isCoordinatore) {
+                let isDocenteValido = false;
+                let idClasseDocenteAbilitato = 0;
+
+                for (const classeId of classiIds) {
+                    if (await CheckDocente(req, classeId)) {
+                        isDocenteValido = true;
+                        idClasseDocenteAbilitato = classeId;
+                        break;
+                    }
+                }
+
+                if (!isDocenteValido) {
+                    return res.status(403).send("Accesso negato: non sei un docente della classe associata a questo documento.");
+                }
+
+                const materieDocente = await GetMaterieInsegnamenti(idClasseDocenteAbilitato, req.docente.Email);
+                const materieIndicatori: string[] = [...new Set(indicatori.map((i: any) => i.Materia))];
+
+                if (!materieIndicatori.every(m => materieDocente.includes(m))) {
+                    return res.status(403).send("Accesso negato: non sei il docente delle materie selezionate.");
+                }
             }
         }
 

@@ -200,7 +200,7 @@ export class DocumentiService {
     }
 
     ResetCreateDocumento() {
-        this.classiService.classeSelected = {} as Classe;
+        this.classiService.classeSelected = null;
         this.studentiService.studenteSelected = {} as Studente;
         this.materieService.materieEdit = [];
         this.materieService.materieClasse = [];
@@ -212,6 +212,13 @@ export class DocumentiService {
         this.allegatiService.errorAllegati = "";
         this.allegatiService.allegatiDoc = [];
         this.allegatiService.allegatiEdit = [];
+    }
+
+    ResetFiltriDocumenti() {
+        this.searchTermFilter = "";
+        this.annoScolasticoFilter = null;
+        this.TipoFilter = null;
+        this.StatoFilter = [];
     }
 
     GetFileDocumentoApprovato(documento: Documento) {

@@ -66,14 +66,22 @@ async function UpdateAllegatiDocumento(req: any, res: any) {
         }
 
         if (!await CheckAdmin(req)) {
-            const classeId = await GetClasseIdByDocumento(documento.Anno, documento.Studente_Email);
+            const classiIds = await GetClasseIdByDocumento(documento.Anno, documento.Studente_Email);
 
-            if (!classeId) {
+            if (!classiIds || classiIds.length == 0) {
                 return res.status(404).send("Classe non trovata per lo studente e l'anno specificati nel documento.");
             }
 
-            if (!await CheckCoordinatore(req, classeId)) {
-                return res.status(403).send("Accesso negato: non sei un amministratore o un coordinatore della classe associata a questo documento.");
+            let isCoordinatore = false;
+            for (const classeId of classiIds) {
+                if (await CheckCoordinatore(req, classeId)) {
+                    isCoordinatore = true;
+                    break;
+                }
+            }
+
+            if (!isCoordinatore) {
+                return res.status(403).send("Accesso negato: non sei un amministratore o un coordinatore di una classe associata a questo documento.");
             }
         }
 
@@ -123,15 +131,23 @@ async function GetAllegati(req: any, res: any) {
             return res.status(400).send("Mancano utente o anno nella richiesta");
         }
 
-        const classeId = await GetClasseIdByDocumento(filters["Documento_Anno"], studente_Email);
-
-        if (!classeId) {
-            return res.status(404).send("Classe non trovata per lo studente e l'anno specificati");
-        }
-
         if (!await CheckAdmin(req)) {
-            if (!await CheckDocente(req, classeId)) {
-                return res.status(403).send("Accesso negato: non sei un docente della classe associata a questo documento.");
+            const classiIds = await GetClasseIdByDocumento(filters["Documento_Anno"], studente_Email);
+
+            if (!classiIds || classiIds.length == 0) {
+                return res.status(404).send("Classe non trovata per lo studente e l'anno specificati");
+            }
+
+            let hasAccess = false;
+            for (const classeId of classiIds) {
+                if (await CheckDocente(req, classeId)) {
+                    hasAccess = true;
+                    break;
+                }
+            }
+
+            if (!hasAccess) {
+                return res.status(403).send("Accesso negato: non sei un docente di una classe associata a questo documento.");
             }
         }
 

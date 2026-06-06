@@ -25,8 +25,6 @@ export class DocumentiCreate {
     private readonly indicatoriService: IndicatoriService = inject(IndicatoriService);
     private readonly icfService: IcfService = inject(IcfService);
     private readonly allegatiService: AllegatiService = inject(AllegatiService);
-    private readonly anniScolasticiService: AnniScolasticiService = inject(AnniScolasticiService);
-    private readonly classiService: ClassiService = inject(ClassiService);
     private readonly docentiService: DocentiService = inject(DocentiService);
     private readonly checkError: CheckError = inject(CheckError);
     private readonly router: Router = inject(Router);
@@ -39,54 +37,25 @@ export class DocumentiCreate {
         this.icfService.icfsSelected = [];
         this.allegatiService.allegati = [];
 
-        this.classiService.GetClassiNoDocNoEmpty(Documento.SetAnnoCorrect(new Date())).subscribe({
-            next: (data: any) => {
-                const hasStudents = Object.values(data).some((arr: any) => arr && arr.length > 0);
 
-                if (!hasStudents) {
-                    this.router.navigate(["404"]);
-                    return;
+        const ruolo = this.docentiService.docente.Ruolo;
+
+        if (ruolo != Ruolo.ADMIN && ruolo != Ruolo.COORDINATORE) {
+            this.router.navigate(["documenti/lista"]);
+            return;
+        }
+
+        if (ruolo == Ruolo.ADMIN) {
+            return;
+        }
+
+        this.docentiService.isCoordinatoreClassiNoDocNoEmpty().subscribe({
+            next: (isEnabled) => {
+                if (!isEnabled) {
+                    this.router.navigate(["documenti/lista"]);
                 }
-
-                // this.anniScolasticiService.GetAnniScolasticiStudenti().subscribe({
-                //     error: (err: any) => this.checkError.checkError(err)
-                // });
             },
-            error: (err: any) => this.checkError.checkError(err)
+            error: (err) => this.checkError.checkError(err)
         });
-
-        // this.docentiService.GetDocente().subscribe(isLoaded => {
-        //     if (isLoaded) {
-        //         const ruolo = this.docentiService.docente.Ruolo;
-
-        //         if (ruolo != Ruolo.ADMIN && ruolo != Ruolo.COORDINATORE) {
-        //             this.router.navigate(["404"]);
-        //             return;
-        //         }
-
-        //         if (ruolo == Ruolo.COORDINATORE) {
-        //             this.classiService.GetClassiNoDocNoEmptyCoordinatore(Documento.SetAnnoCorrect(new Date())).subscribe({
-        //                 next: (data: any) => {
-        //                     const hasStudents = Object.values(data).some((arr: any) => arr && arr.length > 0);
-
-        //                     if (!hasStudents) {
-        //                         this.router.navigate(["404"]);
-        //                         return;
-        //                     }
-
-        //                     this.anniScolasticiService.GetAnniScolasticiStudenti().subscribe({
-        //                         error: (err: any) => this.checkError.checkError(err)
-        //                     });
-        //                 },
-        //                 error: (err: any) => this.checkError.checkError(err)
-        //             });
-        //         }
-        //         else {
-        //             this.anniScolasticiService.GetAnniScolasticiStudenti().subscribe({
-        //                 error: (err: any) => this.checkError.checkError(err)
-        //             });
-        //         }
-        //     }
-        // });
     }
 }

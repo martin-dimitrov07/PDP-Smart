@@ -1,14 +1,23 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
 import { catchError, map, Observable, of, switchMap } from 'rxjs';
 import { Docente, Ruolo } from '../../models/docente';
 import { Router } from '@angular/router';
+import { Documento } from '../../models/documento';
+import { ClassiService } from './classi.service';
+import { CheckError } from '../utilities/check-error';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DocentiService {
     private readonly dataStorageService: DataStorageService = inject(DataStorageService);
+    // serve per evitare dipendenze circolari con classiService, che a sua volta dipende da docentiService
+    private readonly injector: Injector = inject(Injector);
+    private get classiService(): ClassiService {
+        return this.injector.get(ClassiService);
+    }
+    private readonly checkError: CheckError = inject(CheckError);
     private readonly router: Router = inject(Router);
 
     public docente: Docente = {} as Docente;
@@ -16,7 +25,7 @@ export class DocentiService {
 
     GetDocente(): Observable<boolean> {
         return this.dataStorageService.InviaRichiesta("GET", "/email-docente")!.pipe(
-            switchMap((data: any) => {  
+            switchMap((data: any) => {
                 if (data.docente.Ruolo == Ruolo.DOCENTE) {
                     // viene messo il ruolo di coordinatore se è coordinatore in almeno una classe
                     return this.isCoordinatore(data.docente.Email).pipe(
@@ -93,6 +102,17 @@ export class DocentiService {
             catchError((err) => {
                 console.error("Errore durante la verifica del coordinatore di classe:", err);
                 return of(false);
+            })
+        );
+    }
+
+    isCoordinatoreClassiNoDocNoEmpty(): Observable<boolean> {
+        const annoCorrect = Documento.SetAnnoCorrect(new Date());
+
+        return this.classiService.GetClassiNoDocNoEmpty(annoCorrect).pipe(
+            map((data: any) => {
+                console.log(data);
+                return Object.values(data).some((arr: any) => arr?.length > 0);
             })
         );
     }

@@ -14,6 +14,7 @@ export class IndicatoriService {
     private readonly materieService: MaterieService = inject(MaterieService);
     private readonly checkError: CheckError = inject(CheckError);
 
+    // serve per evitare dipendenze circolari con documentiService, che a sua volta dipende da indicatoriService
     private readonly injector: Injector = inject(Injector);
     private get documentiService(): DocumentiService {
         return this.injector.get(DocumentiService);

@@ -12,13 +12,21 @@ async function GetICFs(req: any, res: any) {
                     return res.status(403).send("Accesso negato: non sei un amministratore. Per visualizzare gli ICFs di un documento devi specificare sia l'email dello studente che l'anno del documento.");
                 }
 
-                const classeId = await GetClasseIdByDocumento(filters.Documenti_ICF.some.Documento_Anno, filters.Documenti_ICF.some.Documento_Studente_Email);
+                const classiIds = await GetClasseIdByDocumento(filters.Documenti_ICF.some.Documento_Anno, filters.Documenti_ICF.some.Documento_Studente_Email);
 
-                if (!classeId) {
+                if (!classiIds || classiIds.length == 0) {
                     return res.status(404).send("Classe non trovata per il documento specificato.");
                 }
 
-                if (!await CheckDocente(req, classeId)) {
+                let hasAccess = false;
+                for (const classeId of classiIds) {
+                    if (await CheckDocente(req, classeId)) {
+                        hasAccess = true;
+                        break; 
+                    }
+                }
+
+                if (!hasAccess) {
                     return res.status(403).send("Accesso negato: non sei un docente della classe associata a questo documento.");
                 }
             }

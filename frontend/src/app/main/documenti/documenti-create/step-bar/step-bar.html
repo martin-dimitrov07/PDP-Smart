@@ -13,11 +13,11 @@
     </div>
 
     @if(docentiService.docente.Ruolo == Ruolo.ADMIN) {
-    <div class="sp-line" [class.active]="isStepActive('ICF')">
+    <div class="sp-line" [class.active]="isStepActive('icf')">
     </div>
-    <div class="sp ICF" [class.active]="isStepActive('ICF')" (click)="GoPage('ICF')">
+    <div class="sp icf" [class.active]="isStepActive('icf')" (click)="GoPage('icf')">
         <div class="dot">3</div>
-        <p class="sp-text m-0" [class.fw-bold]="this.stepsService.step === 'ICF'">ICF</p>
+        <p class="sp-text m-0" [class.fw-bold]="this.stepsService.step === 'icf'">ICF</p>
 
     </div>
     }

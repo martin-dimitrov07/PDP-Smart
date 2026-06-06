@@ -10,6 +10,7 @@ import { fileManager } from '../utilities/file-manager';
 })
 export class AllegatiService {
     private readonly dataStorageService: DataStorageService = inject(DataStorageService);
+    // serve per evitare dipendenze circolari con documentiService, che a sua volta dipende da allegatiService
     private readonly injector: Injector = inject(Injector);
     private get documentiService(): DocumentiService {
         return this.injector.get(DocumentiService);
