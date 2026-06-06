@@ -21,7 +21,8 @@ export class DocumentiOptions {
     private readonly classiService: ClassiService = inject(ClassiService);
 
     ngOnInit() {
-        this.isClassiEnabled = this.docentiService.docente.Ruolo != Ruolo.DOCENTE;
+        // this.isClassiEnabled = this.docentiService.docente.Ruolo != Ruolo.DOCENTE;
+
         // this.docentiService.GetDocente().subscribe(isLoaded => {
         //     if (isLoaded) {
         //         const ruolo = this.docentiService.docente.Ruolo;
@@ -50,5 +51,31 @@ export class DocumentiOptions {
         //         }
         //     }
         // });
+
+        this.docentiService.GetDocente().subscribe(isLoaded => {
+            if (!isLoaded) return;
+
+            const ruolo = this.docentiService.docente.Ruolo;
+
+            if (ruolo != Ruolo.ADMIN && ruolo != Ruolo.COORDINATORE) {
+                this.router.navigate(["404"]);
+                return;
+            }
+
+            if (ruolo == Ruolo.ADMIN) {
+                this.isClassiEnabled = true;
+                return;
+            }
+
+            const annoCorrect = Documento.SetAnnoCorrect(new Date());
+            
+            this.classiService.GetClassiNoDocNoEmpty(annoCorrect).subscribe({
+                next: (data: any) => {
+                    console.log(data);
+                    this.isClassiEnabled = Object.values(data).some((arr: any) => arr?.length > 0);
+                },
+                error: (err: any) => console.error(err) 
+            });
+        });
     }
 }

@@ -17,6 +17,7 @@ import { StudentiService } from '../../../../shared/services/studenti.service';
 import { ClassiService } from '../../../../shared/services/classi.service';
 import { AllegatiService } from '../../../../shared/services/allegati.service';
 import { IcfService } from '../../../../shared/services/icf.service';
+import { Classe } from '../../../../models/classe';
 
 
 @Component({
@@ -42,8 +43,7 @@ export class FormAllegati {
     Ruolo: typeof Ruolo = Ruolo;
     StatoDocumento: typeof Stato = Stato;
 
-    classiCoordinateIds: number[] = [];
-
+    canEdit: boolean = false;
 
     @ViewChild('btnTrigger') btnTrigger!: ElementRef;
 
@@ -165,34 +165,26 @@ export class FormAllegati {
         window.URL.revokeObjectURL(fileUrl);
     }
 
-    canEdit: Observable<boolean> = of(false);
 
     CanEdit() {
-        const docente = this.docenteService.docente;
+        const docente = this.docentiService.docente;
 
-        if (docente.Ruolo == Ruolo.ADMIN) {
-            this.canEdit = of(true);
+        if (docente.Ruolo == this.Ruolo.ADMIN) {
+            this.canEdit = true;
             return;
         }
 
-        if (docente.Ruolo == Ruolo.DOCENTE) {
-            this.canEdit = of(false);
+        if (docente.Ruolo == this.Ruolo.DOCENTE) {
+            this.canEdit = false;
             return;
         }
 
-        this.canEdit = this.classiService.GetClassiCoordinatore(this.docentiService.docente.Email).pipe(
-            tap((res) => {
-                this.classiCoordinateIds = Object.values(res).flat().map((c: any) => c.Id);
-            }),
-            switchMap(() => this.classiService.GetClasseByDocumento(this.documentiService.documentoSelected)),
-            map((classe) => {
-                if (!classe) return false;
-                return this.classiCoordinateIds.includes(classe.Id);
-            }),
-            catchError((err) => {
-                this.checkError.checkError(err);
-                return of(false);
-            })
-        );
+        this.classiService.GetClasseByDocumento(this.documentiService.documentoSelected).subscribe({
+            next: (classe: Classe | null) => {
+                if (!classe) return;
+                this.canEdit = classe.Coordinatore_Email == docente.Email;
+            },
+            error: (err: any) => this.checkError.checkError(err)
+        });
     }
 }

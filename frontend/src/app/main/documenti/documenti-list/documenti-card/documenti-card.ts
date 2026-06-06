@@ -34,7 +34,6 @@ export class DocumentiCard {
     TipoDocumento: typeof Tipo = Tipo;
     RuoloDocente: typeof Ruolo = Ruolo;
 
-    @Input() classiCoordinateIds: number[] = [];
     @Input() set documento(valore: any) {
         //appena arriva il dato dal padre, lo trasformiamo in un'istanza di Classe
         this._documento = new Documento(

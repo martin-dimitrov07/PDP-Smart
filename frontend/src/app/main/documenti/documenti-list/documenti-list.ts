@@ -33,7 +33,6 @@ export class DocumentiList {
 
     private filterStato: any = { in: [] };
     private timer: any;
-    classiCoordinateIds: number[] = [];
 
     public isLoadingDocs: boolean = false;
 
@@ -48,13 +47,6 @@ export class DocumentiList {
         if (queryAnno) {
             this.filterAnnoScolastico = new Date(queryAnno);
         }
-
-        this.classiService.GetClassiCoordinatore(this.docentiService.docente.Email).subscribe({
-            next: (res) => {
-                this.classiCoordinateIds = Object.values(res).flat().map((c: any) => c.Id);
-            },
-            error: (err) => this.checkError.checkError(err)
-        });
 
         this.anniScolasticiService.GetAnniScolasticiDocumenti().subscribe({
             next: (data: any) => {

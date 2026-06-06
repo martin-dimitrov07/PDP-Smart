@@ -34,7 +34,7 @@
                             <div (click)="ShowAllegato(allegato)"
                                 class="allegato position-relative rounded d-flex flex-column align-items-center justify-content-center p-3 shadow-sm">
     
-                                @if(activatedRoute.snapshot.data['root'] == "modifica" && (docenteService.docente.Ruolo == Ruolo.ADMIN || (canEdit | async)) && documentiService.documentoSelected.Stato == StatoDocumento.IN_BOZZA) {
+                                @if(activatedRoute.snapshot.data['root'] == "modifica" && (docenteService.docente.Ruolo == Ruolo.ADMIN || (canEdit)) && documentiService.documentoSelected.Stato == StatoDocumento.IN_BOZZA) {
                                     <button type="button"
                                         class="btn btn-sm btn-delete position-absolute rounded-circle d-flex align-items-center justify-content-center"
                                         (click)="$event.stopPropagation(); RemoveAllegato(allegato)">
@@ -76,7 +76,7 @@
         }
 
         @if((activatedRoute.snapshot.data['root'] == "crea" && docentiService.docente.Ruolo != Ruolo.DOCENTE) || 
-            (activatedRoute.snapshot.data['root'] == "modifica" && (docenteService.docente.Ruolo == Ruolo.ADMIN || (canEdit | async)) && documentiService.documentoSelected.Stato == StatoDocumento.IN_BOZZA))
+            (activatedRoute.snapshot.data['root'] == "modifica" && (docenteService.docente.Ruolo == Ruolo.ADMIN || (canEdit)) && documentiService.documentoSelected.Stato == StatoDocumento.IN_BOZZA))
         {
         <hr>
         <!-- Area di drop principale -->
@@ -131,7 +131,7 @@
         </div>
         }
 
-        @if(activatedRoute.snapshot.data['root'] == "modifica" && (docenteService.docente.Ruolo == Ruolo.ADMIN || (canEdit | async)) && documentiService.documentoSelected.Stato == StatoDocumento.IN_BOZZA)
+        @if(activatedRoute.snapshot.data['root'] == "modifica" && (docenteService.docente.Ruolo == Ruolo.ADMIN || (canEdit)) && documentiService.documentoSelected.Stato == StatoDocumento.IN_BOZZA)
         {
             <div class="d-flex justify-content-end">
                 <button type="button" class="btn btn-primary d-flex gap-2 align-items-center py-2 px-3 border-0 mt-3"
