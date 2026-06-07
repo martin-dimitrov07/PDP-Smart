@@ -38,6 +38,7 @@ export class FormICF {
 
     ngOnInit() {
         this.root = this.activatedRoute.snapshot.data["root"];
+        this.stepsService.step = "icf"; 
 
         if (this.root == "modifica") {
             this.isLoading = true;
@@ -57,9 +58,7 @@ export class FormICF {
 
                 if (ruolo != Ruolo.ADMIN && this.root == "crea") {
                     this.router.navigate(["404"]);
-                } else {
-                    this.stepsService.step = "icf";
-                }
+                }                  
             }
             this.isLoading = false;
         });

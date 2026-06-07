@@ -162,7 +162,7 @@ export class DocumentiService {
     }
 
     CreateDocumento() {
-        if (!this.studentiService.studenteSelected?.Email || !this.studentiService.studenteSelected?.DSA_BES) {
+        if (!this.studentiService.studenteSelected) {
             return
         }
         const documento = new Documento(this.studentiService.studenteSelected.Email, this.studentiService.studenteSelected.DSA_BES ? Tipo.DSA : Tipo.BES);

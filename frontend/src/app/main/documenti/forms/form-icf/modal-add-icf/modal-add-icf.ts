@@ -60,5 +60,6 @@ export class ModalAddIcf {
         }
         this.descrizione = "";
         this.icfValue = "";
+        this.descrizioneDiv.nativeElement.classList.add("d-none");
     }
 }

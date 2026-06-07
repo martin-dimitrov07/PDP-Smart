@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { StudentiService } from '../../shared/services/studenti.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ColorSection } from '../../shared/directives/color-section';
 import { CommonModule } from '@angular/common';
 import { CheckError } from '../../shared/utilities/check-error';
@@ -25,6 +25,7 @@ export class Studenti {
     private readonly checkError: CheckError = inject(CheckError);
     private readonly activatedRouter: ActivatedRoute = inject(ActivatedRoute);
     private readonly colorSectionDirective: ColorSection = inject(ColorSection);
+    private readonly router : Router = inject(Router);
 
     isLoading: boolean = false;
 
@@ -50,7 +51,11 @@ export class Studenti {
         this.isLoading = true;
 
         this.classiService.GetClasseById(this.classeId).subscribe({
-            next: () => { },
+            next: () => { 
+                if(this.classiService.classeSelected?.Indirizzo != this.indirizzo) {
+                    this.router.navigate(["404"]);
+                }
+            },
             error: (err: any) => this.checkError.checkError(err)
         });
 
