@@ -10,7 +10,7 @@ async function GetAnniScolasticiStudenti(req: any, res: any) {
         if (!isAdmin) {
             if (filters.Id) {
                 if (!(await CheckDocente(req, filters.Id))) {
-                    return res.status(403).send("Accesso negato: non sei un docente di questa classe.");
+                    return res.status(403).send({ message: "Accesso negato: non sei un docente di questa classe." });
                 }
             }
             else if (filters.Insegnamenti?.some?.Docente_Email) {
@@ -19,7 +19,7 @@ async function GetAnniScolasticiStudenti(req: any, res: any) {
                 }
             }
             else {
-                return res.status(403).send("Accesso negato: devi specificare una classe o una mail del docente se non sei amministratore.");
+                return res.status(403).send({ message: "Accesso negato: devi specificare una classe o una mail del docente se non sei amministratore." });
             }
         }
 
@@ -52,18 +52,18 @@ async function GetAnniScolasticiStudenti(req: any, res: any) {
 
 async function GetAnniScolasticiDocumenti(req: any, res: any) {
     try {
-        console.log(req["parsedQuery"].filters);
+        // console.log(req["parsedQuery"].filters);
         const filters = req["parsedQuery"].filters || {};
 
         const isAdmin = await CheckAdmin(req);
 
         if (!isAdmin) {
             if (!filters.Docente_Email || !req.docente) {
-                return res.status(403).send("Accesso negato: devi specificare la tua email per accedere a questa risorsa.");
+                return res.status(403).send({ message: "Accesso negato: devi specificare la tua email per accedere a questa risorsa." });
             }
 
             if (req.docente.Email != filters.Docente_Email) {
-                return res.status(403).send("Accesso negato: non sei il docente associato a questo documento.");
+                return res.status(403).send({ message: "Accesso negato: non sei il docente associato a questo documento." });
             }
         }
 
@@ -102,7 +102,7 @@ async function GetAnniScolasticiDocumenti(req: any, res: any) {
         res.status(200).send(anniVettore);
     } catch (err) {
         console.error("Errore:", err);
-        res.status(500).send("Errore nel recupero degli anni scolastici");
+        res.status(500).send({ message: "Errore nel recupero degli anni scolastici" });
     }
 }
 

@@ -31,14 +31,14 @@ async function GestioneLogin(req: any, res: any) {
                 res.cookie("TOKEN", token, cookiesOptions);
                 res.send(docente);
             } else {
-                res.status(404).send("Utente non ammesso alla piattaforma");
+                res.status(404).send({ message: "Utente non ammesso alla piattaforma" });
             }
         } else {
-            res.status(403).send("Token non valido");
+            res.status(403).send({ message: "Token non valido" });
         }
     } catch (error) {
         console.error("Errore Login:", error);
-        res.status(403).send("Errore durante la verifica del token");
+        res.status(403).send({ message: "Errore durante la verifica del token" });
     }
 }
 
@@ -65,7 +65,7 @@ async function ControlloToken(req: any, res: any, next: any) {
 
     // quando il cookie scade
     if (!token)
-        return res.status(401).send("Token mancante");
+        return res.status(401).send({ message: "Token mancante" });
 
     try {
         const payload: any = await GetPayload(token);
@@ -77,7 +77,7 @@ async function ControlloToken(req: any, res: any, next: any) {
             req.docente = docente;
             req.fotoUrl = payload.picture;
         } else {
-            res.status(404).send("Docente loggato non trovato");
+            res.status(404).send({ message: "Docente loggato non trovato" });
         }
 
         next();
@@ -85,7 +85,7 @@ async function ControlloToken(req: any, res: any, next: any) {
     catch (err: any) {
         // entra in caso scade il token di google (dopo 1 ora)
         console.error('Errore validazione token:', err.message);
-        res.status(401).send('Token non valido o scaduto');
+        res.status(401).send({ message: 'Token non valido o scaduto' });
     }
 }
 

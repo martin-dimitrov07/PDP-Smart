@@ -3,11 +3,12 @@ import { DocumentiOptionCard } from './documenti-option-card/documenti-option-ca
 import { DocentiService } from '../../../shared/services/docenti.service';
 import { Ruolo } from '../../../models/docente';
 import { Router } from '@angular/router';
-import { StudentiService } from '../../../shared/services/studenti.service';
-import { Documento } from '../../../models/documento';
-import e from 'express';
 import { ClassiService } from '../../../shared/services/classi.service';
 import { CheckError } from '../../../shared/utilities/check-error';
+
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+
 @Component({
     selector: 'app-documenti-options',
     imports: [DocumentiOptionCard],
@@ -21,7 +22,13 @@ export class DocumentiOptions {
     private readonly classiService: ClassiService = inject(ClassiService);
     private readonly checkError: CheckError = inject(CheckError);
 
+    private readonly platformId = inject(PLATFORM_ID);
+
     ngOnInit() {
+        if (!isPlatformBrowser(this.platformId)) {
+            return;
+        }
+
         const ruolo = this.docentiService.docente?.Ruolo;
 
         if (ruolo != Ruolo.ADMIN && ruolo != Ruolo.COORDINATORE) {

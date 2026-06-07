@@ -13,10 +13,10 @@ async function GetClassi(req: any, res: any) {
             };
 
             if (filters.Classi_Studente?.some?.Studente_Email && filters.Anno_Scolastico) {
-                const classiIds = await GetClasseIdByDocumento(filters.Anno_Scolastico, filters.Classi_Studente.some.Studente_Email);
+                const classiIds = await GetClassiIdByDocumento(filters.Anno_Scolastico, filters.Classi_Studente.some.Studente_Email);
 
                 if (!classiIds || classiIds.length === 0) {
-                    return res.status(404).send("Classe non trovata per lo studente e l'anno scolastico specificati.");
+                    return res.status(404).send({ message: "Classe non trovata per lo studente e l'anno scolastico specificati." });
                 }
 
                 let hasAccess = false;
@@ -28,7 +28,7 @@ async function GetClassi(req: any, res: any) {
                 }
 
                 if (!hasAccess) {
-                    return res.status(403).send("Accesso negato: non sei un docente di questa classe.");
+                    return res.status(403).send({ message: "Accesso negato: non sei un docente di questa classe." });
                 }
             }
         }
@@ -87,7 +87,7 @@ async function GetClassi(req: any, res: any) {
         res.send(groupsClassi);
     } catch (err) {
         console.error("Errore:", err);
-        res.status(500).send("Errore nel recupero delle classi");
+        res.status(500).send({ message: "Errore nel recupero delle classi" });
     }
 }
 
@@ -97,7 +97,7 @@ async function GetClasseById(req: any, res: any) {
 
         if (!await CheckAdmin(req)) {
             if (!await CheckDocente(req, classeId))
-                return res.status(403).send("Accesso negato: non sei un docente di questa classe.");
+                return res.status(403).send({ message: "Accesso negato: non sei un docente di questa classe." });
         }
 
         const classe = await prisma.classe.findUnique({
@@ -108,11 +108,11 @@ async function GetClasseById(req: any, res: any) {
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
-        res.status(500).send("Errore nella esecuzione della richiesta della classe: ", err);
+        res.status(500).send({ message: "Errore nella esecuzione della richiesta della classe: ", error: err });
     }
 }
 
-async function GetClasseIdByDocumento(anno: string | Date, studenteEmail: string | any): Promise<number[]> {
+async function GetClassiIdByDocumento(anno: string | Date, studenteEmail: string | any): Promise<number[]> {
     if (typeof studenteEmail != 'string') {
         const keys = Object.keys(studenteEmail);
 
@@ -138,4 +138,4 @@ async function GetClasseIdByDocumento(anno: string | Date, studenteEmail: string
     return classi.map(c => c.Id);
 }
 
-export { GetClassi, GetClasseById, GetClasseIdByDocumento };
+export { GetClassi, GetClasseById, GetClassiIdByDocumento };

@@ -156,7 +156,7 @@ app.get("/api/email-docente", (req: any, res: any) => {
     if (req.docente)
         res.send({ docente: req.docente, fotoUrl: req.fotoUrl });
     else
-        res.status(500).send("Errore nell'invio della mail del docente");
+        res.status(500).send({"message": "Errore nell'invio della mail del docente"});
 });
 
 //Indirizzi
@@ -197,7 +197,7 @@ app.get("/api/indicatori", GestioneIndicatori.GetIndicatori); //fatto sicurezza
 app.get("/api/indicatori-documento", GestioneIndicatori.GetIndicatoriByDocumento); //fatto sicurezza
 
 //ICF
-app.get("/api/icfs", GestioneICF.GetICFs); //fatto sicurezza
+app.get("/api/icfs", GestioneICF.GetICFs); //fatto sicurezzaf
 app.patch("/api/icfs/update", GestioneICF.UpdateICFsDocumento); //fatto sicurezza
 app.post("/api/icfs/create", GestioneICF.CreateICFs); //fatto sicurezza
 
@@ -208,7 +208,7 @@ app.patch("/api/allegati/update", GestioneAllegati.UpdateAllegatiDocumento); //f
 //F. default root e gestione errori
 app.use(function (req, res) {
     if (req.originalUrl.startsWith("/api/"))
-        res.status(404).send("Risorsa non trovata");
+        res.status(404).send({"message": "Risorsa non trovata"});
     // else if (req.accepts("html")) // se la richiesta è per una pagina html
     //     res.sendStatus(404);
     else
@@ -219,7 +219,7 @@ app.use(function (req, res) {
 //G. gestione errori
 app.use(function (err: Error, req: express.Request, res: express.Response, next: express.NextFunction) {
     console.error("*** ERRORE ***:\n" + err.stack); //elenco completo degli errori
-    res.status(500).send("Errore interno del server");
+    res.status(500).send({"message": "Errore interno del server"});
     next();
 });
 

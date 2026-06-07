@@ -11,6 +11,6 @@ export class CheckError {
         if (err.status == 401 || err.status == 403)
             this.router.navigate(["/login"]);
         else
-            console.error("Errore API:", err.message, err.error || "400");    
+            console.error("Errore API (" + err.status + "): " + err.message);    
     }
 }

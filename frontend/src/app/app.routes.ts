@@ -68,10 +68,6 @@ export const routes: Routes = [
         resolve: { docente: docenteResolver },
         children: [
             {
-                path: "",
-                component: DocumentiOptions
-            },
-            {
                 path: "lista",
                 component: DocumentiList
             },
@@ -84,6 +80,10 @@ export const routes: Routes = [
                 path: "modifica/:studenteEmail/:annoScolastico",
                 resolve: { documento: documentoResolver },
                 children: formStepsEdit
+            },
+            {
+                path: "",
+                component: DocumentiOptions
             }
         ]
     },

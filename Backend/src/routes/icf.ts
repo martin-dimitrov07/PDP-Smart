@@ -1,5 +1,5 @@
 import { prisma } from "../server.ts";
-import { GetClasseIdByDocumento } from "./classi.ts";
+import { GetClassiIdByDocumento } from "./classi.ts";
 import { CheckAdmin, CheckDocente } from "./ruoli.ts";
 
 async function GetICFs(req: any, res: any) {
@@ -9,13 +9,13 @@ async function GetICFs(req: any, res: any) {
         if (!await CheckAdmin(req)) {
             if (filters.Documenti_ICF) {
                 if (!filters.Documenti_ICF.some.Documento_Studente_Email || !filters.Documenti_ICF.some.Documento_Anno) {
-                    return res.status(403).send("Accesso negato: non sei un amministratore. Per visualizzare gli ICFs di un documento devi specificare sia l'email dello studente che l'anno del documento.");
+                    return res.status(403).send({ message: "Accesso negato: non sei un amministratore. Per visualizzare gli ICFs di un documento devi specificare sia l'email dello studente che l'anno del documento." });
                 }
 
-                const classiIds = await GetClasseIdByDocumento(filters.Documenti_ICF.some.Documento_Anno, filters.Documenti_ICF.some.Documento_Studente_Email);
+                const classiIds = await GetClassiIdByDocumento(filters.Documenti_ICF.some.Documento_Anno, filters.Documenti_ICF.some.Documento_Studente_Email);
 
                 if (!classiIds || classiIds.length == 0) {
-                    return res.status(404).send("Classe non trovata per il documento specificato.");
+                    return res.status(404).send({ message: "Classe non trovata per il documento specificato." });
                 }
 
                 let hasAccess = false;
@@ -27,7 +27,7 @@ async function GetICFs(req: any, res: any) {
                 }
 
                 if (!hasAccess) {
-                    return res.status(403).send("Accesso negato: non sei un docente della classe associata a questo documento.");
+                    return res.status(403).send({ message: "Accesso negato: non sei un docente della classe associata a questo documento." });
                 }
             }
         }
@@ -41,7 +41,7 @@ async function GetICFs(req: any, res: any) {
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
-        res.status(500).send("Errore nella esecuzione della richiesta de ICF: ", err);
+        res.status(500).send({ message: "Errore nella esecuzione della richiesta de ICF: ", err });
     }
 }
 
@@ -77,7 +77,7 @@ async function CreateICFs(req: any, res: any) {
         const icfs: any[] = req.body.icfs;
 
         if (!await CheckAdmin(req)) {
-            return res.status(403).send("Accesso negato: non sei un amministratore. Solo un amministratore può creare nuovi ICFs.");
+            return res.status(403).send({ message: "Accesso negato: non sei un amministratore. Solo un amministratore può creare nuovi ICFs." });
         }
 
         for (const icf of icfs) {
@@ -92,7 +92,7 @@ async function CreateICFs(req: any, res: any) {
         res.status(200).send({ message: "ICFs creati con successo" });
     } catch (err) {
         console.error("Errore nella creazione dell'ICF:", err);
-        res.status(500).send("Errore durante la creazione dell'ICF");
+        res.status(500).send({ message: "Errore durante la creazione dell'ICF" });
     }
 }
 
@@ -112,7 +112,7 @@ async function UpdateICFsDocumento(req: any, res: any) {
         const documento = req.body.documento;
 
         if (!await CheckAdmin(req)) {
-            return res.status(403).send("Accesso negato: non sei un amministratore. Solo un amministratore può aggiornare gli ICFs di un documento.");
+            return res.status(403).send({ message: "Accesso negato: non sei un amministratore. Solo un amministratore può aggiornare gli ICFs di un documento." });
         }
 
         for (const ICFKey in ICFs) {
@@ -153,7 +153,7 @@ async function UpdateICFsDocumento(req: any, res: any) {
     }
     catch (err) {
         console.error("Errore nell'aggiornamento degli ICFs del documento:", err);
-        res.status(500).send("Errore durante l'aggiornamento degli ICFs del documento");
+        res.status(500).send({ message: "Errore durante l'aggiornamento degli ICFs del documento" });
     }
 }
 

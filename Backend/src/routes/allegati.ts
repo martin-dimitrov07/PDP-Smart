@@ -1,7 +1,7 @@
 import { writeFile, mkdir, unlink, readdir, readFile, access } from "fs/promises";
 import { prisma } from "../server.ts";
 import { extname, join } from "path";
-import { GetClasseIdByDocumento } from "./classi.ts";
+import { GetClassiIdByDocumento } from "./classi.ts";
 import { CheckAdmin, CheckCoordinatore, CheckDocente } from "./ruoli.ts";
 
 async function CreateAllegati(db: any, allegati: any[], studenteEmail: string, anno: Date) {
@@ -62,14 +62,14 @@ async function UpdateAllegatiDocumento(req: any, res: any) {
         const allegatiDelete = req.body.allegatiDelete ? Array.isArray(req.body.allegatiDelete) ? req.body.allegatiDelete : [req.body.allegatiDelete] : [];
 
         if (!documento || !documento.Studente_Email || !documento.Anno) {
-            return res.status(400).send("Mancano informazioni sul documento nella richiesta");
+            return res.status(400).send({ message: "Mancano informazioni sul documento nella richiesta" });
         }
 
         if (!await CheckAdmin(req)) {
-            const classiIds = await GetClasseIdByDocumento(documento.Anno, documento.Studente_Email);
+            const classiIds = await GetClassiIdByDocumento(documento.Anno, documento.Studente_Email);
 
             if (!classiIds || classiIds.length == 0) {
-                return res.status(404).send("Classe non trovata per lo studente e l'anno specificati nel documento.");
+                return res.status(404).send({ message: "Classe non trovata per lo studente e l'anno specificati nel documento." });
             }
 
             let isCoordinatore = false;
@@ -81,7 +81,7 @@ async function UpdateAllegatiDocumento(req: any, res: any) {
             }
 
             if (!isCoordinatore) {
-                return res.status(403).send("Accesso negato: non sei un amministratore o un coordinatore di una classe associata a questo documento.");
+                return res.status(403).send({ message: "Accesso negato: non sei un amministratore o un coordinatore di una classe associata a questo documento." });
             }
         }
 
@@ -117,7 +117,7 @@ async function UpdateAllegatiDocumento(req: any, res: any) {
     }
     catch (err) {
         console.error("Errore nell'aggiornamento degli allegati del documento:", err);
-        res.status(500).send("Errore durante l'aggiornamento degli allegati del documento");
+        res.status(500).send({ message: "Errore durante l'aggiornamento degli allegati del documento" });
     }
 }
 
@@ -128,14 +128,14 @@ async function GetAllegati(req: any, res: any) {
         const anno = filters["Documento_Anno"] ? new Date(filters["Documento_Anno"]).getFullYear().toString() : null;
 
         if (!studente_Email || !anno) {
-            return res.status(400).send("Mancano utente o anno nella richiesta");
+            return res.status(400).send({ message: "Mancano utente o anno nella richiesta" });
         }
 
         if (!await CheckAdmin(req)) {
-            const classiIds = await GetClasseIdByDocumento(filters["Documento_Anno"], studente_Email);
+            const classiIds = await GetClassiIdByDocumento(filters["Documento_Anno"], studente_Email);
 
             if (!classiIds || classiIds.length == 0) {
-                return res.status(404).send("Classe non trovata per lo studente e l'anno specificati");
+                return res.status(404).send({ message: "Classe non trovata per lo studente e l'anno specificati" });
             }
 
             let hasAccess = false;
@@ -147,7 +147,7 @@ async function GetAllegati(req: any, res: any) {
             }
 
             if (!hasAccess) {
-                return res.status(403).send("Accesso negato: non sei un docente di una classe associata a questo documento.");
+                return res.status(403).send({ message: "Accesso negato: non sei un docente di una classe associata a questo documento." });
             }
         }
 
@@ -189,7 +189,7 @@ async function GetAllegati(req: any, res: any) {
 
     } catch (err) {
         console.error("Errore nel recupero degli allegati:", err);
-        res.status(500).send("Errore durante il recupero degli allegati");
+        res.status(500).send({ message: "Errore durante il recupero degli allegati" });
     }
 }
 

@@ -7,17 +7,17 @@ async function GetMaterie(req: any, res: any) {
 
         if (!await CheckAdmin(req)) {
             if(filters.Materia_Documenti_Indicatori)
-                return res.status(403).send("Accesso negato: questo tipo di filtro non è consentito se non sei un amministratore.");
+                return res.status(403).send({"message": "Accesso negato: questo tipo di filtro non è consentito se non sei un amministratore."});
 
             const classeId = filters?.Insegnamenti?.some?.Classe_Id;
             if (!classeId)
-                return res.status(403).send("Accesso negato: devi specificare una classe di cui sei docente se non sei un amministratore.");
+                return res.status(403).send({"message": "Accesso negato: devi specificare una classe di cui sei docente se non sei un amministratore."});
 
             const isDocente = await CheckDocente(req, classeId);
             const isCoordinatore = await CheckCoordinatore(req, classeId);
 
             if(!isDocente)
-                return res.status(403).send("Accesso negato: non sei un docente di questa classe.");
+                return res.status(403).send({"message": "Accesso negato: non sei un docente di questa classe."});
         }
 
         const materie = await prisma.materia.findMany({
@@ -29,7 +29,7 @@ async function GetMaterie(req: any, res: any) {
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
-        res.status(500).send("Errore nella esecuzione della richiesta delle materie: ", err);
+        res.status(500).send({"message": "Errore nella esecuzione della richiesta delle materie: ", "error": err});
     }
 }
 

@@ -55,7 +55,7 @@ export class DocentiService {
                     this.docente = null;
                     this.router.navigate(["login"]);
                 }
-                console.error(err.status + ": " + err.error);
+                console.error(err.status + ": " + err.message);
                 return of(false);
             })
         );

@@ -1,19 +1,17 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { StudentiService } from '../../../shared/services/studenti.service';
+import { Component, inject } from '@angular/core';
 import { CheckError } from '../../../shared/utilities/check-error';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { StepBar } from './step-bar/step-bar';
 import { Router } from '@angular/router';
 import { DocentiService } from '../../../shared/services/docenti.service';
-import { Docente, Ruolo } from '../../../models/docente';
+import { Ruolo } from '../../../models/docente';
 import { DocumentiCreateHeader } from './documenti-create-header/documenti-create-header';
-import e from 'express';
-import { Documento } from '../../../models/documento';
-import { ClassiService } from '../../../shared/services/classi.service';
-import { AnniScolasticiService } from '../../../shared/services/anni-scolastici.service';
 import { IcfService } from '../../../shared/services/icf.service';
 import { AllegatiService } from '../../../shared/services/allegati.service';
 import { IndicatoriService } from '../../../shared/services/indicatori.service';
+
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
     selector: 'app-documenti-create',
@@ -30,8 +28,12 @@ export class DocumentiCreate {
     private readonly router: Router = inject(Router);
     private readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
+    private readonly platformId = inject(PLATFORM_ID);
+
     ngOnInit() {
-        this.router.navigate(['studenti'], { relativeTo: this.activatedRoute });
+        if (!isPlatformBrowser(this.platformId)) {
+            return;
+        }
 
         this.indicatoriService.indicatori = {};
         this.icfService.icfsSelected = [];
@@ -46,6 +48,7 @@ export class DocumentiCreate {
         }
 
         if (ruolo == Ruolo.ADMIN) {
+            this.router.navigate(['studenti'], { relativeTo: this.activatedRoute });
             return;
         }
 
@@ -53,7 +56,11 @@ export class DocumentiCreate {
             next: (isEnabled) => {
                 if (!isEnabled) {
                     this.router.navigate(["documenti/lista"]);
+                    return;
                 }
+
+                this.router.navigate(['studenti'], { relativeTo: this.activatedRoute });
+
             },
             error: (err) => this.checkError.checkError(err)
         });

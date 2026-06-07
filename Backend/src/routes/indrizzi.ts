@@ -34,7 +34,7 @@ async function GetIndirizzi(req: any, res: any) {
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
-        res.status(500).send("Errore nella esecuzione della richiesta degli indirizzi: ", err);
+        res.status(500).send({ message: "Errore nella esecuzione della richiesta degli indirizzi: ", err });
     }
 }
 

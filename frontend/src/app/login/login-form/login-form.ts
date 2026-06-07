@@ -87,7 +87,7 @@ export class LoginForm {
                     if (err.status == 401)
                         console.error("Login non valido")
                     else
-                        console.error(err.status + ": " + err.error);
+                        console.error(err.status + ": " + err.message);
                 }
             });
         }

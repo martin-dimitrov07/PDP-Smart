@@ -6,13 +6,13 @@ async function IsCoordinatore(req: any, res: any) {
         const email = req["parsedQuery"].email;
 
         if (!email) {
-            res.status(400).send("Email del docente è richiesta");
+            res.status(400).send({ message: "Email del docente è richiesta" });
             return;
         }
 
         if (!await CheckAdmin(req)) {
             if (req.docente && req.docente.Email != email)
-                return res.status(403).send("Accesso negato: non puoi verificare se un altro docente è coordinatore");
+                return res.status(403).send({ message: "Accesso negato: non puoi verificare se un altro docente è coordinatore" });
         }
 
         const classi = await prisma.classe.findMany({
@@ -25,7 +25,7 @@ async function IsCoordinatore(req: any, res: any) {
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
-        res.status(500).send("Errore nella esecuzione della richiesta: ", err);
+        res.status(500).send({ message: "Errore nella esecuzione della richiesta: ", error: err });
     }
 }
 
@@ -34,20 +34,20 @@ async function IsCoordinatoreClasse(req: any, res: any) {
         const id_classe = req["parsedQuery"].id_classe;
 
         if(!id_classe) {
-            res.status(400).send("ID della classe è richiesto");
+            res.status(400).send({ message: "ID della classe è richiesto" });
             return;
         }
 
         if(!await CheckAdmin(req)) {
             if(!await CheckDocente(req, id_classe))
-                return res.status(403).send("Accesso negato: non sei docente di questa classe");
+                return res.status(403).send({ message: "Accesso negato: non sei docente di questa classe" });
         }
 
         res.send({ isCoordinatore: await CheckCoordinatore(req, id_classe) });
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
-        res.status(500).send("Errore nella esecuzione della richiesta: ", err);
+        res.status(500).send({ message: "Errore nella esecuzione della richiesta: ", error: err });
     }
 }
 
@@ -56,7 +56,7 @@ async function GetDocentiByClasse(req: any, res: any) {
         const id_classe = req["parsedQuery"].id_classe;
 
         if (!id_classe) {
-            res.status(400).send("ID della classe è richiesto");
+            res.status(400).send({ message: "ID della classe è richiesto" });
             return;
         }
 
@@ -64,7 +64,7 @@ async function GetDocentiByClasse(req: any, res: any) {
 
         if (!isAdmin) {
             if (!await CheckDocente(req, id_classe))
-                return res.status(403).send("Accesso negato: non sei docente di questa classe");
+                return res.status(403).send({ message: "Accesso negato: non sei docente di questa classe" });
         }
 
         const docenti = await prisma.docente.findMany({
@@ -81,7 +81,7 @@ async function GetDocentiByClasse(req: any, res: any) {
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
-        res.status(500).send("Errore nella esecuzione della richiesta: ", err);
+        res.status(500).send({ message: "Errore nella esecuzione della richiesta: ", error: err });
     }
 }
 

@@ -13,10 +13,10 @@ async function GetStudentiDocumento(req: any, res: any) {
 
         if (!isAdmin) {
             if (!classeId) {
-                return res.status(403).send("Accesso negato: devi specificare una classe se non sei amministratore.");
+                return res.status(403).send({"message": "Accesso negato: devi specificare una classe se non sei amministratore."});
             }
             if (!await CheckDocente(req, classeId)) {
-                return res.status(403).send("Accesso negato: non sei un docente di questa classe.");
+                return res.status(403).send({"message": "Accesso negato: non sei un docente di questa classe."});
             }
         }
 
@@ -33,7 +33,7 @@ async function GetStudentiDocumento(req: any, res: any) {
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
-        res.status(500).send("Errore nella esecuzione della richiesta delle studenti: ", err);
+        res.status(500).send({"message": "Errore nella esecuzione della richiesta delle studenti: ", "error": err});
     }
 }
 
@@ -51,7 +51,7 @@ async function GetStudenteByEmail(req: any, res: any) {
             });
         } else {
             if (!AnnoScolastico) {
-                return res.status(400).send("Accesso negato: devi specificare un anno scolastico se non sei amministratore.");
+                return res.status(400).send({"message": "Accesso negato: devi specificare un anno scolastico se non sei amministratore."});
             }
             studente = await prisma.studente.findFirst({
                 where: {
@@ -71,14 +71,14 @@ async function GetStudenteByEmail(req: any, res: any) {
         }
 
         if (!studente) {
-            return res.status(404).send("Studente non trovato o non sei mai stato un suo docente.");
+            return res.status(404).send({"message": "Studente non trovato o non sei mai stato un suo docente."});
         }
 
         return res.send(studente);
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
-        res.status(500).send("Errore nella esecuzione della richiesta dello studente: ", err);
+        res.status(500).send({"message": "Errore nella esecuzione della richiesta dello studente: ", "error": err});
     }
 }
 
@@ -92,10 +92,10 @@ async function GetStudentiNoDoc(req: any, res: any) {
 
         if (!isAdmin) {
             if (!classeId) {
-                return res.status(403).send("Accesso negato: devi specificare una classe se non sei amministratore.");
+                return res.status(403).send({"message": "Accesso negato: devi specificare una classe se non sei amministratore."});
             }
             if (!await CheckDocente(req, classeId)) {
-                return res.status(403).send("Accesso negato: non sei un docente di questa classe.");
+                return res.status(403).send({"message": "Accesso negato: non sei un docente di questa classe."});
             }
         }
 
@@ -112,7 +112,7 @@ async function GetStudentiNoDoc(req: any, res: any) {
     }
     catch (err) {
         console.error("Errore esecuzione richiesta");
-        res.status(500).send("Errore nella esecuzione della richiesta delle studenti: ", err);
+        res.status(500).send({"message": "Errore nella esecuzione della richiesta delle studenti: ", "error": err});
     }
 }
 

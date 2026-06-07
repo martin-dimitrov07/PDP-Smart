@@ -6,7 +6,7 @@ import { writeFile, mkdir, readFile, access } from "fs/promises";
 import { join } from 'path';
 import libre from 'libreoffice-convert';
 import { CheckAdmin, CheckCoordinatore, CheckDocente } from "./ruoli.ts";
-import { GetClasseIdByDocumento } from "./classi.ts";
+import { GetClassiIdByDocumento } from "./classi.ts";
 
 async function DeletePDP(req: any, res: any) {
     try {
@@ -24,7 +24,7 @@ async function DeletePDP(req: any, res: any) {
         }
 
         if (!await CheckAdmin(req)) {
-            const classiIds = await GetClasseIdByDocumento(documento.Anno, documento.Studente_Email);
+            const classiIds = await GetClassiIdByDocumento(documento.Anno, documento.Studente_Email);
 
             if (!classiIds || classiIds.length == 0) {
                 return res.status(404).send({ message: "Classe non trouvata per lo studente e l'anno specificati nel documento." });
@@ -100,7 +100,7 @@ async function CreatePDP(req: any, res: any) {
         }
 
         if (!await CheckAdmin(req)) {
-            const classiIds = await GetClasseIdByDocumento(documento.Anno, documento.Studente_Email);
+            const classiIds = await GetClassiIdByDocumento(documento.Anno, documento.Studente_Email);
 
             if (!classiIds || classiIds.length === 0) {
                 return res.status(404).send({ message: "Classe non trovata per lo studente e l'anno specificati nel documento." });
@@ -183,7 +183,7 @@ async function GetDocumenti(req: any, res: any) {
             }
 
             if (filters.Studente_Email && filters.Anno) {
-                const classiIds = await GetClasseIdByDocumento(filters.Anno, filters.Studente_Email);
+                const classiIds = await GetClassiIdByDocumento(filters.Anno, filters.Studente_Email);
 
                 if (!classiIds || classiIds.length == 0) {
                     return res.status(200).send([]);
@@ -239,11 +239,11 @@ async function ApprovaDocumento(req: any, res: any) {
         const filters = req.body.filters || {};
 
         if (!filters.Studente_Email || !filters.Anno) {
-            return res.status(400).send("Mancano informazioni per identificare il documento da approvare.");
+            return res.status(400).send({ message: "Mancano informazioni per identificare il documento da approvare." });
         }
 
         if (!await CheckAdmin(req)) {
-            const classiIds = await GetClasseIdByDocumento(filters.Anno, filters.Studente_Email);
+            const classiIds = await GetClassiIdByDocumento(filters.Anno, filters.Studente_Email);
 
             if (!classiIds || classiIds.length == 0) {
                 return res.status(404).send({ message: "Classe non trovata per lo studente e l'anno specificati nel documento." });
@@ -305,7 +305,7 @@ async function SalvaDocumentoApprovato(req: any, res: any) {
         }
 
         if (!await CheckAdmin(req)) {
-            const classiIds = await GetClasseIdByDocumento(anno, studente_email);
+            const classiIds = await GetClassiIdByDocumento(anno, studente_email);
 
             if (!classiIds || classiIds.length == 0) {
                 return res.status(404).send({ message: "Classe non trovata per lo studente e l'anno specificati nel documento." });
@@ -356,7 +356,7 @@ async function GetDocumentoApprovato(req: any, res: any) {
         }
 
         if (!await CheckAdmin(req)) {
-            const classiIds = await GetClasseIdByDocumento(anno, studente_email);
+            const classiIds = await GetClassiIdByDocumento(anno, studente_email);
 
             if (!classiIds || classiIds.length == 0) {
                 return res.status(404).send({ message: "Classe non trovata per lo studente e l'anno specificati nel documento." });

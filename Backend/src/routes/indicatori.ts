@@ -1,6 +1,6 @@
 import { prisma } from "../server.ts";
 import { CheckAdmin, CheckCoordinatore, CheckDocente } from "../routes/ruoli.ts";
-import { GetClasseIdByDocumento } from "./classi.ts";
+import { GetClassiIdByDocumento } from "./classi.ts";
 import { GetMaterieInsegnamenti } from "./materie.ts";
 
 async function GetIndicatori(req: any, res: any) {
@@ -8,7 +8,7 @@ async function GetIndicatori(req: any, res: any) {
         const filters = req["parsedQuery"]?.filters || {};
 
         if (!await CheckAdmin(req) && filters.Materia_Documenti_Indicatori)
-            return res.status(400).send("questo tipo di filtro non è consentito in questa richiesta se non sei un amministratore.");
+            return res.status(400).send({ message: "questo tipo di filtro non è consentito in questa richiesta se non sei un amministratore." });
 
         const indicatori = await prisma.indicatore.findMany({
             where: filters
@@ -18,7 +18,7 @@ async function GetIndicatori(req: any, res: any) {
 
     } catch (err) {
         console.error("Errore:", err);
-        res.status(500).send("Errore nel recupero degli indicatori");
+        res.status(500).send({ message: "Errore nel recupero degli indicatori" });
     }
 }
 
@@ -27,15 +27,15 @@ async function GetIndicatoriByDocumento(req: any, res: any) {
         const filters = req["parsedQuery"]?.filters || {};
 
         if (!filters.Documento_Studente_Email || !filters.Documento_Anno) {
-            res.status(400).send("Email dello studente e anno del documento sono richiesti");
+            res.status(400).send({ message: "Email dello studente e anno del documento sono richiesti" });
             return;
         }
 
         if (!await CheckAdmin(req)) {
-            const classiIds = await GetClasseIdByDocumento(filters.Documento_Anno, filters.Documento_Studente_Email);
+            const classiIds = await GetClassiIdByDocumento(filters.Documento_Anno, filters.Documento_Studente_Email);
 
             if (!classiIds || classiIds.length == 0) {
-                return res.status(404).send("Classe non trovata per il documento specificato.");
+                return res.status(404).send({ message: "Classe non trovata per il documento specificato." });
             }
 
             let hasAccess = false;
@@ -47,7 +47,7 @@ async function GetIndicatoriByDocumento(req: any, res: any) {
             }
 
             if (!hasAccess) {
-                return res.status(403).send("Accesso negato: non sei un docente della classe associata a questo documento.");
+                return res.status(403).send({ message: "Accesso negato: non sei un docente della classe associata a questo documento." });
             }
         }
 
@@ -79,7 +79,7 @@ async function GetIndicatoriByDocumento(req: any, res: any) {
     }
     catch (err) {
         console.error("Errore nel recupero degli indicatori del documento:", err);
-        res.status(500).send("Errore durante il recupero degli indicatori del documento");
+        res.status(500).send({ message: "Errore durante il recupero degli indicatori del documento" });
     }
 }
 
@@ -89,10 +89,10 @@ async function UpdateIndicatoriDocumento(req: any, res: any) {
         const documento: any = req.body.documento;
 
         if (!await CheckAdmin(req)) {
-            const classiIds = await GetClasseIdByDocumento(documento.Anno, documento.Studente_Email);
+            const classiIds = await GetClassiIdByDocumento(documento.Anno, documento.Studente_Email);
 
             if (!classiIds || classiIds.length == 0) {
-                return res.status(404).send("Classe non trovata per il documento specificato.");
+                return res.status(404).send({ message: "Classe non trovata per il documento specificato." });
             }
 
             let isCoordinatore = false;
@@ -116,14 +116,14 @@ async function UpdateIndicatoriDocumento(req: any, res: any) {
                 }
 
                 if (!isDocenteValido) {
-                    return res.status(403).send("Accesso negato: non sei un docente della classe associata a questo documento.");
+                    return res.status(403).send({ message: "Accesso negato: non sei un docente della classe associata a questo documento." });
                 }
 
                 const materieDocente = await GetMaterieInsegnamenti(idClasseDocenteAbilitato, req.docente.Email);
                 const materieIndicatori: string[] = [...new Set(indicatori.map((i: any) => i.Materia))];
 
                 if (!materieIndicatori.every(m => materieDocente.includes(m))) {
-                    return res.status(403).send("Accesso negato: non sei il docente delle materie selezionate.");
+                    return res.status(403).send({ message: "Accesso negato: non sei il docente delle materie selezionate." });
                 }
             }
         }
@@ -166,7 +166,7 @@ async function UpdateIndicatoriDocumento(req: any, res: any) {
         res.status(200).send({ message: "Indicatori aggiornati con successo" });
     } catch (err) {
         console.error("Errore nell'aggiornamento degli indicatori del documento:", err);
-        res.status(500).send("Errore durante l'aggiornamento degli indicatori del documento");
+        res.status(500).send({ message: "Errore durante l'aggiornamento degli indicatori del documento" });
     }
 }
 
