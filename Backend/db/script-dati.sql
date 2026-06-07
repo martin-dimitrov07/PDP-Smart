@@ -1,234 +1,610 @@
 -- ==========================================================
--- ANAGRAFICHE DI BASE
+-- POPOLAMENTO DB (fase di test)
 -- ==========================================================
 
--- 25 MATERIE REALI
-INSERT INTO "Materia" ("Nome") VALUES
-('Matematica'), ('Italiano'), ('Inglese'), ('Storia'), ('Geografia'),
-('Informatica'), ('Sistemi e Reti'), ('Tecnologie e Progettazione'), ('Gestione Progetto'),
-('Elettronica'), ('Elettrotecnica'), ('Automazione'), ('Meccanica e Macchine'),
-('Disegno Tecnico'), ('Tecnologia Meccanica'), ('Economia Aziendale'), ('Diritto'),
-('Relazioni Internazionali'), ('Fisica'), ('Chimica'), ('Scienze Naturali'),
-('Lingua Spagnola'), ('Lingua Tedesca'), ('Scienze Motorie'), ('Religione');
+-- 1. INSERIMENTO MATERIE
+INSERT INTO "Materia" ("Nome") VALUES ('Matematica');
+INSERT INTO "Materia" ("Nome") VALUES ('Italiano');
+INSERT INTO "Materia" ("Nome") VALUES ('Inglese');
+INSERT INTO "Materia" ("Nome") VALUES ('Storia');
+INSERT INTO "Materia" ("Nome") VALUES ('Geografia');
+INSERT INTO "Materia" ("Nome") VALUES ('Informatica');
+INSERT INTO "Materia" ("Nome") VALUES ('Sistemi e Reti');
+INSERT INTO "Materia" ("Nome") VALUES ('Tecnologie e Progettazione');
+INSERT INTO "Materia" ("Nome") VALUES ('Gestione Progetto');
+INSERT INTO "Materia" ("Nome") VALUES ('Elettronica');
+INSERT INTO "Materia" ("Nome") VALUES ('Elettrotecnica');
+INSERT INTO "Materia" ("Nome") VALUES ('Automazione');
+INSERT INTO "Materia" ("Nome") VALUES ('Meccanica e Macchine');
+INSERT INTO "Materia" ("Nome") VALUES ('Disegno Tecnico');
+INSERT INTO "Materia" ("Nome") VALUES ('Tecnologia Meccanica');
+INSERT INTO "Materia" ("Nome") VALUES ('Economia Aziendale');
+INSERT INTO "Materia" ("Nome") VALUES ('Diritto');
+INSERT INTO "Materia" ("Nome") VALUES ('Relazioni Internazionali');
+INSERT INTO "Materia" ("Nome") VALUES ('Fisica');
+INSERT INTO "Materia" ("Nome") VALUES ('Chimica');
+INSERT INTO "Materia" ("Nome") VALUES ('Scienze Naturali');
+INSERT INTO "Materia" ("Nome") VALUES ('Lingua Spagnola');
+INSERT INTO "Materia" ("Nome") VALUES ('Lingua Tedesca');
+INSERT INTO "Materia" ("Nome") VALUES ('Scienze Motorie');
+INSERT INTO "Materia" ("Nome") VALUES ('Religione');
 
--- CODICI ICF
-INSERT INTO "ICF" ("Codice", "Descrizione") VALUES 
-('b117', 'Funzioni intellettive'), ('d110', 'Guardare'), ('d115', 'Ascoltare'),
-('d130', 'Copiare'), ('d131', 'Imparare a giocare'), ('d133', 'Acquisire il linguaggio'),
-('d140', 'Imparare a leggere'), ('d145', 'Imparare a scrivere'), ('d150', 'Imparare a calcolare'),
-('d155', 'Acquisizione di abilità pratiche'), ('d160', 'Attenzione focalizzata'),
-('d161', 'Dirigere l''attenzione'), ('d166', 'Lettura'), ('d170', 'Scrittura'),
-('d172', 'Calcolo'), ('d175', 'Risoluzione di problemi'), ('d210', 'Intraprendere un compito singolo'),
-('d2102', 'Intraprendere un compito complesso'), ('d220', 'Intraprendere compiti articolati'),
-('d230', 'Eseguire la routine quotidiana'), ('d240', 'Gestire la tensione e altre richieste psicologiche'),
-('d310', 'Comunicare con - ricevere - messaggi verbali'), ('d315', 'Comunicare con - ricevere - messaggi non verbali'),
-('d330', 'Parlare'), ('d335', 'Produrre messaggi non verbali'), ('d350', 'Conversazione'),
-('d710', 'Interazioni interpersonali semplici'), ('d720', 'Interazioni interpersonali complesse'),
-('d820', 'Istruzione scolastica (partecipazione)'), ('e115', 'Prodotti e tecnologia per l''uso personale quotidiano'),
-('e125', 'Prodotti e tecnologia per la mobilità'), ('e130', 'Prodotti e tecnologia per l''istruzione (compensativi)'),
-('e310', 'Famiglia ristretta'), ('e330', 'Persone in posizione di autorità (insegnanti)');
+-- 2. INSERIMENTO CODICI ICF
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('b117', 'Funzioni intellettive');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d110', 'Guardare');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d115', 'Ascoltare');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d130', 'Copiare');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d131', 'Imparare a giocare');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d133', 'Acquisire il linguaggio');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d140', 'Imparare a leggere');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d145', 'Imparare a scrivere');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d150', 'Imparare a calcolare');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d155', 'Acquisizione di abilità pratiche');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d160', 'Attenzione focalizzata');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d161', 'Dirigere l''attenzione');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d166', 'Lettura');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d170', 'Scrittura');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d172', 'Calcolo');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d175', 'Risoluzione di problemi');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d210', 'Intraprendere un compito singolo');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d2102', 'Intraprendere un compito complesso');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d220', 'Intraprendere compiti articolati');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d230', 'Eseguire la routine quotidiana');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d240', 'Gestire la tensione e altre richieste psicologiche');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d310', 'Comunicare con - ricevere - messaggi verbali');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d315', 'Comunicare con - ricevere - messaggi non verbali');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d330', 'Parlare');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d335', 'Produrre messaggi non verbali');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d350', 'Conversazione');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d710', 'Interazioni interpersonali semplici');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d720', 'Interazioni interpersonali complesse');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('d820', 'Istruzione scolastica (partecipazione)');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('e115', 'Prodotti e tecnologia per l''uso personale quotidiano');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('e125', 'Prodotti e tecnologia per la mobilità');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('e130', 'Prodotti e tecnologia per l''istruzione (compensativi)');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('e310', 'Famiglia ristretta');
+INSERT INTO "ICF" ("Codice", "Descrizione") VALUES ('e330', 'Persone in posizione di autorità (insegnanti)');
 
--- ==========================================================
---  INDICATORI (CON CATEGORIA DSA/BES/'Entrambi')
--- ==========================================================
+-- 3. INSERIMENTO INDICATORI
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Strumenti compensativi', 'PC + controllo sintattico + controllo ortografico + sintesi vocale');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Strumenti compensativi', 'software specifico per la lettura – scrittura – attività di studio');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Strumenti compensativi', 'tavola delle coniugazioni verbali');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Strumenti compensativi', 'cartine geografiche e storiche');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Strumenti compensativi', 'formulari (realizzati sotto la guida dell’insegnante)');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Strumenti compensativi', 'calcolatrice');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Strumenti compensativi', 'audio registratore o lettore MP3 (con cuffia) e/o smart pen');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Strumenti compensativi', 'vocabolario multimediale anche per la L2 – L3');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Strumenti compensativi', 'enciclopedia informatica multimediale');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('DSA', 'Strumenti compensativi', 'testi scolastici in formato digitale');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('BES', 'Strumenti compensativi', 'testi scolastici con allegati CD ROM/digitali');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Strumenti compensativi', 'testi in formato PDF – Biblioteca Digitale A.I.D - Audiolibri');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Strumenti compensativi', 'pianificazione in sequenze delle attività/recupero');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Strumenti compensativi', 'uso di mappe concettuali (realizzate sotto la guida dell’insegnante)');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Strumenti compensativi', 'uso di schemi riassuntivi (realizzati sotto la guida dell’insegnante)');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Strumenti compensativi', 'uso di tablet/smartphone (solo se previsto dalla certificazione)');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Strumenti compensativi', 'altro...');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Misure dispensative', 'dispensa dalla lettura a voce alta');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Misure dispensative', 'dispensa dalla scrittura veloce sotto dettatura');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Misure dispensative', 'dispensa dalla ricopiatura dalla lavagna');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Misure dispensative', 'dispensa dall’uso del corsivo e dello stampato minuscolo');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Misure dispensative', 'dispensa dall’uso del vocabolario');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Misure dispensative', 'dispensa dallo studio mnemonico delle coniugazioni verbali');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Misure dispensative', 'dispensa dall’uso mnemonico delle formule (presenti nel formulario compilato sotto la guida dell’insegnante)');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('DSA', 'Misure dispensative', 'dispensa, ove necessario e possibile, dallo studio delle lingue straniere in forma scala*');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Misure dispensative', 'riduzione graduale degli esercizi/degli sviluppi delle prove scritte in corso d’anno');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Misure dispensative', 'riduzione per selezione dei contenuti di studio');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Misure dispensative', 'dispensa dall’utilizzo di tempi standard');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Misure dispensative', 'dispensa da un eccessivo carico di compiti con riadattamento e riduzione delle pagine da studiare, senza modificare gli obiettivi formativi');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Misure dispensative', 'altro...');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Modalità di verifica', 'tempi più lunghi per le prove scritte');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Modalità di verifica', 'organizzazione delle prove scritte in più parti');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Modalità di verifica', 'testo della verifica scritta in formato digitale con carattere e interlinea adeguati al soggetto');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Modalità di verifica', 'lettura del testo della verifica scritta da parte dell’insegnante o di un tutor');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Modalità di verifica', 'lettura del testo della verifica scritta con l’utilizzo della sintesi vocale e cuffie');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Modalità di verifica', 'riduzione/selezione della quantità di esercizi nelle verifiche scritte');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Modalità di verifica', 'riduzione delle dimensioni standard richieste degli elaborati scritti');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Modalità di verifica', 'interrogazioni programmate');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Modalità di verifica', 'più tempo a disposizione per elaborare la risposta orale');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Modalità di verifica', 'prove orali in compensazione alle prove scritte ad esito negativo');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Modalità di verifica', 'predisposizione di interrogazioni orali per le materie che prevedono un voto esclusivamente orale in pagella');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Modalità di verifica', 'utilizzo di prove strutturate negli scritti');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Modalità di verifica', 'modalità di presentazione delle verifiche (cartacea – al PC – con software specifici – altro ...)');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Modalità di verifica', 'uso di mediatori didattici durante le interrogazioni (mappe – schemi – immagini concordati/e con l’insegnante)');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Modalità di verifica', 'altro...');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Criteri di valutazione', 'non vengono sottolineati gli errori ortografici');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Criteri di valutazione', 'non vengono valutati gli errori ortografici');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Criteri di valutazione', 'non si valutano gli errori ortografici in lingua straniera');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Criteri di valutazione', 'la valutazione delle prove scritte e orali tiene conto del contenuto e non della forma');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Criteri di valutazione', 'si adotta una valutazione che apprezzi le conoscenze rispetto alle competenze');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Criteri di valutazione', 'si adotta una valutazione che eviti di privilegiare il nozionismo e un approccio esclusivamente mnemonico');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('BES', 'Criteri di valutazione', 'si adotta una valutazione calibrata sugli obiettivi didattici e di contenuto eventualmente riformulati (vedi infra)');
+INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES ('Entrambi', 'Criteri di valutazione', 'altro...');
 
--- STRUMENTI COMPENSATIVI
-INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES 
-('Entrambi', 'Strumenti compensativi', 'PC + controllo sintattico + controllo ortografico + sintesi vocale'),
-('Entrambi', 'Strumenti compensativi', 'software specifico per la lettura – scrittura – attività di studio'),
-('Entrambi', 'Strumenti compensativi', 'tavola delle coniugazioni verbali'),
-('Entrambi', 'Strumenti compensativi', 'cartine geografiche e storiche'),
-('Entrambi', 'Strumenti compensativi', 'formulari (realizzati sotto la guida dell’insegnante)'),
-('Entrambi', 'Strumenti compensativi', 'calcolatrice'),
-('Entrambi', 'Strumenti compensativi', 'audio registratore o lettore MP3 (con cuffia) e/o smart pen'),
-('Entrambi', 'Strumenti compensativi', 'vocabolario multimediale anche per la L2 – L3'),
-('Entrambi', 'Strumenti compensativi', 'enciclopedia informatica multimediale'),
-('DSA', 'Strumenti compensativi', 'testi scolastici in formato digitale'),
-('BES', 'Strumenti compensativi', 'testi scolastici con allegati CD ROM/digitali'),
-('Entrambi', 'Strumenti compensativi', 'testi in formato PDF – Biblioteca Digitale A.I.D - Audiolibri'),
-('Entrambi', 'Strumenti compensativi', 'pianificazione in sequenze delle attività/recupero'),
-('Entrambi', 'Strumenti compensativi', 'uso di mappe concettuali (realizzate sotto la guida dell’insegnante)'),
-('Entrambi', 'Strumenti compensativi', 'uso di schemi riassuntivi (realizzati sotto la guida dell’insegnante)'),
-('Entrambi', 'Strumenti compensativi', 'uso di tablet/smartphone (solo se previsto dalla certificazione)'),
-('Entrambi', 'Strumenti compensativi', 'altro...');
+-- 4. INSERIMENTO DOCENTI REQUISITI
+INSERT INTO "Docente" ("Email", "Nome", "Cognome", "Ruolo") VALUES ('m.dimitrov.3065@vallauri.edu', 'Mikhail', 'Dimitrov', 'Docente');
+INSERT INTO "Docente" ("Email", "Nome", "Cognome", "Ruolo") VALUES ('l.martino.3175@vallauri.edu', 'Luca', 'Martino', 'Docente');
 
--- MISURE DISPENSATIVE
-INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES 
-('Entrambi', 'Misure dispensative', 'dispensa dalla lettura a voce alta'),
-('Entrambi', 'Misure dispensative', 'dispensa dalla scrittura veloce sotto dettatura'),
-('Entrambi', 'Misure dispensative', 'dispensa dalla ricopiatura dalla lavagna'),
-('Entrambi', 'Misure dispensative', 'dispensa dall’uso del corsivo e dello stampato minuscolo'),
-('Entrambi', 'Misure dispensative', 'dispensa dall’uso del vocabolario'),
-('Entrambi', 'Misure dispensative', 'dispensa dallo studio mnemonico delle coniugazioni verbali'),
-('Entrambi', 'Misure dispensative', 'dispensa dall’uso mnemonico delle formule (presenti nel formulario compilato sotto la guida dell’insegnante)'),
-('DSA', 'Misure dispensative', 'dispensa, ove necessario e possibile, dallo studio delle lingue straniere in forma scritta*'),
-('Entrambi', 'Misure dispensative', 'riduzione graduale degli esercizi/degli sviluppi delle prove scritte in corso d’anno'),
-('Entrambi', 'Misure dispensative', 'riduzione per selezione dei contenuti di studio'),
-('Entrambi', 'Misure dispensative', 'dispensa dall’utilizzo di tempi standard'),
-('Entrambi', 'Misure dispensative', 'dispensa da un eccessivo carico di compiti con riadattamento e riduzione delle pagine da studiare, senza modificare gli obiettivi formativi'),
-('Entrambi', 'Misure dispensative', 'altro...');
+-- 5. INSERIMENTO CLASSI (2 per ogni indirizzo in 2 anni scolastici diversi)
+INSERT INTO "Classe" ("Id", "Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email") VALUES (1, 3, 'B', 'AFM', '2024-09-01 00:00:00', 'l.martino.3175@vallauri.edu');
+INSERT INTO "Classe" ("Id", "Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email") VALUES (2, 4, 'C', 'AFM', '2025-09-01 00:00:00', 'm.dimitrov.3065@vallauri.edu');
+INSERT INTO "Classe" ("Id", "Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email") VALUES (3, 5, 'A', 'ENE', '2024-09-01 00:00:00', 'l.martino.3175@vallauri.edu');
+INSERT INTO "Classe" ("Id", "Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email") VALUES (4, 5, 'B', 'ENE', '2025-09-01 00:00:00', 'm.dimitrov.3065@vallauri.edu');
+INSERT INTO "Classe" ("Id", "Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email") VALUES (5, 1, 'C', 'LIC', '2024-09-01 00:00:00', 'l.martino.3175@vallauri.edu');
+INSERT INTO "Classe" ("Id", "Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email") VALUES (6, 3, 'A', 'LIC', '2025-09-01 00:00:00', 'm.dimitrov.3065@vallauri.edu');
+INSERT INTO "Classe" ("Id", "Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email") VALUES (7, 2, 'B', 'ELT', '2024-09-01 00:00:00', 'l.martino.3175@vallauri.edu');
+INSERT INTO "Classe" ("Id", "Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email") VALUES (8, 3, 'C', 'ELT', '2025-09-01 00:00:00', 'm.dimitrov.3065@vallauri.edu');
+INSERT INTO "Classe" ("Id", "Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email") VALUES (9, 2, 'A', 'INF', '2024-09-01 00:00:00', 'l.martino.3175@vallauri.edu');
+INSERT INTO "Classe" ("Id", "Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email") VALUES (10, 2, 'B', 'INF', '2025-09-01 00:00:00', 'm.dimitrov.3065@vallauri.edu');
+INSERT INTO "Classe" ("Id", "Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email") VALUES (11, 1, 'C', 'MEC', '2024-09-01 00:00:00', 'l.martino.3175@vallauri.edu');
+INSERT INTO "Classe" ("Id", "Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email") VALUES (12, 4, 'A', 'MEC', '2025-09-01 00:00:00', 'm.dimitrov.3065@vallauri.edu');
+INSERT INTO "Classe" ("Id", "Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email") VALUES (13, 4, 'B', 'TUR', '2024-09-01 00:00:00', 'l.martino.3175@vallauri.edu');
+INSERT INTO "Classe" ("Id", "Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email") VALUES (14, 4, 'C', 'TUR', '2025-09-01 00:00:00', 'm.dimitrov.3065@vallauri.edu');
 
+-- 6. INSERIMENTO STUDENTI E ASSOCIAZIONE CLASSI
+-- Studenti per la classe ID: 1
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('riccardo.marini.1@vallauri.edu', 'Riccardo', 'Marini', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (1, 'riccardo.marini.1@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('pierfrancesco.castelnuovo.2@vallauri.edu', 'Pierfrancesco', 'Castelnuovo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (1, 'pierfrancesco.castelnuovo.2@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('elisabetta.tagliaferri.3@vallauri.edu', 'Elisabetta', 'Tagliaferri', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (1, 'elisabetta.tagliaferri.3@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('mariagiulia.ferrari.4@vallauri.edu', 'Mariagiulia', 'Ferrari', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (1, 'mariagiulia.ferrari.4@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('filippo.pietrangeli.5@vallauri.edu', 'Filippo', 'Pietrangeli', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (1, 'filippo.pietrangeli.5@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('gabriele.greco.6@vallauri.edu', 'Gabriele', 'Greco', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (1, 'gabriele.greco.6@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('antonio.valsecchi.7@vallauri.edu', 'Antonio', 'Valsecchi', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (1, 'antonio.valsecchi.7@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('aurora.castelnuovo.8@vallauri.edu', 'Aurora', 'Castelnuovo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (1, 'aurora.castelnuovo.8@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giuseppe.bianchi.9@vallauri.edu', 'Giuseppe', 'Bianchi', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (1, 'giuseppe.bianchi.9@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('christian.tagliaferri.10@vallauri.edu', 'Christian', 'Tagliaferri', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (1, 'christian.tagliaferri.10@vallauri.edu');
+-- Studenti per la classe ID: 2
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('emma.franceschini.11@vallauri.edu', 'Emma', 'Franceschini', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (2, 'emma.franceschini.11@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('edoardo.castelnuovo.12@vallauri.edu', 'Edoardo', 'Castelnuovo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (2, 'edoardo.castelnuovo.12@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('alessandro.tagliaferri.13@vallauri.edu', 'Alessandro', 'Tagliaferri', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (2, 'alessandro.tagliaferri.13@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giovanni.bianchi.14@vallauri.edu', 'Giovanni', 'Bianchi', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (2, 'giovanni.bianchi.14@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('christian.dell_acqua.15@vallauri.edu', 'Christian', 'Dell_Acqua', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (2, 'christian.dell_acqua.15@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('christian.quattrociocche.16@vallauri.edu', 'Christian', 'Quattrociocche', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (2, 'christian.quattrociocche.16@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('annamaria.montezemolo.17@vallauri.edu', 'Annamaria', 'Montezemolo', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (2, 'annamaria.montezemolo.17@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('sofia.bianchi.18@vallauri.edu', 'Sofia', 'Bianchi', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (2, 'sofia.bianchi.18@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giulia.dell_acqua.19@vallauri.edu', 'Giulia', 'Dell_Acqua', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (2, 'giulia.dell_acqua.19@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('francesca.pasqualantonio.20@vallauri.edu', 'Francesca', 'Pasqualantonio', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (2, 'francesca.pasqualantonio.20@vallauri.edu');
+-- Studenti per la classe ID: 3
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('alice.ferrari.21@vallauri.edu', 'Alice', 'Ferrari', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (3, 'alice.ferrari.21@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('alessandro.ferrari.22@vallauri.edu', 'Alessandro', 'Ferrari', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (3, 'alessandro.ferrari.22@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('sofia.valsecchi.23@vallauri.edu', 'Sofia', 'Valsecchi', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (3, 'sofia.valsecchi.23@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('margherita.pietrangeli.24@vallauri.edu', 'Margherita', 'Pietrangeli', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (3, 'margherita.pietrangeli.24@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giulia.rossi.25@vallauri.edu', 'Giulia', 'Rossi', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (3, 'giulia.rossi.25@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('francesca.montezemolo.26@vallauri.edu', 'Francesca', 'Montezemolo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (3, 'francesca.montezemolo.26@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('tommaso.castelnuovo.27@vallauri.edu', 'Tommaso', 'Castelnuovo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (3, 'tommaso.castelnuovo.27@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('sofia.bevilacqua.28@vallauri.edu', 'Sofia', 'Bevilacqua', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (3, 'sofia.bevilacqua.28@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('annamaria.ricci.29@vallauri.edu', 'Annamaria', 'Ricci', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (3, 'annamaria.ricci.29@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('gianmarco.rossi.30@vallauri.edu', 'Gianmarco', 'Rossi', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (3, 'gianmarco.rossi.30@vallauri.edu');
+-- Studenti per la classe ID: 4
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giulia.ricci.31@vallauri.edu', 'Giulia', 'Ricci', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (4, 'giulia.ricci.31@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('filippo.ghirardelli.32@vallauri.edu', 'Filippo', 'Ghirardelli', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (4, 'filippo.ghirardelli.32@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('elisabetta.bruno.33@vallauri.edu', 'Elisabetta', 'Bruno', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (4, 'elisabetta.bruno.33@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('massimiliano.bianchi.34@vallauri.edu', 'Massimiliano', 'Bianchi', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (4, 'massimiliano.bianchi.34@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('leonardo.rossi.35@vallauri.edu', 'Leonardo', 'Rossi', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (4, 'leonardo.rossi.35@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('emma.scaramuzzino.36@vallauri.edu', 'Emma', 'Scaramuzzino', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (4, 'emma.scaramuzzino.36@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giorgia.tagliaferri.37@vallauri.edu', 'Giorgia', 'Tagliaferri', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (4, 'giorgia.tagliaferri.37@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('valentina.ferrari.38@vallauri.edu', 'Valentina', 'Ferrari', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (4, 'valentina.ferrari.38@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('massimiliano.bianchi.39@vallauri.edu', 'Massimiliano', 'Bianchi', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (4, 'massimiliano.bianchi.39@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('mattia.dell_acqua.40@vallauri.edu', 'Mattia', 'Dell_Acqua', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (4, 'mattia.dell_acqua.40@vallauri.edu');
+-- Studenti per la classe ID: 5
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('francesca.colombo.41@vallauri.edu', 'Francesca', 'Colombo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (5, 'francesca.colombo.41@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('pierfrancesco.scaramuzzino.42@vallauri.edu', 'Pierfrancesco', 'Scaramuzzino', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (5, 'pierfrancesco.scaramuzzino.42@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('sofia.rossi.43@vallauri.edu', 'Sofia', 'Rossi', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (5, 'sofia.rossi.43@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('aurora.colombo.44@vallauri.edu', 'Aurora', 'Colombo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (5, 'aurora.colombo.44@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('beatrice.castelnuovo.45@vallauri.edu', 'Beatrice', 'Castelnuovo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (5, 'beatrice.castelnuovo.45@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('margherita.castelnuovo.46@vallauri.edu', 'Margherita', 'Castelnuovo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (5, 'margherita.castelnuovo.46@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('tommaso.valsecchi.47@vallauri.edu', 'Tommaso', 'Valsecchi', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (5, 'tommaso.valsecchi.47@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('francesco.colombo.48@vallauri.edu', 'Francesco', 'Colombo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (5, 'francesco.colombo.48@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giorgia.bruno.49@vallauri.edu', 'Giorgia', 'Bruno', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (5, 'giorgia.bruno.49@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('gianmarco.colombo.50@vallauri.edu', 'Gianmarco', 'Colombo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (5, 'gianmarco.colombo.50@vallauri.edu');
+-- Studenti per la classe ID: 6
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('elisabetta.ricci.51@vallauri.edu', 'Elisabetta', 'Ricci', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (6, 'elisabetta.ricci.51@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('margherita.santamaria.52@vallauri.edu', 'Margherita', 'Santamaria', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (6, 'margherita.santamaria.52@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('leonardo.ricci.53@vallauri.edu', 'Leonardo', 'Ricci', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (6, 'leonardo.ricci.53@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giulia.franceschini.54@vallauri.edu', 'Giulia', 'Franceschini', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (6, 'giulia.franceschini.54@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('annamaria.tagliaferri.55@vallauri.edu', 'Annamaria', 'Tagliaferri', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (6, 'annamaria.tagliaferri.55@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('alessandro.bianchi.56@vallauri.edu', 'Alessandro', 'Bianchi', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (6, 'alessandro.bianchi.56@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('alessandra.mastroianni.57@vallauri.edu', 'Alessandra', 'Mastroianni', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (6, 'alessandra.mastroianni.57@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giovanni.colombo.58@vallauri.edu', 'Giovanni', 'Colombo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (6, 'giovanni.colombo.58@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giorgia.dell_acqua.59@vallauri.edu', 'Giorgia', 'Dell_Acqua', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (6, 'giorgia.dell_acqua.59@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('massimiliano.russo.60@vallauri.edu', 'Massimiliano', 'Russo', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (6, 'massimiliano.russo.60@vallauri.edu');
+-- Studenti per la classe ID: 7
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('elisabetta.bruno.61@vallauri.edu', 'Elisabetta', 'Bruno', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (7, 'elisabetta.bruno.61@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('alice.bianchi.62@vallauri.edu', 'Alice', 'Bianchi', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (7, 'alice.bianchi.62@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('francesco.valsecchi.63@vallauri.edu', 'Francesco', 'Valsecchi', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (7, 'francesco.valsecchi.63@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('christian.mastroianni.64@vallauri.edu', 'Christian', 'Mastroianni', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (7, 'christian.mastroianni.64@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('pierfrancesco.castelnuovo.65@vallauri.edu', 'Pierfrancesco', 'Castelnuovo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (7, 'pierfrancesco.castelnuovo.65@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('aurora.scaramuzzino.66@vallauri.edu', 'Aurora', 'Scaramuzzino', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (7, 'aurora.scaramuzzino.66@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('elisabetta.marini.67@vallauri.edu', 'Elisabetta', 'Marini', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (7, 'elisabetta.marini.67@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('christian.bruno.68@vallauri.edu', 'Christian', 'Bruno', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (7, 'christian.bruno.68@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('riccardo.santamaria.69@vallauri.edu', 'Riccardo', 'Santamaria', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (7, 'riccardo.santamaria.69@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('annamaria.quattrociocche.70@vallauri.edu', 'Annamaria', 'Quattrociocche', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (7, 'annamaria.quattrociocche.70@vallauri.edu');
+-- Studenti per la classe ID: 8
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('sofia.franceschini.71@vallauri.edu', 'Sofia', 'Franceschini', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (8, 'sofia.franceschini.71@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('francesca.ferrari.72@vallauri.edu', 'Francesca', 'Ferrari', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (8, 'francesca.ferrari.72@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('pierfrancesco.castelnuovo.73@vallauri.edu', 'Pierfrancesco', 'Castelnuovo', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (8, 'pierfrancesco.castelnuovo.73@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('valentina.dell_acqua.74@vallauri.edu', 'Valentina', 'Dell_Acqua', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (8, 'valentina.dell_acqua.74@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('antonio.colombo.75@vallauri.edu', 'Antonio', 'Colombo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (8, 'antonio.colombo.75@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('massimiliano.bruno.76@vallauri.edu', 'Massimiliano', 'Bruno', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (8, 'massimiliano.bruno.76@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('riccardo.tagliaferri.77@vallauri.edu', 'Riccardo', 'Tagliaferri', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (8, 'riccardo.tagliaferri.77@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('beatrice.bianchi.78@vallauri.edu', 'Beatrice', 'Bianchi', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (8, 'beatrice.bianchi.78@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('pierfrancesco.scaramuzzino.79@vallauri.edu', 'Pierfrancesco', 'Scaramuzzino', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (8, 'pierfrancesco.scaramuzzino.79@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('edoardo.franceschini.80@vallauri.edu', 'Edoardo', 'Franceschini', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (8, 'edoardo.franceschini.80@vallauri.edu');
+-- Studenti per la classe ID: 9
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('mariagiulia.innocenti.81@vallauri.edu', 'Mariagiulia', 'Innocenti', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (9, 'mariagiulia.innocenti.81@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giovanni.ricci.82@vallauri.edu', 'Giovanni', 'Ricci', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (9, 'giovanni.ricci.82@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giulia.tagliaferri.83@vallauri.edu', 'Giulia', 'Tagliaferri', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (9, 'giulia.tagliaferri.83@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('annamaria.bruno.84@vallauri.edu', 'Annamaria', 'Bruno', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (9, 'annamaria.bruno.84@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('margherita.tagliaferri.85@vallauri.edu', 'Margherita', 'Tagliaferri', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (9, 'margherita.tagliaferri.85@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('pierfrancesco.pasqualantonio.86@vallauri.edu', 'Pierfrancesco', 'Pasqualantonio', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (9, 'pierfrancesco.pasqualantonio.86@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('alessandra.romano.87@vallauri.edu', 'Alessandra', 'Romano', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (9, 'alessandra.romano.87@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('mattia.mastroianni.88@vallauri.edu', 'Mattia', 'Mastroianni', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (9, 'mattia.mastroianni.88@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('francesco.rossi.89@vallauri.edu', 'Francesco', 'Rossi', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (9, 'francesco.rossi.89@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('francesca.bruno.90@vallauri.edu', 'Francesca', 'Bruno', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (9, 'francesca.bruno.90@vallauri.edu');
+-- Studenti per la classe ID: 10
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('pierfrancesco.bianchi.91@vallauri.edu', 'Pierfrancesco', 'Bianchi', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (10, 'pierfrancesco.bianchi.91@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('tommaso.rossi.92@vallauri.edu', 'Tommaso', 'Rossi', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (10, 'tommaso.rossi.92@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giorgia.dell_acqua.93@vallauri.edu', 'Giorgia', 'Dell_Acqua', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (10, 'giorgia.dell_acqua.93@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('riccardo.mastroianni.94@vallauri.edu', 'Riccardo', 'Mastroianni', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (10, 'riccardo.mastroianni.94@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('alessandra.mastroianni.95@vallauri.edu', 'Alessandra', 'Mastroianni', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (10, 'alessandra.mastroianni.95@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giuseppe.marini.96@vallauri.edu', 'Giuseppe', 'Marini', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (10, 'giuseppe.marini.96@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('emma.bianchi.97@vallauri.edu', 'Emma', 'Bianchi', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (10, 'emma.bianchi.97@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('aurora.castelnuovo.98@vallauri.edu', 'Aurora', 'Castelnuovo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (10, 'aurora.castelnuovo.98@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('leonardo.russo.99@vallauri.edu', 'Leonardo', 'Russo', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (10, 'leonardo.russo.99@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('filippo.greco.100@vallauri.edu', 'Filippo', 'Greco', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (10, 'filippo.greco.100@vallauri.edu');
+-- Studenti per la classe ID: 11
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('leonardo.ferrari.101@vallauri.edu', 'Leonardo', 'Ferrari', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (11, 'leonardo.ferrari.101@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('emma.marini.102@vallauri.edu', 'Emma', 'Marini', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (11, 'emma.marini.102@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('riccardo.bevilacqua.103@vallauri.edu', 'Riccardo', 'Bevilacqua', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (11, 'riccardo.bevilacqua.103@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('aurora.pasqualantonio.104@vallauri.edu', 'Aurora', 'Pasqualantonio', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (11, 'aurora.pasqualantonio.104@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giulia.bruno.105@vallauri.edu', 'Giulia', 'Bruno', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (11, 'giulia.bruno.105@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('margherita.castelnuovo.106@vallauri.edu', 'Margherita', 'Castelnuovo', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (11, 'margherita.castelnuovo.106@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('francesco.bevilacqua.107@vallauri.edu', 'Francesco', 'Bevilacqua', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (11, 'francesco.bevilacqua.107@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('elisabetta.pasqualantonio.108@vallauri.edu', 'Elisabetta', 'Pasqualantonio', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (11, 'elisabetta.pasqualantonio.108@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giulia.santamaria.109@vallauri.edu', 'Giulia', 'Santamaria', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (11, 'giulia.santamaria.109@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('beatrice.mastroianni.110@vallauri.edu', 'Beatrice', 'Mastroianni', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (11, 'beatrice.mastroianni.110@vallauri.edu');
+-- Studenti per la classe ID: 12
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('filippo.pasqualantonio.111@vallauri.edu', 'Filippo', 'Pasqualantonio', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (12, 'filippo.pasqualantonio.111@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('filippo.marini.112@vallauri.edu', 'Filippo', 'Marini', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (12, 'filippo.marini.112@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('gianmarco.santamaria.113@vallauri.edu', 'Gianmarco', 'Santamaria', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (12, 'gianmarco.santamaria.113@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giorgia.innocenti.114@vallauri.edu', 'Giorgia', 'Innocenti', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (12, 'giorgia.innocenti.114@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('francesco.scaramuzzino.115@vallauri.edu', 'Francesco', 'Scaramuzzino', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (12, 'francesco.scaramuzzino.115@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('margherita.montezemolo.116@vallauri.edu', 'Margherita', 'Montezemolo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (12, 'margherita.montezemolo.116@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('alessandra.rossi.117@vallauri.edu', 'Alessandra', 'Rossi', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (12, 'alessandra.rossi.117@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giulia.tagliaferri.118@vallauri.edu', 'Giulia', 'Tagliaferri', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (12, 'giulia.tagliaferri.118@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('valentina.dell_acqua.119@vallauri.edu', 'Valentina', 'Dell_Acqua', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (12, 'valentina.dell_acqua.119@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('alice.valsecchi.120@vallauri.edu', 'Alice', 'Valsecchi', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (12, 'alice.valsecchi.120@vallauri.edu');
+-- Studenti per la classe ID: 13
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giorgia.russo.121@vallauri.edu', 'Giorgia', 'Russo', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (13, 'giorgia.russo.121@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('mattia.marini.122@vallauri.edu', 'Mattia', 'Marini', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (13, 'mattia.marini.122@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('beatrice.santamaria.123@vallauri.edu', 'Beatrice', 'Santamaria', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (13, 'beatrice.santamaria.123@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('riccardo.ghirardelli.124@vallauri.edu', 'Riccardo', 'Ghirardelli', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (13, 'riccardo.ghirardelli.124@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('annamaria.scaramuzzino.125@vallauri.edu', 'Annamaria', 'Scaramuzzino', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (13, 'annamaria.scaramuzzino.125@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('mattia.quattrociocche.126@vallauri.edu', 'Mattia', 'Quattrociocche', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (13, 'mattia.quattrociocche.126@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('gianmarco.bianchi.127@vallauri.edu', 'Gianmarco', 'Bianchi', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (13, 'gianmarco.bianchi.127@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('leonardo.dell_acqua.128@vallauri.edu', 'Leonardo', 'Dell_Acqua', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (13, 'leonardo.dell_acqua.128@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('mattia.scaramuzzino.129@vallauri.edu', 'Mattia', 'Scaramuzzino', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (13, 'mattia.scaramuzzino.129@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giovanni.colombo.130@vallauri.edu', 'Giovanni', 'Colombo', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (13, 'giovanni.colombo.130@vallauri.edu');
+-- Studenti per la classe ID: 14
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('alice.ricci.131@vallauri.edu', 'Alice', 'Ricci', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (14, 'alice.ricci.131@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('annamaria.bruno.132@vallauri.edu', 'Annamaria', 'Bruno', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (14, 'annamaria.bruno.132@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('margherita.ferrari.133@vallauri.edu', 'Margherita', 'Ferrari', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (14, 'margherita.ferrari.133@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('riccardo.scaramuzzino.134@vallauri.edu', 'Riccardo', 'Scaramuzzino', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (14, 'riccardo.scaramuzzino.134@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('antonio.montezemolo.135@vallauri.edu', 'Antonio', 'Montezemolo', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (14, 'antonio.montezemolo.135@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giorgia.franceschini.136@vallauri.edu', 'Giorgia', 'Franceschini', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (14, 'giorgia.franceschini.136@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giorgia.tagliaferri.137@vallauri.edu', 'Giorgia', 'Tagliaferri', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (14, 'giorgia.tagliaferri.137@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('valentina.greco.138@vallauri.edu', 'Valentina', 'Greco', false);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (14, 'valentina.greco.138@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('giuseppe.russo.139@vallauri.edu', 'Giuseppe', 'Russo', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (14, 'giuseppe.russo.139@vallauri.edu');
+INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES") VALUES ('mattia.marini.140@vallauri.edu', 'Mattia', 'Marini', true);
+INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (14, 'mattia.marini.140@vallauri.edu');
 
--- MODALITÀ DI VERIFICA
-INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES 
-('Entrambi', 'Modalità di verifica', 'tempi più lunghi per le prove scritte'),
-('Entrambi', 'Modalità di verifica', 'organizzazione delle prove scritte in più parti'),
-('Entrambi', 'Modalità di verifica', 'testo della verifica scritta in formato digitale con carattere e interlinea adeguati al soggetto'),
-('Entrambi', 'Modalità di verifica', 'lettura del testo della verifica scritta da parte dell’insegnante o di un tutor'),
-('Entrambi', 'Modalità di verifica', 'lettura del testo della verifica scritta con l’utilizzo della sintesi vocale e cuffie'),
-('Entrambi', 'Modalità di verifica', 'riduzione/selezione della quantità di esercizi nelle verifiche scritte'),
-('Entrambi', 'Modalità di verifica', 'riduzione delle dimensioni standard richieste degli elaborati scritti'),
-('Entrambi', 'Modalità di verifica', 'interrogazioni programmate'),
-('Entrambi', 'Modalità di verifica', 'più tempo a disposizione per elaborare la risposta orale'),
-('Entrambi', 'Modalità di verifica', 'prove orali in compensazione alle prove scritte ad esito negativo'),
-('Entrambi', 'Modalità di verifica', 'predisposizione di interrogazioni orali per le materie che prevedono un voto esclusivamente orale in pagella'),
-('Entrambi', 'Modalità di verifica', 'utilizzo di prove strutturate negli scritti'),
-('Entrambi', 'Modalità di verifica', 'modalità di presentazione delle verifiche (cartacea – al PC – con software specifici – altro ...)'),
-('Entrambi', 'Modalità di verifica', 'uso di mediatori didattici durante le interrogazioni (mappe – schemi – immagini concordati/e con l’insegnante)'),
-('Entrambi', 'Modalità di verifica', 'altro...');
+-- 7. INSERIMENTO INSEGNAMENTI (11 materie distinte per classe, coprendo tutte le 25 materie globalmente)
+-- Insegnamenti per la classe ID: 1 (11 materie)
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 1, 'Automazione');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 1, 'Elettronica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 1, 'Elettrotecnica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 1, 'Fisica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 1, 'Gestione Progetto');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 1, 'Italiano');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 1, 'Matematica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 1, 'Religione');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 1, 'Scienze Naturali');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 1, 'Tecnologia Meccanica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 1, 'Tecnologie e Progettazione');
+-- Insegnamenti per la classe ID: 2 (11 materie)
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 2, 'Diritto');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 2, 'Economia Aziendale');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 2, 'Elettronica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 2, 'Elettrotecnica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 2, 'Geografia');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 2, 'Italiano');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 2, 'Lingua Spagnola');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 2, 'Matematica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 2, 'Relazioni Internazionali');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 2, 'Religione');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 2, 'Scienze Motorie');
+-- Insegnamenti per la classe ID: 3 (11 materie)
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 3, 'Automazione');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 3, 'Diritto');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 3, 'Elettrotecnica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 3, 'Fisica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 3, 'Gestione Progetto');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 3, 'Informatica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 3, 'Inglese');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 3, 'Relazioni Internazionali');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 3, 'Scienze Motorie');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 3, 'Sistemi e Reti');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 3, 'Storia');
+-- Insegnamenti per la classe ID: 4 (11 materie)
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 4, 'Economia Aziendale');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 4, 'Elettronica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 4, 'Elettrotecnica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 4, 'Fisica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 4, 'Lingua Tedesca');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 4, 'Matematica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 4, 'Relazioni Internazionali');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 4, 'Scienze Motorie');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 4, 'Sistemi e Reti');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 4, 'Storia');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 4, 'Tecnologia Meccanica');
+-- Insegnamenti per la classe ID: 5 (11 materie)
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 5, 'Automazione');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 5, 'Disegno Tecnico');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 5, 'Elettronica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 5, 'Fisica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 5, 'Geografia');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 5, 'Informatica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 5, 'Inglese');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 5, 'Lingua Spagnola');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 5, 'Relazioni Internazionali');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 5, 'Sistemi e Reti');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 5, 'Storia');
+-- Insegnamenti per la classe ID: 6 (11 materie)
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 6, 'Chimica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 6, 'Gestione Progetto');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 6, 'Informatica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 6, 'Inglese');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 6, 'Lingua Spagnola');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 6, 'Relazioni Internazionali');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 6, 'Religione');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 6, 'Scienze Motorie');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 6, 'Storia');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 6, 'Tecnologia Meccanica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 6, 'Tecnologie e Progettazione');
+-- Insegnamenti per la classe ID: 7 (11 materie)
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 7, 'Disegno Tecnico');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 7, 'Economia Aziendale');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 7, 'Elettrotecnica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 7, 'Informatica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 7, 'Inglese');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 7, 'Lingua Spagnola');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 7, 'Matematica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 7, 'Religione');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 7, 'Scienze Naturali');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 7, 'Sistemi e Reti');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 7, 'Storia');
+-- Insegnamenti per la classe ID: 8 (11 materie)
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 8, 'Chimica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 8, 'Diritto');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 8, 'Disegno Tecnico');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 8, 'Economia Aziendale');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 8, 'Fisica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 8, 'Gestione Progetto');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 8, 'Lingua Spagnola');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 8, 'Scienze Naturali');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 8, 'Sistemi e Reti');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 8, 'Tecnologia Meccanica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 8, 'Tecnologie e Progettazione');
+-- Insegnamenti per la classe ID: 9 (11 materie)
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 9, 'Diritto');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 9, 'Fisica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 9, 'Gestione Progetto');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 9, 'Italiano');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 9, 'Lingua Spagnola');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 9, 'Lingua Tedesca');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 9, 'Matematica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 9, 'Scienze Motorie');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 9, 'Scienze Naturali');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 9, 'Storia');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 9, 'Tecnologia Meccanica');
+-- Insegnamenti per la classe ID: 10 (11 materie)
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 10, 'Elettronica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 10, 'Elettrotecnica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 10, 'Geografia');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 10, 'Gestione Progetto');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 10, 'Inglese');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 10, 'Italiano');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 10, 'Lingua Spagnola');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 10, 'Lingua Tedesca');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 10, 'Religione');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 10, 'Scienze Motorie');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 10, 'Tecnologie e Progettazione');
+-- Insegnamenti per la classe ID: 11 (11 materie)
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 11, 'Automazione');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 11, 'Diritto');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 11, 'Elettronica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 11, 'Elettrotecnica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 11, 'Inglese');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 11, 'Italiano');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 11, 'Matematica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 11, 'Relazioni Internazionali');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 11, 'Religione');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 11, 'Scienze Naturali');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 11, 'Sistemi e Reti');
+-- Insegnamenti per la classe ID: 12 (11 materie)
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 12, 'Automazione');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 12, 'Chimica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 12, 'Disegno Tecnico');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 12, 'Fisica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 12, 'Geografia');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 12, 'Lingua Tedesca');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 12, 'Meccanica e Macchine');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 12, 'Scienze Motorie');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 12, 'Sistemi e Reti');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 12, 'Storia');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 12, 'Tecnologia Meccanica');
+-- Insegnamenti per la classe ID: 13 (11 materie)
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 13, 'Automazione');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 13, 'Diritto');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 13, 'Disegno Tecnico');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 13, 'Elettronica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 13, 'Informatica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 13, 'Lingua Tedesca');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 13, 'Meccanica e Macchine');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 13, 'Sistemi e Reti');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 13, 'Storia');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 13, 'Tecnologia Meccanica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 13, 'Tecnologie e Progettazione');
+-- Insegnamenti per la classe ID: 14 (11 materie)
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 14, 'Chimica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 14, 'Disegno Tecnico');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 14, 'Elettrotecnica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 14, 'Fisica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 14, 'Geografia');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 14, 'Informatica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 14, 'Italiano');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 14, 'Meccanica e Macchine');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 14, 'Storia');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('l.martino.3175@vallauri.edu', 14, 'Tecnologia Meccanica');
+INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome") VALUES ('m.dimitrov.3065@vallauri.edu', 14, 'Tecnologie e Progettazione');
 
-
--- CRITERI DI VALUTAZIONE
-INSERT INTO "Indicatore" ("Tipologia", "Categoria", "Descrizione") VALUES 
-('Entrambi', 'Criteri di valutazione', 'non vengono sottolineati gli errori ortografici'),
-('Entrambi', 'Criteri di valutazione', 'non vengono valutati gli errori ortografici'),
-('Entrambi', 'Criteri di valutazione', 'non si valutano gli errori ortografici in lingua straniera'),
-('Entrambi', 'Criteri di valutazione', 'la valutazione delle prove scritte e orali tiene conto del contenuto e non della forma'),
-('Entrambi', 'Criteri di valutazione', 'si adotta una valutazione che apprezzi le conoscenze rispetto alle competenze'),
-('Entrambi', 'Criteri di valutazione', 'si adotta una valutazione che eviti di privilegiare il nozionismo e un approccio esclusivamente mnemonico'),
-('BES', 'Criteri di valutazione', 'si adotta una valutazione calibrata sugli obiettivi didattici e di contenuto eventualmente riformulati (vedi infra)'),
-('Entrambi', 'Criteri di valutazione', 'altro...');
-
-
--- ==========================================================
--- PERSONALE DOCENTE
--- ==========================================================
-
-INSERT INTO "Docente" ("Email", "Nome", "Cognome", "Ruolo") VALUES
-('l.martino.3175@vallauri.edu', 'Luca', 'Martino', 'Admin'),
-('m.dimitrov.3065@vallauri.edu', 'Mikhail', 'Dimitrov', 'Admin'),
-('f.valsecchi.4421@vallauri.edu', 'Francesco Maria', 'Valsecchi', 'Docente'),
-('g.mastroianni.9928@vallauri.edu', 'Giulia Maddalena', 'Mastroianni', 'Docente'),
-('a.sangiovanni.1123@vallauri.edu', 'Antonio Alberto', 'Sangiovanni', 'Docente'),
-('s.bevilacqua.5564@vallauri.edu', 'Silvia Annamaria', 'Bevilacqua', 'Docente'),
-('m.franceschini.7782@vallauri.edu', 'Marco Alessandro', 'Franceschini', 'Docente'),
-('e.castelnuovo.3341@vallauri.edu', 'Elena Sofia', 'Castelnuovo', 'Docente'),
-('p.montezemolo.2210@vallauri.edu', 'Paolo Giovanni', 'Montezemolo', 'Docente'),
-('r.quattrociocche.8890@vallauri.edu', 'Roberta Beatrice', 'Quattrociocche', 'Docente');
-
--- ==========================================================
--- CLASSI E POOL STUDENTI (600 Record)
--- ==========================================================
-
-DO $$
-DECLARE
-    ind_list TEXT[] := ARRAY['INF', 'ELT', 'MEC', 'AFM', 'LIC', 'TUR', 'ENE'];
-    anni_list TIMESTAMP[] := ARRAY['2024-09-01', '2025-09-01', '2023-09-01'];
-    nomi TEXT[] := ARRAY['Gianmarco', 'Pierfrancesco', 'Alessandro', 'Massimiliano', 'Leonardo', 'Francesco Maria', 'Riccardo', 'Edoardo', 'Filippo', 'Christian', 'Mariagiulia', 'Beatrice Sofia', 'Elisabetta', 'Francesca', 'Valentina', 'Margherita', 'Annamaria', 'Alessandra'];
-    cognomi TEXT[] := ARRAY['Mastroianni', 'Bevilacqua', 'Franceschini', 'Quattrociocche', 'Castelnuovo', 'Montezemolo', 'Pasqualantonio', 'Tagliaferri', 'Scaramuzzino', 'Dell''Acqua', 'Santamaria', 'Pietrangeli', 'Valsecchi', 'Innocenti', 'Ghirardelli'];
-    v_nome TEXT;
-    v_cognome TEXT;
-    v_email TEXT;
-    coord_emails TEXT[];
-BEGIN
-    -- Popolamento Classi
-    SELECT array_agg("Email") INTO coord_emails FROM "Docente" WHERE "Ruolo" IN ('Docente', 'Admin');
-    FOR i IN 1..30 LOOP
-        INSERT INTO "Classe" ("Classe", "Sezione", "Indirizzo", "Anno_Scolastico", "Coordinatore_Email")
-        VALUES (((i-1)%5)+1, CHR(65+(i-1)%5), ind_list[((i-1)%7)+1], anni_list[((i-1)%3)+1], coord_emails[((i-1)%7)+1]);
-    END LOOP;
-
-    -- Popolamento 600 Studenti
-    FOR i IN 1..600 LOOP
-        v_nome := nomi[floor(random() * array_length(nomi, 1) + 1)];
-        v_cognome := cognomi[floor(random() * array_length(cognomi, 1) + 1)];
-        v_email := lower(replace(v_nome, ' ', '.')) || '.' || lower(replace(v_cognome, ' ', '.')) || '.' || i || '@vallauri.edu';
-        INSERT INTO "Studente" ("Email", "Nome", "Cognome", "DSA_BES")
-        VALUES (v_email, v_nome, v_cognome, (i % 12 = 0));
-    END LOOP;
-END $$;
-
--- ==========================================================
--- RELAZIONI E DOCUMENTI (CON STORICO, SCADUTI E BES)
--- ==========================================================
-
-DO $$
-DECLARE
-    v_class RECORD;
-    v_stud RECORD;
-    v_mat RECORD;
-    v_ins_mat RECORD; -- Variabile per il loop degli insegnamenti
-    v_ind_id INT;
-    v_num_stud INT;
-    v_offset INT := 0;
-    v_stato_scelto TEXT;
-    v_tipo_scelto TEXT;
-    v_data_app TIMESTAMP;
-    v_anno_corrente INT := EXTRACT(YEAR FROM NOW());
-BEGIN
-    FOR v_class IN SELECT "Id", "Coordinatore_Email", "Anno_Scolastico" FROM "Classe" ORDER BY "Id" LOOP
-        v_num_stud := floor(random() * 21);
-        
-        -- Popolamento Studenti per la classe
-        FOR v_stud IN (SELECT "Email", "DSA_BES" FROM "Studente" ORDER BY "Email" LIMIT v_num_stud OFFSET v_offset) LOOP
-            -- Relazione base
-            INSERT INTO "Classe_Studente" ("Classe_Id", "Studente_Email") VALUES (v_class."Id", v_stud."Email");
-            
-            -- Se lo studente ha un documento (DSA_BES)
-            IF v_stud."DSA_BES" THEN
-                
-                -- 1. DETERMINAZIONE TIPOLOGIA (Alternanza DSA/BES)
-                IF (floor(random()*10)::int % 2 = 0) THEN 
-                    v_tipo_scelto := 'DSA';
-                ELSE 
-                    v_tipo_scelto := 'BES';
-                END IF;
-
-                -- 3. INSERIMENTO DOCUMENTO
-                INSERT INTO "Documento" ("Studente_Email", "Anno", "Tipologia", "Data_Approvazione")
-                VALUES (
-                    v_stud."Email", 
-                    v_class."Anno_Scolastico", 
-                    v_tipo_scelto::"Tipologia_Doc", 
-                    v_data_app
-                );
-
-                -- 4. ICF
-                INSERT INTO "Documento_ICF" ("ICF_Codice", "Documento_Anno", "Documento_Studente_Email")
-                VALUES ('d160', v_class."Anno_Scolastico", v_stud."Email"), 
-                       ('d175', v_class."Anno_Scolastico", v_stud."Email");
-
-                -- 5. Allegato
-                INSERT INTO "Allegato" ("Nome", "Percorso", "Documento_Studente_Email", "Documento_Anno")
-                VALUES ('Certificato_'||v_tipo_scelto||'_'||v_stud."Email", '/pdp/uploads/'||v_stud."Email"||'.pdf', v_stud."Email", v_class."Anno_Scolastico");
-
-                -- 6. MATERIA_DOCUMENTO_INDICATORE
-                FOR v_mat IN (SELECT "Nome" FROM "Materia" ORDER BY random() LIMIT 3) LOOP
-                    v_ind_id := (SELECT "Id" FROM "Indicatore" 
-                                 WHERE "Tipologia" IN (v_tipo_scelto::"Tipologia_Ind", 'Entrambi') 
-                                 ORDER BY random() LIMIT 1);
-                    
-                    IF v_ind_id IS NOT NULL THEN
-                        INSERT INTO "Materia_Documento_Indicatore" 
-                            ("Materia_Nome", "Indicatore_Id", "Documento_Anno", "Documento_Studente_Email", "Nota")
-                        VALUES 
-                            (v_mat."Nome", v_ind_id, v_class."Anno_Scolastico", v_stud."Email", 'Nota specifica per ' || v_tipo_scelto);
-                    END IF;
-                END LOOP;
-            END IF;
-        END LOOP;
-        
-        v_offset := v_offset + v_num_stud;
-
-        -- ==========================================================
-        -- MODIFICA: INSEGNAMENTI MULTI-MATERIA
-        -- ==========================================================
-        -- Per ogni classe, inseriamo 3 insegnamenti di materie diverse
-        -- scelte casualmente dal database
-        FOR v_ins_mat IN (SELECT "Nome" FROM "Materia" ORDER BY random() LIMIT 3) LOOP
-            INSERT INTO "Insegnamento" ("Docente_Email", "Classe_Id", "Materia_Nome")
-            VALUES (v_class."Coordinatore_Email", v_class."Id", v_ins_mat."Nome");
-        END LOOP;
-
-    END LOOP;
-END $$;
+-- Aggiornamento della sequenza per l'ID della tabella Classe
+-- SELECT setval(pg_get_serial_sequence('"Classe"', 'Id'), COALESCE(max("Id"), 1)) FROM "Classe";
