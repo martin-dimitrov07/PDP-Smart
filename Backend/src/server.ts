@@ -71,6 +71,9 @@ const certificate = fs.readFileSync("keys/certificate.crt", "utf8");
 const credentials = { "key": privateKey, "cert": certificate };
 
 let httpsServer = https.createServer(credentials, app);
+// Imposta un timeout di 30 secondi (per evitare che il server rimanga bloccato per richieste troppo lunghe o problemi di rete)
+httpsServer.setTimeout(30000);
+
 httpsServer.listen(https_port, function () {
     console.log("Server in ascolto sulla porta HTTPS:" + https_port)
 });
@@ -115,14 +118,15 @@ app.use((req: any, res, next) => {
 const corsOptions = {
     origin: (origin: any, callback: any) => {
         if(!origin || !process.env.WHITELIST)
-            return callback(null, true);  //per test (poi da rimuovere) consente tutte le origini se non è definita la whitelist
+            return callback(new Error("Origin non definito o whitelist non configurata"), false);
+            // return callback(null, true);  per test (poi da rimuovere) consente tutte le origini se non è definita la whitelist
 
         const whiteList: string[] = process.env.WHITELIST.split(",").map(item => item.trim());
 
         if(whiteList.includes(origin))
             callback(null, true);
         else
-            callback(new Error("The CORS policy does not allow access from this origin"), false);
+            callback(new Error("Le politiche di CORS non permettono l'accesso da questa origine"), false);
     },
     credentials: true, //consente di accettare richieste con cookie (es. per login)
 };
@@ -148,6 +152,18 @@ app.use("/api/", Login.ControlloToken);
 
 // Logout
 app.post("/api/logout", Login.Logout);
+
+//middleware 9: rate limiter globale (dopo il login)
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // Finestra di 15 minuti
+    max: 1000, // Massimo 1000 richieste per IP ogni 15 minuti
+    message: "Troppe richieste da questo IP, riprova più tardi.",
+    standardHeaders: true, // Restituisce informazioni sul rate limit nei header `RateLimit-*`
+    legacyHeaders: false, // Disabilita i header `X-RateLimit-*` (non più standard)
+});
+
+// Applicalo a tutte le rotte API prima di definire le singole GET/POST
+app.use("/api/", apiLimiter);
 
 //E. gestione delle root dinamiche
 
