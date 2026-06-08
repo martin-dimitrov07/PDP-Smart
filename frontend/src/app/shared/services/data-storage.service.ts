@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
@@ -7,7 +8,7 @@ import { inject, Injectable } from '@angular/core';
 
 export class DataStorageService {
     private http = inject(HttpClient);
-    private REST_API_SERVER = "https://localhost:3000/api";
+    private REST_API_SERVER = environment.backendUrl;
 
     public InviaRichiesta(method: string, resource: string, params: any = {}) {
         let url = this.REST_API_SERVER + resource;

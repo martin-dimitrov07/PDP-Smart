@@ -1,6 +1,4 @@
 //A. import delle librerie
-import https from "https";
-import fs from "fs";
 import express from "express";
 import dotenv from "dotenv";
 import queryStringParser from "./routes/queryStringParser.ts";
@@ -65,17 +63,9 @@ export const prisma = new PrismaClient({
     adapter
 }); //export così da poterlo usare nelle API route (root dinamiche)
 
-//C. creazione ed avvio di un server https
-const privateKey = fs.readFileSync("keys/privateKey.pem", "utf8");
-const certificate = fs.readFileSync("keys/certificate.crt", "utf8");
-const credentials = { "key": privateKey, "cert": certificate };
-
-let httpsServer = https.createServer(credentials, app);
-// Imposta un timeout di 30 secondi (per evitare che il server rimanga bloccato per richieste troppo lunghe o problemi di rete)
-httpsServer.setTimeout(30000);
-
-httpsServer.listen(https_port, function () {
-    console.log("Server in ascolto sulla porta HTTPS:" + https_port)
+//C. creazione ed avvio di un server http
+app.listen(https_port, function () {
+    console.log("Server in ascolto sulla porta HTTP:" + https_port)
 });
 
 //D. middleware
@@ -117,13 +107,15 @@ app.use((req: any, res, next) => {
 //middleware 7: Vincoli CORS (controlli lato server che consentono di accettare richieste anche da fuori dal dominio -> cioè diverso dal server da cui arrivano le pagine)
 const corsOptions = {
     origin: (origin: any, callback: any) => {
-        if(!origin || !process.env.WHITELIST)
-            return callback(new Error("Origin non definito o whitelist non configurata"), false);
-            // return callback(null, true);  per test (poi da rimuovere) consente tutte le origini se non è definita la whitelist
+        if (!origin)
+            return callback(null, true); //consente richieste senza origin (es. da Postman o curl)
+
+        if (!process.env.WHITELIST)
+            return callback(new Error("Whitelist non configurata nel file .env"), false);
 
         const whiteList: string[] = process.env.WHITELIST.split(",").map(item => item.trim());
 
-        if(whiteList.includes(origin))
+        if (whiteList.includes(origin))
             callback(null, true);
         else
             callback(new Error("Le politiche di CORS non permettono l'accesso da questa origine"), false);
@@ -172,7 +164,7 @@ app.get("/api/email-docente", (req: any, res: any) => {
     if (req.docente)
         res.send({ docente: req.docente, fotoUrl: req.fotoUrl });
     else
-        res.status(500).send({"message": "Errore nell'invio della mail del docente"});
+        res.status(500).send({ "message": "Errore nell'invio della mail del docente" });
 });
 
 //Indirizzi
@@ -224,7 +216,7 @@ app.patch("/api/allegati/update", GestioneAllegati.UpdateAllegatiDocumento); //f
 //F. default root e gestione errori
 app.use(function (req, res) {
     if (req.originalUrl.startsWith("/api/"))
-        res.status(404).send({"message": "Risorsa non trovata"});
+        res.status(404).send({ "message": "Risorsa non trovata" });
     // else if (req.accepts("html")) // se la richiesta è per una pagina html
     //     res.sendStatus(404);
     else
@@ -235,10 +227,9 @@ app.use(function (req, res) {
 //G. gestione errori
 app.use(function (err: Error, req: express.Request, res: express.Response, next: express.NextFunction) {
     console.error("*** ERRORE ***:\n" + err.stack); //elenco completo degli errori
-    res.status(500).send({"message": "Errore interno del server"});
+    res.status(500).send({ "message": "Errore interno del server" });
     next();
 });
-
 
 //H. Gestione della chiusura pulita
 const ChiusuraPrisma = async () => {

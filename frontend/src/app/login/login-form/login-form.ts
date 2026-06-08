@@ -2,8 +2,7 @@ import { Component, Input, OnInit, PLATFORM_ID, SimpleChanges, inject } from '@a
 import { isPlatformBrowser, NgClass } from '@angular/common';
 import { LoginService } from '../../shared/services/login.service';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment.development';
-import { DocentiService } from '../../shared/services/docenti.service';
+import { environment } from '../../../environments/environment';
 
 declare const google: any;
 
