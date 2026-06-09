@@ -75,5 +75,6 @@ export class IndicatoreInput {
         this.indicatoriService.indicatoreSelected = this.indicatoriService.indicatori[materia]?.[this.categoria]?.find((item: any) => item.Id === this.indicatore.Id) || {};
         this.indicatoriService.indicatoreSelected.Materia = materia;
         this.documentiService.canEditNota = canEdit;
+        this.documentiService.initialNota = this.indicatoriService.indicatoreSelected.Nota || "";
     }
 }

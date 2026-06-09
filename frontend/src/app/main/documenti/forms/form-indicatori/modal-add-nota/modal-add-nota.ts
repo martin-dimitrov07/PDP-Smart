@@ -17,7 +17,7 @@ export class ModalAddNota {
     public readonly activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
     StatoDocumento: typeof Stato = Stato;
-
+    
     EditNota(){
         if(this.activatedRoute.snapshot.data['root'] == "modifica") {
             const indexEdit = this.indicatoriService.indicatoriEdit.findIndex((item: any) => item.Id == this.indicatoriService.indicatoreSelected.Id && item.Materia == this.indicatoriService.indicatoreSelected.Materia);

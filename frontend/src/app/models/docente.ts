@@ -3,7 +3,7 @@ export class Docente {
     Cognome: string;
     Email: string;
     Ruolo: Ruolo;
-    FotoUrl?: string;
+    // FotoUrl?: string;
 
     constructor(
         nome: string,
@@ -16,7 +16,7 @@ export class Docente {
         this.Cognome = cognome;
         this.Email = email;
         this.Ruolo = Ruolo;
-        this.FotoUrl = fotoUrl || "";
+        // this.FotoUrl = fotoUrl || "";
     }
 }
 

@@ -44,6 +44,7 @@ export class DocumentiService {
     nDocumenti: number = 0;
     documentoSelected: Documento | null = null;
     canEditNota: boolean = false;
+    initialNota: string = "";
 
     DeleteDocumento(documento: Documento) {
         forkJoin({
